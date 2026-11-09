@@ -3,12 +3,13 @@ import path from 'path';
 
 export async function GET(request, { params }) {
   try {
-    const { id } = await params;
+    const resolvedParams = params instanceof Promise ? await params : params;
+    const id = resolvedParams?.id || '1';
     const numId = parseInt(id, 10) || 1;
     const { searchParams } = new URL(request.url);
     const angleParam = searchParams.get('angle');
 
-    // Available high-res 3D master artwork renders
+    // Available high-res 3D master artwork renders in public folder
     const assetDir = path.join(process.cwd(), 'public', 'assets', 'agent');
     
     let targetFile = 'rare_front.jpg';
@@ -19,7 +20,6 @@ export async function GET(request, { params }) {
     } else if (angleParam === '180') {
       targetFile = 'rare_back.jpg';
     } else {
-      // Deterministic angle based on agent ID so each agent has a unique showcase angle
       const variants = ['rare_front.jpg', 'rare_turn_45.jpg', 'rare_profile.jpg', 'rare_front.jpg'];
       targetFile = variants[numId % variants.length];
     }
@@ -35,8 +35,8 @@ export async function GET(request, { params }) {
       });
     }
 
-    // Fallback if file not found
-    return new Response('Asset not found', { status: 404 });
+    // Redirect to public asset directly as fallback
+    return Response.redirect(new URL(`/assets/agent/${targetFile}`, request.url));
 
   } catch (err) {
     return new Response(`Error: ${err.message}`, { status: 500 });
