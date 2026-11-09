@@ -20,6 +20,11 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   webpack: (config, { isServer }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      ...Object.fromEntries(optionalModules.map((m) => [m, false])),
+    };
+
     config.resolve.fallback = {
       ...config.resolve.fallback,
       ...Object.fromEntries(optionalModules.map((m) => [m, false])),
