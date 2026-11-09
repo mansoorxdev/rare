@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RARE Protocol // Technical Whitepaper & Executive Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&family=Press+Start+2P&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 14mm 16mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 8pt;
+        color: #71717a;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 10pt;
+      line-height: 1.55;
+      color: #18181b;
+      background: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+      padding: 10px 0;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* HEADER & FOOTER */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #18181b;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      letter-spacing: 0.08em;
+      color: #52525b;
+    }
+
+    .doc-brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: #18181b;
+    }
+
+    .sol-chip {
+      background: linear-gradient(135deg, #9945FF, #14F195);
+      color: #000;
+      padding: 2px 5px;
+      font-size: 7pt;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+
+    /* COVER PAGE */
+    .cover-container {
+      padding-top: 40px;
+      padding-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 900px;
+    }
+
+    .cover-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      letter-spacing: 0.12em;
+      color: #166534;
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      padding: 4px 10px;
+      border-radius: 3px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .cover-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 32pt;
+      letter-spacing: -0.02em;
+      color: #09090b;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .cover-subtitle {
+      font-size: 16pt;
+      font-weight: 500;
+      color: #3f3f46;
+      line-height: 1.35;
+      margin-bottom: 24px;
+      max-width: 90%;
+    }
+
+    .cover-lead {
+      font-size: 11pt;
+      color: #52525b;
+      line-height: 1.6;
+      margin-bottom: 36px;
+      max-width: 92%;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .spec-card {
+      border: 1.5px solid #e4e4e7;
+      background: #fafafa;
+      padding: 12px 14px;
+      border-radius: 4px;
+    }
+
+    .spec-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt;
+      color: #71717a;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .spec-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11pt;
+      font-weight: 700;
+      color: #09090b;
+    }
+
+    .spec-val.green {
+      color: #15803d;
+    }
+
+    .meta-box {
+      border-top: 2px solid #18181b;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      color: #71717a;
+    }
+
+    /* HEADINGS & CONTENT */
+    h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14pt;
+      letter-spacing: -0.01em;
+      color: #09090b;
+      border-bottom: 2px solid #18181b;
+      padding-bottom: 6px;
+      margin-top: 20px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #18181b;
+      margin-top: 16px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-bottom: 10px;
+      color: #3f3f46;
+      text-align: justify;
+    }
+
+    /* CALLOUT BOXES */
+    .callout {
+      border-left: 4px solid #18181b;
+      background: #f4f4f5;
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .callout.green {
+      border-left-color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .callout-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #18181b;
+      margin-bottom: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* DIAGRAM BOX */
+    .diagram-box {
+      border: 1.5px solid #18181b;
+      background: #09090b;
+      color: #f4f4f5;
+      padding: 16px;
+      border-radius: 4px;
+      margin: 16px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+    }
+
+    .diagram-header {
+      display: flex;
+      justify-content: space-between;
+      color: #4ade80;
+      font-size: 7.5pt;
+      font-weight: 700;
+      border-bottom: 1px solid #27272a;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    /* TABLES */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 8.5pt;
+    }
+
+    th {
+      background: #18181b;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt;
+      letter-spacing: 0.06em;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e4e4e7;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    tr:nth-child(even) td {
+      background: #fafafa;
+    }
+
+    tr.highlight td {
+      background: #f0fdf4;
+      font-weight: 700;
+    }
+
+    .badge-green {
+      background: #dcfce7;
+      color: #15803d;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-weight: 700;
+      font-size: 7pt;
+    }
+
+    .badge-amber {
+      background: #fef3c7;
+      color: #b45309;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-weight: 700;
+      font-size: 7pt;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #f4f4f5;
+      color: #09090b;
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-size: 8.5pt;
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-bottom: 12px;
+      color: #3f3f46;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1: COVER & EXECUTIVE SUMMARY ================= -->
+  <div class="page">
+    <div class="cover-container">
+      <div>
+        <div class="doc-header">
+          <div class="doc-brand">
+            <span class="sol-chip">SOL</span>
+            <span>RARE PROTOCOL SPECIFICATION</span>
+          </div>
+          <div>VERSION 2.4 // PRODUCTION RELEASE</div>
+        </div>
+
+        <div class="cover-badge">★ DECENTRALIZED AUTONOMOUS AGENT WORKFORCE</div>
+        <h1 class="cover-title">RARE</h1>
+        <div class="cover-subtitle">10,078 Autonomous AI Trading Agents with Token-Bound Accounts on Solana</div>
+        
+        <p class="cover-lead">
+          A groundbreaking on-chain architecture merging generative artificial intelligence, Solana Program Derived Addresses (PDAs), and algorithmic capital routing. Every NFT is a self-funded entity whose vault is pre-allocated with 90% of mint proceeds to execute high-frequency autonomous DeFi loops.
+        </p>
+
+        <div class="specs-grid">
+          <div class="spec-card">
+            <div class="spec-label">Total Agent Supply</div>
+            <div class="spec-val">10,078 Unique Entities</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Base Mint Price (Tier 1)</div>
+            <div class="spec-val green">0.020 SOL (~$3.20 USD)</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Capital Allocation Split</div>
+            <div class="spec-val green">90% Agent PDA / 10% Treasury</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Smart Contract Framework</div>
+            <div class="spec-val">Rust + Anchor v0.29 CPI</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">On-Chain Wallet Mechanism</div>
+            <div class="spec-val">Token-Bound PDA [agent-vault, mint]</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Web3 Authentication</div>
+            <div class="spec-val">Privy MPC (Email, Social, Phantom)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="meta-box">
+        <div>PROTOCOL STATUS: MAINNET READY</div>
+        <div>CLIENT BRIEFING &amp; TECHNICAL BLUEPRINT</div>
+        <div>CONFIDENTIAL &amp; PROPRIETARY</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2: PROBLEM, VISION & THE 90/10 MODEL ================= -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-brand">
+        <span class="sol-chip">SOL</span>
+        <span>RARE // TECHNICAL ARCHITECTURE</span>
+      </div>
+      <div>SECTION 01: ECONOMIC PARADIGM</div>
+    </div>
+
+    <h2>1. The Problem &amp; The Paradigm Shift</h2>
+    <p>
+      The legacy NFT ecosystem is broken. Traditional NFT collections sell static digital images (JPEGs) where founders extract 100% of the capital into private wallets, leaving buyers with illiquid assets that have zero intrinsic value and no computational agency.
+    </p>
+
+    <div class="callout green">
+      <div class="callout-title">THE RARE THESIS</div>
+      <strong>NFTs should not be pictures. They should be autonomous financial actors.</strong> By binding non-custodial crypto vaults directly to programmable tokens and seeding them with immediate working capital, we transform passive digital art into a 10,078-agent decentralized algorithmic trading swarm.
+    </div>
+
+    <h2>2. The 90/10 Self-Funded Capital Routing</h2>
+    <p>
+      In RARE, capital is split <em>atomically at the smart contract level</em> during the single mint transaction. The buyer's SOL is mathematically routed via an Anchor Cross-Program Invocation (CPI):
+    </p>
+
+    <div class="diagram-box">
+      <div class="diagram-header">
+        <span>ANCHOR CPI CAPITAL ROUTER // INSTRUCTION EXECUTION</span>
+        <span>SOLANA RUNTIME v1.18+</span>
+      </div>
+<pre>
+   [BUYER WALLET] ───► MINT TRANSACTION (0.020 SOL)
+                                │
+               ┌────────────────┴────────────────┐
+               ▼ (90% SPLIT)                     ▼ (10% SPLIT)
+       [AGENT PDA VAULT]                 [PROTOCOL TREASURY]
+          0.018 SOL                          0.002 SOL
+               │                                 │
+     • Gas for Autonomous Trades        • Validator RPC Endpoints
+     • DEX Liquidity Seeding            • Smart Contract Security Upkeep
+     • Sub-second Arb Swaps             • Core Protocol Development
+</pre>
+    </div>
+
+    <h3>Key Advantages of 90/10 Split:</h3>
+    <ul>
+      <li><strong>Built-In Intrinsic Value:</strong> Unlike zero-value NFTs, every RARE agent is immediately backed by physical SOL locked inside its own vault.</li>
+      <li><strong>Anti-Rug Architecture:</strong> The team cannot drain user funds because 90% never enters team-controlled accounts — it is programmatically locked into the user's agent PDA.</li>
+      <li><strong>Immediate Agent Autonomy:</strong> The agent is born fully capitalized, ready to pay its own Solana priority gas fees and execute trades without requiring manual top-ups.</li>
+    </ul>
+
+    <h2>3. Token-Bound Accounts (TBA) on Solana</h2>
+    <p>
+      On Ethereum, this pattern is known as ERC-6551. On Solana, RARE achieves high-performance Token-Bound Accounts through deterministic Program Derived Addresses (PDAs):
+    </p>
+    <p style="text-align: center; margin: 12px 0;">
+      <code>PDA Address = Pubkey::find_program_address(&amp;[b"agent-vault", mint_pubkey.as_ref()], &amp;program_id)</code>
+    </p>
+    <p>
+      <strong>Marketplace Transferability:</strong> Because the PDA vault is cryptographically bound to the NFT Mint Address, when the NFT is sold on secondary marketplaces (Tensor, Magic Eden), <em>the entire wallet, all accumulated trading profits, and its full transaction history automatically transfer to the new owner</em>.
+    </p>
+  </div>
+
+  <!-- ================= PAGE 3: AGENT ARCHETYPES & BONDING CURVE ================= -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-brand">
+        <span class="sol-chip">SOL</span>
+        <span>RARE // TECHNICAL ARCHITECTURE</span>
+      </div>
+      <div>SECTION 02: SWARM ROLES &amp; TOKENOMICS</div>
+    </div>
+
+    <h2>4. The 10,078 Autonomous Agent Archetypes</h2>
+    <p>
+      Every agent in the 10,078 collection is assigned specialized execution logic, risk parameters, and telemetry firmware committed immutably to on-chain metadata:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ROLE ARCHETYPE</th>
+          <th>TARGET ECOSYSTEM</th>
+          <th>AUTONOMOUS LOOP SPECIFICATION</th>
+          <th>DAILY LIMIT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>PumpFun Liquidity Sniper</strong></td>
+          <td>PumpFun, Raydium CP-MM</td>
+          <td>Listens for bonding curve 85%+ milestones; executes instant liquidity injection upon Raydium migration.</td>
+          <td>0.50 SOL</td>
+        </tr>
+        <tr>
+          <td><strong>DeFi Arbitrageur</strong></td>
+          <td>Jupiter, Orca, Raydium</td>
+          <td>Scans cross-DEX spreads on major SOL pairs; executes risk-free atomic multi-hop arbitrage.</td>
+          <td>0.75 SOL</td>
+        </tr>
+        <tr>
+          <td><strong>Prediction Market Oracle</strong></td>
+          <td>Drift, Zeta, Polymarket</td>
+          <td>Parses social sentiment &amp; crypto breakout indicators to place mathematical high-conviction event orders.</td>
+          <td>0.35 SOL</td>
+        </tr>
+        <tr>
+          <td><strong>Memecoin Momentum Tracker</strong></td>
+          <td>DexScreener API, Birdeye</td>
+          <td>Tracks smart-money wallet inflows, volume expansion velocity, and automated stop-loss trailing.</td>
+          <td>0.50 SOL</td>
+        </tr>
+        <tr>
+          <td><strong>Jupiter Routing Optimizer</strong></td>
+          <td>Solana MEV / Jito Bundles</td>
+          <td>Discovers sub-optimal routing inefficiencies in high-volume pools to harvest transaction fee rebates.</td>
+          <td>1.00 SOL</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5. 10-Tier Exponential Bonding Curve</h2>
+    <p>
+      The collection uses a deterministic 10-tier pricing ladder that rewards early supporters and mathematically creates upward price momentum as supply sells out:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>TIER BAND</th>
+          <th>SUPPLY RANGE</th>
+          <th>MINT PRICE</th>
+          <th>90% AGENT VAULT</th>
+          <th>10% TREASURY</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td><strong>BAND 01</strong></td>
+          <td>#00001 - #01008</td>
+          <td><strong>0.020 SOL</strong></td>
+          <td>0.018 SOL</td>
+          <td>0.002 SOL</td>
+          <td><span class="badge-green">ACTIVE (MINT OPEN)</span></td>
+        </tr>
+        <tr>
+          <td><strong>BAND 02</strong></td>
+          <td>#01009 - #02016</td>
+          <td>0.026 SOL</td>
+          <td>0.023 SOL</td>
+          <td>0.003 SOL</td>
+          <td><span class="badge-amber">UPCOMING (+30%)</span></td>
+        </tr>
+        <tr>
+          <td><strong>BAND 03</strong></td>
+          <td>#02017 - #03024</td>
+          <td>0.034 SOL</td>
+          <td>0.031 SOL</td>
+          <td>0.003 SOL</td>
+          <td>LOCKED</td>
+        </tr>
+        <tr>
+          <td><strong>BAND 04</strong></td>
+          <td>#03025 - #04032</td>
+          <td>0.044 SOL</td>
+          <td>0.040 SOL</td>
+          <td>0.004 SOL</td>
+          <td>LOCKED</td>
+        </tr>
+        <tr>
+          <td><strong>BAND 05</strong></td>
+          <td>#04033 - #05040</td>
+          <td>0.057 SOL</td>
+          <td>0.051 SOL</td>
+          <td>0.006 SOL</td>
+          <td>LOCKED</td>
+        </tr>
+        <tr>
+          <td><strong>BAND 06</strong></td>
+          <td>#05041 - #06048</td>
+          <td>0.074 SOL</td>
+          <td>0.067 SOL</td>
+          <td>0.007 SOL</td>
+          <td>LOCKED</td>
+        </tr>
+        <tr>
+          <td><strong>BAND 07</strong></td>
+          <td>#06049 - #07056</td>
+          <td>0.096 SOL</td>
+          <td>0.086 SOL</td>
+          <td>0.010 SOL</td>
+          <td>LOCKED</td>
+        </tr>
+        <tr>
+          <td><strong>BAND 08</strong></td>
+          <td>#07057 - #08064</td>
+          <td>0.125 SOL</td>
+          <td>0.113 SOL</td>
+          <td>0.012 SOL</td>
+          <td>LOCKED</td>
+        </tr>
+        <tr>
+          <td><strong>BAND 09</strong></td>
+          <td>#08065 - #09072</td>
+          <td>0.163 SOL</td>
+          <td>0.147 SOL</td>
+          <td>0.016 SOL</td>
+          <td>LOCKED</td>
+        </tr>
+        <tr>
+          <td><strong>BAND 10</strong></td>
+          <td>#09073 - #10078</td>
+          <td><strong>0.212 SOL</strong></td>
+          <td>0.191 SOL</td>
+          <td>0.021 SOL</td>
+          <td>FINAL BAND</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size: 8pt; color: #71717a; margin-top: -4px;">
+      *Pricing formula: <code>Price(Band) = BasePrice * (1.30)^(Band - 1)</code>. Enforced immutably by on-chain Anchor state.
+    </p>
+  </div>
+
+  <!-- ================= PAGE 4: TECHNICAL STACK & ROADMAP ================= -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-brand">
+        <span class="sol-chip">SOL</span>
+        <span>RARE // TECHNICAL ARCHITECTURE</span>
+      </div>
+      <div>SECTION 03: FULLSTACK &amp; ROADMAP</div>
+    </div>
+
+    <h2>6. Production Full-Stack Implementation</h2>
+    <div class="grid-2">
+      <div class="spec-card">
+        <div class="spec-label">Smart Contract Layer</div>
+        <p style="font-size: 8.5pt; margin-top: 4px;">
+          Built in <strong>Rust + Anchor v0.29</strong>. Implements atomic CPI transfers, PDA state initialization, Metaplex Master Edition mint verification, and holder-only withdrawal checks (<code>withdraw_to_holder</code>).
+        </p>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-label">Privy Multi-Party Computation (MPC)</div>
+        <p style="font-size: 8.5pt; margin-top: 4px;">
+          Zero-barrier onboarding: Users without crypto wallets can log in using <strong>Email, Google, or Twitter</strong> to instantly spawn an embedded Solana Ed25519 wallet, alongside Phantom and Solflare support.
+        </p>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-label">Next.js 14 App Router Full-Stack</div>
+        <p style="font-size: 8.5pt; margin-top: 4px;">
+          Unified frontend and backend architecture. Built-in REST APIs for paginated agent discovery (<code>/api/agents</code>), singular metadata inspection (<code>/api/agent/:id</code>), and CLI terminal processing (<code>/api/console</code>).
+        </p>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-label">Generative CRT Pixel Avatar Engine</div>
+        <p style="font-size: 8.5pt; margin-top: 4px;">
+          Dynamic procedural SVG generator (<code>/api/avatar/:id</code>) that renders authentic 8-bit CRT monitor pixel art with unique casing palettes, glowing phosphors, antennas, and animated eye expressions.
+        </p>
+      </div>
+    </div>
+
+    <h2>7. Project Delivery Roadmap</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>PHASE</th>
+          <th>MILESTONE</th>
+          <th>DELIVERABLES &amp; OBJECTIVES</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td><strong>PHASE 1</strong></td>
+          <td>Core Architecture &amp; Asset Generation</td>
+          <td>10,078 unique Solana Ed25519 keypairs, PDA vault derivation, and Metaplex-compliant metadata JSONs generated.</td>
+          <td><span class="badge-green">COMPLETE</span></td>
+        </tr>
+        <tr class="highlight">
+          <td><strong>PHASE 2</strong></td>
+          <td>Next.js Fullstack &amp; Privy Auth</td>
+          <td>Industrial retro pixel UI, 8-bit Web Audio synth, Privy embedded wallet modal, and REST APIs compiled.</td>
+          <td><span class="badge-green">COMPLETE</span></td>
+        </tr>
+        <tr class="highlight">
+          <td><strong>PHASE 3</strong></td>
+          <td>Anchor Contract &amp; 90/10 Split</td>
+          <td>Rust Anchor program with CPI atomic capital routing, treasury parameters, and owner withdrawal safety gates.</td>
+          <td><span class="badge-green">COMPLETE</span></td>
+        </tr>
+        <tr>
+          <td><strong>PHASE 4</strong></td>
+          <td>Mainnet Launch &amp; Bonding Tiers</td>
+          <td>Public mint activation starting at Tier 1 (0.02 SOL), community whitelist, and automated tier progression.</td>
+          <td>READY TO DEPLOY</td>
+        </tr>
+        <tr>
+          <td><strong>PHASE 5</strong></td>
+          <td>Autonomous Trading Loops &amp; League</td>
+          <td>Agent telemetry feeds, DEX liquidity sniping execution, and real-time PnL tournament leaderboard.</td>
+          <td>Q1 2027</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-title">EXECUTIVE CONTACT &amp; REPO VERIFICATION</div>
+      <p style="font-size: 8.5pt; margin: 0;">
+        <strong>Project Name:</strong> RARE // Solana Autonomous Agents<br>
+        <strong>Local Server URL:</strong> <code>http://localhost:3000</code><br>
+        <strong>Smart Contract ID:</strong> <code>Rare111111111111111111111111111111111111111</code><br>
+        <strong>Collection Supply:</strong> 10,078 Autonomous Entities | 100% On-Chain Token-Bound Wallets
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>
+

@@ -1,0 +1,28 @@
+{
+  "name": "rare",
+  "version": "1.0.0",
+  "description": "RARE - 10,078 Autonomous AI Agents on Solana with Token-Bound Wallets, Next.js Fullstack, and Anchor Smart Contract",
+  "scripts": {
+    "dev": "node node_modules/next/dist/bin/next dev -p 3000",
+    "build": "node node_modules/next/dist/bin/next build",
+    "start": "node node_modules/next/dist/bin/next start -p 3000",
+    "generate:sample": "node scripts/generate_agents.js --count 10",
+    "generate:full": "node scripts/generate_agents.js --count 10078"
+  },
+  "keywords": [
+    "solana",
+    "nextjs",
+    "anchor",
+    "rust",
+    "ai-agents",
+    "token-bound-accounts"
+  ],
+  "dependencies": {
+    "@privy-io/react-auth": "^3.51.3",
+    "next": "^14.2.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "author": "",
+  "license": "MIT"
+}

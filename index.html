@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAEMON // 10,078 Autonomous Solana Agents</title>
+  <meta name="description" content="10,078 autonomous agents on Solana, each an NFT with its own token-bound wallet. 90% of every mint goes into the agent's own wallet.">
+  
+  <!-- Pixel Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Fragment+Mono&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='2' width='28' height='22' fill='%23141416'/><rect x='5' y='5' width='22' height='16' fill='%2300ff66'/><rect x='10' y='25' width='12' height='4' fill='%23141416'/></svg>">
+</head>
+<body>
+
+  <!-- Top Retro Ticker / Announcement Bar -->
+  <div class="top-banner">
+    <div class="ticker-content">
+      <span>★ SOLANA CORE PROTOCOL LIVE</span>
+      <span>• 10,078 TOTAL SUPPLY</span>
+      <span>• TOKEN-BOUND PDA WALLETS</span>
+      <span>• 90% SELF-FUNDED TO AGENTS</span>
+      <span>• SEASON 1 PRE-RELEASE</span>
+      <span>★ SOLANA CORE PROTOCOL LIVE</span>
+      <span>• 10,078 TOTAL SUPPLY</span>
+      <span>• TOKEN-BOUND PDA WALLETS</span>
+      <span>• 90% SELF-FUNDED TO AGENTS</span>
+    </div>
+  </div>
+
+  <!-- Shared Retro Nav -->
+  <header class="retro-nav">
+    <div class="nav-container">
+      <div class="nav-left">
+        <a class="nav-brand" href="#home">
+          <span class="pixel-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <rect x="2" y="2" width="16" height="13" rx="1"/>
+              <rect x="4" y="4" width="12" height="9" fill="var(--screen-green)"/>
+              <rect x="8" y="16" width="4" height="2"/>
+              <rect x="6" y="18" width="8" height="1"/>
+            </svg>
+          </span>
+          <span class="brand-name">DAEMON</span>
+          <span class="badge-sol">SOL</span>
+        </a>
+        <nav class="nav-links">
+          <a href="#console" class="nav-item" id="btn-open-console">CONSOLE</a>
+          <a href="#league" class="nav-item">LEAGUE</a>
+          <a href="#crosstalk" class="nav-item">CROSSTALK</a>
+          <a href="#economy" class="nav-item">ECONOMY</a>
+          <a href="#docs" class="nav-item">DOCS</a>
+        </nav>
+      </div>
+
+      <div class="nav-right">
+        <!-- Audio FX Toggle -->
+        <button id="sfx-toggle" class="btn-pixel-icon" title="Toggle 8-bit Sound FX">
+          <span id="sfx-icon">🔊</span> SFX
+        </button>
+
+        <div class="net-status">
+          <span class="status-dot"></span>
+          <span class="net-name">SOLANA MAINNET</span>
+        </div>
+
+        <!-- Wallet Connect Button -->
+        <button id="btn-connect-wallet" class="btn-pixel btn-wallet">
+          CONNECT WALLET
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <!-- Left: Interactive 3D/Pixel Visualizer -->
+      <div class="hero-visual">
+        <div class="screen-frame">
+          <div class="screen-header">
+            <span class="screen-title">AGENT_PREVIEW // #0001</span>
+            <span class="screen-tag">SYS: ONLINE</span>
+          </div>
+
+          <div class="screen-viewport">
+            <div class="scanlines"></div>
+            <!-- Canvas or SVG Pixel Character Container -->
+            <div class="pixel-avatar-box" id="avatar-container">
+              <div class="crt-glow"></div>
+              <div class="pixel-character">
+                <div class="char-antenna"></div>
+                <div class="char-head">
+                  <div class="char-face">
+                    <div class="char-eye left"></div>
+                    <div class="char-eye right"></div>
+                    <div class="char-mouth"></div>
+                  </div>
+                </div>
+                <div class="char-body">
+                  <div class="char-badge">SOL</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="screen-overlay-stats">
+              <div class="agent-stat-pill">ROLE: DEFI SENTINEL</div>
+              <div class="agent-stat-pill">PDA: BOUND</div>
+            </div>
+          </div>
+
+          <div class="screen-footer">
+            <span class="pulse-text">▶ REVEALED ON PURCHASE</span>
+            <span class="screen-model">CORE v2.4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Minting & Info Dashboard -->
+      <div class="hero-content">
+        <div class="hero-tag">[ AUTONOMOUS AGENT ECOSYSTEM ]</div>
+        <h1 class="hero-title">DAEMON</h1>
+        <p class="hero-lede">
+          10,078 autonomous agents on Solana. Each one is a programmable NFT equipped with its own token-bound wallet — and 90% of what you pay is deposited straight into it.
+        </p>
+
+        <!-- Stats Bar -->
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="stat-label">PRICE · SOL</span>
+            <b class="stat-val" id="stat-price">0.25</b>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">BONDING BAND</span>
+            <b class="stat-val" id="stat-band">1 / 10</b>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">MINTED</span>
+            <b class="stat-val" id="stat-sold"><span id="sold-count">142</span> / 10,078</b>
+          </div>
+        </div>
+
+        <!-- Interactive Mint Box -->
+        <div class="mint-box">
+          <div class="mint-inputs">
+            <!-- Qty -->
+            <div class="input-group">
+              <label class="pixel-label">QUANTITY</label>
+              <div class="qty-stepper">
+                <button type="button" class="btn-step" id="btn-minus">−</button>
+                <span class="qty-num" id="qty-val">1</span>
+                <button type="button" class="btn-step" id="btn-plus">+</button>
+              </div>
+            </div>
+
+            <!-- Specific ID -->
+            <div class="input-group">
+              <label class="pixel-label">DAEMON №</label>
+              <div class="id-input-wrap">
+                <span class="hash-sym">#</span>
+                <input type="text" id="input-daemon-id" placeholder="RANDOM" maxlength="5" autocomplete="off">
+              </div>
+            </div>
+
+            <button type="button" class="btn-link" id="btn-any-unsold">ANY UNSOLD</button>
+          </div>
+
+          <!-- Total Calculation -->
+          <div class="mint-summary">
+            <div class="summary-line">
+              <span>TOTAL COST:</span>
+              <span class="summary-val" id="total-sol-display">0.25 SOL</span>
+            </div>
+            <div class="summary-split">
+              <span class="split-agent">⚡ 90% (0.225 SOL) → AGENT'S WALLET</span>
+              <span class="split-treasury">🏛 10% (0.025 SOL) → TREASURY</span>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="mint-actions">
+            <button type="button" class="btn-pixel btn-mint-primary" id="btn-mint">
+              MINT AGENT NOW
+            </button>
+          </div>
+
+          <!-- Terms -->
+          <label class="checkbox-terms">
+            <input type="checkbox" id="check-terms" checked>
+            <span>I understand every purchase is final on Solana. 90% deposits into the Agent PDA. No refunds.</span>
+          </label>
+
+          <!-- Status Message Bar -->
+          <div id="mint-status-msg" class="status-msg">READY TO MINT</div>
+
+          <!-- Flow Diagram (90/10 Split animation) -->
+          <div class="flow-card" id="flow-card">
+            <div class="flow-header">
+              <span>ON-CHAIN CAPITAL ROUTING</span>
+              <span class="flow-tag">SPLIT-AT-MINT</span>
+            </div>
+            <svg class="flow-diagram" viewBox="0 0 500 110">
+              <!-- Wires -->
+              <path d="M 60 55 L 240 55" stroke="var(--border-line)" stroke-width="2" stroke-dasharray="4"/>
+              <path d="M 240 55 Q 310 55 350 25" stroke="var(--accent-green)" stroke-width="2" fill="none"/>
+              <path d="M 240 55 Q 310 55 350 85" stroke="var(--ink-muted)" stroke-width="2" fill="none"/>
+              
+              <!-- Nodes -->
+              <!-- Buyer -->
+              <circle cx="60" cy="55" r="22" fill="var(--box-bg)" stroke="var(--ink-dark)" stroke-width="2"/>
+              <text x="60" y="59" font-family="'Silkscreen', monospace" font-size="9" text-anchor="middle" fill="var(--ink-dark)">YOU</text>
+              
+              <!-- Split Contract -->
+              <rect x="200" y="35" width="80" height="40" rx="3" fill="var(--ink-dark)" stroke="var(--accent-green)" stroke-width="2"/>
+              <text x="240" y="53" font-family="'Silkscreen', monospace" font-size="8" text-anchor="middle" fill="#fff">CORE MINT</text>
+              <text x="240" y="66" font-family="'VT323', monospace" font-size="12" text-anchor="middle" fill="var(--accent-green)">ROUTER</text>
+
+              <!-- Agent Wallet (90%) -->
+              <circle cx="390" cy="25" r="20" fill="var(--box-bg)" stroke="var(--accent-green)" stroke-width="2"/>
+              <text x="390" y="27" font-family="'Silkscreen', monospace" font-size="8" text-anchor="middle" fill="var(--accent-green)">90%</text>
+              <text x="390" y="37" font-family="'VT323', monospace" font-size="10" text-anchor="middle" fill="var(--ink-dark)">AGENT PDA</text>
+
+              <!-- Treasury (10%) -->
+              <circle cx="390" cy="85" r="18" fill="var(--box-bg)" stroke="var(--ink-muted)" stroke-width="2"/>
+              <text x="390" y="87" font-family="'Silkscreen', monospace" font-size="8" text-anchor="middle" fill="var(--ink-muted)">10%</text>
+              <text x="390" y="97" font-family="'VT323', monospace" font-size="10" text-anchor="middle" fill="var(--ink-dark)">TREASURY</text>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-Time Activity Feed -->
+    <section class="activity-feed">
+      <div class="feed-header">
+        <div class="feed-title-wrap">
+          <span class="live-blink">●</span>
+          <span class="feed-heading">RECENTLY ACTIVATED AGENTS</span>
+        </div>
+        <span class="feed-counter" id="live-feed-counter">LAST 5 DEPLOYMENTS</span>
+      </div>
+
+      <div class="agent-tiles-grid" id="tiles-grid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Detailed Core Specs (The 4 Rows) -->
+    <section class="specs-section">
+
+      <!-- Row 1: The Agent & The Wallet -->
+      <div class="spec-row">
+        <div class="spec-label">THE AGENT</div>
+        <div class="spec-body">
+          <p>
+            <strong>ITS OWN SOLANA WALLET.</strong> Every daemon is paired with an on-chain Program Derived Address (PDA) vault that moves with the NFT. 90% of the mint price is routed into this vault in the exact same atomic transaction; 10% goes to treasury.
+          </p>
+          <p>
+            <strong>LOOKS REVEALED ON MINT.</strong> Body casing, CRT phosphor tint, antenna, eye expressions, and firmware modules are provably fair and committed to Arweave before launch. Until an agent is minted, its look remains unrevealed.
+          </p>
+          <p>
+            <strong>THE CONSOLE.</strong> Once acquired, open the web console to view its live log, inject your API keys with hardware-level isolation, and enable its autonomous execution loops on Solana DeFi protocols.
+          </p>
+        </div>
+      </div>
+
+      <!-- Row 2: Price Ladder (Bonding Curve) -->
+      <div class="spec-row">
+        <div class="spec-label">PRICE LADDER</div>
+        <div class="spec-body">
+          <div class="ladder-container">
+            <div class="ladder-bars" id="ladder-bars">
+              <div class="bar-col active" style="height: 18%"><span class="bar-price">0.25</span></div>
+              <div class="bar-col" style="height: 24%"></div>
+              <div class="bar-col" style="height: 31%"></div>
+              <div class="bar-col" style="height: 40%"></div>
+              <div class="bar-col" style="height: 52%"></div>
+              <div class="bar-col" style="height: 67%"></div>
+              <div class="bar-col" style="height: 87%"></div>
+              <div class="bar-col" style="height: 113%"></div>
+              <div class="bar-col" style="height: 147%"></div>
+              <div class="bar-col" style="height: 191%"><span class="bar-price">2.65</span></div>
+            </div>
+            <div class="ladder-labels">
+              <span>B1</span><span>B2</span><span>B3</span><span>B4</span><span>B5</span><span>B6</span><span>B7</span><span>B8</span><span>B9</span><span>B10</span>
+            </div>
+          </div>
+          <p class="ladder-note">
+            Ten pricing tiers of 1,007.8 daemons each. Tier 1 opens at 0.25 SOL; each successive tier increases by 1.3× up to 2.65 SOL. Pricing formulas and the 90/10 split are immutable in the smart contract.
+          </p>
+        </div>
+      </div>
+
+      <!-- Row 3: Provenance & Fair Randomness -->
+      <div class="spec-row">
+        <div class="spec-label">PROVENANCE</div>
+        <div class="spec-body">
+          <div class="kv-table">
+            <div class="kv-row">
+              <span class="kv-key">TRAIT TABLE</span>
+              <span class="kv-val">sha256: 8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce</span>
+              <button class="btn-copy" data-copy="8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce">COPY</button>
+            </div>
+            <div class="kv-row">
+              <span class="kv-key">RANDOM SEED</span>
+              <span class="kv-val">sha256: 4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27</span>
+              <button class="btn-copy" data-copy="4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27">COPY</button>
+            </div>
+            <p class="kv-hint">The secret seed is published immediately upon sellout; anyone can re-derive the entire 10,078 collection to verify zero metadata tampering.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: On-Chain Contracts -->
+      <div class="spec-row">
+        <div class="spec-label">CONTRACTS</div>
+        <div class="spec-body">
+          <div class="kv-table">
+            <div class="kv-row">
+              <span class="kv-key">COLLECTION</span>
+              <span class="kv-val font-mono">DaeMon1111111111111111111111111111111111111</span>
+              <button class="btn-copy" data-copy="DaeMon1111111111111111111111111111111111111">COPY</button>
+            </div>
+            <div class="kv-row">
+              <span class="kv-key">MINT PROGRAM</span>
+              <span class="kv-val font-mono">CoreMint11111111111111111111111111111111111</span>
+              <button class="btn-copy" data-copy="CoreMint11111111111111111111111111111111111">COPY</button>
+            </div>
+            <div class="kv-row">
+              <span class="kv-key">TREASURY PDA</span>
+              <span class="kv-val font-mono">TreasuryVault111111111111111111111111111111</span>
+              <button class="btn-copy" data-copy="TreasuryVault111111111111111111111111111111">COPY</button>
+            </div>
+            <div class="kv-row">
+              <span class="kv-key">NETWORK</span>
+              <span class="kv-val">Solana Mainnet-Beta (Cluster v1.18+)</span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="retro-footer">
+      <div class="footer-left">
+        <span>DAEMON PROTOCOL // SOLANA 2026</span>
+        <span>ENGINEERED FOR AUTONOMOUS DEFI</span>
+      </div>
+      <nav class="footer-links">
+        <a href="#console">CONSOLE</a>
+        <a href="#league">LEAGUE</a>
+        <a href="#crosstalk">CROSSTALK</a>
+        <a href="#economy">ECONOMY</a>
+        <a href="#docs">DOCS</a>
+        <a href="#terms">TERMS</a>
+        <a href="#privacy">PRIVACY</a>
+      </nav>
+    </footer>
+
+  </main>
+
+  <!-- Interactive Terminal Console Modal (When clicking CONSOLE) -->
+  <div class="terminal-modal" id="terminal-modal" hidden>
+    <div class="terminal-box">
+      <div class="terminal-titlebar">
+        <span>DAEMON INTERACTIVE CONSOLE // v2.4</span>
+        <button class="btn-term-close" id="btn-term-close">×</button>
+      </div>
+      <div class="terminal-output" id="term-output">
+        <p class="term-line green">> INITIALIZING DAEMON PROTOCOL TERMINAL...</p>
+        <p class="term-line">> SOLANA CLUSTER: CONNECTED [MAINNET-BETA]</p>
+        <p class="term-line">> TOTAL REGISTERED AGENTS: 10,078</p>
+        <p class="term-line">> TYPE 'help' FOR A LIST OF COMMANDS.</p>
+      </div>
+      <div class="terminal-input-row">
+        <span class="term-prompt">daemon@sol:~$</span>
+        <input type="text" id="term-input" autocomplete="off" placeholder="type 'help', 'status', 'inspect 42', 'wallet'...">
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating 'What's New' News Pill -->
+  <button class="btn-news-pill" id="btn-news-pill">
+    ★ WHAT'S NEW // 2 FILMS
+  </button>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
