@@ -39,6 +39,76 @@ export default function HomePage() {
   ]);
   const [pingInput, setPingInput] = useState('');
 
+  // 10,078 Agent Explorer / Roster State
+  const [explorerAgents, setExplorerAgents] = useState([]);
+  const [explorerSearch, setExplorerSearch] = useState('');
+  const [explorerRole, setExplorerRole] = useState('all');
+  const [explorerBand, setExplorerBand] = useState('all');
+  const [explorerPage, setExplorerPage] = useState(1);
+  const [explorerTotalPages, setExplorerTotalPages] = useState(420);
+  const [explorerTotalCount, setExplorerTotalCount] = useState(10078);
+  const [explorerLoading, setExplorerLoading] = useState(false);
+  const [jumpPageInput, setJumpPageInput] = useState('');
+
+  const fetchExplorerAgents = async (page = 1, search = '', role = 'all', band = 'all') => {
+    setExplorerLoading(true);
+    try {
+      const limit = 24;
+      const offset = (page - 1) * limit;
+      const params = new URLSearchParams({
+        limit: String(limit),
+        offset: String(offset),
+        search: search.trim(),
+        role: role === 'all' ? '' : role,
+        band: band === 'all' ? '' : band,
+      });
+      const res = await fetch(`/api/agents?${params.toString()}`);
+      const data = await res.json();
+      if (data.success) {
+        setExplorerAgents(data.agents || []);
+        setExplorerPage(data.page || page);
+        setExplorerTotalPages(data.totalPages || 1);
+        setExplorerTotalCount(data.filteredCount ?? data.totalCount);
+      }
+    } catch (err) {
+      console.error('Explorer fetch error:', err);
+    } finally {
+      setExplorerLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchExplorerAgents(explorerPage, explorerSearch, explorerRole, explorerBand);
+  }, [explorerPage, explorerRole, explorerBand]);
+
+  const handleSearchSubmit = (e) => {
+    if (e) e.preventDefault();
+    playSelect();
+    setExplorerPage(1);
+    fetchExplorerAgents(1, explorerSearch, explorerRole, explorerBand);
+  };
+
+  const handleRoleFilterChange = (role) => {
+    playSelect();
+    setExplorerRole(role);
+    setExplorerPage(1);
+  };
+
+  const handleBandFilterChange = (band) => {
+    playSelect();
+    setExplorerBand(band);
+    setExplorerPage(1);
+  };
+
+  const handleSelectAgentFor360 = (id) => {
+    playSuccess();
+    setRareId(String(id));
+    const heroEl = document.getElementById('home');
+    if (heroEl) {
+      heroEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const scrollToSection = (e, id) => {
     if (e) e.preventDefault();
     playSelect();
@@ -242,6 +312,7 @@ export default function HomePage() {
               <span className="brand-name">RARE</span>
             </a>
             <nav className="nav-links">
+              <a href="#roster" className="nav-item" onClick={(e) => scrollToSection(e, 'roster')}>ROSTER (10,078)</a>
               <button type="button" className="nav-item" onClick={() => { playSelect(); setConsoleOpen(true); }}>
                 CONSOLE
               </button>
@@ -491,36 +562,186 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Real-Time Activity Feed */}
-        <section className="activity-feed">
-          <div className="feed-header">
-            <div className="feed-title-wrap">
+        {/* 10,078 AGENTS ROSTER EXPLORER */}
+        <section id="roster" className="interactive-feature-section roster-explorer-section">
+          <div className="section-title-bar">
+            <div className="section-title-wrap">
               <span className="live-blink">●</span>
-              <span className="feed-heading">RECENTLY ACTIVATED AGENTS</span>
+              <h2 className="section-heading">ROSTER // 10,078 AUTONOMOUS AGENTS DIRECTORY</h2>
             </div>
-            <span className="feed-counter">FETCHED VIA NEXT.JS API</span>
+            <span className="section-tag">[ ALL 10,078 ENTITIES PUBLIC ]</span>
+          </div>
+          <p className="section-desc">
+            Explore the entire collection of 10,078 autonomous Solana agents. Search by Agent # (1 - 10,078), filter by role or bonding tier, and click any agent to inspect its live 360° 3D turntable, PDA vault balance, and neural execution parameters.
+          </p>
+
+          <div className="roster-toolbar">
+            <form onSubmit={handleSearchSubmit} className="roster-search-row">
+              <div className="roster-search-input-wrap">
+                <span className="roster-search-icon">🔍</span>
+                <input
+                  type="text"
+                  className="roster-search-input"
+                  placeholder="SEARCH BY AGENT # (e.g. 1 - 10078), ROLE, OR WALLET..."
+                  value={explorerSearch}
+                  onChange={(e) => setExplorerSearch(e.target.value)}
+                />
+              </div>
+              <button type="submit" className="btn-page-nav" style={{ height: '40px' }}>
+                SEARCH
+              </button>
+              <div className="roster-stats-pill">
+                TOTAL: {explorerTotalCount.toLocaleString()} AGENTS
+              </div>
+            </form>
+
+            <div className="roster-filters-row">
+              <span className="roster-filter-label">ROLE:</span>
+              {[
+                { id: 'all', label: 'ALL ROLES' },
+                { id: 'sniper', label: 'SNIPERS' },
+                { id: 'arbitrage', label: 'ARBITRAGEURS' },
+                { id: 'oracle', label: 'ORACLES' },
+                { id: 'momentum', label: 'MOMENTUM' },
+                { id: 'routing', label: 'ROUTERS' },
+                { id: 'sentry', label: 'SENTRIES' }
+              ].map(f => (
+                <button
+                  key={f.id}
+                  type="button"
+                  className={`btn-roster-filter ${explorerRole === f.id ? 'active' : ''}`}
+                  onClick={() => handleRoleFilterChange(f.id)}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="roster-filters-row">
+              <span className="roster-filter-label">BONDING BAND:</span>
+              {[
+                { id: 'all', label: 'ALL BANDS' },
+                { id: '1', label: 'BAND 1 (0.02 SOL)' },
+                { id: '2', label: 'BAND 2' },
+                { id: '3', label: 'BAND 3' },
+                { id: '4', label: 'BAND 4' },
+                { id: '5', label: 'BAND 5' }
+              ].map(b => (
+                <button
+                  key={b.id}
+                  type="button"
+                  className={`btn-roster-filter ${explorerBand === b.id ? 'active' : ''}`}
+                  onClick={() => handleBandFilterChange(b.id)}
+                >
+                  {b.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="agent-tiles-grid">
-            {recentAgents.map((agent) => (
-              <div key={agent.id} className="agent-tile">
-                <div className="tile-top">
-                  <span className="tile-id">#{String(agent.id).padStart(5, '0')}</span>
-                  <span className="tile-badge">ONLINE</span>
+          {/* 24-Agent Responsive Grid */}
+          {explorerLoading ? (
+            <div style={{ textAlign: 'center', padding: '48px', fontFamily: 'var(--font-terminal)', fontSize: '20px', color: 'var(--accent-green)' }}>
+              ⚡ LOADING NEURAL ROSTER TELEMETRY...
+            </div>
+          ) : (
+            <div className="roster-grid">
+              {explorerAgents.map((agent) => (
+                <div 
+                  key={agent.id} 
+                  className={`roster-card ${rareId === String(agent.id) ? 'active-target' : ''}`}
+                >
+                  <div className="roster-card-top">
+                    <span className="roster-agent-id">#{String(agent.id).padStart(5, '0')}</span>
+                    <span className="roster-status-led">● ONLINE</span>
+                  </div>
+                  <div className="roster-img-container">
+                    <img
+                      src={`/api/avatar/${agent.id}`}
+                      alt={agent.name || `Rare #${agent.id}`}
+                      className="roster-img"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="roster-agent-info">
+                    <span className="roster-agent-role">{agent.role}</span>
+                    <span className="roster-agent-band">{agent.band || 'Band 1'} · {agent.priceSol || 0.02} SOL</span>
+                    <span className="roster-agent-pda" title={agent.pdaVault}>
+                      PDA: {agent.pdaVault?.slice(0, 8)}...
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-roster-inspect"
+                    onClick={() => handleSelectAgentFor360(agent.id)}
+                  >
+                    🔄 VIEW IN 360° TURNTABLE
+                  </button>
                 </div>
-                <div className="tile-avatar" style={{ padding: '4px' }}>
-                  <img
-                    src={`/api/avatar/${agent.id}`}
-                    alt={agent.name || `Rare #${agent.id}`}
-                    style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }}
-                  />
-                </div>
-                <div className="tile-details">
-                  <span>ROLE: {agent.role}</span>
-                  <span className="tile-wallet">PDA: {agent.pdaVault?.slice(0, 10)}...</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          )}
+
+          {/* Pagination Controls */}
+          <div className="roster-pagination">
+            <button
+              type="button"
+              className="btn-page-nav"
+              disabled={explorerPage <= 1 || explorerLoading}
+              onClick={() => { playBlip(); setExplorerPage(1); }}
+            >
+              « FIRST
+            </button>
+            <button
+              type="button"
+              className="btn-page-nav"
+              disabled={explorerPage <= 1 || explorerLoading}
+              onClick={() => { playBlip(); setExplorerPage(prev => Math.max(1, prev - 1)); }}
+            >
+              ‹ PREV
+            </button>
+            <div className="page-indicator">
+              PAGE <strong>{explorerPage}</strong> OF <strong>{explorerTotalPages}</strong>
+            </div>
+            <button
+              type="button"
+              className="btn-page-nav"
+              disabled={explorerPage >= explorerTotalPages || explorerLoading}
+              onClick={() => { playBlip(); setExplorerPage(prev => Math.min(explorerTotalPages, prev + 1)); }}
+            >
+              NEXT ›
+            </button>
+            <button
+              type="button"
+              className="btn-page-nav"
+              disabled={explorerPage >= explorerTotalPages || explorerLoading}
+              onClick={() => { playBlip(); setExplorerPage(explorerTotalPages); }}
+            >
+              LAST »
+            </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', marginLeft: '12px' }}>
+              <span style={{ fontSize: '10px', color: 'var(--ink-muted)' }}>JUMP:</span>
+              <input
+                type="number"
+                min="1"
+                max={explorerTotalPages}
+                value={jumpPageInput}
+                onChange={(e) => setJumpPageInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    const p = parseInt(jumpPageInput, 10);
+                    if (p >= 1 && p <= explorerTotalPages) {
+                      playSelect();
+                      setExplorerPage(p);
+                      setJumpPageInput('');
+                    }
+                  }
+                }}
+                className="page-jump-input"
+                placeholder="#"
+              />
+            </div>
           </div>
         </section>
 

@@ -2161,3 +2161,274 @@ a:hover {
   color: #141416;
   border-color: #00e65b;
 }
+
+/* ==========================================================================
+   10,078 AGENTS ROSTER EXPLORER STYLES
+   ========================================================================== */
+
+.roster-explorer-section {
+  margin-top: 48px;
+  margin-bottom: 64px;
+}
+
+.roster-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--box-bg);
+  border: 2px solid var(--hair);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.roster-search-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.roster-search-input-wrap {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 2px solid var(--ink);
+  padding: 0 12px;
+}
+
+.roster-search-icon {
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin-right: 8px;
+}
+
+.roster-search-input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--ink);
+}
+
+.roster-stats-pill {
+  font-family: var(--font-terminal);
+  font-size: 16px;
+  background: var(--ink);
+  color: var(--accent-green-bright);
+  padding: 6px 14px;
+  border: 1px solid var(--ink);
+  white-space: nowrap;
+}
+
+.roster-filters-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.roster-filter-label {
+  font-size: 10px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.btn-roster-filter {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid var(--hair);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-roster-filter:hover {
+  border-color: var(--ink);
+  background: var(--ground);
+}
+
+.btn-roster-filter.active {
+  background: var(--ink);
+  color: #ffffff;
+  border-color: var(--ink);
+}
+
+/* 24-Agent Responsive Grid */
+.roster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.roster-card {
+  background: var(--box-bg);
+  border: 2px solid var(--hair);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.roster-card:hover {
+  border-color: var(--ink);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(20, 20, 22, 0.08);
+}
+
+.roster-card.active-target {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 2px var(--accent-green-bright);
+}
+
+.roster-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.roster-agent-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.roster-status-led {
+  font-size: 7px;
+  color: var(--accent-green);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.roster-img-container {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #ece9e2;
+  border: 1px solid var(--hair);
+  overflow: hidden;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.roster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.roster-card:hover .roster-img {
+  transform: scale(1.05);
+}
+
+.roster-agent-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.roster-agent-role {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.roster-agent-band {
+  font-family: var(--font-terminal);
+  font-size: 13px;
+  color: var(--accent-green);
+}
+
+.roster-agent-pda {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-roster-inspect {
+  width: 100%;
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  padding: 6px 0;
+  background: var(--ink);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.btn-roster-inspect:hover {
+  background: var(--accent-green);
+  color: #ffffff;
+}
+
+/* Pagination Bar */
+.roster-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 16px;
+  background: var(--box-bg);
+  border: 2px solid var(--hair);
+}
+
+.btn-page-nav {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  padding: 8px 14px;
+  background: #ffffff;
+  border: 1px solid var(--hair);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-page-nav:hover:not(:disabled) {
+  background: var(--ink);
+  color: #ffffff;
+  border-color: var(--ink);
+}
+
+.btn-page-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  font-family: var(--font-terminal);
+  font-size: 16px;
+  padding: 0 12px;
+  color: var(--ink);
+}
+
+.page-jump-input {
+  width: 50px;
+  height: 32px;
+  border: 1px solid var(--hair);
+  background: #ffffff;
+  text-align: center;
+  font-family: var(--font-terminal);
+  font-size: 16px;
+  outline: none;
+  margin-left: 6px;
+}
