@@ -13,6 +13,8 @@ export async function GET(request, { params }) {
     const assetDir = path.join(process.cwd(), 'public', 'assets', 'agent');
     
     let targetFile = 'rare_front.jpg';
+
+    // If 360 turntable requests a specific rotation angle
     if (angleParam === '45') {
       targetFile = 'rare_turn_45.jpg';
     } else if (angleParam === '90') {
@@ -20,8 +22,15 @@ export async function GET(request, { params }) {
     } else if (angleParam === '180') {
       targetFile = 'rare_back.jpg';
     } else {
-      const variants = ['rare_front.jpg', 'rare_turn_45.jpg', 'rare_profile.jpg', 'rare_front.jpg'];
-      targetFile = variants[numId % variants.length];
+      // 5 distinct front-facing 3D character archetypes with unique helmets, visors, and outfit colors
+      const archetypes = [
+        'rare_front.jpg',   // Solana Emerald Sentry (Black helmet, green visor, olive techwear)
+        'rare_crimson.jpg', // Crimson MEV Executioner (Black helmet, ruby red visor, crimson bomber)
+        'rare_arctic.jpg',  // Arctic Ghost Oracle (White helmet, cyan visor, white techwear parka)
+        'rare_amber.jpg',   // Hazard Amber Sniper (Graphite helmet, gold visor, orange utility jacket)
+        'rare_void.jpg',    // Void Syndicate Sentinel (Obsidian helmet, violet visor, purple anorak)
+      ];
+      targetFile = archetypes[numId % archetypes.length];
     }
 
     const filePath = path.join(assetDir, targetFile);
