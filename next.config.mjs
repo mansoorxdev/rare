@@ -1,4 +1,16 @@
 /** @type {import('next').NextConfig} */
+const optionalModules = [
+  '@farcaster/mini-app-solana',
+  '@farcaster/mini-app-sdk',
+  '@abstract-foundation/agw-client',
+  'permissionless',
+  '@stripe/stripe-js',
+  '@solana/kit',
+  '@solana-program/system',
+  '@solana-program/memo',
+  '@solana-program/token',
+];
+
 const nextConfig = {
   reactStrictMode: false,
   eslint: {
@@ -8,18 +20,17 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   webpack: (config, { isServer }) => {
-    config.externals = [
-      ...(Array.isArray(config.externals) ? config.externals : [config.externals].filter(Boolean)),
-      {
-        '@stripe/stripe-js': 'commonjs @stripe/stripe-js',
-        '@solana/kit': 'commonjs @solana/kit',
-        '@solana-program/system': 'commonjs @solana-program/system',
-        '@solana-program/memo': 'commonjs @solana-program/memo',
-        '@solana-program/token': 'commonjs @solana-program/token',
-      },
-    ];
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      ...Object.fromEntries(optionalModules.map((m) => [m, false])),
+    };
 
-    if (!isServer) {
+    if (isServer) {
+      config.externals = [
+        ...(Array.isArray(config.externals) ? config.externals : [config.externals].filter(Boolean)),
+        ...optionalModules,
+      ];
+    } else {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
@@ -28,6 +39,7 @@ const nextConfig = {
         crypto: false,
       };
     }
+
     return config;
   },
 };
