@@ -4,6 +4,37 @@ import { useState, useEffect, useRef } from 'react';
 import { usePrivy } from '../components/PrivyClientProvider';
 import Agent360Viewer from '../components/Agent360Viewer';
 
+function getAgentVisual(id) {
+  const num = parseInt(id, 10) || 1;
+  const hue = Math.round((num * 137.508) % 360);
+  const sat = 110 + (num % 5) * 12;
+  const con = 102 + (num % 4) * 5;
+  const bright = 96 + (num % 3) * 6;
+
+  const models = ['SENTRY', 'EXECUTIONER', 'ORACLE', 'SNIPER', 'SENTINEL'];
+  const model = models[num % models.length];
+
+  let visorColor = '#00e65b';
+  let colorName = 'SOLANA EMERALD';
+  if (hue >= 15 && hue < 45) { visorColor = '#ff6b00'; colorName = 'HAZARD TANGERINE'; }
+  else if (hue >= 45 && hue < 80) { visorColor = '#ffd000'; colorName = 'SOLAR GOLD'; }
+  else if (hue >= 80 && hue < 140) { visorColor = '#00e65b'; colorName = 'SOLANA MATRIX'; }
+  else if (hue >= 140 && hue < 190) { visorColor = '#00f0ff'; colorName = 'ARCTIC CYAN'; }
+  else if (hue >= 190 && hue < 250) { visorColor = '#3b82f6'; colorName = 'COBALT BLUE'; }
+  else if (hue >= 250 && hue < 290) { visorColor = '#a855f7'; colorName = 'VOID PURPLE'; }
+  else if (hue >= 290 && hue < 330) { visorColor = '#ec4899'; colorName = 'SYNTH MAGENTA'; }
+  else { visorColor = '#ff2a5f'; colorName = 'CRIMSON OVERDRIVE'; }
+
+  return {
+    hue,
+    filter: `hue-rotate(${hue}deg) saturate(${sat}%) contrast(${con}%) brightness(${bright}%)`,
+    model,
+    visorColor,
+    colorName,
+    mk: ((num * 7) % 9) + 1
+  };
+}
+
 export default function HomePage() {
   const { ready, authenticated, user, login, logout } = usePrivy();
   const [sfxEnabled, setSfxEnabled] = useState(true);
@@ -646,39 +677,49 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="roster-grid">
-              {explorerAgents.map((agent) => (
-                <div 
-                  key={agent.id} 
-                  className={`roster-card ${rareId === String(agent.id) ? 'active-target' : ''}`}
-                >
-                  <div className="roster-card-top">
-                    <span className="roster-agent-id">#{String(agent.id).padStart(5, '0')}</span>
-                    <span className="roster-status-led">● ONLINE</span>
-                  </div>
-                  <div className="roster-img-container">
-                    <img
-                      src={`/api/avatar/${agent.id}`}
-                      alt={agent.name || `Rare #${agent.id}`}
-                      className="roster-img"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="roster-agent-info">
-                    <span className="roster-agent-role">{agent.role}</span>
-                    <span className="roster-agent-band">{agent.band || 'Band 1'} · {agent.priceSol || 0.02} SOL</span>
-                    <span className="roster-agent-pda" title={agent.pdaVault}>
-                      PDA: {agent.pdaVault?.slice(0, 8)}...
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn-roster-inspect"
-                    onClick={() => handleSelectAgentFor360(agent.id)}
+              {explorerAgents.map((agent) => {
+                const visual = getAgentVisual(agent.id);
+                return (
+                  <div 
+                    key={agent.id} 
+                    className={`roster-card ${rareId === String(agent.id) ? 'active-target' : ''}`}
                   >
-                    🔄 VIEW IN 360° TURNTABLE
-                  </button>
-                </div>
-              ))}
+                    <div className="roster-card-header-bar">
+                      <span className="roster-agent-id">#{String(agent.id).padStart(5, '0')}</span>
+                      <div className="roster-color-badge">
+                        <span className="color-dot" style={{ background: visual.visorColor, boxShadow: `0 0 6px ${visual.visorColor}` }} />
+                        <span>{visual.colorName}</span>
+                      </div>
+                    </div>
+                    <div className="roster-img-container">
+                      <img
+                        src={`/api/avatar/${agent.id}`}
+                        alt={agent.name || `Rare #${agent.id}`}
+                        className="roster-img"
+                        style={{ filter: visual.filter }}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="roster-agent-info">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span className="roster-agent-role">{agent.role}</span>
+                        <span className="roster-model-tag">MK-{visual.mk}</span>
+                      </div>
+                      <span className="roster-agent-band">{agent.band || 'Band 1'} · {agent.priceSol || 0.02} SOL</span>
+                      <span className="roster-agent-pda" title={agent.pdaVault}>
+                        PDA: {agent.pdaVault?.slice(0, 8)}...
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      className="btn-roster-inspect"
+                      onClick={() => handleSelectAgentFor360(agent.id)}
+                    >
+                      🔄 VIEW IN 360° TURNTABLE
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           )}
 

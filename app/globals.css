@@ -2432,3 +2432,37 @@ a:hover {
   outline: none;
   margin-left: 6px;
 }
+
+/* Dynamic Visual Traits & Faction Badges */
+.roster-card-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.roster-color-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(20, 20, 22, 0.05);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.color-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.roster-model-tag {
+  font-family: var(--font-terminal);
+  font-size: 11px;
+  color: var(--ink-muted);
+}

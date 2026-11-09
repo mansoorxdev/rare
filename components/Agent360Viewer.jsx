@@ -95,13 +95,31 @@ export default function Agent360Viewer({ agentId = 143, role = "Autonomous Sentr
 
   const currentRender = getRenderState();
 
+  const num = parseInt(agentId, 10) || 1;
+  const hue = Math.round((num * 137.508) % 360);
+  const sat = 110 + (num % 5) * 12;
+  const con = 102 + (num % 4) * 5;
+  const bright = 96 + (num % 3) * 6;
+  const dynamicFilter = `hue-rotate(${hue}deg) saturate(${sat}%) contrast(${con}%) brightness(${bright}%)`;
+
+  let visorColor = '#00e65b';
+  let colorName = 'SOLANA EMERALD';
+  if (hue >= 15 && hue < 45) { visorColor = '#ff6b00'; colorName = 'HAZARD TANGERINE'; }
+  else if (hue >= 45 && hue < 80) { visorColor = '#ffd000'; colorName = 'SOLAR GOLD'; }
+  else if (hue >= 80 && hue < 140) { visorColor = '#00e65b'; colorName = 'SOLANA MATRIX'; }
+  else if (hue >= 140 && hue < 190) { visorColor = '#00f0ff'; colorName = 'ARCTIC CYAN'; }
+  else if (hue >= 190 && hue < 250) { visorColor = '#3b82f6'; colorName = 'COBALT BLUE'; }
+  else if (hue >= 250 && hue < 290) { visorColor = '#a855f7'; colorName = 'VOID PURPLE'; }
+  else if (hue >= 290 && hue < 330) { visorColor = '#ec4899'; colorName = 'SYNTH MAGENTA'; }
+  else { visorColor = '#ff2a5f'; colorName = 'CRIMSON OVERDRIVE'; }
+
   return (
     <div className="agent-360-container" ref={containerRef}>
       {/* Top Telemetry Header */}
       <div className="agent-360-header">
         <div className="header-status-left">
-          <span className="telemetry-led">●</span>
-          <span className="telemetry-title">RARE_AGENT // #{String(agentId).padStart(5, '0')}</span>
+          <span className="telemetry-led" style={{ color: visorColor, textShadow: `0 0 8px ${visorColor}` }}>●</span>
+          <span className="telemetry-title">RARE_AGENT // #{String(agentId).padStart(5, '0')} [{colorName}]</span>
         </div>
         <div className="header-status-right">
           <span className="badge-heading">{currentRender.label}</span>
@@ -130,7 +148,7 @@ export default function Agent360Viewer({ agentId = 143, role = "Autonomous Sentr
             className="agent-render-img"
             style={{
               transform: currentRender.flip ? 'scaleX(-1)' : 'none',
-              filter: visionMode === 'nightvision' ? 'hue-rotate(60deg) contrast(1.15) brightness(1.05)' : visionMode === 'cyber' ? 'invert(0.9) hue-rotate(180deg)' : 'none'
+              filter: visionMode === 'nightvision' ? 'hue-rotate(60deg) contrast(1.15) brightness(1.05)' : visionMode === 'cyber' ? 'invert(0.9) hue-rotate(180deg)' : dynamicFilter
             }}
             draggable={false}
           />
