@@ -8,11 +8,56 @@ let cachedManifest = null;
 function getManifest() {
   if (cachedManifest) return cachedManifest;
 
+  const archetypes = [
+    'Solana Emerald Sentry',
+    'Crimson MEV Executioner',
+    'Arctic Ghost Oracle',
+    'Hazard Amber Sniper',
+    'Void Syndicate Sentinel',
+    'Studio Emerald SpecOps',
+    'Studio Crimson Vanguard',
+    'Studio Quantum Phantom',
+    'Studio Hazard Striker',
+    'Studio Obsidian Shadow'
+  ];
+
   try {
     const manifestPath = path.join(process.cwd(), 'data', 'collection_manifest.json');
     if (fs.existsSync(manifestPath)) {
-      const raw = fs.readFileSync(manifestPath, 'utf8');
-      cachedManifest = JSON.parse(raw);
+      const raw = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+      cachedManifest = raw.map((item, idx) => {
+        const id = item.id || idx + 1;
+        const bandNum = Math.min(10, Math.floor((id - 1) / 1008) + 1);
+        const price = +(0.02 * Math.pow(1.3, bandNum - 1)).toFixed(3);
+        const hue = Math.round((id * 137.508) % 360);
+        let colorName = 'SOLANA MATRIX';
+        let visorColor = '#00e65b';
+        if (hue >= 15 && hue < 45) { visorColor = '#ff6b00'; colorName = 'HAZARD TANGERINE'; }
+        else if (hue >= 45 && hue < 80) { visorColor = '#ffd000'; colorName = 'SOLAR GOLD'; }
+        else if (hue >= 80 && hue < 140) { visorColor = '#00e65b'; colorName = 'SOLANA MATRIX'; }
+        else if (hue >= 140 && hue < 190) { visorColor = '#00f0ff'; colorName = 'ARCTIC CYAN'; }
+        else if (hue >= 190 && hue < 250) { visorColor = '#3b82f6'; colorName = 'COBALT BLUE'; }
+        else if (hue >= 250 && hue < 290) { visorColor = '#a855f7'; colorName = 'VOID PURPLE'; }
+        else if (hue >= 290 && hue < 330) { visorColor = '#ec4899'; colorName = 'SYNTH MAGENTA'; }
+        else { visorColor = '#ff2a5f'; colorName = 'CRIMSON OVERDRIVE'; }
+
+        return {
+          id,
+          name: item.name || `Rare #${String(id).padStart(5, '0')}`,
+          symbol: 'RARE',
+          role: item.role || 'DeFi Arbitrageur',
+          archetype: archetypes[id % archetypes.length],
+          band: `Band ${bandNum}`,
+          priceSol: price,
+          mk: ((id * 7) % 9) + 1,
+          hue,
+          visorColor,
+          colorName,
+          agentWallet: item.agentWallet || `Agnt${id}x${((id * 2654435761) >>> 0).toString(16).slice(0, 4).toUpperCase()}Sol`,
+          pdaVault: item.pdaVault || `PDA${id}v${((id * 2654435761) >>> 0).toString(16).toUpperCase()}Vault`,
+          image: `/api/avatar/${id}`
+        };
+      });
       return cachedManifest;
     }
   } catch (e) {
@@ -24,26 +69,44 @@ function getManifest() {
     'PumpFun Liquidity Sniper',
     'DeFi Arbitrageur',
     'Prediction Market Oracle',
-    'Memecoin Momentum Tracker',
-    'Jupiter Routing Optimizer',
-    'Autonomous Sentry',
+    'Solana MEV Sentinel',
+    'Autonomous Market Maker',
     'Flash Loan Arbitrageur',
-    'Solana MEV Sentinel'
+    'Portfolio Rebalancer',
+    'Yield Compounder'
   ];
 
   cachedManifest = Array.from({ length: 10078 }, (_, i) => {
     const id = i + 1;
     const role = roles[i % roles.length];
-    const band = Math.min(10, Math.floor(i / 1008) + 1);
+    const bandNum = Math.min(10, Math.floor(i / 1008) + 1);
+    const price = +(0.02 * Math.pow(1.3, bandNum - 1)).toFixed(3);
+    const hue = Math.round((id * 137.508) % 360);
+    let colorName = 'SOLANA MATRIX';
+    let visorColor = '#00e65b';
+    if (hue >= 15 && hue < 45) { visorColor = '#ff6b00'; colorName = 'HAZARD TANGERINE'; }
+    else if (hue >= 45 && hue < 80) { visorColor = '#ffd000'; colorName = 'SOLAR GOLD'; }
+    else if (hue >= 80 && hue < 140) { visorColor = '#00e65b'; colorName = 'SOLANA MATRIX'; }
+    else if (hue >= 140 && hue < 190) { visorColor = '#00f0ff'; colorName = 'ARCTIC CYAN'; }
+    else if (hue >= 190 && hue < 250) { visorColor = '#3b82f6'; colorName = 'COBALT BLUE'; }
+    else if (hue >= 250 && hue < 290) { visorColor = '#a855f7'; colorName = 'VOID PURPLE'; }
+    else if (hue >= 290 && hue < 330) { visorColor = '#ec4899'; colorName = 'SYNTH MAGENTA'; }
+    else { visorColor = '#ff2a5f'; colorName = 'CRIMSON OVERDRIVE'; }
+
     return {
       id,
       name: `Rare #${String(id).padStart(5, '0')}`,
       symbol: 'RARE',
       role,
-      band: `Band ${band}`,
-      priceSol: +(0.02 * Math.pow(1.3, band - 1)).toFixed(3),
-      agentWallet: `Agnt${id}x${Math.random().toString(36).substring(2, 6).toUpperCase()}Sol`,
-      pdaVault: `PDA${id}v${Math.random().toString(36).substring(2, 6).toUpperCase()}Vault`,
+      archetype: archetypes[id % archetypes.length],
+      band: `Band ${bandNum}`,
+      priceSol: price,
+      mk: ((id * 7) % 9) + 1,
+      hue,
+      visorColor,
+      colorName,
+      agentWallet: `Agnt${id}x${((id * 2654435761) >>> 0).toString(16).slice(0, 4).toUpperCase()}Sol`,
+      pdaVault: `PDA${id}v${((id * 2654435761) >>> 0).toString(16).toUpperCase()}Vault`,
       image: `/api/avatar/${id}`
     };
   });

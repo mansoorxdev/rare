@@ -11,7 +11,7 @@ function getAgentVisual(id) {
   const con = 102 + (num % 4) * 5;
   const bright = 96 + (num % 3) * 6;
 
-  const models = ['SENTRY', 'EXECUTIONER', 'ORACLE', 'SNIPER', 'SENTINEL'];
+  const models = ['SENTRY', 'EXECUTIONER', 'ORACLE', 'SNIPER', 'SENTINEL', 'SPECOPS', 'VANGUARD', 'PHANTOM', 'STRIKER', 'SHADOW'];
   const model = models[num % models.length];
 
   let visorColor = '#00e65b';

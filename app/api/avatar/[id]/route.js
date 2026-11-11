@@ -22,13 +22,18 @@ export async function GET(request, { params }) {
     } else if (angleParam === '180') {
       targetFile = 'rare_back.jpg';
     } else {
-      // 5 distinct front-facing 3D character archetypes with unique helmets, visors, and outfit colors
+      // 10 distinct front-facing 3D character archetypes with unique helmets, visors, and gear
       const archetypes = [
-        'rare_front.jpg',   // Solana Emerald Sentry (Black helmet, green visor, olive techwear)
-        'rare_crimson.jpg', // Crimson MEV Executioner (Black helmet, ruby red visor, crimson bomber)
-        'rare_arctic.jpg',  // Arctic Ghost Oracle (White helmet, cyan visor, white techwear parka)
-        'rare_amber.jpg',   // Hazard Amber Sniper (Graphite helmet, gold visor, orange utility jacket)
-        'rare_void.jpg',    // Void Syndicate Sentinel (Obsidian helmet, violet visor, purple anorak)
+        'rare_front.jpg',         // Solana Emerald Sentry (Black helmet, green visor, olive techwear)
+        'rare_crimson.jpg',       // Crimson MEV Executioner (Black helmet, ruby red visor, crimson bomber)
+        'rare_arctic.jpg',        // Arctic Ghost Oracle (White helmet, cyan visor, white techwear parka)
+        'rare_amber.jpg',         // Hazard Amber Sniper (Graphite helmet, gold visor, orange utility jacket)
+        'rare_void.jpg',          // Void Syndicate Sentinel (Obsidian helmet, violet visor, purple anorak)
+        'rare_arch_emerald.jpg',  // Studio Emerald SpecOps (High-contrast emerald optic, black tactical plate)
+        'rare_arch_crimson.jpg',  // Studio Crimson Vanguard (Deep scarlet HUD, reinforced assault gear)
+        'rare_arch_arctic.jpg',   // Studio Quantum Phantom (Frost white armor, sub-zero visor slit)
+        'rare_arch_amber.jpg',    // Studio Hazard Striker (Industrial high-vis exo-suit, gold visor)
+        'rare_arch_void.jpg',     // Studio Obsidian Shadow (Dark matter stealth suit, ultraviolet optics)
       ];
       targetFile = archetypes[numId % archetypes.length];
     }
