@@ -82,13 +82,6 @@ export default function Agent360Viewer({ agentId = 143, price = 0.02 }) {
 
   const currentRender = getRenderState();
 
-  const num = parseInt(agentId, 10) || 1;
-  const hue = Math.round((num * 137.508) % 360);
-  const sat = 110 + (num % 5) * 12;
-  const con = 102 + (num % 4) * 5;
-  const bright = 96 + (num % 3) * 6;
-  const dynamicFilter = `hue-rotate(${hue}deg) saturate(${sat}%) contrast(${con}%) brightness(${bright}%)`;
-
   return (
     <div 
       style={{
@@ -112,8 +105,7 @@ export default function Agent360Viewer({ agentId = 143, price = 0.02 }) {
           height: '100%',
           objectFit: 'contain',
           cursor: isDragging ? 'grabbing' : 'grab',
-          transform: currentRender.flip ? 'scaleX(-1)' : 'none',
-          filter: dynamicFilter
+          transform: currentRender.flip ? 'scaleX(-1)' : 'none'
         }}
         onMouseDown={handlePointerDown}
         onMouseMove={handlePointerMove}

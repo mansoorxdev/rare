@@ -4,24 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { usePrivy } from '../components/PrivyClientProvider';
 import Agent360Viewer from '../components/Agent360Viewer';
 
-function getAgentVisual(id) {
-  const num = parseInt(id, 10) || 1;
-  const hue = Math.round((num * 137.508) % 360);
-  const sat = 110 + (num % 5) * 12;
-  const con = 102 + (num % 4) * 5;
-  const bright = 96 + (num % 3) * 6;
-
-  const models = ['SENTRY', 'EXECUTIONER', 'ORACLE', 'SNIPER', 'SENTINEL', 'SPECOPS', 'VANGUARD', 'PHANTOM', 'STRIKER', 'SHADOW'];
-  const model = models[num % models.length];
-
-  return {
-    hue,
-    filter: `hue-rotate(${hue}deg) saturate(${sat}%) contrast(${con}%) brightness(${bright}%)`,
-    model,
-    mk: ((num * 7) % 9) + 1
-  };
-}
-
 export default function HomePage() {
   const { ready, authenticated, user, login, logout } = usePrivy();
   const [quantity, setQuantity] = useState(1);
@@ -56,7 +38,7 @@ export default function HomePage() {
   const fetchExplorerAgents = async (page = 1, search = '', role = 'all', band = 'all') => {
     setExplorerLoading(true);
     try {
-      const limit = 24;
+      const limit = 16;
       const offset = (page - 1) * limit;
       const params = new URLSearchParams({
         limit: String(limit),
@@ -354,32 +336,47 @@ export default function HomePage() {
         </section>
 
         {/* 10,078 Agent Roster Directory (Authentic Obol .tiles) */}
-        <section className="feed" id="roster" style={{ paddingTop: '28px' }}>
-          <div className="feed-head" style={{ alignItems: 'flex-end', flexWrap: 'wrap', gap: '12px', marginBottom: '18px' }}>
-            <div>
-              <span className="label" style={{ display: 'block', marginBottom: '2px' }}>Directory · 10,078 Agents</span>
-              <b style={{ font: '600 20px var(--sans)', color: 'var(--ink)' }}>All Agents</b>
-            </div>
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
-              <form onSubmit={handleSearchSubmit} style={{ display: 'inline-flex', gap: '4px' }}>
-                <input
-                  type="text"
-                  value={explorerSearch}
-                  onChange={(e) => setExplorerSearch(e.target.value)}
-                  placeholder="pick # or role"
-                  style={{ font: '400 13px var(--mono)', padding: '3px 8px', border: '1px solid var(--hair)', borderRadius: '2px', background: 'transparent', width: '130px' }}
-                />
-                <button className="txt" type="submit" style={{ padding: '3px 6px' }}>search</button>
-              </form>
+        <section className="feed" id="roster">
+          <div className="feed-head" style={{ marginBottom: '14px' }}>
+            <span className="label">Directory · 10,078 Agents</span>
+            <span className="label">16 shown · Page {explorerPage} of {explorerTotalPages}</span>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '18px' }}>
+            <form onSubmit={handleSearchSubmit} style={{ display: 'inline-flex', alignItems: 'baseline', gap: '8px' }}>
+              <span className="label">Find</span>
+              <input
+                type="text"
+                value={explorerSearch}
+                onChange={(e) => setExplorerSearch(e.target.value)}
+                placeholder="№ or role"
+                style={{
+                  font: '500 14px var(--mono)',
+                  border: 'none',
+                  borderBottom: '1px solid var(--ink)',
+                  background: 'transparent',
+                  color: 'var(--ink)',
+                  width: '110px',
+                  padding: '2px 0',
+                  outline: 'none',
+                  borderRadius: 0
+                }}
+              />
+              <button className="txt" type="submit" style={{ padding: '0 4px', fontSize: '13px' }}>search</button>
+            </form>
+
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
               {['all', 'sniper', 'arbitrage', 'oracle', 'sentinel'].map(r => (
                 <button
                   key={r}
                   type="button"
                   className="txt"
                   style={{
+                    padding: 0,
                     fontWeight: explorerRole === r ? '600' : '400',
                     color: explorerRole === r ? 'var(--ink)' : 'var(--dim)',
-                    textDecoration: explorerRole === r ? 'underline' : 'none'
+                    textDecoration: explorerRole === r ? 'underline' : 'none',
+                    textDecorationColor: 'var(--ink)'
                   }}
                   onClick={() => handleRoleFilterChange(r)}
                 >
@@ -391,30 +388,26 @@ export default function HomePage() {
 
           {explorerLoading ? (
             <div style={{ padding: '40px 0', textAlign: 'center', font: '400 13px var(--mono)', color: 'var(--dim)' }}>
-              loading daemons…
+              loading agents…
             </div>
           ) : (
             <div className="tiles">
-              {explorerAgents.map((agent) => {
-                const visual = getAgentVisual(agent.id);
-                return (
-                  <div
-                    key={agent.id}
-                    className={`tile ${rareId === String(agent.id) ? 'new' : ''}`}
-                    onClick={() => handleSelectAgentFor360(agent.id)}
-                    title="Click to view in 360° turntable"
-                  >
-                    <img
-                      src={`/api/avatar/${agent.id}`}
-                      alt={agent.name}
-                      style={{ filter: visual.filter }}
-                      loading="lazy"
-                    />
-                    <b>#{String(agent.id).padStart(5, '0')}</b>
-                    <span>{agent.role}</span>
-                  </div>
-                );
-              })}
+              {explorerAgents.map((agent) => (
+                <div
+                  key={agent.id}
+                  className={`tile ${rareId === String(agent.id) ? 'new' : ''}`}
+                  onClick={() => handleSelectAgentFor360(agent.id)}
+                  title="Click to view in 360° turntable"
+                >
+                  <img
+                    src={`/api/avatar/${agent.id}`}
+                    alt={agent.name}
+                    loading="lazy"
+                  />
+                  <b>#{String(agent.id).padStart(5, '0')}</b>
+                  <span>{agent.role}</span>
+                </div>
+              ))}
             </div>
           )}
 

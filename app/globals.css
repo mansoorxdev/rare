@@ -432,9 +432,8 @@ h1 {
   aspect-ratio: 1;
   display: block;
   border-radius: 2px;
-  object-fit: cover;
-  object-position: center 15%;
-  background: #141416;
+  object-fit: contain;
+  background: var(--ground);
   transition: transform 0.2s ease;
 }
 

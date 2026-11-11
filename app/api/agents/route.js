@@ -9,16 +9,22 @@ function getManifest() {
   if (cachedManifest) return cachedManifest;
 
   const archetypes = [
+    'Arctic Ghost Oracle',
     'Solana Emerald Sentry',
     'Crimson MEV Executioner',
-    'Arctic Ghost Oracle',
     'Hazard Amber Sniper',
     'Void Syndicate Sentinel',
-    'Studio Emerald SpecOps',
-    'Studio Crimson Vanguard',
-    'Studio Quantum Phantom',
-    'Studio Hazard Striker',
-    'Studio Obsidian Shadow'
+    'Cobalt Phantom Infiltrator',
+    'Desert Nomad Scout',
+    'Cyber Ronin Operative',
+    'Neon Netrunner',
+    'Glitch Daemon',
+    'Titan Heavy Enforcer',
+    'Shadow Stealth Ninja',
+    'Quantum SpecOps',
+    'Studio Emerald Vanguard',
+    'Studio Crimson Assassin',
+    'Studio Sub-Zero Spectre'
   ];
 
   try {
@@ -67,13 +73,21 @@ function getManifest() {
   // Fallback generator for all 10,078 agents if file is missing in cloud
   const roles = [
     'PumpFun Liquidity Sniper',
-    'DeFi Arbitrageur',
+    'Cross-DEX Arbitrageur',
     'Prediction Market Oracle',
     'Solana MEV Sentinel',
     'Autonomous Market Maker',
-    'Flash Loan Arbitrageur',
+    'Flash Loan Executor',
     'Portfolio Rebalancer',
-    'Yield Compounder'
+    'Yield Compounder',
+    'Raydium Route Optimizer',
+    'Jupiter Swap Arb',
+    'Whale Tracker Node',
+    'Governance Voting Agent',
+    'Liquidity Vault Keeper',
+    'Perp DEX Hedger',
+    'Orderbook Market Maker',
+    'Synthetic Asset Oracle'
   ];
 
   cachedManifest = Array.from({ length: 10078 }, (_, i) => {

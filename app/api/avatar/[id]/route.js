@@ -22,18 +22,24 @@ export async function GET(request, { params }) {
     } else if (angleParam === '180') {
       targetFile = 'rare_back.jpg';
     } else {
-      // 10 distinct front-facing 3D character archetypes with unique helmets, visors, and gear
+      // 16 distinct AAA studio full-body 3D cybernetic operative archetypes on solid #ece9e2 parchment canvas
       const archetypes = [
-        'rare_front.jpg',         // Solana Emerald Sentry (Black helmet, green visor, olive techwear)
-        'rare_crimson.jpg',       // Crimson MEV Executioner (Black helmet, ruby red visor, crimson bomber)
-        'rare_arctic.jpg',        // Arctic Ghost Oracle (White helmet, cyan visor, white techwear parka)
-        'rare_amber.jpg',         // Hazard Amber Sniper (Graphite helmet, gold visor, orange utility jacket)
-        'rare_void.jpg',          // Void Syndicate Sentinel (Obsidian helmet, violet visor, purple anorak)
-        'rare_arch_emerald.jpg',  // Studio Emerald SpecOps (High-contrast emerald optic, black tactical plate)
-        'rare_arch_crimson.jpg',  // Studio Crimson Vanguard (Deep scarlet HUD, reinforced assault gear)
-        'rare_arch_arctic.jpg',   // Studio Quantum Phantom (Frost white armor, sub-zero visor slit)
-        'rare_arch_amber.jpg',    // Studio Hazard Striker (Industrial high-vis exo-suit, gold visor)
-        'rare_arch_void.jpg',     // Studio Obsidian Shadow (Dark matter stealth suit, ultraviolet optics)
+        'rare_arctic.jpg',         // 0: Arctic Ghost Oracle (Sub-Zero White Camo Gear, Cyan Visor)
+        'rare_front.jpg',          // 1: Solana Emerald Sentry (Black Helmet, Emerald Visor, Olive Gear)
+        'rare_crimson.jpg',        // 2: Crimson MEV Executioner (Dark Tactical Assault Jacket, Ruby Visor)
+        'rare_amber.jpg',          // 3: Hazard Amber Sniper (Industrial Gold Optics, Hazard Jacket)
+        'rare_void.jpg',           // 4: Void Syndicate Sentinel (Dark Matter Ultraviolet Visor, Obsidian Anorak)
+        'rare_cobalt_phantom.jpg', // 5: Cobalt Phantom Infiltrator (Navy Trenchcoat, Sapphire Blue Visor)
+        'rare_desert_nomad.jpg',   // 6: Desert Nomad Scout (Khaki Field Jacket, Amber-Bronze Visor)
+        'rare_cyber_samurai.jpg',  // 7: Cyber Ronin Operative (Titanium Kabuto, Crimson Visor, Katana)
+        'rare_neon_hacker.jpg',    // 8: Neon Netrunner (Magenta Waveform Visor, Illuminated Runes)
+        'rare_glitch_daemon.jpg',  // 9: Glitch Daemon (Hooded Cyber Operative with Green Phosphor CRT Head)
+        'rare_titan_heavy.jpg',    // 10: Titan Heavy Enforcer (Reinforced Blast Armor, Ruby-Orange Laser)
+        'rare_stealth_ninja.jpg',  // 11: Shadow Stealth Ninja (Matte Carbon Helmet, Dual Cyan Slits)
+        'rare_quantum_specops.jpg',// 12: Quantum SpecOps (Pearlescent Ceramic Armor, Prismatic Visor)
+        'rare_arch_emerald.jpg',   // 13: Studio Emerald Vanguard (High-contrast emerald optic)
+        'rare_arch_crimson.jpg',   // 14: Studio Crimson Assassin (Deep scarlet assault rig)
+        'rare_arch_arctic.jpg',    // 15: Studio Sub-Zero Spectre (Frost white tactical plate)
       ];
       targetFile = archetypes[numId % archetypes.length];
     }
@@ -44,7 +50,7 @@ export async function GET(request, { params }) {
       return new Response(buffer, {
         headers: {
           'Content-Type': 'image/jpeg',
-          'Cache-Control': 'public, max-age=31536000, immutable'
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
         }
       });
     }
