@@ -114,22 +114,20 @@ export default function Agent360Viewer({ agentId = 143, role = "Autonomous Sentr
   else { visorColor = '#ff2a5f'; colorName = 'CRIMSON OVERDRIVE'; }
 
   return (
-    <div className="agent-360-container" ref={containerRef}>
-      {/* Top Telemetry Header */}
-      <div className="agent-360-header">
-        <div className="header-status-left">
-          <span className="telemetry-led" style={{ color: visorColor, textShadow: `0 0 8px ${visorColor}` }}>●</span>
-          <span className="telemetry-title">RARE_AGENT // #{String(agentId).padStart(5, '0')} [{colorName}]</span>
+    <div className="turntable-clean-box" ref={containerRef}>
+      {/* Sleek Minimalist Header */}
+      <div className="turntable-clean-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ display: 'inline-block', width: '7px', height: '7px', borderRadius: '50%', background: visorColor, boxShadow: `0 0 6px ${visorColor}` }} />
+          <span style={{ fontWeight: 600, color: 'var(--ink)' }}>RARE #{String(agentId).padStart(5, '0')}</span>
+          <span style={{ color: 'var(--dim)' }}>· {colorName}</span>
         </div>
-        <div className="header-status-right">
-          <span className="badge-heading">{currentRender.label}</span>
-          <span className="badge-360">360° TURNTABLE</span>
-        </div>
+        <span style={{ color: 'var(--dim)' }}>{currentRender.label}</span>
       </div>
 
       {/* Main Interactive 360 Viewport */}
       <div 
-        className={`agent-image-viewport ${visionMode !== 'standard' ? `vision-${visionMode}` : ''}`}
+        className="turntable-viewport"
         onMouseDown={handlePointerDown}
         onMouseMove={handlePointerMove}
         onMouseUp={handlePointerUp}
@@ -138,119 +136,31 @@ export default function Agent360Viewer({ agentId = 143, role = "Autonomous Sentr
         onTouchMove={handlePointerMove}
         onTouchEnd={handlePointerUp}
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-        title="Click & Drag horizontally to rotate agent 360°"
+        title="Click & Drag horizontally to rotate 360°"
       >
-        {/* Rendered 3D Character Turnaround Image */}
-        <div className="agent-render-wrapper">
-          <img
-            src={currentRender.src}
-            alt="Rare 3D Autonomous Agent"
-            className="agent-render-img"
-            style={{
-              transform: currentRender.flip ? 'scaleX(-1)' : 'none',
-              filter: visionMode === 'nightvision' ? 'hue-rotate(60deg) contrast(1.15) brightness(1.05)' : visionMode === 'cyber' ? 'invert(0.9) hue-rotate(180deg)' : dynamicFilter
-            }}
-            draggable={false}
-          />
-        </div>
-
-        {/* Scanlines Overlay */}
-        <div className="viewport-scanlines" />
-
-        {/* HUD Top Left Drag Hint */}
-        <div className="drag-hint">
-          <span>⇄ DRAG TO ROTATE 360°</span>
-        </div>
-
-        {/* HUD Compass Readout */}
-        <div className="hud-azimuth">
-          <span>AZIMUTH: {Math.round(angle)}°</span>
-        </div>
-
-        {/* HUD Ground Turntable Dial */}
-        <div className="turntable-ground-dial">
-          <svg viewBox="0 0 300 60" className="dial-svg">
-            <ellipse cx="150" cy="30" rx="130" ry="24" fill="none" stroke="#00e65b" strokeWidth="1" strokeDasharray="4 6" opacity="0.4" />
-            <circle cx={150 + Math.cos((angle * Math.PI) / 180) * 130} cy={30 + Math.sin((angle * Math.PI) / 180) * 24} r="3" fill="#00e65b" />
-          </svg>
-        </div>
+        <img
+          src={currentRender.src}
+          alt="Rare 3D Autonomous Agent"
+          className="turntable-clean-img"
+          style={{
+            transform: currentRender.flip ? 'scaleX(-1) scale(1.18)' : 'scale(1.18)',
+            filter: dynamicFilter
+          }}
+          draggable={false}
+        />
       </div>
 
-      {/* Interactive Controls Bar */}
-      <div className="turntable-controls">
-        <div className="controls-row">
-          <button 
-            type="button"
-            className={`btn-control ${isAutoSpin ? 'active' : ''}`}
-            onClick={() => setIsAutoSpin(!isAutoSpin)}
-          >
-            {isAutoSpin ? '⏸ PAUSE' : '▶ AUTO-SPIN'}
-          </button>
-
-          {/* Preset Angle Buttons */}
-          <div className="preset-angles">
-            <button type="button" className={`btn-angle ${Math.round(angle) === 0 ? 'active' : ''}`} onClick={() => { setIsAutoSpin(false); setAngle(0); }}>
-              0°
-            </button>
-            <button type="button" className={`btn-angle ${Math.round(angle) === 45 ? 'active' : ''}`} onClick={() => { setIsAutoSpin(false); setAngle(45); }}>
-              45°
-            </button>
-            <button type="button" className={`btn-angle ${Math.round(angle) === 90 ? 'active' : ''}`} onClick={() => { setIsAutoSpin(false); setAngle(90); }}>
-              90°
-            </button>
-            <button type="button" className={`btn-angle ${Math.round(angle) === 180 ? 'active' : ''}`} onClick={() => { setIsAutoSpin(false); setAngle(180); }}>
-              180°
-            </button>
-            <button type="button" className={`btn-angle ${Math.round(angle) === 270 ? 'active' : ''}`} onClick={() => { setIsAutoSpin(false); setAngle(270); }}>
-              270°
-            </button>
-          </div>
-        </div>
-
-        {/* Angle Scrubber Slider */}
-        <div className="slider-wrap">
-          <span className="slider-label">ROTATION:</span>
-          <input 
-            type="range" 
-            min="0" 
-            max="359" 
-            value={Math.round(angle)}
-            onChange={(e) => {
-              setIsAutoSpin(false);
-              setAngle(parseFloat(e.target.value));
-            }}
-            className="angle-slider"
-          />
-          <span className="slider-val">{Math.round(angle)}°</span>
-        </div>
-
-        {/* Vision Mode Filter Toggles */}
-        <div className="tint-selector">
-          <span className="tint-label">OPTIC SENSORS:</span>
-          <div className="vision-buttons">
-            <button 
-              type="button" 
-              className={`btn-vision ${visionMode === 'standard' ? 'active' : ''}`}
-              onClick={() => setVisionMode('standard')}
-            >
-              STUDIO
-            </button>
-            <button 
-              type="button" 
-              className={`btn-vision ${visionMode === 'nightvision' ? 'active' : ''}`}
-              onClick={() => setVisionMode('nightvision')}
-            >
-              NIGHT OPS
-            </button>
-            <button 
-              type="button" 
-              className={`btn-vision ${visionMode === 'cyber' ? 'active' : ''}`}
-              onClick={() => setVisionMode('cyber')}
-            >
-              BLUEPRINT
-            </button>
-          </div>
-        </div>
+      {/* Sleek Minimalist Footer */}
+      <div className="turntable-clean-footer">
+        <span style={{ fontVariantNumeric: 'tabular-nums' }}>{Math.round(angle)}° AZIMUTH</span>
+        <span style={{ color: 'var(--dim)', fontSize: '10px' }}>⇄ DRAG TO ROTATE</span>
+        <button 
+          type="button"
+          className="btn-tt-spin"
+          onClick={() => setIsAutoSpin(!isAutoSpin)}
+        >
+          {isAutoSpin ? 'PAUSE' : 'AUTO-SPIN'}
+        </button>
       </div>
     </div>
   );
