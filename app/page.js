@@ -14,23 +14,10 @@ function getAgentVisual(id) {
   const models = ['SENTRY', 'EXECUTIONER', 'ORACLE', 'SNIPER', 'SENTINEL', 'SPECOPS', 'VANGUARD', 'PHANTOM', 'STRIKER', 'SHADOW'];
   const model = models[num % models.length];
 
-  let visorColor = '#00e65b';
-  let colorName = 'SOLANA EMERALD';
-  if (hue >= 15 && hue < 45) { visorColor = '#ff6b00'; colorName = 'HAZARD TANGERINE'; }
-  else if (hue >= 45 && hue < 80) { visorColor = '#ffd000'; colorName = 'SOLAR GOLD'; }
-  else if (hue >= 80 && hue < 140) { visorColor = '#00e65b'; colorName = 'SOLANA MATRIX'; }
-  else if (hue >= 140 && hue < 190) { visorColor = '#00f0ff'; colorName = 'ARCTIC CYAN'; }
-  else if (hue >= 190 && hue < 250) { visorColor = '#3b82f6'; colorName = 'COBALT BLUE'; }
-  else if (hue >= 250 && hue < 290) { visorColor = '#a855f7'; colorName = 'VOID PURPLE'; }
-  else if (hue >= 290 && hue < 330) { visorColor = '#ec4899'; colorName = 'SYNTH MAGENTA'; }
-  else { visorColor = '#ff2a5f'; colorName = 'CRIMSON OVERDRIVE'; }
-
   return {
     hue,
     filter: `hue-rotate(${hue}deg) saturate(${sat}%) contrast(${con}%) brightness(${bright}%)`,
     model,
-    visorColor,
-    colorName,
     mk: ((num * 7) % 9) + 1
   };
 }
@@ -160,7 +147,7 @@ export default function HomePage() {
 
   const handleMint = async () => {
     if (ready && !authenticated) {
-      setMintStatus('Please connect via Privy first.');
+      setMintStatus('Please connect wallet first.');
       login();
       return;
     }
@@ -234,21 +221,25 @@ export default function HomePage() {
         <div className="sn-in">
           <nav className="sn-nav" aria-label="Rare">
             <a className="sn-home" href="#home" onClick={(e) => scrollToSection(e, 'home')}>
-              <span className="sn-logo-box"><i></i></span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <rect x="3" y="4" width="26" height="21" rx="3" fill="#1a1a1d" />
+                <rect className="sn-scr" x="6.5" y="7.5" width="19" height="14" rx="1.5" fill="#2f7d4a" />
+                <rect x="12" y="26" width="8" height="3" fill="#1a1a1d" />
+              </svg>
               Rare
             </a>
-            <a href="#roster" onClick={(e) => scrollToSection(e, 'roster')}>Roster (10,078)</a>
+            <a href="#roster" onClick={(e) => scrollToSection(e, 'roster')}>Roster</a>
             <button type="button" onClick={() => setConsoleOpen(true)}>Console</button>
             <a href="#specs" onClick={(e) => scrollToSection(e, 'specs')}>Specs</a>
-            <a href="#docs" onClick={(e) => scrollToSection(e, 'docs')}>Docs</a>
+            <a href="/RARE_Protocol_Whitepaper.pdf" target="_blank" rel="noreferrer">Whitepaper</a>
           </nav>
           <div className="sn-right">
-            <i className="sn-dot"></i>
-            <span className="mono">Solana</span>
+            <i className="sn-dot on" id="dot"></i>
+            <span className="sn-nettxt" id="livetxt">Solana</span>
             <button
               type="button"
               onClick={() => authenticated ? logout() : login()}
-              className="btn-sn-wallet"
+              className="btn-wallet"
             >
               {authenticated && user?.wallet?.address
                 ? `${user.wallet.address.slice(0, 4)}...${user.wallet.address.slice(-4)}`
@@ -258,10 +249,9 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="wrap">
+      <div className="wrap">
         {/* Authentic Obol Hero Grid */}
         <section className="hero" id="home">
-          {/* Left: Sleek 360 Turntable */}
           <div>
             <Agent360Viewer
               agentId={rareId ? parseInt(rareId, 10) : soldCount + 1}
@@ -269,25 +259,24 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Right: Clean Minimalist Purchase Interface */}
           <div>
             <h1>Rare</h1>
             <p className="lede">
-              10,078 autonomous agents on Solana. Each one an NFT with its own wallet — and 90% of what you pay goes into it.
+              10,078 agents on Solana. Each one an NFT with its own wallet — and 90% of what you pay goes into it.
             </p>
 
             <div className="figs">
               <div>
                 <span className="label">Price · SOL</span>
-                <b>{pricePerAgent}</b>
+                <b id="price">{pricePerAgent}</b>
               </div>
               <div>
                 <span className="label">Band</span>
-                <b>1/10</b>
+                <b id="band">1/10</b>
               </div>
               <div>
                 <span className="label">Sold</span>
-                <b>{soldCount}</b>
+                <b id="sold">{soldCount}</b>
               </div>
             </div>
 
@@ -295,15 +284,16 @@ export default function HomePage() {
               <label className="field">
                 <span className="label">How many</span>
                 <span className="qty">
-                  <button className="txt" type="button" onClick={handleMinus} aria-label="fewer">−</button>
-                  <b aria-live="polite">{quantity}</b>
-                  <button className="txt" type="button" onClick={handlePlus} aria-label="more">+</button>
+                  <button className="txt" id="qminus" type="button" onClick={handleMinus} aria-label="fewer">−</button>
+                  <b id="qty" aria-live="polite">{quantity}</b>
+                  <button className="txt" id="qplus" type="button" onClick={handlePlus} aria-label="more">+</button>
                 </span>
               </label>
 
               <label className="field">
-                <span className="label">Agent №</span>
+                <span className="label">Rare №</span>
                 <input
+                  id="n"
                   inputMode="numeric"
                   maxLength={5}
                   placeholder="pick"
@@ -313,22 +303,23 @@ export default function HomePage() {
                 />
               </label>
 
-              <button className="txt" type="button" onClick={handleAnyUnsold}>any unsold</button>
+              <button className="txt" id="any" type="button" onClick={handleAnyUnsold}>any unsold</button>
 
               <button
                 className="go"
+                id="go"
                 type="button"
                 onClick={handleMint}
                 disabled={isMinting}
               >
-                {isMinting ? 'Minting…' : 'Mint'}
+                {isMinting ? 'Minting…' : 'Buy'}
               </button>
             </div>
 
             <label className="agree">
-              <input type="checkbox" defaultChecked />
+              <input type="checkbox" id="agree" defaultChecked />
               <span>
-                I understand every purchase is final on Solana. 90% is deposited into the agent&apos;s token-bound PDA vault; 10% to treasury.
+                I agree to the <a href="/terms">Terms</a> and understand every purchase is final: 90% is deposited into the agent&apos;s wallet; 10% to treasury.
               </span>
             </label>
 
@@ -344,9 +335,9 @@ export default function HomePage() {
         <section className="feed" aria-live="polite">
           <div className="feed-head">
             <span className="label">Sold · live</span>
-            <span className="label">{recentAgents.length} minted</span>
+            <span className="label" id="feedcount">{recentAgents.length} recent</span>
           </div>
-          <div className="tiles">
+          <div className="tiles" id="tiles">
             {recentAgents.map((agent) => (
               <div
                 key={agent.id}
@@ -354,9 +345,7 @@ export default function HomePage() {
                 onClick={() => handleSelectAgentFor360(agent.id)}
                 title="Click to inspect in 360° turntable"
               >
-                <div className="tile-img-box">
-                  <img src={`/api/avatar/${agent.id}`} alt={agent.name} />
-                </div>
+                <img src={`/api/avatar/${agent.id}`} alt={agent.name} />
                 <b>#{String(agent.id).padStart(5, '0')}</b>
                 <span>{agent.role || 'DeFi Agent'}</span>
               </div>
@@ -364,121 +353,108 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Modern 10,078 Agent Roster Gallery */}
-        <section id="roster" className="roster-section">
-          <div className="roster-header-bar">
-            <div className="roster-title-group">
-              <span className="label">Collection Directory</span>
-              <h2>Roster (10,078)</h2>
-              <p>Explore all 10,078 autonomous agents. Click any card to inspect its 3D model in the turntable.</p>
+        {/* 10,078 Agent Roster Directory (Authentic Obol .tiles) */}
+        <section className="feed" id="roster" style={{ paddingTop: '28px' }}>
+          <div className="feed-head" style={{ alignItems: 'flex-end', flexWrap: 'wrap', gap: '12px', marginBottom: '18px' }}>
+            <div>
+              <span className="label" style={{ display: 'block', marginBottom: '2px' }}>Directory · 10,078 Agents</span>
+              <b style={{ font: '600 20px var(--sans)', color: 'var(--ink)' }}>All Agents</b>
             </div>
-            <div className="roster-pills">
-              {[
-                { id: 'all', label: 'All Roles' },
-                { id: 'sniper', label: 'Snipers' },
-                { id: 'arbitrage', label: 'Arbitrage' },
-                { id: 'oracle', label: 'Oracles' },
-                { id: 'sentinel', label: 'Sentinels' }
-              ].map(f => (
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <form onSubmit={handleSearchSubmit} style={{ display: 'inline-flex', gap: '4px' }}>
+                <input
+                  type="text"
+                  value={explorerSearch}
+                  onChange={(e) => setExplorerSearch(e.target.value)}
+                  placeholder="pick # or role"
+                  style={{ font: '400 13px var(--mono)', padding: '3px 8px', border: '1px solid var(--hair)', borderRadius: '2px', background: 'transparent', width: '130px' }}
+                />
+                <button className="txt" type="submit" style={{ padding: '3px 6px' }}>search</button>
+              </form>
+              {['all', 'sniper', 'arbitrage', 'oracle', 'sentinel'].map(r => (
                 <button
-                  key={f.id}
+                  key={r}
                   type="button"
-                  className={`btn-pill ${explorerRole === f.id ? 'active' : ''}`}
-                  onClick={() => handleRoleFilterChange(f.id)}
+                  className="txt"
+                  style={{
+                    fontWeight: explorerRole === r ? '600' : '400',
+                    color: explorerRole === r ? 'var(--ink)' : 'var(--dim)',
+                    textDecoration: explorerRole === r ? 'underline' : 'none'
+                  }}
+                  onClick={() => handleRoleFilterChange(r)}
                 >
-                  {f.label}
+                  {r}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="roster-controls-bar">
-            <form onSubmit={handleSearchSubmit} className="roster-search-form">
-              <input
-                type="text"
-                value={explorerSearch}
-                onChange={(e) => setExplorerSearch(e.target.value)}
-                placeholder="Search by ID (#1 to #10078) or Role..."
-                className="roster-search-input"
-              />
-              <button type="submit" className="btn-roster-search">Search</button>
-            </form>
-          </div>
-
           {explorerLoading ? (
-            <div style={{ textAlign: 'center', padding: '48px', color: 'var(--dim)', font: '400 14px var(--mono)' }}>
-              Loading agents…
+            <div style={{ padding: '40px 0', textAlign: 'center', font: '400 13px var(--mono)', color: 'var(--dim)' }}>
+              loading daemons…
             </div>
           ) : (
-            <div className="roster-grid">
+            <div className="tiles">
               {explorerAgents.map((agent) => {
                 const visual = getAgentVisual(agent.id);
                 return (
                   <div
                     key={agent.id}
-                    className={`roster-card ${rareId === String(agent.id) ? 'active-target' : ''}`}
+                    className={`tile ${rareId === String(agent.id) ? 'new' : ''}`}
                     onClick={() => handleSelectAgentFor360(agent.id)}
                     title="Click to view in 360° turntable"
                   >
-                    <div className="roster-card-image-wrap">
-                      <img
-                        src={`/api/avatar/${agent.id}`}
-                        alt={agent.name || `Rare #${agent.id}`}
-                        style={{ filter: visual.filter }}
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="roster-card-meta">
-                      <div className="roster-card-row-top">
-                        <span className="roster-card-num">#{String(agent.id).padStart(5, '0')}</span>
-                        <span className="roster-card-mk">MK-{visual.mk}</span>
-                      </div>
-                      <span className="roster-card-role">{agent.role}</span>
-                      <span className="roster-card-pda">{agent.band || 'Band 1'} · {agent.priceSol || 0.02} SOL</span>
-                    </div>
+                    <img
+                      src={`/api/avatar/${agent.id}`}
+                      alt={agent.name}
+                      style={{ filter: visual.filter }}
+                      loading="lazy"
+                    />
+                    <b>#{String(agent.id).padStart(5, '0')}</b>
+                    <span>{agent.role}</span>
                   </div>
                 );
               })}
             </div>
           )}
 
-          {/* Clean Minimalist Pagination */}
-          <div className="roster-pagination">
+          {/* Clean Obol-Style Pagination */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '22px', font: '400 12px var(--mono)', color: 'var(--dim)' }}>
             <button
               type="button"
-              className="btn-nav-page"
+              className="txt"
               disabled={explorerPage <= 1 || explorerLoading}
               onClick={() => setExplorerPage(prev => Math.max(1, prev - 1))}
             >
-              ‹ Prev
+              ← previous
             </button>
-            <span style={{ color: 'var(--dim)' }}>
-              Page <strong style={{ color: 'var(--ink)' }}>{explorerPage}</strong> of {explorerTotalPages}
+            <span>
+              page {explorerPage} of {explorerTotalPages}
             </span>
             <button
               type="button"
-              className="btn-nav-page"
+              className="txt"
               disabled={explorerPage >= explorerTotalPages || explorerLoading}
               onClick={() => setExplorerPage(prev => Math.min(explorerTotalPages, prev + 1))}
             >
-              Next ›
+              next →
             </button>
           </div>
         </section>
 
         {/* Specifications Rows (Authentic Obol .rows) */}
-        <section id="specs" className="rows">
+        <div className="rows" id="specs">
           <div className="row">
             <span className="label">The agent</span>
             <div>
               <p>
-                <strong>Its own wallet.</strong> Every Rare agent has an on-chain Program Derived Address (PDA) vault that follows the NFT. 90% of the mint price is paid into it in the exact same atomic Solana transaction; 10% goes to treasury.
+                <strong>Its own wallet.</strong> Every Rare agent has an on-chain Program Derived Address (PDA) vault that follows the NFT. 90% of the price is paid into it in the same transaction; 10% to RARE LLC. The sale contract holds nothing between purchases.
               </p>
               <p>
-                <strong>Its look, revealed when it sells.</strong> Casing, visor phosphor, firmware modules, and tactical techwear are fixed and committed before launch. Until an agent is minted, its look remains unrevealed.
+                <strong>Its look, revealed when it sells.</strong> Top, colours, shoes, casing, phosphor, face, hat — fixed and committed before the mint. Until a number sells it shows the same unrevealed spin, so nobody can pick the rare ones.
               </p>
               <p>
-                <strong>The console.</strong> Once acquired, open the web console to view its live execution log, inject your API keys with hardware-level isolation, and enable its autonomous execution loops on Solana DeFi protocols.
+                <strong>Its screen.</strong> Wallet, log, inbox, repo, market — live. Activate it in the console to give it its working wallet, then switch on its agent.
               </p>
             </div>
           </div>
@@ -486,24 +462,32 @@ export default function HomePage() {
           <div className="row">
             <span className="label">Price</span>
             <div>
-              <div className="ladder" role="img" aria-label="Ten price bands">
-                <i className="now" style={{ height: '18%' }}><span>0.02</span></i>
-                <i style={{ height: '24%' }}></i>
-                <i style={{ height: '31%' }}></i>
-                <i style={{ height: '40%' }}></i>
-                <i style={{ height: '52%' }}></i>
-                <i style={{ height: '67%' }}></i>
-                <i style={{ height: '87%' }}></i>
-                <i style={{ height: '113%' }}></i>
-                <i style={{ height: '147%' }}></i>
-                <i style={{ height: '191%' }}><span>0.212</span></i>
+              <div className="ladder" id="ladder" role="img" aria-label="Ten price bands">
+                <i className="now" style={{ height: '9.4%' }}><span>0.02</span></i>
+                <i style={{ height: '12.3%' }}></i>
+                <i style={{ height: '15.9%' }}></i>
+                <i style={{ height: '20.7%' }}></i>
+                <i style={{ height: '26.9%' }}></i>
+                <i style={{ height: '35.0%' }}></i>
+                <i style={{ height: '45.5%' }}></i>
+                <i style={{ height: '59.2%' }}></i>
+                <i style={{ height: '76.9%' }}></i>
+                <i style={{ height: '100.0%' }}><span>0.212</span></i>
               </div>
               <div className="ladder-x">
                 <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
               </div>
               <p style={{ marginTop: '14px' }}>
-                Ten bands of 1,007.8 Rare agents each. Band 1 opens at 0.02 SOL; each costs 1.3× the one before, up to 0.212 SOL. Pricing formulas and the 90/10 split are immutable in the smart contract.
+                Ten bands of 1,007.8 agents, by how many have sold. Band 1 is 0.02 SOL; each costs 1.3× the one before, up to 0.212 SOL. Prices, the split and the opening time are fixed in the contract — nobody can change them.
               </p>
+            </div>
+          </div>
+
+          <div className="row">
+            <span className="label">Opened</span>
+            <div>
+              <p><strong>Sat, 10 Oct 2026 18:00 UTC</strong></p>
+              <p className="clock">LIVE NOW ON SOLANA</p>
             </div>
           </div>
 
@@ -511,19 +495,23 @@ export default function HomePage() {
             <span className="label">Provenance</span>
             <div className="kv">
               <span className="k">trait table</span>
-              <span className="v">sha256: 8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce</span>
+              <span className="v">sha256 8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce</span>
               <button className="copy" onClick={() => handleCopy('8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce')}>copy</button>
 
               <span className="k">seed</span>
-              <span className="v">sha256: 4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27</span>
+              <span className="v">sha256 4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27</span>
               <button className="copy" onClick={() => handleCopy('4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27')}>copy</button>
+
+              <span className="k"></span>
+              <span className="v" style={{ color: 'var(--dim)' }}>The seed is published after the sale; anyone can then re-derive every look and check these.</span>
+              <span></span>
             </div>
           </div>
 
           <div className="row">
             <span className="label">Contracts</span>
             <div className="kv">
-              <span className="k">anchor program</span>
+              <span className="k">collection</span>
               <span className="v">Rare111111111111111111111111111111111111111</span>
               <button className="copy" onClick={() => handleCopy('Rare111111111111111111111111111111111111111')}>copy</button>
 
@@ -531,16 +519,20 @@ export default function HomePage() {
               <span className="v">{treasuryWallet}</span>
               <button className="copy" onClick={() => handleCopy(treasuryWallet)}>copy</button>
 
-              <span className="k">network</span>
-              <span className="v">Solana Mainnet-Beta (Cluster v1.18+)</span>
+              <span className="k">chain</span>
+              <span className="v">Solana Mainnet · Cluster v1.18+</span>
+              <span></span>
+
+              <span className="k">$RARE</span>
+              <span className="v">Token-Bound Agent Utility Protocol</span>
               <span></span>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* Footer */}
+        {/* Authentic Obol Footer */}
         <footer>
-          <span>Designed &amp; built for Solana · published by RARE PROTOCOL</span>
+          <span>Designed by Chad Neal · published by RARE PROTOCOL</span>
           <nav>
             <button type="button" onClick={() => setConsoleOpen(true)} className="txt" style={{ textDecoration: 'none' }}>Console</button>
             <a href="#specs" onClick={(e) => scrollToSection(e, 'specs')}>Specs</a>
@@ -548,9 +540,14 @@ export default function HomePage() {
             <a href="#roster" onClick={(e) => scrollToSection(e, 'roster')}>Roster</a>
           </nav>
         </footer>
-      </main>
+      </div>
 
-      {/* Console Modal */}
+      {/* What's New Pill (Exact Obol .newspill) */}
+      <button className="newspill" type="button" onClick={() => setConsoleOpen(true)}>
+        What&apos;s new · Console
+      </button>
+
+      {/* Minimalist Terminal Modal */}
       {consoleOpen && (
         <div className="modal-overlay" onClick={() => setConsoleOpen(false)}>
           <div className="modal-box" onClick={(e) => e.stopPropagation()}>
@@ -558,20 +555,20 @@ export default function HomePage() {
               <span>TERMINAL // AGENT TELEMETRY</span>
               <button className="btn-close" onClick={() => setConsoleOpen(false)}>×</button>
             </div>
-            <div className="modal-body" style={{ background: '#141416', color: '#00e65b', font: '400 13px var(--mono)', minHeight: '300px', maxHeight: '450px', overflowY: 'auto' }}>
+            <div style={{ padding: '20px', background: '#1a1a1d', color: '#2f7d4a', font: '400 13px var(--mono)', minHeight: '280px', maxHeight: '420px', overflowY: 'auto' }}>
               {terminalLines.map((line, idx) => (
-                <div key={idx} style={{ marginBottom: '4px', color: line.type === 'green' ? '#00e65b' : '#9ca3af' }}>
+                <div key={idx} style={{ marginBottom: '4px', color: line.type === 'green' ? '#2f7d4a' : '#8c887e' }}>
                   {line.text}
                 </div>
               ))}
               <div ref={terminalEndRef} />
               <form onSubmit={handleTerminalSubmit} style={{ display: 'flex', marginTop: '12px' }}>
-                <span style={{ color: '#00e65b', marginRight: '6px' }}>rare@sol:~$</span>
+                <span style={{ color: '#2f7d4a', marginRight: '6px' }}>rare@sol:~$</span>
                 <input
                   type="text"
                   value={commandInput}
                   onChange={(e) => setCommandInput(e.target.value)}
-                  style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', font: 'inherit', outline: 'none' }}
+                  style={{ flex: 1, background: 'transparent', border: 'none', color: '#ece9e2', font: 'inherit', outline: 'none' }}
                   autoFocus
                 />
               </form>
