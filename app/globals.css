@@ -18,7 +18,8 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   background: var(--ground);
   color: var(--ink);
@@ -109,7 +110,8 @@ a:hover {
   display: none;
 }
 
-.sn-nav a, .sn-nav button {
+.sn-nav a,
+.sn-nav button {
   flex: none;
   display: inline-flex;
   align-items: center;
@@ -125,12 +127,14 @@ a:hover {
   font: inherit;
 }
 
-.sn-nav a:hover, .sn-nav button:hover {
+.sn-nav a:hover,
+.sn-nav button:hover {
   color: var(--sn-ink);
   text-decoration: none;
 }
 
-.sn-nav a[aria-current=page], .sn-nav a.active {
+.sn-nav a[aria-current=page],
+.sn-nav a.active {
   color: var(--sn-ink);
   border-bottom-color: var(--sn-accent);
 }
@@ -217,9 +221,11 @@ a:hover {
   .spin {
     max-width: min(210px, 52vw);
   }
+
   h1 {
     margin-bottom: 12px;
   }
+
   .lede {
     font-size: 17px;
     margin-bottom: 20px;
@@ -255,7 +261,7 @@ h1 {
   padding: 12px 28px 12px 0;
 }
 
-.figs div + div {
+.figs div+div {
   padding-left: 28px;
   border-left: 1px solid var(--hair);
 }
