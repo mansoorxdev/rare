@@ -1,38 +1,14 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-
-/**
- * 16 UNIQUE MASTER ARCHETYPE ASSETS
- * Every single agent ID (1 to 10,078) maps to its distinct high-res character artwork.
- * When the user selects Rare #174, Rare #52, or clicks any agent in the roster,
- * the hero viewer IMMEDIATELY displays that selected agent's NFT!
- */
-const ARCHETYPE_ASSETS = [
-  { id: 0,  name: 'Arctic Ghost Oracle',        front: '/assets/agent/rare_arctic.jpg',         turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 1,  name: 'Solana Emerald Sentry',      front: '/assets/agent/rare_front.jpg',          turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 2,  name: 'Crimson MEV Executioner',    front: '/assets/agent/rare_crimson.jpg',        turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 3,  name: 'Hazard Amber Sniper',        front: '/assets/agent/rare_amber.jpg',          turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 4,  name: 'Void Syndicate Sentinel',    front: '/assets/agent/rare_void.jpg',           turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 5,  name: 'Cobalt Phantom Infiltrator', front: '/assets/agent/rare_cobalt_phantom.jpg', turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 6,  name: 'Desert Nomad Scout',         front: '/assets/agent/rare_desert_nomad.jpg',   turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 7,  name: 'Cyber Ronin Operative',      front: '/assets/agent/rare_cyber_samurai.jpg',  turn: '/assets/agent/char_cyber_ronin.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 8,  name: 'Neon Netrunner',             front: '/assets/agent/rare_neon_hacker.jpg',    turn: '/assets/agent/char_neon_netrunner.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 9,  name: 'Glitch Daemon',              front: '/assets/agent/rare_glitch_daemon.jpg',  turn: '/assets/agent/char_crt_daemon.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 10, name: 'Titan Heavy Enforcer',       front: '/assets/agent/rare_titan_heavy.jpg',    turn: '/assets/agent/char_heavy_enforcer.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 11, name: 'Shadow Stealth Ninja',       front: '/assets/agent/rare_stealth_ninja.jpg',  turn: '/assets/agent/char_ghost_recon.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 12, name: 'Quantum SpecOps',            front: '/assets/agent/rare_quantum_specops.jpg',turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 13, name: 'Autonomous Android Sentry',  front: '/assets/agent/char_android_sentry.jpg', turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 14, name: 'Heavy Protocol Enforcer',    front: '/assets/agent/char_heavy_enforcer.jpg', turn: '/assets/agent/rare_titan_heavy.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-  { id: 15, name: 'Synthetic Netrunner Daemon', front: '/assets/agent/char_neon_netrunner.jpg', turn: '/assets/agent/rare_neon_hacker.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
-];
+import { getAgentMetadata } from '../lib/agentMetadata';
 
 export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
 
   const num = parseInt(agentId, 10) || 1;
-  const currentArchetype = ARCHETYPE_ASSETS[num % ARCHETYPE_ASSETS.length];
+  const currentAgent = getAgentMetadata(num);
 
   // Physics & Animation state kept in refs (ZERO React re-renders during 60FPS animation)
   const stateRef = useRef({
@@ -44,29 +20,32 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
     lastTime: 0,
     isAutoSpin: true,
     loadedImages: {},
-    activeArchetype: currentArchetype,
+    activeAgent: currentAgent,
   });
 
   const [isAutoSpin, setIsAutoSpin] = useState(true);
 
-  // Update active archetype whenever agentId prop changes
+  // When agentId changes, update active agent and reset angle to front 0° so user clearly sees the front of their selected NFT!
   useEffect(() => {
-    stateRef.current.activeArchetype = currentArchetype;
+    stateRef.current.activeAgent = currentAgent;
+    stateRef.current.angle = 0; // Show front view first
+    stateRef.current.velocity = 0;
+
     // Preload front image for the newly selected agent
     const img = new Image();
-    img.src = currentArchetype.front;
+    img.src = currentAgent.image;
     img.onload = () => {
-      stateRef.current.loadedImages[currentArchetype.front] = img;
+      stateRef.current.loadedImages[currentAgent.image] = img;
     };
-  }, [currentArchetype]);
+  }, [agentId, currentAgent.image]);
 
   // Preload base turn assets into memory
   useEffect(() => {
     const urls = [
-      currentArchetype.front,
-      currentArchetype.turn,
-      currentArchetype.profile,
-      currentArchetype.back,
+      currentAgent.image,
+      currentAgent.turnImage,
+      currentAgent.profileImage,
+      currentAgent.backImage,
       '/assets/agent/rare_front.jpg',
       '/assets/agent/rare_turn_45.jpg',
       '/assets/agent/rare_profile.jpg',
@@ -81,13 +60,12 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
         stateRef.current.loadedImages[url] = img;
       };
     });
-  }, [currentArchetype]);
+  }, [currentAgent]);
 
   // 60FPS Canvas Render Loop
   useEffect(() => {
     let animId;
     let lastStamp = performance.now();
-    let displayThrottle = 0;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -124,17 +102,16 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
       ctx.save();
       ctx.scale(dpr, dpr);
 
-      // Clean Parchment Studio Canvas
+      // Clean Studio Canvas
       ctx.fillStyle = '#fcfaf4';
       ctx.fillRect(0, 0, width, height);
 
-      // 3. Aspect-Preserving Character Rendering (PERFECT HEAD-TO-TOE FIT)
+      // 3. Aspect-Preserving Character Rendering (Natural 896 / 1200 proportions)
       const imgAspect = 896 / 1200; // 0.7466
       const canvasAspect = width / height;
 
       let drawW, drawH;
       if (canvasAspect > imgAspect) {
-        // Fit to 90% of height so head and feet have comfortable breathing room
         drawH = height * 0.90;
         drawW = drawH * imgAspect;
       } else {
@@ -145,59 +122,47 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
       const drawX = (width - drawW) / 2;
       const drawY = (height - drawH) / 2;
 
-      // 4. Determine Active Viewing Angle for Current Selected Agent
+      // 4. Exact Sector Frame Selection matching Selected Agent
       const normAngle = ((state.angle % 360) + 360) % 360;
       const sector = Math.floor(((normAngle + 22.5) % 360) / 45) % 8;
       
-      const arch = state.activeArchetype || currentArchetype;
-      let targetSrc = arch.front;
+      const agent = state.activeAgent || currentAgent;
+      let targetSrc = agent.image;
       let flip = false;
 
       if (sector === 0) {
-        // Front (0°)
-        targetSrc = arch.front;
+        targetSrc = agent.image; // Front 0°
         flip = false;
       } else if (sector === 1) {
-        // Quarter Right (45°)
-        targetSrc = arch.turn || arch.front;
+        targetSrc = agent.turnImage || agent.image; // 45° Quarter Right
         flip = false;
       } else if (sector === 2) {
-        // Profile Right (90°)
-        targetSrc = arch.profile || arch.turn || arch.front;
+        targetSrc = agent.profileImage || agent.turnImage || agent.image; // 90° Profile Right
         flip = false;
       } else if (sector === 3) {
-        // Rear-Quarter Right (135°)
-        targetSrc = arch.back || arch.profile;
+        targetSrc = agent.backImage || agent.profileImage; // 135° Rear-Quarter Right
         flip = false;
       } else if (sector === 4) {
-        // Back (180°)
-        targetSrc = arch.back || arch.front;
+        targetSrc = agent.backImage || agent.image; // 180° Back
         flip = false;
       } else if (sector === 5) {
-        // Rear-Quarter Left (225°)
-        targetSrc = arch.back || arch.profile;
+        targetSrc = agent.backImage || agent.profileImage; // 225° Rear-Quarter Left
         flip = true;
       } else if (sector === 6) {
-        // Profile Left (270°)
-        targetSrc = arch.profile || arch.turn || arch.front;
+        targetSrc = agent.profileImage || agent.turnImage || agent.image; // 270° Profile Left
         flip = true;
       } else if (sector === 7) {
-        // Quarter Left (315°)
-        targetSrc = arch.turn || arch.front;
+        targetSrc = agent.turnImage || agent.image; // 315° Quarter Left
         flip = true;
       }
 
-      const img = state.loadedImages[targetSrc] || state.loadedImages[arch.front] || state.loadedImages['/assets/agent/rare_front.jpg'];
-
-      // Procedural colorway filter so each agent ID has a unique distinct visor/armor tint
-      const hue = Math.round((num * 137.508) % 360);
-      const sat = 100 + ((num * 7) % 25);
-      const contrast = 100 + ((num * 3) % 15);
-      const dynamicFilter = `hue-rotate(${hue}deg) saturate(${sat}%) contrast(${contrast}%)`;
+      const img = state.loadedImages[targetSrc] || state.loadedImages[agent.image] || state.loadedImages['/assets/agent/rare_front.jpg'];
 
       if (img && img.complete && img.naturalWidth > 0) {
         ctx.save();
-        ctx.filter = dynamicFilter;
+        if (agent.visualFilter) {
+          ctx.filter = agent.visualFilter;
+        }
 
         if (flip) {
           const centerX = drawX + drawW / 2;
@@ -216,7 +181,7 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
 
     animId = requestAnimationFrame(render);
     return () => cancelAnimationFrame(animId);
-  }, [currentArchetype]);
+  }, [currentAgent]);
 
   // Pointer Drag Handlers
   const handlePointerDown = (e) => {
@@ -279,7 +244,7 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      {/* Active Selected Agent Badge Bar */}
+      {/* Active Selected Agent Badge Bar — EXACT MATCH TO ROSTER */}
       <div className="w-full max-w-[460px] flex items-center justify-between pb-2 mb-2 border-b border-black/20 font-mono text-xs">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 bg-[#10b981] inline-block shadow-[1px_1px_0px_#000]" />
@@ -288,13 +253,14 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
           </span>
         </div>
         <span className="text-[11px] font-bold text-zinc-700 uppercase tracking-wide">
-          {currentArchetype.name}
+          {currentAgent.role} • {currentAgent.archetype}
         </span>
       </div>
 
-      {/* 3D Turntable Viewport */}
+      {/* 3D Turntable Viewport (Click to pause/spin, drag to rotate) */}
       <div
         ref={containerRef}
+        onClick={toggleSpin}
         className="relative w-full mx-auto select-none overflow-hidden cursor-grab active:cursor-grabbing touch-none flex items-center justify-center"
         style={{
           maxWidth: '460px',
