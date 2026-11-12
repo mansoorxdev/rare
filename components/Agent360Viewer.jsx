@@ -3,24 +3,36 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 /**
- * TURNTABLE FRAMES (896 x 1200 master studio 3D renders)
- * 8 discrete viewing angles in 360° space (0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°).
- * Only ONE crisp frame is active at a time — ZERO ghosting, ZERO double exposure.
+ * 16 UNIQUE MASTER ARCHETYPE ASSETS
+ * Every single agent ID (1 to 10,078) maps to its distinct high-res character artwork.
+ * When the user selects Rare #174, Rare #52, or clicks any agent in the roster,
+ * the hero viewer IMMEDIATELY displays that selected agent's NFT!
  */
-const FRAME_CONFIGS = [
-  { id: 0,   src: '/assets/agent/rare_front.jpg',   flip: false, label: 'FRONT 0°' },
-  { id: 45,  src: '/assets/agent/rare_turn_45.jpg', flip: false, label: 'QUARTER 45°' },
-  { id: 90,  src: '/assets/agent/rare_profile.jpg', flip: false, label: 'PROFILE 90°' },
-  { id: 135, src: '/assets/agent/rare_back.jpg',    flip: false, label: 'REAR-Q 135°' },
-  { id: 180, src: '/assets/agent/rare_back.jpg',    flip: false, label: 'REAR 180°' },
-  { id: 225, src: '/assets/agent/rare_back.jpg',    flip: true,  label: 'REAR-Q 225°' },
-  { id: 270, src: '/assets/agent/rare_profile.jpg', flip: true,  label: 'PROFILE 270°' },
-  { id: 315, src: '/assets/agent/rare_turn_45.jpg', flip: true,  label: 'QUARTER 315°' },
+const ARCHETYPE_ASSETS = [
+  { id: 0,  name: 'Arctic Ghost Oracle',        front: '/assets/agent/rare_arctic.jpg',         turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 1,  name: 'Solana Emerald Sentry',      front: '/assets/agent/rare_front.jpg',          turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 2,  name: 'Crimson MEV Executioner',    front: '/assets/agent/rare_crimson.jpg',        turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 3,  name: 'Hazard Amber Sniper',        front: '/assets/agent/rare_amber.jpg',          turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 4,  name: 'Void Syndicate Sentinel',    front: '/assets/agent/rare_void.jpg',           turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 5,  name: 'Cobalt Phantom Infiltrator', front: '/assets/agent/rare_cobalt_phantom.jpg', turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 6,  name: 'Desert Nomad Scout',         front: '/assets/agent/rare_desert_nomad.jpg',   turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 7,  name: 'Cyber Ronin Operative',      front: '/assets/agent/rare_cyber_samurai.jpg',  turn: '/assets/agent/char_cyber_ronin.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 8,  name: 'Neon Netrunner',             front: '/assets/agent/rare_neon_hacker.jpg',    turn: '/assets/agent/char_neon_netrunner.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 9,  name: 'Glitch Daemon',              front: '/assets/agent/rare_glitch_daemon.jpg',  turn: '/assets/agent/char_crt_daemon.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 10, name: 'Titan Heavy Enforcer',       front: '/assets/agent/rare_titan_heavy.jpg',    turn: '/assets/agent/char_heavy_enforcer.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 11, name: 'Shadow Stealth Ninja',       front: '/assets/agent/rare_stealth_ninja.jpg',  turn: '/assets/agent/char_ghost_recon.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 12, name: 'Quantum SpecOps',            front: '/assets/agent/rare_quantum_specops.jpg',turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 13, name: 'Autonomous Android Sentry',  front: '/assets/agent/char_android_sentry.jpg', turn: '/assets/agent/rare_turn_45.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 14, name: 'Heavy Protocol Enforcer',    front: '/assets/agent/char_heavy_enforcer.jpg', turn: '/assets/agent/rare_titan_heavy.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
+  { id: 15, name: 'Synthetic Netrunner Daemon', front: '/assets/agent/char_neon_netrunner.jpg', turn: '/assets/agent/rare_neon_hacker.jpg', profile: '/assets/agent/rare_profile.jpg', back: '/assets/agent/rare_back.jpg' },
 ];
 
-export default function Agent360Viewer() {
+export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+
+  const num = parseInt(agentId, 10) || 1;
+  const currentArchetype = ARCHETYPE_ASSETS[num % ARCHETYPE_ASSETS.length];
 
   // Physics & Animation state kept in refs (ZERO React re-renders during 60FPS animation)
   const stateRef = useRef({
@@ -32,39 +44,47 @@ export default function Agent360Viewer() {
     lastTime: 0,
     isAutoSpin: true,
     loadedImages: {},
-    isReady: false,
+    activeArchetype: currentArchetype,
   });
 
   const [angleDisplay, setAngleDisplay] = useState(0);
   const [isAutoSpin, setIsAutoSpin] = useState(true);
 
-  // Preload all 4 master angle assets into memory
+  // Update active archetype whenever agentId prop changes
+  useEffect(() => {
+    stateRef.current.activeArchetype = currentArchetype;
+    // Preload front image for the newly selected agent
+    const img = new Image();
+    img.src = currentArchetype.front;
+    img.onload = () => {
+      stateRef.current.loadedImages[currentArchetype.front] = img;
+    };
+  }, [currentArchetype]);
+
+  // Preload base turn assets into memory
   useEffect(() => {
     const urls = [
+      currentArchetype.front,
+      currentArchetype.turn,
+      currentArchetype.profile,
+      currentArchetype.back,
       '/assets/agent/rare_front.jpg',
       '/assets/agent/rare_turn_45.jpg',
       '/assets/agent/rare_profile.jpg',
       '/assets/agent/rare_back.jpg',
     ];
 
-    let loadedCount = 0;
     urls.forEach((url) => {
+      if (!url) return;
       const img = new Image();
       img.src = url;
       img.onload = () => {
         stateRef.current.loadedImages[url] = img;
-        loadedCount += 1;
-        if (loadedCount >= urls.length) {
-          stateRef.current.isReady = true;
-        }
-      };
-      img.onerror = () => {
-        stateRef.current.loadedImages[url] = stateRef.current.loadedImages['/assets/agent/rare_front.jpg'] || img;
       };
     });
-  }, []);
+  }, [currentArchetype]);
 
-  // 60FPS Ultra-Smooth Canvas Render Loop
+  // 60FPS Canvas Render Loop
   useEffect(() => {
     let animId;
     let lastStamp = performance.now();
@@ -83,11 +103,9 @@ export default function Agent360Viewer() {
       if (state.isDragging) {
         // Dragged directly in pointer move
       } else if (state.isAutoSpin) {
-        // Smooth 26 deg/sec constant rotation
         state.angle = (state.angle + dt * 26) % 360;
         if (state.angle < 0) state.angle += 360;
       } else if (Math.abs(state.velocity) > 0.05) {
-        // Inertia coasting
         state.angle = (state.angle + state.velocity) % 360;
         if (state.angle < 0) state.angle += 360;
         state.velocity *= 0.93; // Smooth damping
@@ -95,7 +113,7 @@ export default function Agent360Viewer() {
         state.velocity = 0;
       }
 
-      // Throttle degree readout to 10 FPS
+      // Throttle degree readout
       displayThrottle += dt;
       if (displayThrottle > 0.1) {
         displayThrottle = 0;
@@ -118,40 +136,71 @@ export default function Agent360Viewer() {
       ctx.fillStyle = '#fcfaf4';
       ctx.fillRect(0, 0, width, height);
 
-      // 3. Aspect-Preserving Character Rendering (NEVER SQUASHED OR STRETCHED)
-      // Master asset aspect ratio is 896 / 1200 = 0.7466 (portrait)
-      const imgAspect = 896 / 1200;
+      // 3. Aspect-Preserving Character Rendering (PERFECT HEAD-TO-TOE FIT)
+      const imgAspect = 896 / 1200; // 0.7466
       const canvasAspect = width / height;
 
       let drawW, drawH;
       if (canvasAspect > imgAspect) {
-        // Canvas is wider than image: fit to height
-        drawH = height * 0.94;
+        // Fit to 90% of height so head and feet have comfortable breathing room
+        drawH = height * 0.90;
         drawW = drawH * imgAspect;
       } else {
-        // Canvas is narrower than image: fit to width
-        drawW = width * 0.94;
+        drawW = width * 0.90;
         drawH = drawW / imgAspect;
       }
 
       const drawX = (width - drawW) / 2;
       const drawY = (height - drawH) / 2;
 
-      // 4. Exact Sector Frame Selection (ZERO GHOSTING — ONLY ONE CRISP FRAME)
-      // Sector 0: [-22.5, +22.5] -> Frame 0 (Front)
-      // Sector 1: [22.5, 67.5]   -> Frame 1 (45° Quarter)
-      // Sector 2: [67.5, 112.5]  -> Frame 2 (90° Profile)
-      // etc.
+      // 4. Determine Active Viewing Angle for Current Selected Agent
       const normAngle = ((state.angle % 360) + 360) % 360;
-      const activeIdx = Math.floor(((normAngle + 22.5) % 360) / 45) % 8;
-      const frame = FRAME_CONFIGS[activeIdx];
-      const img = state.loadedImages[frame.src] || state.loadedImages['/assets/agent/rare_front.jpg'];
+      const sector = Math.floor(((normAngle + 22.5) % 360) / 45) % 8;
+      
+      const arch = state.activeArchetype || currentArchetype;
+      let targetSrc = arch.front;
+      let flip = false;
+
+      if (sector === 0) {
+        // Front (0°)
+        targetSrc = arch.front;
+        flip = false;
+      } else if (sector === 1) {
+        // Quarter Right (45°)
+        targetSrc = arch.turn || arch.front;
+        flip = false;
+      } else if (sector === 2) {
+        // Profile Right (90°)
+        targetSrc = arch.profile || arch.turn || arch.front;
+        flip = false;
+      } else if (sector === 3) {
+        // Rear-Quarter Right (135°)
+        targetSrc = arch.back || arch.profile;
+        flip = false;
+      } else if (sector === 4) {
+        // Back (180°)
+        targetSrc = arch.back || arch.front;
+        flip = false;
+      } else if (sector === 5) {
+        // Rear-Quarter Left (225°)
+        targetSrc = arch.back || arch.profile;
+        flip = true;
+      } else if (sector === 6) {
+        // Profile Left (270°)
+        targetSrc = arch.profile || arch.turn || arch.front;
+        flip = true;
+      } else if (sector === 7) {
+        // Quarter Left (315°)
+        targetSrc = arch.turn || arch.front;
+        flip = true;
+      }
+
+      const img = state.loadedImages[targetSrc] || state.loadedImages[arch.front] || state.loadedImages['/assets/agent/rare_front.jpg'];
 
       if (img && img.complete && img.naturalWidth > 0) {
         ctx.save();
 
-        if (frame.flip) {
-          // Flip horizontally around the center of the drawn character
+        if (flip) {
           const centerX = drawX + drawW / 2;
           ctx.translate(centerX, 0);
           ctx.scale(-1, 1);
@@ -168,9 +217,9 @@ export default function Agent360Viewer() {
 
     animId = requestAnimationFrame(render);
     return () => cancelAnimationFrame(animId);
-  }, []);
+  }, [currentArchetype]);
 
-  // Pointer Drag Handlers with Velocity Inertia
+  // Pointer Drag Handlers
   const handlePointerDown = (e) => {
     const state = stateRef.current;
     state.isDragging = true;
@@ -203,7 +252,7 @@ export default function Agent360Viewer() {
     state.angle = (state.angle - deltaX * 0.65) % 360;
     if (state.angle < 0) state.angle += 360;
 
-    // Calculate instantaneous velocity for release momentum
+    // Inertia release momentum
     state.velocity = -(deltaX / dt) * 9.0;
     state.velocity = Math.max(-14, Math.min(14, state.velocity));
 
@@ -230,36 +279,51 @@ export default function Agent360Viewer() {
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full mx-auto select-none overflow-hidden cursor-grab active:cursor-grabbing touch-none flex items-center justify-center"
-      style={{
-        maxWidth: '460px',
-        height: '520px',
-        border: '2px solid var(--hair-dark)',
-        boxShadow: '6px 6px 0px 0px var(--script-blue)',
-        background: '#fcfaf4',
-      }}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      title="Drag to rotate 360° • Click to pause/spin"
-    >
-      {/* High-Performance Canvas: Character rendered in natural 3:4 aspect ratio with zero ghosting */}
-      <canvas
-        ref={canvasRef}
-        className="w-full h-full block"
-        style={{ width: '100%', height: '100%' }}
-      />
+    <div className="w-full flex flex-col items-center">
+      {/* Active Selected Agent Badge Bar */}
+      <div className="w-full max-w-[460px] flex items-center justify-between pb-2 mb-2 border-b border-black/20 font-mono text-xs">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 bg-[#10b981] inline-block shadow-[1px_1px_0px_#000]" />
+          <span className="font-bold font-pixel text-xs text-[#0e2bdf]">
+            RARE #{String(num).padStart(5, '0')}
+          </span>
+        </div>
+        <span className="text-[11px] font-bold text-zinc-700 uppercase tracking-wide">
+          {currentArchetype.name}
+        </span>
+      </div>
 
-      {/* Minimalist Obol-style Angle & Pause Control in bottom corner */}
+      {/* 3D Turntable Viewport */}
       <div
-        onClick={toggleSpin}
-        className="absolute bottom-3 right-3 flex items-center gap-2 px-2.5 py-1 bg-white/90 border border-black text-[11px] font-mono cursor-pointer shadow-[2px_2px_0px_#000] hover:bg-[#0e2bdf] hover:text-white transition-colors"
+        ref={containerRef}
+        className="relative w-full mx-auto select-none overflow-hidden cursor-grab active:cursor-grabbing touch-none flex items-center justify-center"
+        style={{
+          maxWidth: '460px',
+          height: '520px',
+          border: '2px solid var(--hair-dark)',
+          boxShadow: '6px 6px 0px 0px var(--script-blue)',
+          background: '#fcfaf4',
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        title="Drag to rotate 360° • Click to pause/spin"
       >
-        <span className="font-bold tabular-nums">{angleDisplay}°</span>
-        <span className="text-[10px] uppercase font-bold tracking-wider">{isAutoSpin ? 'pause' : 'spin'}</span>
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full block"
+          style={{ width: '100%', height: '100%' }}
+        />
+
+        {/* Minimalist Obol-style Angle & Pause Control in bottom corner */}
+        <div
+          onClick={toggleSpin}
+          className="absolute bottom-3 right-3 flex items-center gap-2 px-2.5 py-1 bg-white/90 border border-black text-[11px] font-mono cursor-pointer shadow-[2px_2px_0px_#000] hover:bg-[#0e2bdf] hover:text-white transition-colors"
+        >
+          <span className="font-bold tabular-nums">{angleDisplay}°</span>
+          <span className="text-[10px] uppercase font-bold tracking-wider">{isAutoSpin ? 'pause' : 'spin'}</span>
+        </div>
       </div>
     </div>
   );
