@@ -13,6 +13,8 @@ export default function HomePage() {
   const [mintStatus, setMintStatus] = useState('');
   const [isMinting, setIsMinting] = useState(false);
   const [copiedCa, setCopiedCa] = useState(false);
+  const [mintCelebration, setMintCelebration] = useState(null);
+  const [inspectedAgentModal, setInspectedAgentModal] = useState(null);
   const treasuryWallet = process.env.NEXT_PUBLIC_TREASURY_WALLET || '3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk';
 
   // Terminal Console State
@@ -126,9 +128,19 @@ export default function HomePage() {
 
     setTimeout(() => {
       const newId = rareId ? parseInt(rareId, 10) : soldCount + 1;
-      setSoldCount(prev => prev + 1);
+      setSoldCount(prev => prev + quantity);
       setIsMinting(false);
-      setMintStatus(`Success! Rare #${newId} activated. 90% (${(pricePerAgent * 0.9).toFixed(3)} SOL) deposited into Agent PDA.`);
+      const deposited = (pricePerAgent * 0.9 * quantity).toFixed(3);
+      setMintStatus(`Success! Rare #${newId} activated. 90% (${deposited} SOL) deposited into Agent PDA.`);
+      setMintCelebration({
+        id: newId,
+        quantity,
+        name: `Rare #${String(newId).padStart(5, '0')}`,
+        pdaVault: `PDA${newId}v${((newId * 2654435761) >>> 0).toString(16).toUpperCase()}Vault`,
+        funding: `${deposited} SOL`,
+        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`,
+        image: '/assets/agent/rare_front.jpg'
+      });
     }, 1800);
   };
 
@@ -448,10 +460,10 @@ export default function HomePage() {
                   <div className="agent-card-body">
                     <div
                       className="agent-avatar-box"
-                      onClick={() => handleSelectAgentFor360(agent.id)}
-                      title="Click to inspect in 3D turntable"
+                      onClick={() => setInspectedAgentModal(agent)}
+                      title="Click to inspect agent specifications"
                     >
-                      <img src={`/api/avatar/${agent.id}`} alt={agent.name} loading="lazy" />
+                      <img src={agent.image || '/assets/agent/rare_front.jpg'} alt={agent.name} loading="lazy" />
                     </div>
 
                     <div className="agent-personality-box">
@@ -736,6 +748,167 @@ export default function HomePage() {
                   autoFocus
                 />
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mint Activation Celebration Modal */}
+      {mintCelebration && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setMintCelebration(null)}
+        >
+          <div
+            className="w-full max-w-lg bg-[#fcfaf4] border-2 border-black shadow-[8px_8px_0px_#10b981] p-6 text-black"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-[#10b981] border border-black inline-block animate-ping" />
+                <h3 className="font-pixel text-[13px] uppercase tracking-wide text-[#047857]">
+                  AGENT ACTIVATED // ON-CHAIN PDA FUNDED
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMintCelebration(null)}
+                className="font-pixel text-xs px-2.5 py-0.5 border border-black bg-white hover:bg-black hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 items-center">
+              <div className="border-2 border-black bg-[#f1ede3] p-2 shadow-[3px_3px_0px_#000]">
+                <img
+                  src={mintCelebration.image}
+                  alt={mintCelebration.name}
+                  className="w-full aspect-square object-contain"
+                />
+              </div>
+
+              <div className="space-y-2 font-mono text-xs">
+                <div className="text-lg font-bold font-display uppercase">{mintCelebration.name}</div>
+                <div className="text-[#0e2bdf] font-bold text-[11px]">SOLANA TOKEN-BOUND ACCOUNT</div>
+                <div className="p-2 border border-black bg-white space-y-1 text-[11px]">
+                  <div><b>PDA Vault:</b> <span className="text-[10px] text-zinc-600 block truncate">{mintCelebration.pdaVault}</span></div>
+                  <div><b>Capital Deposited:</b> <span className="text-[#047857] font-bold">{mintCelebration.funding}</span> (90%)</div>
+                  <div><b>Protocol Split:</b> 10% Treasury</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t-2 border-black pt-4 flex gap-3">
+              <a
+                href={`https://solscan.io/account/${treasuryWallet}`}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary flex-1 text-center py-2.5 text-xs font-pixel uppercase"
+              >
+                View On Solscan ↗
+              </a>
+              <button
+                type="button"
+                onClick={() => setMintCelebration(null)}
+                className="btn-secondary flex-1 py-2.5 text-xs font-pixel uppercase"
+              >
+                Close & Explore
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detailed Agent Specs Modal */}
+      {inspectedAgentModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setInspectedAgentModal(null)}
+        >
+          <div
+            className="w-full max-w-2xl bg-[#fcfaf4] border-2 border-black shadow-[8px_8px_0px_#0e2bdf] p-6 text-black"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
+              <div className="flex items-center gap-2">
+                <span className="font-pixel text-xs bg-[#0e2bdf] text-white px-2 py-0.5 border border-black">
+                  #{String(inspectedAgentModal.id).padStart(5, '0')}
+                </span>
+                <h3 className="font-display font-bold text-base uppercase">
+                  {inspectedAgentModal.role}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setInspectedAgentModal(null)}
+                className="font-pixel text-xs px-2.5 py-0.5 border border-black bg-white hover:bg-black hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+              <div className="border-2 border-black bg-[#f1ede3] p-2 shadow-[4px_4px_0px_#000]">
+                <img
+                  src={inspectedAgentModal.image}
+                  alt={inspectedAgentModal.name}
+                  className="w-full aspect-square object-contain"
+                />
+              </div>
+
+              <div className="flex flex-col justify-between space-y-3 font-mono text-xs">
+                <div>
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">MISSION PROMPT</span>
+                  <p className="mt-1 p-2.5 border border-black bg-white text-[11px] leading-relaxed italic text-zinc-800">
+                    &ldquo;{inspectedAgentModal.personalityPreview}&rdquo;
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
+                    <div className="text-[9px] text-zinc-500 font-bold">ARCHETYPE</div>
+                    <div className="font-bold text-zinc-900">{inspectedAgentModal.archetype}</div>
+                  </div>
+                  <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
+                    <div className="text-[9px] text-zinc-500 font-bold">EXECUTION ENGINE</div>
+                    <div className="font-bold text-[#0e2bdf]">{inspectedAgentModal.engine}</div>
+                  </div>
+                  <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
+                    <div className="text-[9px] text-zinc-500 font-bold">PDA CAPITAL</div>
+                    <div className="font-bold text-[#047857]">{inspectedAgentModal.pdaFunding}</div>
+                  </div>
+                  <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
+                    <div className="text-[9px] text-zinc-500 font-bold">RARITY TIER</div>
+                    <div className="font-bold">{inspectedAgentModal.rarityTier} ({inspectedAgentModal.rarityScore}%)</div>
+                  </div>
+                </div>
+
+                <div className="p-2 border border-black bg-white text-[10px] break-all">
+                  <span className="text-zinc-500 font-bold">PROGRAM DERIVED ADDRESS (PDA):</span>
+                  <div className="font-mono text-[#0e2bdf] font-bold mt-0.5">{inspectedAgentModal.pdaVault}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t-2 border-black pt-4 flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  handleSelectAgentFor360(inspectedAgentModal.id);
+                  setInspectedAgentModal(null);
+                }}
+                className="btn-primary flex-1 py-2.5 text-xs font-pixel uppercase text-center"
+              >
+                Inspect In 3D Turntable ↑
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDownloadManifest(inspectedAgentModal)}
+                className="btn-secondary py-2.5 px-4 text-xs font-pixel uppercase"
+              >
+                Download Metaplex JSON
+              </button>
             </div>
           </div>
         </div>

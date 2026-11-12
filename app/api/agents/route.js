@@ -1,26 +1,104 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
 let cachedManifest = null;
 
-const archetypes = [
-  'Arctic Ghost Oracle',
-  'Solana Emerald Sentry',
-  'Crimson MEV Executioner',
-  'Hazard Amber Sniper',
-  'Void Syndicate Sentinel',
-  'Cobalt Phantom Infiltrator',
-  'Desert Nomad Scout',
-  'Cyber Ronin Operative',
-  'Neon Netrunner',
-  'Glitch Daemon',
-  'Titan Heavy Enforcer',
-  'Shadow Stealth Ninja',
-  'Quantum SpecOps',
-  'Studio Emerald Vanguard',
-  'Studio Crimson Assassin',
-  'Studio Sub-Zero Spectre'
+const ARCHETYPE_CONFIGS = [
+  {
+    name: 'Arctic Ghost Oracle',
+    image: '/assets/agent/rare_arctic.jpg',
+    color: '#0284c7',
+    description: 'Sub-zero white digital camo tactical operative with electric cyan sensor visor.'
+  },
+  {
+    name: 'Cyber Ronin Operative',
+    image: '/assets/agent/rare_cyber_samurai.jpg',
+    color: '#dc2626',
+    description: 'Titanium Kabuto helmet, reinforced cyber-armor plating, crimson tactical visor.'
+  },
+  {
+    name: 'Quantum SpecOps',
+    image: '/assets/agent/rare_quantum_specops.jpg',
+    color: '#8b5cf6',
+    description: 'Pearlescent ceramic blast armor with prismatic iridescent optical sensor array.'
+  },
+  {
+    name: 'Glitch Daemon',
+    image: '/assets/agent/rare_glitch_daemon.jpg',
+    color: '#10b981',
+    description: 'Dark tactical hooded techwear with glowing phosphor CRT head and scanlines.'
+  },
+  {
+    name: 'Neon Netrunner',
+    image: '/assets/agent/rare_neon_hacker.jpg',
+    color: '#ec4899',
+    description: 'Magenta waveform visor, tactical street techwear, illuminated cyber runes.'
+  },
+  {
+    name: 'Titan Heavy Enforcer',
+    image: '/assets/agent/rare_titan_heavy.jpg',
+    color: '#f97316',
+    description: 'Reinforced exoskeleton blast plate, ruby-orange targeting oculars, heavy kinetic rig.'
+  },
+  {
+    name: 'Shadow Stealth Ninja',
+    image: '/assets/agent/rare_stealth_ninja.jpg',
+    color: '#06b6d4',
+    description: 'Matte carbon tactical helmet, dual cyan optical slits, active optical camo.'
+  },
+  {
+    name: 'Cobalt Phantom Infiltrator',
+    image: '/assets/agent/rare_cobalt_phantom.jpg',
+    color: '#0e2bdf',
+    description: 'Midnight navy tactical trenchcoat, sapphire blue visor, silent stealth infiltrator.'
+  },
+  {
+    name: 'Desert Nomad Scout',
+    image: '/assets/agent/rare_desert_nomad.jpg',
+    color: '#d97706',
+    description: 'Khaki field jacket, respiratory ballistic filter mask, amber-bronze optics.'
+  },
+  {
+    name: 'Solana Emerald Sentry',
+    image: '/assets/agent/rare_front.jpg',
+    color: '#00ff66',
+    description: 'Tactical olive assault jacket, matte black operator helmet, emerald green visor.'
+  },
+  {
+    name: 'Crimson MEV Executioner',
+    image: '/assets/agent/rare_crimson.jpg',
+    color: '#ef4444',
+    description: 'Deep scarlet ballistic rig, ruby executioner visor, ultra-fast MEV bundle sniper.'
+  },
+  {
+    name: 'Hazard Amber Sniper',
+    image: '/assets/agent/rare_amber.jpg',
+    color: '#f59e0b',
+    description: 'Industrial gold optics, hazard assault jacket, long-range cross-DEX parity sniper.'
+  },
+  {
+    name: 'Autonomous Android Sentry',
+    image: '/assets/agent/char_android_sentry.jpg',
+    color: '#10b981',
+    description: 'Full titanium cybernetic chassis, integrated multi-spectrum targeting oculars.'
+  },
+  {
+    name: 'Heavy Protocol Enforcer',
+    image: '/assets/agent/char_heavy_enforcer.jpg',
+    color: '#6366f1',
+    description: 'Dual reinforced ballistic shield armor, high-altitude tactical communications rig.'
+  },
+  {
+    name: 'Synthetic Netrunner Daemon',
+    image: '/assets/agent/char_neon_netrunner.jpg',
+    color: '#a855f7',
+    description: 'Electric violet techwear suit with low-light night-vision oculars and data harness.'
+  },
+  {
+    name: 'Cyber Ronin Vanguard',
+    image: '/assets/agent/char_cyber_ronin.jpg',
+    color: '#ef4444',
+    description: 'Heavy cyber-samurai battleplate with battle-hardened reinforced shoulder armor.'
+  }
 ];
 
 const engines = [
@@ -68,6 +146,7 @@ function getManifest() {
     const rarityScore = Math.min(99.9, rawRarity);
     const rarityTier = rarityScore >= 95 ? 'Legendary' : rarityScore >= 88 ? 'Epic' : rarityScore >= 76 ? 'Rare' : 'Common';
     
+    const archetypeObj = ARCHETYPE_CONFIGS[id % ARCHETYPE_CONFIGS.length];
     const engine = engines[id % engines.length];
     const personality = personalities[id % personalities.length];
     const pdaFunding = +(price * 0.9).toFixed(4);
@@ -81,10 +160,11 @@ function getManifest() {
       name: `Rare #${String(id).padStart(5, '0')}`,
       symbol: 'RARE',
       role,
-      archetype: archetypes[id % archetypes.length],
+      archetype: archetypeObj.name,
       engine,
       rarityScore,
       rarityTier,
+      color: archetypeObj.color,
       personalityPreview: personality,
       pdaFunding: `${pdaFunding} SOL`,
       toolsCount,
@@ -92,7 +172,7 @@ function getManifest() {
       priceSol: price,
       agentWallet,
       pdaVault,
-      image: `/api/avatar/${id}`
+      image: archetypeObj.image // Direct static image for instant sub-millisecond serving!
     };
   });
 
@@ -107,7 +187,7 @@ export async function GET(request) {
     const search = (searchParams.get('search') || '').toLowerCase().trim();
     const role = (searchParams.get('role') || '').toLowerCase().trim();
     const band = (searchParams.get('band') || '').toLowerCase().trim();
-    const model = (searchParams.get('model') || '').toLowerCase().trim();
+    const tier = (searchParams.get('tier') || '').toLowerCase().trim();
 
     const allAgents = getManifest();
     let filtered = allAgents;
@@ -118,7 +198,7 @@ export async function GET(request) {
         a.name.toLowerCase().includes(search) ||
         a.role.toLowerCase().includes(search) ||
         a.archetype.toLowerCase().includes(search) ||
-        a.baseModel.toLowerCase().includes(search)
+        a.rarityTier.toLowerCase().includes(search)
       );
     }
 
@@ -126,29 +206,34 @@ export async function GET(request) {
       filtered = filtered.filter(a => a.role.toLowerCase().includes(role));
     }
 
-    if (band && band !== 'all') {
-      filtered = filtered.filter(a => a.band.toLowerCase().includes(band));
+    if (tier && tier !== 'all') {
+      filtered = filtered.filter(a => a.rarityTier.toLowerCase() === tier);
     }
 
-    if (model && model !== 'all') {
-      filtered = filtered.filter(a => a.baseModel.toLowerCase().includes(model));
+    if (band && band !== 'all') {
+      filtered = filtered.filter(a => a.band.toLowerCase() === band);
     }
 
     const totalCount = allAgents.length;
     const filteredCount = filtered.length;
-    const paged = filtered.slice(offset, offset + limit);
+    const paginated = filtered.slice(offset, offset + limit);
 
     return NextResponse.json({
       success: true,
       totalCount,
       filteredCount,
-      offset,
       limit,
+      offset,
       page: Math.floor(offset / limit) + 1,
       totalPages: Math.ceil(filteredCount / limit),
-      agents: paged
+      agents: paginated
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
+      }
     });
-  } catch (err) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
