@@ -293,6 +293,7 @@ export default function HomePage() {
               <Agent360Viewer
                 agentId={rareId ? parseInt(rareId, 10) : soldCount + 1}
                 price={pricePerAgent}
+                onChangeAgent={handleAnyUnsold}
               />
             </div>
 

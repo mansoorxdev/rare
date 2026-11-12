@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
-export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
+export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgent }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -298,6 +298,38 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
           className="w-full h-full block"
           style={{ width: '100%', height: '100%' }}
         />
+
+        {/* Foot of NFT Area: "change" button requested by client */}
+        {onChangeAgent && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 pointer-events-auto">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onChangeAgent();
+              }}
+              className="btn-secondary"
+              style={{
+                padding: '6px 14px',
+                fontSize: '11px',
+                fontFamily: 'var(--font-mono)',
+                fontWeight: 700,
+                letterSpacing: '0.06em',
+                background: '#ffffff',
+                border: '2px solid var(--hair-dark)',
+                boxShadow: '2px 2px 0px #000',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+              }}
+              title="Click to change character (picks another unsold agent)"
+            >
+              <span style={{ fontSize: '12px' }}>↻</span>
+              <span>change</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
