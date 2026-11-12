@@ -463,7 +463,12 @@ export default function HomePage() {
                       onClick={() => setInspectedAgentModal(agent)}
                       title="Click to inspect agent specifications"
                     >
-                      <img src={agent.image || '/assets/agent/rare_front.jpg'} alt={agent.name} loading="lazy" />
+                      <img
+                        src={agent.image || '/assets/agent/rare_front.jpg'}
+                        alt={agent.name}
+                        loading="lazy"
+                        style={{ filter: agent.visualFilter || 'none' }}
+                      />
                     </div>
 
                     <div className="agent-personality-box">
@@ -785,6 +790,7 @@ export default function HomePage() {
                   src={mintCelebration.image}
                   alt={mintCelebration.name}
                   className="w-full aspect-square object-contain"
+                  style={{ filter: mintCelebration.visualFilter || 'none' }}
                 />
               </div>
 
@@ -854,6 +860,7 @@ export default function HomePage() {
                   src={inspectedAgentModal.image}
                   alt={inspectedAgentModal.name}
                   className="w-full aspect-square object-contain"
+                  style={{ filter: inspectedAgentModal.visualFilter || 'none' }}
                 />
               </div>
 

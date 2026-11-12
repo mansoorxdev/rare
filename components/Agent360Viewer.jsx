@@ -197,8 +197,15 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
 
       const img = state.loadedImages[targetSrc] || state.loadedImages[arch.front] || state.loadedImages['/assets/agent/rare_front.jpg'];
 
+      // Procedural colorway filter so each agent ID has a unique distinct visor/armor tint
+      const hue = Math.round((num * 137.508) % 360);
+      const sat = 100 + ((num * 7) % 25);
+      const contrast = 100 + ((num * 3) % 15);
+      const dynamicFilter = `hue-rotate(${hue}deg) saturate(${sat}%) contrast(${contrast}%)`;
+
       if (img && img.complete && img.naturalWidth > 0) {
         ctx.save();
+        ctx.filter = dynamicFilter;
 
         if (flip) {
           const centerX = drawX + drawW / 2;
