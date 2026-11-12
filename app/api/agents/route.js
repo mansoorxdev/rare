@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAgentMetadata } from '@/lib/agentMetadata';
+import { getAgentMetadata } from '../../../lib/agentMetadata';
 
 let cachedManifest = null;
 
