@@ -4,17 +4,18 @@ import React, { useEffect, useRef, useState } from 'react';
 
 /**
  * TURNTABLE FRAMES (896 x 1200 master studio 3D renders)
- * 8 discrete angles in 360° space (0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°).
+ * 8 discrete viewing angles in 360° space (0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°).
+ * Only ONE crisp frame is active at a time — ZERO ghosting, ZERO double exposure.
  */
 const FRAME_CONFIGS = [
-  { angle: 0,   src: '/assets/agent/rare_front.jpg',   flip: false },
-  { angle: 45,  src: '/assets/agent/rare_turn_45.jpg', flip: false },
-  { angle: 90,  src: '/assets/agent/rare_profile.jpg', flip: false },
-  { angle: 135, src: '/assets/agent/rare_back.jpg',    flip: false },
-  { angle: 180, src: '/assets/agent/rare_back.jpg',    flip: false },
-  { angle: 225, src: '/assets/agent/rare_back.jpg',    flip: true  },
-  { angle: 270, src: '/assets/agent/rare_profile.jpg', flip: true  },
-  { angle: 315, src: '/assets/agent/rare_turn_45.jpg', flip: true  },
+  { id: 0,   src: '/assets/agent/rare_front.jpg',   flip: false, label: 'FRONT 0°' },
+  { id: 45,  src: '/assets/agent/rare_turn_45.jpg', flip: false, label: 'QUARTER 45°' },
+  { id: 90,  src: '/assets/agent/rare_profile.jpg', flip: false, label: 'PROFILE 90°' },
+  { id: 135, src: '/assets/agent/rare_back.jpg',    flip: false, label: 'REAR-Q 135°' },
+  { id: 180, src: '/assets/agent/rare_back.jpg',    flip: false, label: 'REAR 180°' },
+  { id: 225, src: '/assets/agent/rare_back.jpg',    flip: true,  label: 'REAR-Q 225°' },
+  { id: 270, src: '/assets/agent/rare_profile.jpg', flip: true,  label: 'PROFILE 270°' },
+  { id: 315, src: '/assets/agent/rare_turn_45.jpg', flip: true,  label: 'QUARTER 315°' },
 ];
 
 export default function Agent360Viewer() {
@@ -82,17 +83,19 @@ export default function Agent360Viewer() {
       if (state.isDragging) {
         // Dragged directly in pointer move
       } else if (state.isAutoSpin) {
+        // Smooth 26 deg/sec constant rotation
         state.angle = (state.angle + dt * 26) % 360;
         if (state.angle < 0) state.angle += 360;
       } else if (Math.abs(state.velocity) > 0.05) {
+        // Inertia coasting
         state.angle = (state.angle + state.velocity) % 360;
         if (state.angle < 0) state.angle += 360;
-        state.velocity *= 0.93; // smooth coasting damping
+        state.velocity *= 0.93; // Smooth damping
       } else {
         state.velocity = 0;
       }
 
-      // Throttle minimal degree display update to 10 FPS
+      // Throttle degree readout to 10 FPS
       displayThrottle += dt;
       if (displayThrottle > 0.1) {
         displayThrottle = 0;
@@ -111,43 +114,52 @@ export default function Agent360Viewer() {
       ctx.save();
       ctx.scale(dpr, dpr);
 
-      // Studio Parchment background fill
+      // Clean Parchment Studio Canvas
       ctx.fillStyle = '#fcfaf4';
       ctx.fillRect(0, 0, width, height);
 
-      // 3. Draw ONLY the character in full-bleed (zero card edges, zero platter, zero clutter)
+      // 3. Aspect-Preserving Character Rendering (NEVER SQUASHED OR STRETCHED)
+      // Master asset aspect ratio is 896 / 1200 = 0.7466 (portrait)
+      const imgAspect = 896 / 1200;
+      const canvasAspect = width / height;
+
+      let drawW, drawH;
+      if (canvasAspect > imgAspect) {
+        // Canvas is wider than image: fit to height
+        drawH = height * 0.94;
+        drawW = drawH * imgAspect;
+      } else {
+        // Canvas is narrower than image: fit to width
+        drawW = width * 0.94;
+        drawH = drawW / imgAspect;
+      }
+
+      const drawX = (width - drawW) / 2;
+      const drawY = (height - drawH) / 2;
+
+      // 4. Exact Sector Frame Selection (ZERO GHOSTING — ONLY ONE CRISP FRAME)
+      // Sector 0: [-22.5, +22.5] -> Frame 0 (Front)
+      // Sector 1: [22.5, 67.5]   -> Frame 1 (45° Quarter)
+      // Sector 2: [67.5, 112.5]  -> Frame 2 (90° Profile)
+      // etc.
       const normAngle = ((state.angle % 360) + 360) % 360;
-      const sectorFraction = normAngle / 45;
-      const baseIdx = Math.floor(sectorFraction) % 8;
-      const nextIdx = (baseIdx + 1) % 8;
-      const blendWeight = sectorFraction - Math.floor(sectorFraction);
+      const activeIdx = Math.floor(((normAngle + 22.5) % 360) / 45) % 8;
+      const frame = FRAME_CONFIGS[activeIdx];
+      const img = state.loadedImages[frame.src] || state.loadedImages['/assets/agent/rare_front.jpg'];
 
-      const frameA = FRAME_CONFIGS[baseIdx];
-      const frameB = FRAME_CONFIGS[nextIdx];
-      const imgA = state.loadedImages[frameA.src] || state.loadedImages['/assets/agent/rare_front.jpg'];
-      const imgB = state.loadedImages[frameB.src] || state.loadedImages['/assets/agent/rare_front.jpg'];
-
-      const drawFrame = (img, flip, alpha) => {
-        if (!img || !img.complete || img.naturalWidth === 0) return;
+      if (img && img.complete && img.naturalWidth > 0) {
         ctx.save();
-        ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
 
-        // Full-bleed fit: image aspect matches canvas perfectly (896x1200)
-        if (flip) {
-          ctx.translate(width, 0);
+        if (frame.flip) {
+          // Flip horizontally around the center of the drawn character
+          const centerX = drawX + drawW / 2;
+          ctx.translate(centerX, 0);
           ctx.scale(-1, 1);
+          ctx.translate(-centerX, 0);
         }
 
-        ctx.drawImage(img, 0, 0, width, height);
+        ctx.drawImage(img, drawX, drawY, drawW, drawH);
         ctx.restore();
-      };
-
-      // Continuous dual-frame cross-dissolve: completely eliminates 45° stepped jumps
-      if (imgA && imgB && frameA.src === frameB.src && frameA.flip === frameB.flip) {
-        drawFrame(imgA, frameA.flip, 1.0);
-      } else {
-        if (imgA) drawFrame(imgA, frameA.flip, 1.0 - blendWeight * 0.9);
-        if (imgB && blendWeight > 0.05) drawFrame(imgB, frameB.flip, blendWeight);
       }
 
       ctx.restore();
@@ -220,10 +232,12 @@ export default function Agent360Viewer() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full max-w-[440px] mx-auto aspect-[896/1200] select-none overflow-hidden cursor-grab active:cursor-grabbing touch-none"
+      className="relative w-full mx-auto select-none overflow-hidden cursor-grab active:cursor-grabbing touch-none flex items-center justify-center"
       style={{
+        maxWidth: '460px',
+        height: '520px',
         border: '2px solid var(--hair-dark)',
-        boxShadow: '4px 4px 0px 0px var(--script-blue)',
+        boxShadow: '6px 6px 0px 0px var(--script-blue)',
         background: '#fcfaf4',
       }}
       onPointerDown={handlePointerDown}
@@ -232,7 +246,7 @@ export default function Agent360Viewer() {
       onPointerCancel={handlePointerUp}
       title="Drag to rotate 360° • Click to pause/spin"
     >
-      {/* High-Performance Canvas: ONLY the character turns in 360° */}
+      {/* High-Performance Canvas: Character rendered in natural 3:4 aspect ratio with zero ghosting */}
       <canvas
         ref={canvasRef}
         className="w-full h-full block"
@@ -242,10 +256,10 @@ export default function Agent360Viewer() {
       {/* Minimalist Obol-style Angle & Pause Control in bottom corner */}
       <div
         onClick={toggleSpin}
-        className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 px-2 py-0.5 bg-[#fcfaf4]/90 border border-black text-[11px] font-mono cursor-pointer shadow-[2px_2px_0px_#000] hover:bg-[#0e2bdf] hover:text-white transition-colors"
+        className="absolute bottom-3 right-3 flex items-center gap-2 px-2.5 py-1 bg-white/90 border border-black text-[11px] font-mono cursor-pointer shadow-[2px_2px_0px_#000] hover:bg-[#0e2bdf] hover:text-white transition-colors"
       >
         <span className="font-bold tabular-nums">{angleDisplay}°</span>
-        <span className="text-[10px] uppercase">{isAutoSpin ? 'pause' : 'spin'}</span>
+        <span className="text-[10px] uppercase font-bold tracking-wider">{isAutoSpin ? 'pause' : 'spin'}</span>
       </div>
     </div>
   );
