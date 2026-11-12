@@ -46,14 +46,9 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
       currentAgent.turnImage,
       currentAgent.profileImage,
       currentAgent.backImage,
-      '/assets/agent/rare_front.jpg',
-      '/assets/agent/rare_turn_45.jpg',
-      '/assets/agent/rare_profile.jpg',
-      '/assets/agent/rare_back.jpg',
-    ];
+    ].filter(Boolean);
 
     urls.forEach((url) => {
-      if (!url) return;
       const img = new Image();
       img.src = url;
       img.onload = () => {
@@ -102,8 +97,8 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
       ctx.save();
       ctx.scale(dpr, dpr);
 
-      // Clean Studio Canvas
-      ctx.fillStyle = '#fcfaf4';
+      // 100% Pure White Studio Canvas
+      ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, width, height);
 
       // 3. Aspect-Preserving Character Rendering (Natural 896 / 1200 proportions)
@@ -119,59 +114,82 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
         drawH = drawW / imgAspect;
       }
 
-      const drawX = (width - drawW) / 2;
-      const drawY = (height - drawH) / 2;
-
-      // 4. Exact Sector Frame Selection matching Selected Agent
+      // 4. Frame Selection matching Selected Agent (Never morph into an unrelated character!)
       const normAngle = ((state.angle % 360) + 360) % 360;
-      const sector = Math.floor(((normAngle + 22.5) % 360) / 45) % 8;
-      
       const agent = state.activeAgent || currentAgent;
+      const isEmeraldSentry = agent.archetype === 'Solana Emerald Sentry';
+
       let targetSrc = agent.image;
       let flip = false;
 
-      if (sector === 0) {
-        targetSrc = agent.image; // Front 0°
-        flip = false;
-      } else if (sector === 1) {
-        targetSrc = agent.turnImage || agent.image; // 45° Quarter Right
-        flip = false;
-      } else if (sector === 2) {
-        targetSrc = agent.profileImage || agent.turnImage || agent.image; // 90° Profile Right
-        flip = false;
-      } else if (sector === 3) {
-        targetSrc = agent.backImage || agent.profileImage; // 135° Rear-Quarter Right
-        flip = false;
-      } else if (sector === 4) {
-        targetSrc = agent.backImage || agent.image; // 180° Back
-        flip = false;
-      } else if (sector === 5) {
-        targetSrc = agent.backImage || agent.profileImage; // 225° Rear-Quarter Left
-        flip = true;
-      } else if (sector === 6) {
-        targetSrc = agent.profileImage || agent.turnImage || agent.image; // 270° Profile Left
-        flip = true;
-      } else if (sector === 7) {
-        targetSrc = agent.turnImage || agent.image; // 315° Quarter Left
-        flip = true;
+      if (isEmeraldSentry) {
+        const sector = Math.floor(((normAngle + 22.5) % 360) / 45) % 8;
+        if (sector === 0) {
+          targetSrc = agent.image;
+        } else if (sector === 1) {
+          targetSrc = agent.turnImage || agent.image;
+        } else if (sector === 2) {
+          targetSrc = agent.profileImage || agent.turnImage || agent.image;
+        } else if (sector === 3) {
+          targetSrc = agent.backImage || agent.profileImage;
+        } else if (sector === 4) {
+          targetSrc = agent.backImage || agent.image;
+        } else if (sector === 5) {
+          targetSrc = agent.backImage || agent.profileImage;
+          flip = true;
+        } else if (sector === 6) {
+          targetSrc = agent.profileImage || agent.turnImage || agent.image;
+          flip = true;
+        } else if (sector === 7) {
+          targetSrc = agent.turnImage || agent.image;
+          flip = true;
+        }
+      } else {
+        // Archetype with unique character art: Keep THAT character 100% faithful!
+        // If it has its own turn view, use it at quarter angles
+        if (agent.turnImage && ((normAngle > 35 && normAngle < 145) || (normAngle > 215 && normAngle < 325))) {
+          targetSrc = agent.turnImage;
+          flip = normAngle > 180;
+        } else {
+          targetSrc = agent.image;
+          flip = normAngle > 180;
+        }
       }
 
-      const img = state.loadedImages[targetSrc] || state.loadedImages[agent.image] || state.loadedImages['/assets/agent/rare_front.jpg'];
+      const img = state.loadedImages[targetSrc] || state.loadedImages[agent.image];
 
+      // Draw subtle ground contact shadow under character feet on pure white
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const groundY = centerY + drawH * 0.44;
+      const shadowW = drawW * 0.32;
+
+      ctx.save();
+      const shadowGrad = ctx.createRadialGradient(centerX, groundY, 4, centerX, groundY, shadowW);
+      shadowGrad.addColorStop(0, 'rgba(0, 0, 0, 0.16)');
+      shadowGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.05)');
+      shadowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = shadowGrad;
+      ctx.beginPath();
+      ctx.ellipse(centerX, groundY, shadowW, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Draw Character with Pure White Cutout Blend (No rectangular photo border!)
       if (img && img.complete && img.naturalWidth > 0) {
         ctx.save();
-        if (agent.visualFilter) {
-          ctx.filter = agent.visualFilter;
-        }
+        ctx.translate(centerX, centerY);
 
         if (flip) {
-          const centerX = drawX + drawW / 2;
-          ctx.translate(centerX, 0);
           ctx.scale(-1, 1);
-          ctx.translate(-centerX, 0);
         }
 
-        ctx.drawImage(img, drawX, drawY, drawW, drawH);
+        // Multiply composite + slight contrast boost: blends off-white JPEG backgrounds
+        // seamlessly into 100% pure white (#ffffff), keeping dark armor & neon lights 100% solid!
+        ctx.filter = 'contrast(106%) brightness(103%)';
+        ctx.globalCompositeOperation = 'multiply';
+
+        ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
         ctx.restore();
       }
 
@@ -267,7 +285,7 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
           height: '520px',
           border: '2px solid var(--hair-dark)',
           boxShadow: '6px 6px 0px 0px var(--script-blue)',
-          background: '#fcfaf4',
+          background: '#ffffff',
         }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
