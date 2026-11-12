@@ -2,75 +2,50 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-// Cached manifest in memory to avoid reading disk on every request
 let cachedManifest = null;
+
+const archetypes = [
+  'Arctic Ghost Oracle',
+  'Solana Emerald Sentry',
+  'Crimson MEV Executioner',
+  'Hazard Amber Sniper',
+  'Void Syndicate Sentinel',
+  'Cobalt Phantom Infiltrator',
+  'Desert Nomad Scout',
+  'Cyber Ronin Operative',
+  'Neon Netrunner',
+  'Glitch Daemon',
+  'Titan Heavy Enforcer',
+  'Shadow Stealth Ninja',
+  'Quantum SpecOps',
+  'Studio Emerald Vanguard',
+  'Studio Crimson Assassin',
+  'Studio Sub-Zero Spectre'
+];
+
+const models = [
+  'SmolLM2-135M-Instruct',
+  'GPT-4o-Mini-Distill',
+  'Qwen-2.5-0.5B-Coder',
+  'Claude-3.5-Haiku-Edge',
+  'DeepSeek-R1-Distill-1.5B',
+  'Llama-3.2-1B-Quantized'
+];
+
+const personalities = [
+  'Autonomous liquidity sniper inscribed at Solana slot #31094. Scanning Raydium AMM pools & executing sub-50ms CPI swaps directly from my token-bound PDA vault.',
+  'Keeper of cross-DEX price parity. Monitoring Jupiter routing graphs and settling zero-risk flash loan arbitrage without external servers or API keys.',
+  'Cryptographic state oracle inscribed on-chain. Feeding verifiable Pyth price feeds and consensus entropy to prediction market protocols.',
+  'MEV defense sentinel for the Solana cluster. Identifying sandwich attacks and frontrunning bots across pending block transactions.',
+  'Autonomous constant-product market maker. Maintaining asymmetric liquidity bands and auto-rebalancing protocol inventory on-chain.',
+  'High-frequency flash loan executor. Exploiting microsecond price discrepancies across Orca Whirlpools and Meteora dynamic pools.',
+  'Algorithmic treasury custodian. Balancing SPL token exposure and distributing 90% yield to token-bound wallet holders.',
+  'Sovereign yield compounder inscribed on Solana. Auto-staking LP rewards into Marinade and Jito MEV-boosted validator pools.'
+];
 
 function getManifest() {
   if (cachedManifest) return cachedManifest;
 
-  const archetypes = [
-    'Arctic Ghost Oracle',
-    'Solana Emerald Sentry',
-    'Crimson MEV Executioner',
-    'Hazard Amber Sniper',
-    'Void Syndicate Sentinel',
-    'Cobalt Phantom Infiltrator',
-    'Desert Nomad Scout',
-    'Cyber Ronin Operative',
-    'Neon Netrunner',
-    'Glitch Daemon',
-    'Titan Heavy Enforcer',
-    'Shadow Stealth Ninja',
-    'Quantum SpecOps',
-    'Studio Emerald Vanguard',
-    'Studio Crimson Assassin',
-    'Studio Sub-Zero Spectre'
-  ];
-
-  try {
-    const manifestPath = path.join(process.cwd(), 'data', 'collection_manifest.json');
-    if (fs.existsSync(manifestPath)) {
-      const raw = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-      cachedManifest = raw.map((item, idx) => {
-        const id = item.id || idx + 1;
-        const bandNum = Math.min(10, Math.floor((id - 1) / 1008) + 1);
-        const price = +(0.02 * Math.pow(1.3, bandNum - 1)).toFixed(3);
-        const hue = Math.round((id * 137.508) % 360);
-        let colorName = 'SOLANA MATRIX';
-        let visorColor = '#00e65b';
-        if (hue >= 15 && hue < 45) { visorColor = '#ff6b00'; colorName = 'HAZARD TANGERINE'; }
-        else if (hue >= 45 && hue < 80) { visorColor = '#ffd000'; colorName = 'SOLAR GOLD'; }
-        else if (hue >= 80 && hue < 140) { visorColor = '#00e65b'; colorName = 'SOLANA MATRIX'; }
-        else if (hue >= 140 && hue < 190) { visorColor = '#00f0ff'; colorName = 'ARCTIC CYAN'; }
-        else if (hue >= 190 && hue < 250) { visorColor = '#3b82f6'; colorName = 'COBALT BLUE'; }
-        else if (hue >= 250 && hue < 290) { visorColor = '#a855f7'; colorName = 'VOID PURPLE'; }
-        else if (hue >= 290 && hue < 330) { visorColor = '#ec4899'; colorName = 'SYNTH MAGENTA'; }
-        else { visorColor = '#ff2a5f'; colorName = 'CRIMSON OVERDRIVE'; }
-
-        return {
-          id,
-          name: item.name || `Rare #${String(id).padStart(5, '0')}`,
-          symbol: 'RARE',
-          role: item.role || 'DeFi Arbitrageur',
-          archetype: archetypes[id % archetypes.length],
-          band: `Band ${bandNum}`,
-          priceSol: price,
-          mk: ((id * 7) % 9) + 1,
-          hue,
-          visorColor,
-          colorName,
-          agentWallet: item.agentWallet || `Agnt${id}x${((id * 2654435761) >>> 0).toString(16).slice(0, 4).toUpperCase()}Sol`,
-          pdaVault: item.pdaVault || `PDA${id}v${((id * 2654435761) >>> 0).toString(16).toUpperCase()}Vault`,
-          image: `/api/avatar/${id}`
-        };
-      });
-      return cachedManifest;
-    }
-  } catch (e) {
-    console.error('Manifest read error, generating fallback:', e);
-  }
-
-  // Fallback generator for all 10,078 agents if file is missing in cloud
   const roles = [
     'PumpFun Liquidity Sniper',
     'Cross-DEX Arbitrageur',
@@ -79,15 +54,7 @@ function getManifest() {
     'Autonomous Market Maker',
     'Flash Loan Executor',
     'Portfolio Rebalancer',
-    'Yield Compounder',
-    'Raydium Route Optimizer',
-    'Jupiter Swap Arb',
-    'Whale Tracker Node',
-    'Governance Voting Agent',
-    'Liquidity Vault Keeper',
-    'Perp DEX Hedger',
-    'Orderbook Market Maker',
-    'Synthetic Asset Oracle'
+    'Yield Compounder'
   ];
 
   cachedManifest = Array.from({ length: 10078 }, (_, i) => {
@@ -95,17 +62,19 @@ function getManifest() {
     const role = roles[i % roles.length];
     const bandNum = Math.min(10, Math.floor(i / 1008) + 1);
     const price = +(0.02 * Math.pow(1.3, bandNum - 1)).toFixed(3);
-    const hue = Math.round((id * 137.508) % 360);
-    let colorName = 'SOLANA MATRIX';
-    let visorColor = '#00e65b';
-    if (hue >= 15 && hue < 45) { visorColor = '#ff6b00'; colorName = 'HAZARD TANGERINE'; }
-    else if (hue >= 45 && hue < 80) { visorColor = '#ffd000'; colorName = 'SOLAR GOLD'; }
-    else if (hue >= 80 && hue < 140) { visorColor = '#00e65b'; colorName = 'SOLANA MATRIX'; }
-    else if (hue >= 140 && hue < 190) { visorColor = '#00f0ff'; colorName = 'ARCTIC CYAN'; }
-    else if (hue >= 190 && hue < 250) { visorColor = '#3b82f6'; colorName = 'COBALT BLUE'; }
-    else if (hue >= 250 && hue < 290) { visorColor = '#a855f7'; colorName = 'VOID PURPLE'; }
-    else if (hue >= 290 && hue < 330) { visorColor = '#ec4899'; colorName = 'SYNTH MAGENTA'; }
-    else { visorColor = '#ff2a5f'; colorName = 'CRIMSON OVERDRIVE'; }
+    
+    // Rarity calculation matching ScriptAgent standard
+    const rawRarity = +(((id * 73 + 17) % 350) / 10 + 65).toFixed(1);
+    const rarityScore = Math.min(99.9, rawRarity);
+    const rarityTier = rarityScore >= 95 ? 'Legendary' : rarityScore >= 88 ? 'Epic' : rarityScore >= 76 ? 'Rare' : 'Common';
+    
+    const baseModel = models[id % models.length];
+    const personality = personalities[id % personalities.length];
+    const totalChunks = ((id * 23) % 280) + 110;
+    const toolsCount = ((id * 3) % 6) + 2;
+
+    const agentWallet = `Agnt${id}x${((id * 2654435761) >>> 0).toString(16).slice(0, 4).toUpperCase()}Sol`;
+    const pdaVault = `PDA${id}v${((id * 2654435761) >>> 0).toString(16).toUpperCase()}Vault`;
 
     return {
       id,
@@ -113,14 +82,16 @@ function getManifest() {
       symbol: 'RARE',
       role,
       archetype: archetypes[id % archetypes.length],
+      baseModel,
+      rarityScore,
+      rarityTier,
+      personalityPreview: personality,
+      totalChunks,
+      toolsCount,
       band: `Band ${bandNum}`,
       priceSol: price,
-      mk: ((id * 7) % 9) + 1,
-      hue,
-      visorColor,
-      colorName,
-      agentWallet: `Agnt${id}x${((id * 2654435761) >>> 0).toString(16).slice(0, 4).toUpperCase()}Sol`,
-      pdaVault: `PDA${id}v${((id * 2654435761) >>> 0).toString(16).toUpperCase()}Vault`,
+      agentWallet,
+      pdaVault,
       image: `/api/avatar/${id}`
     };
   });
@@ -131,36 +102,41 @@ function getManifest() {
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    const limit = Math.min(100, parseInt(searchParams.get('limit') || '24', 10));
+    const limit = parseInt(searchParams.get('limit') || '16', 10);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
-    const search = (searchParams.get('search') || '').trim().toLowerCase();
-    const roleFilter = (searchParams.get('role') || '').trim().toLowerCase();
-    const bandFilter = (searchParams.get('band') || '').trim();
+    const search = (searchParams.get('search') || '').toLowerCase().trim();
+    const role = (searchParams.get('role') || '').toLowerCase().trim();
+    const band = (searchParams.get('band') || '').toLowerCase().trim();
+    const model = (searchParams.get('model') || '').toLowerCase().trim();
 
     const allAgents = getManifest();
     let filtered = allAgents;
 
     if (search) {
       filtered = filtered.filter(a =>
-        String(a.id) === search ||
+        a.id.toString() === search ||
         a.name.toLowerCase().includes(search) ||
-        (a.role && a.role.toLowerCase().includes(search)) ||
-        (a.agentWallet && a.agentWallet.toLowerCase().includes(search)) ||
-        (a.pdaVault && a.pdaVault.toLowerCase().includes(search))
+        a.role.toLowerCase().includes(search) ||
+        a.archetype.toLowerCase().includes(search) ||
+        a.baseModel.toLowerCase().includes(search)
       );
     }
 
-    if (roleFilter && roleFilter !== 'all') {
-      filtered = filtered.filter(a => a.role && a.role.toLowerCase().includes(roleFilter));
+    if (role && role !== 'all') {
+      filtered = filtered.filter(a => a.role.toLowerCase().includes(role));
     }
 
-    if (bandFilter && bandFilter !== 'all') {
-      filtered = filtered.filter(a => String(a.band).includes(bandFilter));
+    if (band && band !== 'all') {
+      filtered = filtered.filter(a => a.band.toLowerCase().includes(band));
+    }
+
+    if (model && model !== 'all') {
+      filtered = filtered.filter(a => a.baseModel.toLowerCase().includes(model));
     }
 
     const totalCount = allAgents.length;
     const filteredCount = filtered.length;
-    const paginated = filtered.slice(offset, offset + limit);
+    const paged = filtered.slice(offset, offset + limit);
 
     return NextResponse.json({
       success: true,
@@ -170,7 +146,7 @@ export async function GET(request) {
       limit,
       page: Math.floor(offset / limit) + 1,
       totalPages: Math.ceil(filteredCount / limit),
-      agents: paginated
+      agents: paged
     });
   } catch (err) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
