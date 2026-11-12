@@ -3,44 +3,41 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 /**
- * TURNTABLE ASSETS
- * All 4 master angle renders preloaded into offscreen ImageBitmaps.
- * 8 total viewing sectors in 360° space (0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°).
+ * TURNTABLE FRAMES (896 x 1200 master studio 3D renders)
+ * 8 discrete angles in 360° space (0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°).
  */
 const FRAME_CONFIGS = [
-  { angle: 0,   src: '/assets/agent/rare_front.jpg',   flip: false, label: 'FRONT 0°' },
-  { angle: 45,  src: '/assets/agent/rare_turn_45.jpg', flip: false, label: 'QUARTER 45°' },
-  { angle: 90,  src: '/assets/agent/rare_profile.jpg', flip: false, label: 'PROFILE 90°' },
-  { angle: 135, src: '/assets/agent/rare_back.jpg',    flip: false, label: 'REAR-Q 135°' },
-  { angle: 180, src: '/assets/agent/rare_back.jpg',    flip: false, label: 'REAR 180°' },
-  { angle: 225, src: '/assets/agent/rare_back.jpg',    flip: true,  label: 'REAR-Q 225°' },
-  { angle: 270, src: '/assets/agent/rare_profile.jpg', flip: true,  label: 'PROFILE 270°' },
-  { angle: 315, src: '/assets/agent/rare_turn_45.jpg', flip: true,  label: 'QUARTER 315°' },
+  { angle: 0,   src: '/assets/agent/rare_front.jpg',   flip: false },
+  { angle: 45,  src: '/assets/agent/rare_turn_45.jpg', flip: false },
+  { angle: 90,  src: '/assets/agent/rare_profile.jpg', flip: false },
+  { angle: 135, src: '/assets/agent/rare_back.jpg',    flip: false },
+  { angle: 180, src: '/assets/agent/rare_back.jpg',    flip: false },
+  { angle: 225, src: '/assets/agent/rare_back.jpg',    flip: true  },
+  { angle: 270, src: '/assets/agent/rare_profile.jpg', flip: true  },
+  { angle: 315, src: '/assets/agent/rare_turn_45.jpg', flip: true  },
 ];
 
-export default function Agent360Viewer({ agentId = 1, price = 0.02, agentName = 'Solana Emerald Sentry' }) {
+export default function Agent360Viewer() {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
 
-  // High-performance physics state stored in refs (ZERO React re-renders during 60FPS animation!)
+  // Physics & Animation state kept in refs (ZERO React re-renders during 60FPS animation)
   const stateRef = useRef({
     angle: 0,             // 0 to 360 continuous
-    targetAngle: 0,
-    velocity: 0,          // Drag inertia momentum
+    velocity: 0,          // Drag momentum
     isDragging: false,
     startX: 0,
     lastX: 0,
     lastTime: 0,
     isAutoSpin: true,
-    loadedImages: {},     // src -> HTMLImageElement
+    loadedImages: {},
     isReady: false,
   });
 
   const [angleDisplay, setAngleDisplay] = useState(0);
-  const [isAutoSpinState, setIsAutoSpinState] = useState(true);
-  const [loadProgress, setLoadProgress] = useState(0);
+  const [isAutoSpin, setIsAutoSpin] = useState(true);
 
-  // Preload all assets immediately
+  // Preload all 4 master angle assets into memory
   useEffect(() => {
     const urls = [
       '/assets/agent/rare_front.jpg',
@@ -56,19 +53,17 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, agentName = 
       img.onload = () => {
         stateRef.current.loadedImages[url] = img;
         loadedCount += 1;
-        setLoadProgress(Math.round((loadedCount / urls.length) * 100));
         if (loadedCount >= urls.length) {
           stateRef.current.isReady = true;
         }
       };
       img.onerror = () => {
-        // Fallback to front image if an angle fails
         stateRef.current.loadedImages[url] = stateRef.current.loadedImages['/assets/agent/rare_front.jpg'] || img;
       };
     });
   }, []);
 
-  // 60FPS Canvas Render Loop with Inertia Physics & Continuous Dual-Frame Cross-Dissolve
+  // 60FPS Ultra-Smooth Canvas Render Loop
   useEffect(() => {
     let animId;
     let lastStamp = performance.now();
@@ -79,27 +74,25 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, agentName = 
     const ctx = canvas.getContext('2d', { alpha: false });
 
     const render = (stamp) => {
-      const dt = Math.min((stamp - lastStamp) / 1000, 0.1); // clamp delta
+      const dt = Math.min((stamp - lastStamp) / 1000, 0.1);
       lastStamp = stamp;
       const state = stateRef.current;
 
-      // 1. Physics & Motion Update
+      // 1. Motion & Physics
       if (state.isDragging) {
-        // Handled in pointer move
+        // Dragged directly in pointer move
       } else if (state.isAutoSpin) {
-        // Smooth constant rotation (24 deg/s)
-        state.angle = (state.angle + dt * 24) % 360;
+        state.angle = (state.angle + dt * 26) % 360;
         if (state.angle < 0) state.angle += 360;
       } else if (Math.abs(state.velocity) > 0.05) {
-        // Coasting with inertia friction
         state.angle = (state.angle + state.velocity) % 360;
         if (state.angle < 0) state.angle += 360;
-        state.velocity *= 0.93; // smooth deceleration
+        state.velocity *= 0.93; // smooth coasting damping
       } else {
         state.velocity = 0;
       }
 
-      // Throttle React state update for degree HUD to 10 FPS (saves CPU / zero render lag)
+      // Throttle minimal degree display update to 10 FPS
       displayThrottle += dt;
       if (displayThrottle > 0.1) {
         displayThrottle = 0;
@@ -118,93 +111,43 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, agentName = 
       ctx.save();
       ctx.scale(dpr, dpr);
 
-      // Background Parchment Studio fill
+      // Studio Parchment background fill
       ctx.fillStyle = '#fcfaf4';
       ctx.fillRect(0, 0, width, height);
 
-      // Draw Turntable Base Plinth (Brutalist circular pedestal)
-      const centerX = width / 2;
-      const centerY = height * 0.82;
-      const radiusX = width * 0.38;
-      const radiusY = height * 0.10;
-
-      // Shadow underneath pedestal
-      ctx.beginPath();
-      ctx.ellipse(centerX + 4, centerY + 6, radiusX, radiusY, 0, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(14, 43, 223, 0.15)'; // electric blue shadow
-      ctx.fill();
-
-      // Pedestal base ring
-      ctx.beginPath();
-      ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
-      ctx.fillStyle = '#f1ede3';
-      ctx.fill();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = '#18181b';
-      ctx.stroke();
-
-      // Pedestal inner indicator track
-      ctx.beginPath();
-      ctx.ellipse(centerX, centerY, radiusX * 0.85, radiusY * 0.85, 0, 0, Math.PI * 2);
-      ctx.strokeStyle = '#d5cfc0';
-      ctx.setLineDash([4, 4]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Active rotation notch indicator on pedestal
-      const notchRad = (state.angle * Math.PI) / 180;
-      const notchX = centerX + Math.cos(notchRad) * (radiusX * 0.85);
-      const notchY = centerY + Math.sin(notchRad) * (radiusY * 0.85);
-      ctx.beginPath();
-      ctx.arc(notchX, notchY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = '#0e2bdf';
-      ctx.fill();
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = '#ffffff';
-      ctx.stroke();
-
-      // 3. Draw Character Frame with Continuous Dual-Frame Cross-Dissolve
-      // Sector calculation: 8 frames, each 45 degrees
+      // 3. Draw ONLY the character in full-bleed (zero card edges, zero platter, zero clutter)
       const normAngle = ((state.angle % 360) + 360) % 360;
       const sectorFraction = normAngle / 45;
       const baseIdx = Math.floor(sectorFraction) % 8;
       const nextIdx = (baseIdx + 1) % 8;
-      const blendWeight = sectorFraction - Math.floor(sectorFraction); // 0.0 to 1.0
+      const blendWeight = sectorFraction - Math.floor(sectorFraction);
 
       const frameA = FRAME_CONFIGS[baseIdx];
       const frameB = FRAME_CONFIGS[nextIdx];
       const imgA = state.loadedImages[frameA.src] || state.loadedImages['/assets/agent/rare_front.jpg'];
       const imgB = state.loadedImages[frameB.src] || state.loadedImages['/assets/agent/rare_front.jpg'];
 
-      const drawCharacterImage = (img, flip, alpha) => {
+      const drawFrame = (img, flip, alpha) => {
         if (!img || !img.complete || img.naturalWidth === 0) return;
         ctx.save();
         ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
 
-        // Center position
-        const targetH = height * 0.88;
-        const aspect = img.naturalWidth / img.naturalHeight;
-        const targetW = targetH * aspect;
-        const posX = centerX - targetW / 2;
-        const posY = centerY - targetH + radiusY * 0.5;
-
+        // Full-bleed fit: image aspect matches canvas perfectly (896x1200)
         if (flip) {
-          ctx.translate(centerX, centerY);
+          ctx.translate(width, 0);
           ctx.scale(-1, 1);
-          ctx.translate(-centerX, -centerY);
         }
 
-        ctx.drawImage(img, posX, posY, targetW, targetH);
+        ctx.drawImage(img, 0, 0, width, height);
         ctx.restore();
       };
 
-      // If both frames are the exact same image (e.g. back to back), draw once without cross-dissolve overhead
+      // Continuous dual-frame cross-dissolve: completely eliminates 45° stepped jumps
       if (imgA && imgB && frameA.src === frameB.src && frameA.flip === frameB.flip) {
-        drawCharacterImage(imgA, frameA.flip, 1.0);
+        drawFrame(imgA, frameA.flip, 1.0);
       } else {
-        // Smooth cross-dissolve blend between current frame and next frame
-        if (imgA) drawCharacterImage(imgA, frameA.flip, 1.0 - blendWeight * 0.85);
-        if (imgB && blendWeight > 0.05) drawCharacterImage(imgB, frameB.flip, blendWeight);
+        if (imgA) drawFrame(imgA, frameA.flip, 1.0 - blendWeight * 0.9);
+        if (imgB && blendWeight > 0.05) drawFrame(imgB, frameB.flip, blendWeight);
       }
 
       ctx.restore();
@@ -215,12 +158,12 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, agentName = 
     return () => cancelAnimationFrame(animId);
   }, []);
 
-  // Pointer Drag Handlers with Velocity Calculation for Momentum
+  // Pointer Drag Handlers with Velocity Inertia
   const handlePointerDown = (e) => {
     const state = stateRef.current;
     state.isDragging = true;
     state.isAutoSpin = false;
-    setIsAutoSpinState(false);
+    setIsAutoSpin(false);
     state.velocity = 0;
 
     const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
@@ -244,13 +187,13 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, agentName = 
     const deltaX = clientX - state.lastX;
     const dt = Math.max(1, now - state.lastTime);
 
-    // 0.55 deg per pixel sensitivity
-    state.angle = (state.angle - deltaX * 0.55) % 360;
+    // 0.65 deg per pixel sensitivity
+    state.angle = (state.angle - deltaX * 0.65) % 360;
     if (state.angle < 0) state.angle += 360;
 
-    // Calculate instantaneous velocity for drag momentum release
-    state.velocity = -(deltaX / dt) * 8.5;
-    state.velocity = Math.max(-12, Math.min(12, state.velocity)); // clamp
+    // Calculate instantaneous velocity for release momentum
+    state.velocity = -(deltaX / dt) * 9.0;
+    state.velocity = Math.max(-14, Math.min(14, state.velocity));
 
     state.lastX = clientX;
     state.lastTime = now;
@@ -266,123 +209,43 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, agentName = 
     }
   };
 
-  // Quick Preset Snap
-  const snapToAngle = (deg) => {
-    const state = stateRef.current;
-    state.isAutoSpin = false;
-    setIsAutoSpinState(false);
-    state.velocity = 0;
-    state.angle = deg % 360;
-  };
-
-  const toggleAutoSpin = () => {
+  const toggleSpin = (e) => {
+    e.stopPropagation();
     const state = stateRef.current;
     state.isAutoSpin = !state.isAutoSpin;
     state.velocity = 0;
-    setIsAutoSpinState(state.isAutoSpin);
+    setIsAutoSpin(state.isAutoSpin);
   };
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full max-w-[500px] mx-auto select-none flex flex-col items-center"
+      className="relative w-full max-w-[440px] mx-auto aspect-[896/1200] select-none overflow-hidden cursor-grab active:cursor-grabbing touch-none"
       style={{
-        background: 'var(--parchment)',
         border: '2px solid var(--hair-dark)',
-        boxShadow: '6px 6px 0px 0px var(--script-blue)',
+        boxShadow: '4px 4px 0px 0px var(--script-blue)',
+        background: '#fcfaf4',
       }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      title="Drag to rotate 360° • Click to pause/spin"
     >
-      {/* Top Tactical Status Bar */}
-      <div className="w-full flex items-center justify-between px-3 py-2 border-b-2 border-black bg-[#f1ede3] font-mono text-[11px] font-semibold text-black">
-        <div className="flex items-center gap-2">
-          <span className="inline-block w-2.5 h-2.5 bg-[#10b981] border border-black shadow-[1px_1px_0px_#000]" />
-          <span className="font-pixel text-[10px] uppercase tracking-wider">3D TURNTABLE // 60FPS</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="text-[#0e2bdf] font-bold font-pixel text-[10px]">{angleDisplay}°</span>
-          <span className="text-zinc-500">BAND 1/10</span>
-        </div>
-      </div>
+      {/* High-Performance Canvas: ONLY the character turns in 360° */}
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full block"
+        style={{ width: '100%', height: '100%' }}
+      />
 
-      {/* Main 60FPS HTML5 Canvas Turntable Viewport */}
+      {/* Minimalist Obol-style Angle & Pause Control in bottom corner */}
       <div
-        className="relative w-full aspect-square cursor-grab active:cursor-grabbing touch-none flex items-center justify-center overflow-hidden"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
+        onClick={toggleSpin}
+        className="absolute bottom-2.5 right-2.5 flex items-center gap-1.5 px-2 py-0.5 bg-[#fcfaf4]/90 border border-black text-[11px] font-mono cursor-pointer shadow-[2px_2px_0px_#000] hover:bg-[#0e2bdf] hover:text-white transition-colors"
       >
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full block"
-          style={{ width: '100%', height: '100%' }}
-        />
-
-        {/* Floating Hologram Scanline Watermark */}
-        <div className="absolute top-3 left-3 pointer-events-none flex flex-col gap-0.5 opacity-80">
-          <span className="font-pixel text-[9px] text-[#0e2bdf] uppercase font-bold tracking-widest bg-white/80 px-1.5 py-0.5 border border-black">
-            SOLANA ANCHOR CPI
-          </span>
-          <span className="font-mono text-[9px] text-zinc-600 bg-white/80 px-1.5 border border-black">
-            TOKEN-BOUND PDA
-          </span>
-        </div>
-
-        {/* Drag Hint on Initial Hover */}
-        <div className="absolute bottom-3 left-3 pointer-events-none font-mono text-[9px] text-zinc-600 bg-white/90 border border-black px-2 py-0.5 shadow-[2px_2px_0px_#000]">
-          DRAG TO ROTATE 360°
-        </div>
-
-        {/* Play/Pause Float Button */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleAutoSpin();
-          }}
-          className="absolute bottom-3 right-3 font-pixel text-[9px] uppercase px-2.5 py-1 bg-white border border-black shadow-[2px_2px_0px_#000] hover:bg-[#0e2bdf] hover:text-white transition-colors"
-        >
-          {isAutoSpinState ? '■ PAUSE' : '▶ AUTO-SPIN'}
-        </button>
-      </div>
-
-      {/* Bottom Preset Angle Ribbon */}
-      <div className="w-full grid grid-cols-5 border-t-2 border-black bg-[#f1ede3] text-[10px] font-mono divide-x-2 divide-black">
-        <button
-          type="button"
-          onClick={() => snapToAngle(0)}
-          className="py-1.5 hover:bg-[#0e2bdf] hover:text-white transition-colors text-center font-bold"
-        >
-          0° FRONT
-        </button>
-        <button
-          type="button"
-          onClick={() => snapToAngle(45)}
-          className="py-1.5 hover:bg-[#0e2bdf] hover:text-white transition-colors text-center font-bold"
-        >
-          45° QTR
-        </button>
-        <button
-          type="button"
-          onClick={() => snapToAngle(90)}
-          className="py-1.5 hover:bg-[#0e2bdf] hover:text-white transition-colors text-center font-bold"
-        >
-          90° SIDE
-        </button>
-        <button
-          type="button"
-          onClick={() => snapToAngle(180)}
-          className="py-1.5 hover:bg-[#0e2bdf] hover:text-white transition-colors text-center font-bold"
-        >
-          180° REAR
-        </button>
-        <button
-          type="button"
-          onClick={() => snapToAngle(270)}
-          className="py-1.5 hover:bg-[#0e2bdf] hover:text-white transition-colors text-center font-bold"
-        >
-          270° SIDE
-        </button>
+        <span className="font-bold tabular-nums">{angleDisplay}°</span>
+        <span className="text-[10px] uppercase">{isAutoSpin ? 'pause' : 'spin'}</span>
       </div>
     </div>
   );
