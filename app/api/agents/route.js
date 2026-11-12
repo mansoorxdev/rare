@@ -23,13 +23,13 @@ const archetypes = [
   'Studio Sub-Zero Spectre'
 ];
 
-const models = [
-  'SmolLM2-135M-Instruct',
-  'GPT-4o-Mini-Distill',
-  'Qwen-2.5-0.5B-Coder',
-  'Claude-3.5-Haiku-Edge',
-  'DeepSeek-R1-Distill-1.5B',
-  'Llama-3.2-1B-Quantized'
+const engines = [
+  'Anchor CPI Core v1.2',
+  'Jupiter Routing Kernel v3',
+  'Jito MEV Defense Bundler',
+  'Raydium AMM Worker v4',
+  'Pyth Oracle Entropy Feed',
+  'Cross-DEX Flash Engine'
 ];
 
 const personalities = [
@@ -68,9 +68,9 @@ function getManifest() {
     const rarityScore = Math.min(99.9, rawRarity);
     const rarityTier = rarityScore >= 95 ? 'Legendary' : rarityScore >= 88 ? 'Epic' : rarityScore >= 76 ? 'Rare' : 'Common';
     
-    const baseModel = models[id % models.length];
+    const engine = engines[id % engines.length];
     const personality = personalities[id % personalities.length];
-    const totalChunks = ((id * 23) % 280) + 110;
+    const pdaFunding = +(price * 0.9).toFixed(4);
     const toolsCount = ((id * 3) % 6) + 2;
 
     const agentWallet = `Agnt${id}x${((id * 2654435761) >>> 0).toString(16).slice(0, 4).toUpperCase()}Sol`;
@@ -82,11 +82,11 @@ function getManifest() {
       symbol: 'RARE',
       role,
       archetype: archetypes[id % archetypes.length],
-      baseModel,
+      engine,
       rarityScore,
       rarityTier,
       personalityPreview: personality,
-      totalChunks,
+      pdaFunding: `${pdaFunding} SOL`,
       toolsCount,
       band: `Band ${bandNum}`,
       priceSol: price,

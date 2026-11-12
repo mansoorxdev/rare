@@ -18,10 +18,10 @@ export default function HomePage() {
   // Terminal Console State
   const [consoleOpen, setConsoleOpen] = useState(false);
   const [terminalLines, setTerminalLines] = useState([
-    { type: 'green', text: '> RARE INSCRIBED ENGINE [SOLANA MAINNET-BETA]' },
-    { type: 'info', text: '> 10,078 AUTONOMOUS AGENTS INSCRIBED VIA 960B CHUNKS.' },
-    { type: 'info', text: '> WEBGPU / WASM RUNTIME SYNCHRONIZED.' },
-    { type: 'info', text: "> TYPE 'help' OR 'stats' FOR PROTOCOL TELEMETRY." }
+    { type: 'green', text: '> RARE PROTOCOL ENGINE [SOLANA MAINNET-BETA]' },
+    { type: 'info', text: '> 10,078 AUTONOMOUS TOKEN-BOUND AGENTS INITIALIZED.' },
+    { type: 'info', text: '> 90% CAPITAL ROUTED TO ON-CHAIN PDA VAULTS VIA ANCHOR CPI.' },
+    { type: 'info', text: "> TYPE 'help', 'inspect <id>', OR 'split' FOR PROTOCOL TELEMETRY." }
   ]);
   const [commandInput, setCommandInput] = useState('');
   const terminalEndRef = useRef(null);
@@ -30,13 +30,12 @@ export default function HomePage() {
   const [explorerAgents, setExplorerAgents] = useState([]);
   const [explorerSearch, setExplorerSearch] = useState('');
   const [explorerRole, setExplorerRole] = useState('all');
-  const [explorerModel, setExplorerModel] = useState('all');
   const [explorerPage, setExplorerPage] = useState(1);
   const [explorerTotalPages, setExplorerTotalPages] = useState(630);
   const [explorerTotalCount, setExplorerTotalCount] = useState(10078);
   const [explorerLoading, setExplorerLoading] = useState(false);
 
-  const fetchExplorerAgents = async (page = 1, search = '', role = 'all', model = 'all') => {
+  const fetchExplorerAgents = async (page = 1, search = '', role = 'all') => {
     setExplorerLoading(true);
     try {
       const limit = 16;
@@ -45,8 +44,7 @@ export default function HomePage() {
         limit: String(limit),
         offset: String(offset),
         search: search.trim(),
-        role: role === 'all' ? '' : role,
-        model: model === 'all' ? '' : model
+        role: role === 'all' ? '' : role
       });
       const res = await fetch(`/api/agents?${params.toString()}`);
       const data = await res.json();
@@ -64,13 +62,13 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    fetchExplorerAgents(explorerPage, explorerSearch, explorerRole, explorerModel);
-  }, [explorerPage, explorerRole, explorerModel]);
+    fetchExplorerAgents(explorerPage, explorerSearch, explorerRole);
+  }, [explorerPage, explorerRole]);
 
   const handleSearchSubmit = (e) => {
     if (e) e.preventDefault();
     setExplorerPage(1);
-    fetchExplorerAgents(1, explorerSearch, explorerRole, explorerModel);
+    fetchExplorerAgents(1, explorerSearch, explorerRole);
   };
 
   const handleRoleFilterChange = (role) => {
@@ -120,17 +118,17 @@ export default function HomePage() {
     }
 
     setIsMinting(true);
-    setMintStatus('Initiating Anchor CPI capital split & inscription...');
+    setMintStatus('Initiating Anchor CPI 90/10 capital split...');
 
     setTimeout(() => {
-      setMintStatus('Deriving Agent PDA Vault on-chain...');
+      setMintStatus('Deriving Agent Token-Bound PDA Vault on Solana...');
     }, 700);
 
     setTimeout(() => {
       const newId = rareId ? parseInt(rareId, 10) : soldCount + 1;
       setSoldCount(prev => prev + 1);
       setIsMinting(false);
-      setMintStatus(`Success! Rare #${newId} inscribed. 90% deposited to Agent PDA.`);
+      setMintStatus(`Success! Rare #${newId} activated. 90% (${(pricePerAgent * 0.9).toFixed(3)} SOL) deposited into Agent PDA.`);
     }, 1800);
   };
 
@@ -145,30 +143,30 @@ export default function HomePage() {
       protocol: 'RARE Protocol ($RARE)',
       version: '1.0.0-solana',
       cluster: 'solana-mainnet',
-      birthNumber: agent.id,
-      agentName: agent.name,
+      agentId: agent.id,
+      name: agent.name,
+      symbol: 'RARE',
       role: agent.role,
-      baseModel: agent.baseModel,
+      archetype: agent.archetype,
+      engine: agent.engine,
       rarityScore: agent.rarityScore,
       rarityTier: agent.rarityTier,
-      totalChunks: agent.totalChunks,
-      chunkSize: 960,
-      toolsCount: agent.toolsCount,
+      tokenBoundPdaVault: agent.pdaVault,
+      initialPdaFunding: agent.pdaFunding,
       agentWallet: agent.agentWallet,
-      pdaVault: agent.pdaVault,
-      personalityPrompt: agent.personalityPreview,
+      treasurySplit: '90% Agent PDA / 10% Protocol',
+      missionPrompt: agent.personalityPreview,
       timestamp: new Date().toISOString(),
-      execution: {
-        runtime: 'WebGPU / WebAssembly (WASM)',
-        localInference: true,
-        zeroServerRequired: true
+      contracts: {
+        anchorProgramId: 'Rare111111111111111111111111111111111111111',
+        treasury: treasuryWallet
       }
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `rare-${String(agent.id).padStart(5, '0')}-manifest.json`;
+    a.download = `rare-${String(agent.id).padStart(5, '0')}-tokenbound.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -208,18 +206,19 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ScriptAgent-Style Header Navigation */}
+      {/* ScriptAgent Pixel-Brutalist Header */}
       <header className="sa-nav">
         <div className="sa-nav-in">
           <a className="sa-brand" href="#home" onClick={(e) => scrollToSection(e, 'home')}>
             <span className="sa-brand-icon">R</span>
-            <span>RARE</span>
+            <span>RARE PROTOCOL</span>
           </a>
 
           <nav className="sa-links">
-            <a href="#directory" onClick={(e) => scrollToSection(e, 'directory')}>Genesis Agents</a>
-            <button type="button" onClick={() => setConsoleOpen(true)}>WebGPU Terminal</button>
-            <a href="#specs" onClick={(e) => scrollToSection(e, 'specs')}>Architecture</a>
+            <a href="#directory" onClick={(e) => scrollToSection(e, 'directory')}>Agent Roster</a>
+            <a href="#ladder" onClick={(e) => scrollToSection(e, 'ladder')}>Price Ladder</a>
+            <button type="button" onClick={() => setConsoleOpen(true)}>Console Terminal</button>
+            <a href="#specs" onClick={(e) => scrollToSection(e, 'specs')}>PDA Specs</a>
             <a href="/RARE_Protocol_Whitepaper.pdf" target="_blank" rel="noreferrer">Whitepaper</a>
           </nav>
 
@@ -242,21 +241,21 @@ export default function HomePage() {
       </header>
 
       <div className="wrap">
-        {/* CA & Pump.fun Live Announcement Banner */}
+        {/* CA & Token Broadcast Banner */}
         <section className="ca-banner">
           <div className="ca-banner-left">
             <div className="ca-pill">
               <span className="pulse"></span>
-              <span>$RARE LIVE ON SOLANA</span>
+              <span>$RARE PROTOCOL • SOLANA TOKEN-BOUND ACCOUNTS</span>
             </div>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--dim)' }}>
-              CA:
+              TREASURY:
             </span>
             <code className="ca-code">{treasuryWallet}</code>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button type="button" onClick={handleCopyCa} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '11px' }}>
-              {copiedCa ? '✓ Copied!' : 'Copy CA'}
+              {copiedCa ? '✓ Copied!' : 'Copy Address'}
             </button>
             <a
               href={`https://solscan.io/account/${treasuryWallet}`}
@@ -270,7 +269,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ScriptAgent Hero Inscription Deck */}
+        {/* Hero Section: 3D Turntable + Token-Bound Mint Deck */}
         <section className="sa-hero" id="home">
           <div className="sa-hero-corner">
             <div className="sa-hero-ribbon">SOLANA</div>
@@ -287,13 +286,13 @@ export default function HomePage() {
 
             {/* Right Column: Inscription & Buy Controls */}
             <div>
-              <span className="sa-tag">Autonomous On-Chain Intelligence</span>
-              <h1>AI AGENTS INSCRIBED ON SOLANA FOREVER.</h1>
+              <span className="sa-tag">10,078 Token-Bound Autonomous Agents</span>
+              <h1>10,078 AUTONOMOUS AI AGENTS ON SOLANA.</h1>
               <p className="sa-hero-p">
-                10,078 sovereign agents inscribed on Solana. Every byte of prompt and model weights etched onto the ledger. 90% of every sale deposits directly into the agent&apos;s on-chain PDA vault.
+                Each agent is an on-chain NFT with its own token-bound PDA wallet. When you mint, 90% of what you pay is deposited directly into the agent&apos;s wallet to fund its autonomous trading, arbitrage, and on-chain execution.
               </p>
 
-              {/* Purchase / Inscribe Control Deck */}
+              {/* Purchase / Mint Deck */}
               <div className="buy-deck">
                 <div className="buy-deck-row">
                   <div className="buy-field">
@@ -329,13 +328,13 @@ export default function HomePage() {
                     className="btn-primary"
                     style={{ padding: '9px 24px', fontSize: '13px' }}
                   >
-                    {isMinting ? 'Inscribing…' : `INSCRIBE (${(pricePerAgent * quantity).toFixed(2)} SOL) →`}
+                    {isMinting ? 'Minting…' : `MINT & ACTIVATE (${(pricePerAgent * quantity).toFixed(2)} SOL) →`}
                   </button>
                 </div>
 
                 <div className="buy-split-note">
                   <span>✦</span>
-                  <span><b>90% directly to Agent PDA Vault</b> • 10% Protocol Treasury • Instant Anchor CPI execution.</span>
+                  <span><b>90% directly deposited into Agent PDA Vault</b> • 10% to Protocol Treasury • Wallet follows the NFT on secondary transfer.</span>
                 </div>
 
                 {mintStatus && (
@@ -350,46 +349,46 @@ export default function HomePage() {
                 <span>•</span>
                 <span>Sold: <b style={{ color: 'var(--ink)' }}>{soldCount} / 10,078</b></span>
                 <span>•</span>
-                <span>Standard: <b style={{ color: 'var(--script-blue)' }}>960B MTU Chunks</b></span>
+                <span>Architecture: <b style={{ color: 'var(--script-blue)' }}>Solana Anchor CPI</b></span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 4-Column ScriptAgent Metrics Grid */}
+        {/* 4-Column RARE Protocol Metrics Grid */}
         <section className="stats-grid">
           <div className="stat-card">
-            <span className="stat-card-title">Total Agents Born</span>
+            <span className="stat-card-title">Total Agent Supply</span>
             <div className="stat-card-val">10,078</div>
             <span className="stat-card-sub">Genesis #00001 to #10078</span>
           </div>
 
           <div className="stat-card">
-            <span className="stat-card-title">Chunk Standard</span>
-            <div className="stat-card-val">960B</div>
-            <span className="stat-card-sub">MTU Safe • SHA-256 Verified</span>
-          </div>
-
-          <div className="stat-card">
-            <span className="stat-card-title">On-Chain Split</span>
+            <span className="stat-card-title">Capital Routing</span>
             <div className="stat-card-val">90 / 10</div>
-            <span className="stat-card-sub">Direct Anchor CPI Deposit</span>
+            <span className="stat-card-sub">90% Agent PDA • 10% Treasury</span>
           </div>
 
           <div className="stat-card">
-            <span className="stat-card-title">Execution Runtime</span>
-            <div className="stat-card-val">WebGPU</div>
-            <span className="stat-card-sub">& WASM Zero Server Inference</span>
+            <span className="stat-card-title">Bonding Curve</span>
+            <div className="stat-card-val">10 Bands</div>
+            <span className="stat-card-sub">0.02 SOL to 0.212 SOL (1.3×)</span>
+          </div>
+
+          <div className="stat-card">
+            <span className="stat-card-title">Wallet Mechanic</span>
+            <div className="stat-card-val">Token-Bound</div>
+            <span className="stat-card-sub">Program Derived Address (PDA)</span>
           </div>
         </section>
 
-        {/* Genesis Agent Directory (ScriptAgent Rich Pixel Form) */}
+        {/* Genesis Agent Directory (Pixel Form with RARE Protocol Data) */}
         <section className="directory-section" id="directory">
           <div className="directory-head">
             <div>
-              <h2 className="directory-title">Genesis Agent Directory</h2>
+              <h2 className="directory-title">Genesis Agent Roster</h2>
               <p className="directory-sub">
-                Showing 16 of {explorerTotalCount.toLocaleString()} inscribed agents • 100% verified on Solana Mainnet
+                Showing 16 of {explorerTotalCount.toLocaleString()} autonomous agents • Token-bound PDA vaults on Solana Mainnet
               </p>
             </div>
 
@@ -403,7 +402,7 @@ export default function HomePage() {
             <form onSubmit={handleSearchSubmit} className="directory-search">
               <input
                 type="text"
-                placeholder="search by name, tool or prompt..."
+                placeholder="search by name, role or archetype..."
                 value={explorerSearch}
                 onChange={(e) => setExplorerSearch(e.target.value)}
               />
@@ -411,7 +410,7 @@ export default function HomePage() {
             </form>
 
             <div className="role-chips">
-              {['all', 'sniper', 'arbitrage', 'oracle', 'sentinel', 'market maker'].map((r) => (
+              {['all', 'sniper', 'arbitrage', 'oracle', 'sentinel', 'market maker', 'yield'].map((r) => (
                 <button
                   key={r}
                   type="button"
@@ -427,7 +426,7 @@ export default function HomePage() {
           {/* Rich ScriptAgent 2-Column Grid */}
           {explorerLoading ? (
             <div style={{ padding: '60px 0', textAlign: 'center', font: '600 14px var(--font-mono)', color: 'var(--dim)' }}>
-              loading sovereign agents from solana ledger…
+              loading autonomous agents from solana ledger…
             </div>
           ) : (
             <div className="agent-grid">
@@ -437,7 +436,7 @@ export default function HomePage() {
                   <div className="agent-card-header">
                     <div className="agent-card-title-group">
                       <span className="agent-num-badge">#{String(agent.id).padStart(5, '0')}</span>
-                      <span className="agent-name">{agent.name}</span>
+                      <span className="agent-name">{agent.role}</span>
                     </div>
 
                     <span className={`rarity-badge rarity-${(agent.rarityTier || 'common').toLowerCase()}`}>
@@ -445,12 +444,12 @@ export default function HomePage() {
                     </span>
                   </div>
 
-                  {/* Card Body: 3D Visual + Personality System Prompt */}
+                  {/* Card Body: 3D Visual + Mission Persona */}
                   <div className="agent-card-body">
                     <div
                       className="agent-avatar-box"
                       onClick={() => handleSelectAgentFor360(agent.id)}
-                      title="Click to view in 3D turntable"
+                      title="Click to inspect in 3D turntable"
                     >
                       <img src={`/api/avatar/${agent.id}`} alt={agent.name} loading="lazy" />
                     </div>
@@ -463,19 +462,19 @@ export default function HomePage() {
                   {/* 4-Column Metadata Specs */}
                   <div className="agent-specs-row">
                     <div>
-                      <div className="spec-cell-label">MODEL</div>
-                      <div className="spec-cell-val">{agent.baseModel ? agent.baseModel.split('-')[0] : 'SmolLM2'}</div>
+                      <div className="spec-cell-label">ARCHETYPE</div>
+                      <div className="spec-cell-val">{agent.archetype ? agent.archetype.split(' ')[0] : 'Sentry'}</div>
                     </div>
                     <div>
-                      <div className="spec-cell-label">CHUNKS</div>
-                      <div className="spec-cell-val">{agent.totalChunks || 142}</div>
+                      <div className="spec-cell-label">ENGINE</div>
+                      <div className="spec-cell-val">{agent.engine ? agent.engine.split(' ')[0] : 'Anchor'}</div>
                     </div>
                     <div>
-                      <div className="spec-cell-label">TOOLS</div>
-                      <div className="spec-cell-val">{agent.toolsCount || 4} Active</div>
+                      <div className="spec-cell-label">PDA CAPITAL</div>
+                      <div className="spec-cell-val" style={{ color: 'var(--script-blue)' }}>{agent.pdaFunding || '0.018 SOL'}</div>
                     </div>
                     <div>
-                      <div className="spec-cell-label">VAULT</div>
+                      <div className="spec-cell-label">BOUND VAULT</div>
                       <div className="spec-cell-val">{agent.pdaVault ? `${agent.pdaVault.slice(0, 4)}...${agent.pdaVault.slice(-4)}` : 'On-Chain'}</div>
                     </div>
                   </div>
@@ -489,7 +488,7 @@ export default function HomePage() {
                       className="pda-link"
                     >
                       <span className="dot"></span>
-                      <span>PDA Verified On-Chain ↗</span>
+                      <span>PDA Vault Verified On-Chain ↗</span>
                     </a>
 
                     <div className="agent-card-actions">
@@ -516,7 +515,7 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Clean ScriptAgent Pagination */}
+          {/* Clean Pagination */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
             <button
               type="button"
@@ -540,6 +539,58 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* RARE Protocol 10-Band Price Ladder */}
+        <section className="spec-box" id="ladder">
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px' }}>
+            Bonding Curve Price Ladder
+          </h3>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--dim)', marginBottom: '20px' }}>
+            Ten pricing bands of 1,007.8 agents. Band 1 opens at 0.02 SOL; each subsequent band costs 1.3× the one before, up to 0.212 SOL.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '6px', alignItems: 'end', height: '100px', maxWidth: '640px', margin: '20px 0 10px' }}>
+            {[
+              { band: 1, height: '9.4%', price: '0.02', active: true },
+              { band: 2, height: '12.3%', price: '0.026' },
+              { band: 3, height: '15.9%', price: '0.034' },
+              { band: 4, height: '20.7%', price: '0.044' },
+              { band: 5, height: '26.9%', price: '0.057' },
+              { band: 6, height: '35.0%', price: '0.074' },
+              { band: 7, height: '45.5%', price: '0.096' },
+              { band: 8, height: '59.2%', price: '0.125' },
+              { band: 9, height: '76.9%', price: '0.163' },
+              { band: 10, height: '100.0%', price: '0.212' },
+            ].map((b) => (
+              <div
+                key={b.band}
+                style={{
+                  height: b.height,
+                  background: b.active ? 'var(--script-blue)' : 'var(--parchment-accent)',
+                  border: '2px solid var(--hair-dark)',
+                  boxShadow: b.active ? '2px 2px 0px #000' : 'none',
+                  position: 'relative'
+                }}
+                title={`Band ${b.band}: ${b.price} SOL`}
+              >
+                {b.active && (
+                  <span style={{ position: 'absolute', bottom: 'calc(100% + 4px)', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 700, color: 'var(--script-blue)', whiteSpace: 'nowrap' }}>
+                    {b.price}
+                  </span>
+                )}
+                {b.band === 10 && (
+                  <span style={{ position: 'absolute', bottom: 'calc(100% + 4px)', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', whiteSpace: 'nowrap' }}>
+                    {b.price}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '6px', maxWidth: '640px', fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', textAlign: 'center', marginBottom: '16px' }}>
+            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+          </div>
+        </section>
+
         {/* Technical Architecture & Specs */}
         <section className="spec-box" id="specs">
           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '16px' }}>
@@ -555,9 +606,9 @@ export default function HomePage() {
           </div>
 
           <div className="spec-row">
-            <span className="spec-key">Chunk Standard</span>
+            <span className="spec-key">Dynamic Ownership</span>
             <span className="spec-val">
-              Weights and personality prompts are partitioned into strict 960-byte MTU-safe chunks, permanently inscribed into Solana transaction logs. Zero centralized IPFS or AWS dependency.
+              The PDA vault is bound cryptographically to the NFT. If the NFT is transferred or traded on secondary markets (Tensor, Magic Eden), vault control and all accumulated balances instantly transfer to the new owner.
             </span>
             <span></span>
           </div>
@@ -568,6 +619,16 @@ export default function HomePage() {
               sha256 8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce
             </span>
             <button type="button" onClick={() => navigator.clipboard.writeText('8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce')} className="btn-secondary" style={{ padding: '3px 8px', fontSize: '10px' }}>
+              copy
+            </button>
+          </div>
+
+          <div className="spec-row">
+            <span className="spec-key">Seed Provenance</span>
+            <span className="spec-val" style={{ fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
+              sha256 4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27
+            </span>
+            <button type="button" onClick={() => navigator.clipboard.writeText('4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27')} className="btn-secondary" style={{ padding: '3px 8px', fontSize: '10px' }}>
               copy
             </button>
           </div>
@@ -586,14 +647,15 @@ export default function HomePage() {
         {/* Footer */}
         <footer>
           <div>
-            <span style={{ fontWeight: 700, color: 'var(--ink)' }}>RARE PROTOCOL</span> • Inscribed on Solana Mainnet
+            <span style={{ fontWeight: 700, color: 'var(--ink)' }}>RARE PROTOCOL</span> • 10,078 Autonomous AI Agents on Solana
           </div>
           <div style={{ display: 'flex', gap: '20px' }}>
             <button type="button" onClick={() => setConsoleOpen(true)} style={{ background: 'none', border: 'none', font: 'inherit', color: 'inherit', cursor: 'pointer' }}>
               Terminal
             </button>
-            <a href="#directory" onClick={(e) => scrollToSection(e, 'directory')}>Directory</a>
-            <a href="#specs" onClick={(e) => scrollToSection(e, 'specs')}>Specs</a>
+            <a href="#directory" onClick={(e) => scrollToSection(e, 'directory')}>Roster</a>
+            <a href="#ladder" onClick={(e) => scrollToSection(e, 'ladder')}>Price Ladder</a>
+            <a href="#specs" onClick={(e) => scrollToSection(e, 'specs')}>PDA Specs</a>
             <a href="/RARE_Protocol_Whitepaper.pdf" target="_blank" rel="noreferrer">Whitepaper</a>
           </div>
         </footer>
@@ -638,7 +700,7 @@ export default function HomePage() {
                 color: '#a1a1aa'
               }}
             >
-              <span>WEBGPU RUNTIME // SOLANA AGENT TELEMETRY</span>
+              <span>ANCHOR CPI TELEMETRY // TOKEN-BOUND AGENT CONSOLE</span>
               <button
                 onClick={() => setConsoleOpen(false)}
                 style={{ background: 'none', border: 'none', color: '#fff', fontSize: '16px', cursor: 'pointer' }}
