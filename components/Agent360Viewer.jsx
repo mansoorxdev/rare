@@ -47,7 +47,6 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
     activeArchetype: currentArchetype,
   });
 
-  const [angleDisplay, setAngleDisplay] = useState(0);
   const [isAutoSpin, setIsAutoSpin] = useState(true);
 
   // Update active archetype whenever agentId prop changes
@@ -111,13 +110,6 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
         state.velocity *= 0.93; // Smooth damping
       } else {
         state.velocity = 0;
-      }
-
-      // Throttle degree readout
-      displayThrottle += dt;
-      if (displayThrottle > 0.1) {
-        displayThrottle = 0;
-        setAngleDisplay(Math.round(state.angle));
       }
 
       // 2. High-DPI Canvas Sizing
@@ -322,15 +314,6 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02 }) {
           className="w-full h-full block"
           style={{ width: '100%', height: '100%' }}
         />
-
-        {/* Minimalist Obol-style Angle & Pause Control in bottom corner */}
-        <div
-          onClick={toggleSpin}
-          className="absolute bottom-3 right-3 flex items-center gap-2 px-2.5 py-1 bg-white/90 border border-black text-[11px] font-mono cursor-pointer shadow-[2px_2px_0px_#000] hover:bg-[#0e2bdf] hover:text-white transition-colors"
-        >
-          <span className="font-bold tabular-nums">{angleDisplay}°</span>
-          <span className="text-[10px] uppercase font-bold tracking-wider">{isAutoSpin ? 'pause' : 'spin'}</span>
-        </div>
       </div>
     </div>
   );
