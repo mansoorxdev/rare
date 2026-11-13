@@ -128,7 +128,7 @@ export default function HomePage() {
 
   const handleMint = async () => {
     if (ready && !authenticated) {
-      setMintStatus('Please connect Solana wallet first.');
+      setMintStatus('Please connect wallet first.');
       login();
       return;
     }
@@ -256,10 +256,6 @@ export default function HomePage() {
           </nav>
 
           <div className="sa-right">
-            <div className="badge-live">
-              <span className="dot"></span>
-              <span>Solana Mainnet</span>
-            </div>
             <button
               type="button"
               onClick={() => (authenticated ? logout() : login())}
