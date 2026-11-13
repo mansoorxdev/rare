@@ -241,7 +241,9 @@ export default function HomePage() {
       <header className="sa-nav">
         <div className="sa-nav-in">
           <a className="sa-brand" href="#home" onClick={(e) => scrollToSection(e, 'home')}>
-            <span className="sa-brand-icon">R</span>
+            <span className="sa-brand-icon">
+              <img src="/rare-logo-icon.png" alt="RARE Protocol" />
+            </span>
             <span>RARE PROTOCOL</span>
           </a>
 
@@ -318,7 +320,10 @@ export default function HomePage() {
 
             {/* Right Column: Inscription & Buy Controls */}
             <div>
-              <span className="sa-tag">10,078 Token-Bound Autonomous Agents</span>
+              <span className="sa-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <img src="/rare-logo-icon.png" alt="" style={{ width: '14px', height: '14px', objectFit: 'contain' }} />
+                <span>10,078 Token-Bound Autonomous Agents</span>
+              </span>
               <h1>10,078 AUTONOMOUS AI AGENTS ON SOLANA.</h1>
               <p className="sa-hero-p">
                 Each agent is an on-chain NFT with its own token-bound PDA wallet. When you mint, 90% of what you pay is deposited directly into the agent&apos;s wallet to fund its autonomous trading, arbitrage, and on-chain execution.
@@ -692,8 +697,11 @@ export default function HomePage() {
 
         {/* Footer */}
         <footer>
-          <div>
-            <span style={{ fontWeight: 700, color: 'var(--ink)' }}>RARE PROTOCOL</span> • 10,078 Autonomous AI Agents on Solana
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span className="sa-brand-icon" style={{ width: '24px', height: '24px', padding: '2px', boxShadow: 'none' }}>
+              <img src="/rare-logo-icon.png" alt="RARE" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            </span>
+            <span><b style={{ color: 'var(--ink)' }}>RARE PROTOCOL</b> • 10,078 Autonomous AI Agents on Solana</span>
           </div>
           <div style={{ display: 'flex', gap: '20px' }}>
             <button type="button" onClick={() => setConsoleOpen(true)} style={{ background: 'none', border: 'none', font: 'inherit', color: 'inherit', cursor: 'pointer' }}>
@@ -746,7 +754,12 @@ export default function HomePage() {
                 color: '#a1a1aa'
               }}
             >
-              <span>ANCHOR CPI TELEMETRY // TOKEN-BOUND AGENT CONSOLE</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="sa-brand-icon" style={{ width: '18px', height: '18px', padding: '1px', boxShadow: 'none', border: '1px solid #3f3f46' }}>
+                  <img src="/rare-logo-icon.png" alt="RARE" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                </span>
+                <span style={{ color: '#22c55e', fontWeight: 700 }}>ANCHOR CPI TELEMETRY // TOKEN-BOUND AGENT CONSOLE</span>
+              </div>
               <button
                 onClick={() => setConsoleOpen(false)}
                 style={{ background: 'none', border: 'none', color: '#fff', fontSize: '16px', cursor: 'pointer' }}

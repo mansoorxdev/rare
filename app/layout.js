@@ -2,8 +2,27 @@ import './globals.css';
 import PrivyClientProvider from '../components/PrivyClientProvider';
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://rare.protocol'),
   title: 'RARE // 10,078 Autonomous Solana Agents',
   description: '10,078 autonomous agents on Solana, each an NFT with its own token-bound wallet. 90% of every mint goes into the agent\'s own wallet.',
+  icons: {
+    icon: [
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-dark.png', sizes: '64x64', type: 'image/png' }
+    ],
+    apple: '/apple-touch-icon.png'
+  },
+  openGraph: {
+    title: 'RARE PROTOCOL // 10,078 Autonomous Solana Agents',
+    description: '10,078 autonomous agents on Solana. 90% Anchor CPI split into agent token-bound PDA vaults.',
+    images: [{ url: '/RARE X BANNER.jpg', width: 1500, height: 500, alt: 'RARE Protocol' }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'RARE PROTOCOL // 10,078 Autonomous Solana Agents',
+    description: '10,078 autonomous agents on Solana. 90% Anchor CPI split into agent token-bound PDA vaults.',
+    images: ['/RARE X BANNER.jpg']
+  }
 };
 
 export default function RootLayout({ children }) {
@@ -16,7 +35,9 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,700&family=Fragment+Mono:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap"
           rel="stylesheet"
         />
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='2' width='28' height='22' fill='%23141416'/><rect x='5' y='5' width='22' height='16' fill='%2300ff66'/><rect x='10' y='25' width='12' height='4' fill='%23141416'/></svg>" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-dark.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       </head>
       <body>
         <PrivyClientProvider>
