@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { getAgentMetadata } from '../../../lib/agentMetadata';
 
 export async function POST(request) {
   try {
@@ -17,7 +16,7 @@ export async function POST(request) {
         output: [
           'AVAILABLE RARE PROTOCOL COMMANDS:',
           '  status        - Check Solana cluster health and agent supply',
-          '  inspect <id>  - Inspect agent metadata, role, and bound PDA vault',
+          '  inspect <id>  - Inspect agent metadata, role, engine and bound PDA vault',
           '  split         - Display on-chain 90/10 capital routing parameters',
           '  supply        - Total supply metrics and bonding band status',
           '  clear         - Clear terminal buffer'
@@ -40,33 +39,31 @@ export async function POST(request) {
 
     if (command.startsWith('inspect')) {
       const parts = command.split(' ');
-      const id = parts[1] || '1';
-      const metadataPath = path.join(process.cwd(), 'data', 'metadata', `${id}.json`);
-
-      if (fs.existsSync(metadataPath)) {
-        const data = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
-        const role = data.attributes.find(a => a.trait_type === 'Role')?.value || 'Autonomous Bot';
-        const wallet = data.attributes.find(a => a.trait_type === 'Agent Wallet')?.value || 'N/A';
-        const pda = data.attributes.find(a => a.trait_type === 'Token-Bound PDA')?.value || 'N/A';
-        const limit = data.attributes.find(a => a.trait_type === 'Daily Spend Limit')?.value || '0.50 SOL';
-
+      const rawId = parseInt(parts[1] || '1', 10);
+      if (isNaN(rawId) || rawId < 1 || rawId > 10078) {
         return NextResponse.json({
-          success: true,
-          output: [
-            `AGENT IDENTIFIER: ${data.name}`,
-            `ROLE: ${role}`,
-            `TOKEN-BOUND PDA VAULT: ${pda}`,
-            `ACTIVE SIGNER WALLET: ${wallet}`,
-            `DAILY SPEND BOUNDARY: ${limit}`,
-            `STATUS: READY FOR CPI TRADING INSTRUCTIONS`
-          ]
-        });
-      } else {
-        return NextResponse.json({
-          success: true,
-          output: [`Agent #${id} not found in collection directory.`]
+          success: false,
+          output: ['Invalid Agent ID. Please specify a number between 1 and 10,078 (e.g., inspect 2).']
         });
       }
+
+      const agent = getAgentMetadata(rawId);
+
+      return NextResponse.json({
+        success: true,
+        output: [
+          `AGENT IDENTIFIER: ${agent.name}`,
+          `ARCHETYPE: ${agent.archetype}`,
+          `ROLE: ${agent.role}`,
+          `ENGINE: ${agent.engine}`,
+          `TOKEN-BOUND PDA VAULT: ${agent.pdaVault}`,
+          `ACTIVE SIGNER WALLET: ${agent.agentWallet}`,
+          `PDA CAPITAL ALLOCATION: ${agent.pdaFunding}`,
+          `RARITY TIER: ${agent.rarityTier} (${agent.rarityScore}%)`,
+          `BONDING BAND: ${agent.band} (${agent.priceSol} SOL)`,
+          `STATUS: READY FOR CPI TRADING INSTRUCTIONS`
+        ]
+      });
     }
 
     if (command === 'split') {
@@ -84,13 +81,18 @@ export async function POST(request) {
     }
 
     if (command === 'supply') {
+      const sold = 143;
+      const band = Math.min(10, Math.floor(sold / 1008) + 1);
+      const remainingInBand = 1008 - (sold % 1008);
+      const bandPrice = +(0.02 * Math.pow(1.3, band - 1)).toFixed(3);
       return NextResponse.json({
         success: true,
         output: [
           'TOTAL SUPPLY: 10,078',
-          'CURRENT BONDING BAND: 1 / 10',
-          'BAND BASE PRICE: 0.020 SOL',
-          'REMAINING IN BAND 1: 865 AGENTS'
+          `CURRENT BONDING BAND: ${band} / 10`,
+          `BAND BASE PRICE: ${bandPrice} SOL`,
+          `CURRENT SOLD: ${sold} / 10,078`,
+          `REMAINING IN BAND ${band}: ${remainingInBand} AGENTS`
         ]
       });
     }
@@ -104,4 +106,3 @@ export async function POST(request) {
     return NextResponse.json({ success: false, output: [`Error: ${err.message}`] }, { status: 500 });
   }
 }
-

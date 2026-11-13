@@ -3,12 +3,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { usePrivy } from '../components/PrivyClientProvider';
 import Agent360Viewer from '../components/Agent360Viewer';
+import { getAgentMetadata } from '../lib/agentMetadata';
 
 export default function HomePage() {
   const { ready, authenticated, user, login, logout } = usePrivy();
   const [quantity, setQuantity] = useState(1);
   const [rareId, setRareId] = useState('');
-  const [pricePerAgent] = useState(0.02);
   const [soldCount, setSoldCount] = useState(142);
   const [mintStatus, setMintStatus] = useState('');
   const [isMinting, setIsMinting] = useState(false);
@@ -16,6 +16,11 @@ export default function HomePage() {
   const [mintCelebration, setMintCelebration] = useState(null);
   const [inspectedAgentModal, setInspectedAgentModal] = useState(null);
   const treasuryWallet = process.env.NEXT_PUBLIC_TREASURY_WALLET || '3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk';
+
+  // Dynamic active agent based on selection or current next unsold agent
+  const activeAgentId = rareId ? parseInt(rareId, 10) : soldCount + 1;
+  const activeAgent = getAgentMetadata(activeAgentId);
+  const activePrice = activeAgent.priceSol;
 
   // Terminal Console State
   const [consoleOpen, setConsoleOpen] = useState(false);
@@ -137,18 +142,22 @@ export default function HomePage() {
 
     setTimeout(() => {
       const newId = rareId ? parseInt(rareId, 10) : soldCount + 1;
+      const agentMeta = getAgentMetadata(newId);
+      const mintedPrice = agentMeta.priceSol;
+      const deposited = (mintedPrice * 0.9 * quantity).toFixed(3);
       setSoldCount(prev => prev + quantity);
       setIsMinting(false);
-      const deposited = (pricePerAgent * 0.9 * quantity).toFixed(3);
       setMintStatus(`Success! Rare #${newId} activated. 90% (${deposited} SOL) deposited into Agent PDA.`);
       setMintCelebration({
         id: newId,
         quantity,
-        name: `Rare #${String(newId).padStart(5, '0')}`,
-        pdaVault: `PDA${newId}v${((newId * 2654435761) >>> 0).toString(16).toUpperCase()}Vault`,
+        name: agentMeta.name,
+        role: agentMeta.role,
+        archetype: agentMeta.archetype,
+        pdaVault: agentMeta.pdaVault,
         funding: `${deposited} SOL`,
         txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`,
-        image: '/assets/agent/rare_front.jpg'
+        image: agentMeta.image
       });
     }, 1800);
   };
@@ -300,8 +309,8 @@ export default function HomePage() {
             {/* Left Column: Silky Smooth 3D Turntable */}
             <div>
               <Agent360Viewer
-                agentId={rareId ? parseInt(rareId, 10) : soldCount + 1}
-                price={pricePerAgent}
+                agentId={activeAgentId}
+                price={activePrice}
                 onChangeAgent={handleAnyUnsold}
               />
             </div>
@@ -350,7 +359,7 @@ export default function HomePage() {
                     className="btn-primary"
                     style={{ padding: '9px 24px', fontSize: '13px' }}
                   >
-                    {isMinting ? 'Minting…' : `MINT & ACTIVATE (${(pricePerAgent * quantity).toFixed(2)} SOL) →`}
+                    {isMinting ? 'Minting…' : `MINT & ACTIVATE (${(activePrice * quantity).toFixed(2)} SOL) →`}
                   </button>
                 </div>
 
@@ -367,7 +376,9 @@ export default function HomePage() {
               </div>
 
               <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', font: '600 12px var(--font-mono)', color: 'var(--dim)' }}>
-                <span>Band: <b style={{ color: 'var(--ink)' }}>1/10</b></span>
+                <span>Band: <b style={{ color: 'var(--ink)' }}>{activeAgent.band}</b></span>
+                <span>•</span>
+                <span>Price: <b style={{ color: 'var(--ink)' }}>{activePrice} SOL</b></span>
                 <span>•</span>
                 <span>Sold: <b style={{ color: 'var(--ink)' }}>{soldCount} / 10,078</b></span>
                 <span>•</span>
@@ -577,7 +588,7 @@ export default function HomePage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '6px', alignItems: 'end', height: '100px', maxWidth: '640px', margin: '20px 0 10px' }}>
             {[
-              { band: 1, height: '9.4%', price: '0.02', active: true },
+              { band: 1, height: '9.4%', price: '0.02' },
               { band: 2, height: '12.3%', price: '0.026' },
               { band: 3, height: '15.9%', price: '0.034' },
               { band: 4, height: '20.7%', price: '0.044' },
@@ -587,30 +598,33 @@ export default function HomePage() {
               { band: 8, height: '59.2%', price: '0.125' },
               { band: 9, height: '76.9%', price: '0.163' },
               { band: 10, height: '100.0%', price: '0.212' },
-            ].map((b) => (
-              <div
-                key={b.band}
-                style={{
-                  height: b.height,
-                  background: b.active ? 'var(--script-blue)' : 'var(--parchment-accent)',
-                  border: '2px solid var(--hair-dark)',
-                  boxShadow: b.active ? '2px 2px 0px #000' : 'none',
-                  position: 'relative'
-                }}
-                title={`Band ${b.band}: ${b.price} SOL`}
-              >
-                {b.active && (
-                  <span style={{ position: 'absolute', bottom: 'calc(100% + 4px)', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 700, color: 'var(--script-blue)', whiteSpace: 'nowrap' }}>
-                    {b.price}
-                  </span>
-                )}
-                {b.band === 10 && (
-                  <span style={{ position: 'absolute', bottom: 'calc(100% + 4px)', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', whiteSpace: 'nowrap' }}>
-                    {b.price}
-                  </span>
-                )}
-              </div>
-            ))}
+            ].map((b) => {
+              const isCurrent = b.band === Math.min(10, Math.floor(((parseInt(rareId, 10) || 1) - 1) / 1008) + 1);
+              return (
+                <div
+                  key={b.band}
+                  style={{
+                    height: b.height,
+                    background: isCurrent ? 'var(--script-blue)' : 'var(--parchment-accent)',
+                    border: '2px solid var(--hair-dark)',
+                    boxShadow: isCurrent ? '2px 2px 0px #000' : 'none',
+                    position: 'relative'
+                  }}
+                  title={`Band ${b.band}: ${b.price} SOL${isCurrent ? ' (Active Selected)' : ''}`}
+                >
+                  {isCurrent && (
+                    <span style={{ position: 'absolute', bottom: 'calc(100% + 4px)', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 700, color: 'var(--script-blue)', whiteSpace: 'nowrap' }}>
+                      {b.price}
+                    </span>
+                  )}
+                  {b.band === 10 && !isCurrent && (
+                    <span style={{ position: 'absolute', bottom: 'calc(100% + 4px)', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', whiteSpace: 'nowrap' }}>
+                      {b.price}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '6px', maxWidth: '640px', fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', textAlign: 'center', marginBottom: '16px' }}>
