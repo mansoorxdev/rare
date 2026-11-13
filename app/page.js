@@ -107,9 +107,18 @@ export default function HomePage() {
   };
 
   const handleAnyUnsold = () => {
-    const rand = Math.floor(Math.random() * (10078 - soldCount)) + soldCount + 1;
+    if (soldCount >= 10078) {
+      setMintStatus('All 10,078 Genesis Agents Minted & Active on Solana!');
+      return;
+    }
+    const currentNum = parseInt(rareId, 10);
+    const availableCount = 10078 - soldCount;
+    let rand = Math.floor(Math.random() * availableCount) + soldCount + 1;
+    if (availableCount > 1 && rand === currentNum) {
+      rand = rand >= 10078 ? soldCount + 1 : rand + 1;
+    }
     setRareId(String(rand));
-    setMintStatus(`Targeting Genesis Rare #${rand}`);
+    setMintStatus(`Targeting Unsold Genesis Rare #${rand}`);
   };
 
   const handleMint = async () => {
