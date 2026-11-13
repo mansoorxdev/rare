@@ -158,6 +158,12 @@ a {
   font-weight: 600;
 }
 
+@media (max-width: 820px) {
+  .sa-links {
+    display: none;
+  }
+}
+
 .sa-links a, .sa-links button {
   color: var(--dim);
   transition: color 0.15s;
@@ -297,6 +303,8 @@ a {
   background: #fff;
   border: 1px solid var(--hair);
   padding: 3px 8px;
+  word-break: break-all;
+  max-width: 100%;
 }
 
 /* ScriptAgent Hero Grid */

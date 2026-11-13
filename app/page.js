@@ -350,7 +350,16 @@ export default function HomePage() {
                       maxLength={5}
                       placeholder="pick"
                       value={rareId}
-                      onChange={(e) => setRareId(e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '');
+                        if (!val) {
+                          setRareId('');
+                          return;
+                        }
+                        const n = parseInt(val, 10);
+                        if (n > 10078) setRareId('10078');
+                        else setRareId(val);
+                      }}
                     />
                   </div>
 

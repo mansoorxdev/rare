@@ -46,9 +46,14 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
       currentAgent.turnImage,
       currentAgent.profileImage,
       currentAgent.backImage,
+      '/assets/agent/rare_front.jpg',
+      '/assets/agent/rare_turn_45.jpg',
+      '/assets/agent/rare_profile.jpg',
+      '/assets/agent/rare_back.jpg',
     ].filter(Boolean);
 
     urls.forEach((url) => {
+      if (stateRef.current.loadedImages[url]) return;
       const img = new Image();
       img.src = url;
       img.onload = () => {
