@@ -1,0 +1,372 @@
+const fs = require('fs');
+const path = require('path');
+
+function generateDittoVideoRobotSVG() {
+  // Dot matrix pixel eyes exactly matching the 10 78 screenshot
+  // In the screenshot, each eye is a dense circular cluster of glowing green square/round pixel dots
+  const leftEyeDots = [
+    // Row 1 (top)
+    {x: 254, y: 220}, {x: 262, y: 220}, {x: 270, y: 220},
+    // Row 2
+    {x: 246, y: 228}, {x: 254, y: 228}, {x: 262, y: 228}, {x: 270, y: 228}, {x: 278, y: 228},
+    // Row 3 (center)
+    {x: 246, y: 236}, {x: 254, y: 236}, {x: 262, y: 236}, {x: 270, y: 236}, {x: 278, y: 236},
+    // Row 4
+    {x: 246, y: 244}, {x: 254, y: 244}, {x: 262, y: 244}, {x: 270, y: 244}, {x: 278, y: 244},
+    // Row 5 (bottom)
+    {x: 254, y: 252}, {x: 262, y: 252}, {x: 270, y: 252},
+  ];
+
+  const rightEyeDots = [
+    // Row 1 (top)
+    {x: 330, y: 220}, {x: 338, y: 220}, {x: 346, y: 220},
+    // Row 2
+    {x: 322, y: 228}, {x: 330, y: 228}, {x: 338, y: 228}, {x: 346, y: 228}, {x: 354, y: 228},
+    // Row 3 (center)
+    {x: 322, y: 236}, {x: 330, y: 236}, {x: 338, y: 236}, {x: 346, y: 236}, {x: 354, y: 236},
+    // Row 4
+    {x: 322, y: 244}, {x: 330, y: 244}, {x: 338, y: 244}, {x: 346, y: 244}, {x: 354, y: 244},
+    // Row 5 (bottom)
+    {x: 330, y: 252}, {x: 338, y: 252}, {x: 346, y: 252},
+  ];
+
+  const mouthDots = [
+    {x: 294, y: 272}, {x: 300, y: 272}, {x: 306, y: 272}
+  ];
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+  <defs>
+    <!-- Multi-stage intense neon bloom filter -->
+    <filter id="ditto-neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur1" />
+      <feGaussianBlur stdDeviation="5" result="blur2" />
+      <feGaussianBlur stdDeviation="10" result="blur3" />
+      <feMerge>
+        <feMergeNode in="blur3" />
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="ditto-eye-bloom" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="eb1" />
+      <feGaussianBlur stdDeviation="7" result="eb2" />
+      <feGaussianBlur stdDeviation="14" result="eb3" />
+      <feMerge>
+        <feMergeNode in="eb3" />
+        <feMergeNode in="eb2" />
+        <feMergeNode in="eb1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Scanline Texture for CRT screen -->
+    <pattern id="ditto-scanlines" width="100" height="4" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="100" y2="0" stroke="rgba(0,0,0,0.5)" stroke-width="1.4" />
+    </pattern>
+
+    <!-- Armor Plate Shading Gradients (Mottled Dark Emerald / Matte Metallic Green) -->
+    <linearGradient id="armor-chest-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b3f2c" />
+      <stop offset="60%" stop-color="#0f2b1d" />
+      <stop offset="100%" stop-color="#07170f" />
+    </linearGradient>
+
+    <linearGradient id="armor-chest-right" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#244d37" />
+      <stop offset="50%" stop-color="#143625" />
+      <stop offset="100%" stop-color="#091c13" />
+    </linearGradient>
+
+    <linearGradient id="armor-dark-facet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e281b" />
+      <stop offset="100%" stop-color="#05120c" />
+    </linearGradient>
+
+    <linearGradient id="armor-light-facet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a583e" />
+      <stop offset="100%" stop-color="#143625" />
+    </linearGradient>
+
+    <!-- Vault Box Gradients -->
+    <linearGradient id="vault-top-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a5c40" />
+      <stop offset="100%" stop-color="#133824" />
+    </linearGradient>
+    <linearGradient id="vault-front-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b452e" />
+      <stop offset="100%" stop-color="#0a2115" />
+    </linearGradient>
+    <linearGradient id="vault-front-right" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#163d28" />
+      <stop offset="100%" stop-color="#06190f" />
+    </linearGradient>
+
+    <!-- Metal Padlock Clasp Gradient -->
+    <linearGradient id="silver-latch" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4ded8" />
+      <stop offset="50%" stop-color="#8a9e93" />
+      <stop offset="100%" stop-color="#4e5f56" />
+    </linearGradient>
+
+    <!-- CRT Monitor Gradients -->
+    <linearGradient id="monitor-casing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#55685c" />
+      <stop offset="40%" stop-color="#3d4c42" />
+      <stop offset="100%" stop-color="#222b25" />
+    </linearGradient>
+    <linearGradient id="monitor-top" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6b8273" />
+      <stop offset="100%" stop-color="#44544a" />
+    </linearGradient>
+    <radialGradient id="screen-phosphor" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#0a2a16" />
+      <stop offset="65%" stop-color="#020d07" />
+      <stop offset="100%" stop-color="#000502" />
+    </radialGradient>
+
+    <!-- Ground Floor Glow & Shadow -->
+    <radialGradient id="floor-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(0, 255, 102, 0.25)" />
+      <stop offset="40%" stop-color="rgba(0, 255, 102, 0.08)" />
+      <stop offset="100%" stop-color="rgba(0, 0, 0, 0)" />
+    </radialGradient>
+    <radialGradient id="boots-shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(0, 0, 0, 0.85)" />
+      <stop offset="60%" stop-color="rgba(0, 0, 0, 0.3)" />
+      <stop offset="100%" stop-color="rgba(0, 0, 0, 0)" />
+    </radialGradient>
+  </defs>
+
+  <style>
+    .neon-line {
+      stroke: #00ff66;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: url(#ditto-neon-glow);
+    }
+    .neon-line-bright {
+      stroke: #33ff88;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: url(#ditto-neon-glow);
+    }
+  </style>
+
+  <!-- BACKGROUND: Cinematic Dark Cyber-Studio with Floor Reflection -->
+  <rect x="0" y="0" width="600" height="800" fill="#040c07" />
+
+  <!-- Background Ornate Mirror / Frame Silhouette (As in video screenshot) -->
+  <rect x="160" y="40" width="280" height="420" rx="6" fill="none" stroke="#081c10" stroke-width="12" opacity="0.6" />
+  <rect x="170" y="50" width="260" height="400" rx="4" fill="#020804" opacity="0.4" />
+
+  <!-- Big Cinematic "10" and "78" Typography from the Video! -->
+  <text x="35" y="410" font-family="'Impact', 'Arial Black', sans-serif" font-size="200" font-weight="900" fill="#ffffff" opacity="0.95" letter-spacing="-8">10</text>
+  <text x="390" y="410" font-family="'Impact', 'Arial Black', sans-serif" font-size="200" font-weight="900" fill="#ffffff" opacity="0.95" letter-spacing="-8">78</text>
+
+  <!-- Floor Contact Glow & Reflections -->
+  <ellipse cx="300" cy="740" rx="200" ry="30" fill="url(#floor-glow)" />
+  <ellipse cx="255" cy="742" rx="42" ry="10" fill="url(#boots-shadow)" />
+  <ellipse cx="345" cy="742" rx="42" ry="10" fill="url(#boots-shadow)" />
+  <!-- Glossy Floor Horizon Line -->
+  <line x1="80" y1="740" x2="520" y2="740" stroke="#00ff66" stroke-width="1.8" opacity="0.4" filter="url(#ditto-neon-glow)" />
+
+  <!-- ==================== 1. CHUNKY ROBOT LEGS ==================== -->
+  <g id="robot-legs">
+    <!-- LEFT LEG (Viewer's Left) -->
+    <!-- Thigh Outer Facet -->
+    <polygon points="252,560 220,620 250,630 272,562" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <!-- Thigh Front Facet -->
+    <polygon points="250,630 220,620 238,665 270,665" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <!-- Knee Joint (Faceted Hexagon) -->
+    <polygon points="234,660 254,650 274,660 268,680 254,686 238,675" fill="url(#armor-chest-left)" stroke="#00ff66" stroke-width="2.8" class="neon-line" />
+    <circle cx="254" cy="668" r="3.5" fill="#00ff66" filter="url(#ditto-neon-glow)" />
+    <!-- Shin / Calf Armor -->
+    <polygon points="240,685 268,685 264,725 236,725" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <line x1="252" y1="685" x2="250" y2="725" stroke="#33ff88" stroke-width="2.5" class="neon-line-bright" />
+    <!-- Chunky Left Boot -->
+    <polygon points="228,725 272,725 275,745 222,745" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="3" class="neon-line" />
+    <line x1="222" y1="745" x2="275" y2="745" stroke="#00ff66" stroke-width="4.5" class="neon-line-bright" />
+    <rect x="236" y="730" width="22" height="9" rx="1.5" fill="#071b10" stroke="#00ff66" stroke-width="1.6" class="neon-line" />
+
+    <!-- RIGHT LEG (Viewer's Right) -->
+    <!-- Thigh Outer Facet -->
+    <polygon points="348,560 380,620 350,630 328,562" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <!-- Thigh Front Facet -->
+    <polygon points="350,630 380,620 362,665 330,665" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <!-- Knee Joint (Faceted Hexagon) -->
+    <polygon points="366,660 346,650 326,660 332,680 346,686 362,675" fill="url(#armor-chest-right)" stroke="#00ff66" stroke-width="2.8" class="neon-line" />
+    <circle cx="346" cy="668" r="3.5" fill="#00ff66" filter="url(#ditto-neon-glow)" />
+    <!-- Shin / Calf Armor -->
+    <polygon points="332,685 360,685 364,725 336,725" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <line x1="348" y1="685" x2="350" y2="725" stroke="#33ff88" stroke-width="2.5" class="neon-line-bright" />
+    <!-- Chunky Right Boot -->
+    <polygon points="328,725 372,725 378,745 325,745" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="3" class="neon-line" />
+    <line x1="325" y1="745" x2="378" y2="745" stroke="#00ff66" stroke-width="4.5" class="neon-line-bright" />
+    <rect x="342" y="730" width="22" height="9" rx="1.5" fill="#071b10" stroke="#00ff66" stroke-width="1.6" class="neon-line" />
+  </g>
+
+  <!-- ==================== 2. PELVIS ==================== -->
+  <g id="pelvis">
+    <polygon points="265,545 335,545 300,580" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <polygon points="240,535 265,545 300,580 252,560" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+    <polygon points="360,535 335,545 300,580 348,560" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+  </g>
+
+  <!-- ==================== 3. ARMS (EXACT POSE FROM SCREENSHOT) ==================== -->
+  <g id="robot-arms">
+    <!-- LEFT ARM (Viewer's Left - Hand reaching forward holding box top) -->
+    <!-- Shoulder Pauldron (Chamfered Poly) -->
+    <polygon points="175,395 225,385 235,425 180,438" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <polygon points="175,395 160,422 180,438" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.2" class="neon-line" />
+    <!-- Left Bicep / Upper Arm -->
+    <polygon points="180,438 212,430 205,488 172,482" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+    <!-- Left Forearm (Angled forward toward the box) -->
+    <polygon points="172,482 205,488 238,512 208,532" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+    <line x1="188" y1="485" x2="222" y2="522" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+
+    <!-- RIGHT ARM (Viewer's Right - Bent sharply with hand on hip / side of box) -->
+    <!-- Shoulder Pauldron (Chamfered Poly) -->
+    <polygon points="425,395 375,385 365,425 420,438" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <polygon points="425,395 440,422 420,438" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.2" class="neon-line" />
+    <!-- Right Bicep / Upper Arm (Angling outward) -->
+    <polygon points="420,438 388,430 395,488 428,482" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+    <!-- Elbow Joint -->
+    <polygon points="428,482 395,488 410,518 438,508" fill="url(#armor-chest-right)" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+    <!-- Right Forearm (Angled inward resting against side of vault) -->
+    <polygon points="438,508 410,518 380,550 405,562" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+    <!-- Right Hand resting on hip/box corner -->
+    <polygon points="380,550 405,562 388,578 368,565" fill="url(#armor-chest-right)" stroke="#00ff66" stroke-width="2.2" class="neon-line" />
+    <line x1="372" y1="565" x2="385" y2="585" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+  </g>
+
+  <!-- ==================== 4. MAIN TORSO (BEHIND BOX) ==================== -->
+  <g id="main-torso">
+    <!-- Pectoral Armor Plates -->
+    <polygon points="225,385 300,398 375,385 352,450 300,455 248,450" fill="url(#armor-chest-left)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+    <polygon points="300,398 375,385 352,450 300,455" fill="url(#armor-chest-right)" stroke="#00ff66" stroke-width="2.6" class="neon-line" />
+
+    <!-- Center Sternum Wireframe Division -->
+    <line x1="300" y1="398" x2="300" y2="455" stroke="#33ff88" stroke-width="2.8" class="neon-line-bright" />
+
+    <!-- Horizontal ID / Serial Plate on Right Pectoral (As in screenshot!) -->
+    <rect x="318" y="410" width="30" height="9" rx="1.5" fill="#1b452e" stroke="#00ff66" stroke-width="1.6" class="neon-line" />
+    <line x1="322" y1="414" x2="344" y2="414" stroke="#ffffff" stroke-width="1.2" opacity="0.9" />
+
+    <!-- Abdomen plates tapering down behind vault box -->
+    <polygon points="248,450 300,455 300,535 242,530" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.2" class="neon-line" />
+    <polygon points="352,450 300,455 300,535 358,530" fill="url(#armor-dark-facet)" stroke="#00ff66" stroke-width="2.2" class="neon-line" />
+  </g>
+
+  <!-- ==================== 5. THE VAULT / CHEST BOX (SIGNATURE ELEMENT!) ==================== -->
+  <g id="vault-box">
+    <!-- Box Top Facet (Gem Cut Inverted Trapezoid) -->
+    <polygon points="235,465 300,448 365,465 300,482" fill="url(#vault-top-grad)" stroke="#00ff66" stroke-width="3" class="neon-line" />
+
+    <!-- Box Front-Left Main Facet -->
+    <polygon points="235,465 300,482 300,545 235,525" fill="url(#vault-front-left)" stroke="#00ff66" stroke-width="3" class="neon-line" />
+    <!-- Diagonal wireframe triangle bracing lines on left facet -->
+    <line x1="235" y1="465" x2="300" y2="545" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+    <line x1="235" y1="525" x2="300" y2="482" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+
+    <!-- Box Front-Right Main Facet -->
+    <polygon points="300,482 365,465 365,525 300,545" fill="url(#vault-front-right)" stroke="#00ff66" stroke-width="3" class="neon-line" />
+    <!-- Diagonal wireframe triangle bracing lines on right facet -->
+    <line x1="300" y1="482" x2="365" y2="525" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+    <line x1="300" y1="545" x2="365" y2="465" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+
+    <!-- Center Vault Split Seam -->
+    <line x1="300" y1="482" x2="300" y2="545" stroke="#00ff66" stroke-width="3.5" class="neon-line-bright" />
+
+    <!-- Center Silver Padlock Clasp / Latch with Keyhole (As in screenshot!) -->
+    <rect x="290" y="492" width="20" height="28" rx="3" fill="url(#silver-latch)" stroke="#00ff66" stroke-width="2.2" class="neon-line" />
+    <circle cx="300" cy="501" r="3.5" fill="#030c06" stroke="#00ff66" stroke-width="1.4" />
+    <line x1="300" y1="504" x2="300" y2="513" stroke="#030c06" stroke-width="2.4" stroke-linecap="round" />
+  </g>
+
+  <!-- ==================== 6. LEFT HAND (GRIPPING BOX TOP) ==================== -->
+  <g id="left-hand-gripping">
+    <!-- Hand base / wrist plate -->
+    <polygon points="228,505 248,498 255,518 232,525" fill="url(#armor-light-facet)" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+    <!-- Articulated Robotic Fingers gripping top corner of box -->
+    <!-- Finger 1 (Index) -->
+    <polygon points="246,498 260,495 264,505 250,508" fill="#2d5e41" stroke="#00ff66" stroke-width="1.8" class="neon-line" />
+    <!-- Finger 2 (Middle) -->
+    <polygon points="248,506 264,503 268,514 252,517" fill="#2d5e41" stroke="#00ff66" stroke-width="1.8" class="neon-line" />
+    <!-- Finger 3 (Ring) -->
+    <polygon points="246,515 262,512 266,522 250,525" fill="#2d5e41" stroke="#00ff66" stroke-width="1.8" class="neon-line" />
+    <!-- Thumb holding front -->
+    <polygon points="235,520 248,525 245,535 232,530" fill="#234c34" stroke="#00ff66" stroke-width="1.8" class="neon-line" />
+  </g>
+
+  <!-- ==================== 7. MECHANICAL NECK ==================== -->
+  <g id="neck">
+    <rect x="274" y="348" width="52" height="24" rx="2" fill="#14261c" stroke="#00ff66" stroke-width="2.4" class="neon-line" />
+    <line x1="284" y1="348" x2="284" y2="372" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+    <line x1="300" y1="348" x2="300" y2="372" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+    <line x1="316" y1="348" x2="316" y2="372" stroke="#33ff88" stroke-width="2" class="neon-line-bright" />
+  </g>
+
+  <!-- ==================== 8. CRT MONITOR HEAD (DITTO FROM SCREENSHOT) ==================== -->
+  <g id="crt-head">
+    <!-- Perspective Casing -->
+    <!-- Top Chamfer of Monitor -->
+    <polygon points="208,135 392,135 418,168 182,168" fill="url(#monitor-top)" stroke="#222b25" stroke-width="2" />
+    <!-- Left Side Chamfer -->
+    <polygon points="208,135 182,168 182,332 198,352" fill="#2d3a31" stroke="#1a221d" stroke-width="2" />
+    <!-- Right Side Chamfer (In Shadow) -->
+    <polygon points="392,135 418,168 418,332 402,352" fill="#1a221d" stroke="#121814" stroke-width="2" />
+    <!-- Bottom Chamfer -->
+    <polygon points="182,332 198,352 402,352 418,332" fill="#141a16" stroke="#121814" stroke-width="2" />
+
+    <!-- Monitor Front Face Bezel -->
+    <rect x="194" y="156" width="212" height="184" rx="14" fill="url(#monitor-casing)" stroke="#111813" stroke-width="3" />
+    <rect x="197" y="159" width="206" height="178" rx="12" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1.2" />
+
+    <!-- Recessed Screen Frame -->
+    <rect x="208" y="172" width="184" height="138" rx="8" fill="#051009" stroke="#0e1f13" stroke-width="3" />
+
+    <!-- Phosphor Curved Glass Screen -->
+    <rect x="212" y="176" width="176" height="130" rx="6" fill="url(#screen-phosphor)" />
+
+    <!-- Curved Glass Reflection -->
+    <path d="M 214 178 L 386 178 C 362 216, 238 216, 214 178 Z" fill="rgba(255, 255, 255, 0.08)" />
+
+    <!-- CRT Scanlines -->
+    <rect x="212" y="176" width="176" height="130" rx="6" fill="url(#ditto-scanlines)" opacity="0.65" pointer-events="none" />
+
+    <!-- GLOWING PIXEL DOT MATRIX EYES (DITTO!) -->
+    <g id="pixel-dot-eyes" filter="url(#ditto-eye-bloom)">
+      <!-- Left Eye Pixel Dots -->
+      ${leftEyeDots.map(d => `<rect x="${d.x}" y="${d.y}" width="6.2" height="6.2" rx="1.5" fill="#00ff66" />`).join('\n      ')}
+
+      <!-- Right Eye Pixel Dots -->
+      ${rightEyeDots.map(d => `<rect x="${d.x}" y="${d.y}" width="6.2" height="6.2" rx="1.5" fill="#00ff66" />`).join('\n      ')}
+
+      <!-- Pixel Nose / Mouth Dots -->
+      ${mouthDots.map(d => `<rect x="${d.x}" y="${d.y}" width="4.5" height="4.5" rx="1" fill="#00ff66" opacity="0.85" />`).join('\n      ')}
+    </g>
+
+    <!-- Monitor Chin Controls (Buttons / Knobs at bottom right) -->
+    <rect x="218" y="322" width="28" height="4" rx="2" fill="#19281e" />
+    <line x1="220" y1="324" x2="244" y2="324" stroke="#00ff66" stroke-width="1.2" opacity="0.7" />
+    <!-- Power / Rotary Knobs -->
+    <circle cx="372" cy="326" r="5.5" fill="#222e26" stroke="#0f1712" stroke-width="1.6" />
+    <circle cx="372" cy="326" r="2" fill="#00ff66" filter="url(#ditto-neon-glow)" />
+    <circle cx="390" cy="326" r="4.5" fill="#222e26" stroke="#0f1712" stroke-width="1.6" />
+  </g>
+</svg>
+`;
+}
+
+const svg = generateDittoVideoRobotSVG();
+const outPath = path.join(__dirname, '..', 'public', 'rare-crt-robot-ditto.svg');
+fs.writeFileSync(outPath, svg, 'utf8');
+console.log('Saved ditto video robot SVG to public/rare-crt-robot-ditto.svg!');
+
+// Overwrite public/rare-crt-robot.svg and public/rare-crt-robot-sleek.svg so all links point to this ditto version
+fs.writeFileSync(path.join(__dirname, '..', 'public', 'rare-crt-robot.svg'), svg, 'utf8');
+fs.writeFileSync(path.join(__dirname, '..', 'public', 'rare-crt-robot-sleek.svg'), svg, 'utf8');
+console.log('Updated public/rare-crt-robot.svg and rare-crt-robot-sleek.svg with DITTO model!');

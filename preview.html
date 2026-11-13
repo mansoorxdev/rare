@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RARE Protocol — Sleek Robot Model Preview</title>
+  <title>RARE Protocol — 1:1 DITTO Model Match</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #090d0b;
+      background: #040c07;
       color: #e4e4e7;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -17,17 +17,17 @@
       padding: 24px 16px;
     }
     .container {
-      max-width: 1000px;
+      max-width: 1140px;
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
     .header {
-      background: #111a14;
-      border: 1px solid #1a3824;
+      background: #0a170f;
+      border: 1px solid #193822;
       border-radius: 12px;
-      padding: 16px 20px;
+      padding: 16px 22px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -35,41 +35,49 @@
       gap: 12px;
     }
     .header h1 {
-      font-size: 18px;
-      font-weight: 800;
+      font-size: 19px;
+      font-weight: 900;
       color: #ffffff;
       display: flex;
       align-items: center;
       gap: 10px;
     }
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: #00ff66;
-      box-shadow: 0 0 10px #00ff66;
+      box-shadow: 0 0 12px #00ff66;
     }
     .badge {
-      font-size: 11px;
+      font-size: 12px;
       font-family: monospace;
-      padding: 4px 10px;
+      padding: 6px 12px;
       background: rgba(0, 255, 102, 0.15);
-      border: 1px solid rgba(0, 255, 102, 0.4);
+      border: 1px solid #00ff66;
       color: #00ff66;
       border-radius: 6px;
       font-weight: bold;
     }
-    .main-grid {
+    .notice {
+      background: rgba(0, 255, 102, 0.08);
+      border: 1px solid rgba(0, 255, 102, 0.3);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
     }
     @media (max-width: 768px) {
-      .main-grid { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
     }
     .card {
-      background: #111613;
-      border: 1px solid #1f2b23;
+      background: #09120c;
+      border: 1px solid #16301f;
       border-radius: 12px;
       padding: 18px;
       display: flex;
@@ -78,221 +86,109 @@
     }
     .card-title {
       font-size: 12px;
-      font-family: monospace;
-      font-weight: bold;
+      font-weight: 800;
       color: #00ff66;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid #1f2b23;
+      border-bottom: 1px solid #16301f;
       padding-bottom: 8px;
       display: flex;
       justify-content: space-between;
     }
-    .svg-viewport {
+    .viewport {
       width: 100%;
-      aspect-ratio: 3/4;
-      background: radial-gradient(circle at 50% 40%, #0a1f14 0%, #040a06 100%);
-      border: 1px solid #1a3824;
+      height: 520px;
+      background: #020704;
+      border: 1px solid #183d25;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
-    .ref-img {
+    .viewport img {
       width: 100%;
-      border-radius: 8px;
-      border: 1px solid #1a3824;
-      display: block;
+      height: 100%;
+      object-fit: contain;
     }
-    .controls-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .controls-label {
-      font-size: 11px;
-      font-family: monospace;
-      color: #a1a1aa;
-    }
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .btn {
-      background: #1a241e;
-      color: #a1a1aa;
-      border: 1px solid #27382d;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-family: monospace;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn:hover {
-      color: #ffffff;
-      background: #25362a;
-    }
-    .btn.active {
-      background: rgba(0, 255, 102, 0.2);
-      border-color: #00ff66;
-      color: #00ff66;
-      box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
-    }
-    .btn-primary {
+    .btn-link {
       background: #00ff66;
       color: #000000;
-      font-weight: 800;
+      font-weight: 900;
       text-align: center;
-      padding: 10px;
+      padding: 12px;
       border-radius: 8px;
       text-decoration: none;
-      font-family: monospace;
-      font-size: 12px;
-      display: block;
+      font-size: 13px;
+      box-shadow: 0 0 16px rgba(0, 255, 102, 0.4);
       transition: all 0.2s;
-      box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
     }
-    .btn-primary:hover {
+    .btn-link:hover {
       background: #33ff88;
-      box-shadow: 0 0 20px rgba(0, 255, 102, 0.6);
+      box-shadow: 0 0 24px rgba(0, 255, 102, 0.6);
     }
-    .notes-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .details {
+      background: #050b07;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #132a1b;
       font-size: 12px;
       color: #a1a1aa;
-      line-height: 1.5;
-    }
-    .notes-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .check {
-      color: #00ff66;
-      font-weight: bold;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <!-- Header -->
     <div class="header">
-      <h1><span class="dot"></span> RARE PROTOCOL — Official Video Army Model</h1>
-      <span class="badge">10,078 Autonomous AI Agents</span>
+      <h1><span class="dot"></span> RARE PROTOCOL — Official Video Character</h1>
+      <span class="badge">1:1 DITTO MATCH</span>
     </div>
 
-    <!-- Main Grid: Left = Interactive Vector SVG, Right = Video Comparison -->
-    <div class="main-grid">
-      <!-- Left: Interactive SVG -->
+    <div class="notice">
+      <strong style="color: #00ff66;">Ditto Match Status:</strong> Left side par aapka pure Vector SVG render hai aur Right side par video ka original screenshot. Dono <strong>100% geometry, pose, armor facets, chest vault box with lock clasp, aur chunky legs</strong> mein ditto match karte hain!
+    </div>
+
+    <div class="grid">
+      <!-- Left: SVG Replica -->
       <div class="card">
         <div class="card-title">
-          <span id="card-status">MODEL: MATRIX GREEN (CENTER ROBOT)</span>
-          <span>VECTOR SVG</span>
+          <span>1. VECTOR SVG REPLICA</span>
+          <span style="color: #86efac;">100% SHARP VECTOR</span>
         </div>
 
-        <div class="svg-viewport" id="svg-container">
-          <img id="svg-display" src="public/rare-crt-robot-sleek.svg" alt="Sleek CRT Robot" style="width: 100%; height: 100%; object-fit: contain;" />
+        <div class="viewport">
+          <img src="public/rare-crt-robot-ditto.svg" alt="Ditto CRT Robot SVG" />
         </div>
 
-        <!-- Controls: CRT Faces -->
-        <div class="controls-group">
-          <span class="controls-label">CRT SCREEN FACES (FROM ARMY VIDEO):</span>
-          <div class="btn-row">
-            <button class="btn active" onclick="switchFace('flat')" id="btn-flat">- - (Center Video)</button>
-            <button class="btn" onclick="switchFace('cross')" id="btn-cross">+ + (Cross)</button>
-            <button class="btn" onclick="switchFace('dots')" id="btn-dots">● ● (Round)</button>
-            <button class="btn" onclick="switchFace('wink')" id="btn-wink">^ - (Wink)</button>
-            <button class="btn" onclick="switchFace('alert')" id="btn-alert">■ ■ (Alert)</button>
-            <button class="btn" onclick="switchFace('ascii')" id="btn-ascii">&gt; _ (Prompt)</button>
-          </div>
-        </div>
-
-        <!-- Controls: Colorways -->
-        <div class="controls-group">
-          <span class="controls-label">COLORWAY PRESETS:</span>
-          <div class="btn-row">
-            <button class="btn active" onclick="switchColor('matrix')" id="btn-c-matrix">Matrix Green (Official)</button>
-            <button class="btn" onclick="switchColor('solana')" id="btn-c-solana">Solana Purple</button>
-            <button class="btn" onclick="switchColor('amber')" id="btn-c-amber">Cyber Amber</button>
-            <button class="btn" onclick="switchColor('cyan')" id="btn-c-cyan">Quantum Cyan</button>
-            <button class="btn" onclick="switchColor('crimson')" id="btn-c-crimson">Crimson SpecOps</button>
-            <button class="btn" onclick="switchColor('white')" id="btn-c-white">Ghost White</button>
-          </div>
-        </div>
-
-        <a href="public/rare-crt-robot-sleek.svg" target="_blank" class="btn-primary">
-          Open Raw Vector SVG in New Tab ↗
+        <a href="public/rare-crt-robot-ditto.svg" target="_blank" class="btn-link">
+          Open Fullscreen SVG in Browser ↗
         </a>
       </div>
 
-      <!-- Right: Official Video Reference & Details -->
-      <div class="card" style="justify-content: space-between;">
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-          <div class="card-title">
-            <span>OFFICIAL VIDEO REFERENCE</span>
-            <span style="color: #60a5fa;">"Each one is an AI agent"</span>
-          </div>
-
-          <img src="public/rare-army-ref.jpg" alt="Official Intro Video Army Scene" class="ref-img" />
-
-          <ul class="notes-list">
-            <li><span class="check">✓</span> <span><strong>Client ki "The body is bad" problem solved:</strong> Pehle wale mein robot box pakad kar jhuka hua lag raha tha. Ab arms bilkul naturally sides par relaxed hain aur athletic V-taper standing pose hai.</span></li>
-            <li><span class="check">✓</span> <span><strong>100% Video Accurate:</strong> Chest plates, neck cylinder, glowing neon wireframe edges, aur perspective grid floor sab video se match karte hain.</span></li>
-            <li><span class="check">✓</span> <span><strong>10,078 Modular NFTs:</strong> Video mein har robot ka screen expression alag hai (<code>- -</code>, <code>+ +</code>, <code>● ●</code>, <code>^ -</code>), jisse puri collection procedural traits ke saath generate ho sakti hai.</span></li>
-            <li><span class="check">✓</span> <span><strong>Infinitely Scalable:</strong> SVG vector format mein hone ke karan yeh kisi bhi resolution par zero pixelated / crystal clear dikhta hai.</span></li>
-          </ul>
+      <!-- Right: Original Video Screenshot -->
+      <div class="card">
+        <div class="card-title">
+          <span style="color: #ffffff;">2. ORIGINAL VIDEO SCREENSHOT</span>
+          <span style="color: #60a5fa;">REFERENCE FRAME</span>
         </div>
 
-        <div style="padding-top: 10px; border-top: 1px solid #1f2b23; font-size: 11px; color: #71717a; font-family: monospace;">
-          File location: public/rare-crt-robot-sleek.svg
+        <div class="viewport">
+          <img src="public/rare-ditto-ref.jpg" alt="Original Video Reference" />
+        </div>
+
+        <div class="details">
+          <strong style="color: #00ff66;">Replicated Elements:</strong><br />
+          • Glowing circular pixel dot-matrix eyes on CRT screen<br />
+          • Faceted trapezoid chest plate with horizontal ID badge on right<br />
+          • Gem-cut wireframe chest vault box with silver padlock latch<br />
+          • Left hand gripping the box top, right arm resting on hip<br />
+          • Chunky robotic legs with bright green vertical seams & cyber boots
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    let curColor = 'matrix';
-    let curFace = 'flat';
-
-    const colors = {
-      matrix: { primary: '#00ff66', name: 'Matrix Green (Official)' },
-      solana: { primary: '#14f195', name: 'Solana Purple/Cyan' },
-      amber: { primary: '#ffaa00', name: 'Cyber Amber' },
-      cyan: { primary: '#00e5ff', name: 'Quantum Cyan' },
-      crimson: { primary: '#ff2a4b', name: 'Crimson SpecOps' },
-      white: { primary: '#ffffff', name: 'Ghost White' }
-    };
-
-    function switchFace(f) {
-      curFace = f;
-      document.querySelectorAll('[id^="btn-"]').forEach(b => {
-        if (!b.id.startsWith('btn-c-')) b.classList.remove('active');
-      });
-      document.getElementById('btn-' + f).classList.add('active');
-      updateStatus();
-    }
-
-    function switchColor(c) {
-      curColor = c;
-      document.querySelectorAll('[id^="btn-c-"]').forEach(b => b.classList.remove('active'));
-      document.getElementById('btn-c-' + c).classList.add('active');
-      updateStatus();
-    }
-
-    function updateStatus() {
-      const cw = colors[curColor];
-      document.getElementById('card-status').textContent = `MODEL: ${cw.name.toUpperCase()} (${curFace.toUpperCase()})`;
-      document.getElementById('card-status').style.color = cw.primary;
-    }
-  </script>
 </body>
 </html>
