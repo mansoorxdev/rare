@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RARE Protocol — Sleek Robot Model Preview</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #090d0b;
+      color: #e4e4e7;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header {
+      background: #111a14;
+      border: 1px solid #1a3824;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #00ff66;
+      box-shadow: 0 0 10px #00ff66;
+    }
+    .badge {
+      font-size: 11px;
+      font-family: monospace;
+      padding: 4px 10px;
+      background: rgba(0, 255, 102, 0.15);
+      border: 1px solid rgba(0, 255, 102, 0.4);
+      color: #00ff66;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #111613;
+      border: 1px solid #1f2b23;
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .card-title {
+      font-size: 12px;
+      font-family: monospace;
+      font-weight: bold;
+      color: #00ff66;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid #1f2b23;
+      padding-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .svg-viewport {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: radial-gradient(circle at 50% 40%, #0a1f14 0%, #040a06 100%);
+      border: 1px solid #1a3824;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .ref-img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #1a3824;
+      display: block;
+    }
+    .controls-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .controls-label {
+      font-size: 11px;
+      font-family: monospace;
+      color: #a1a1aa;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .btn {
+      background: #1a241e;
+      color: #a1a1aa;
+      border: 1px solid #27382d;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: monospace;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      color: #ffffff;
+      background: #25362a;
+    }
+    .btn.active {
+      background: rgba(0, 255, 102, 0.2);
+      border-color: #00ff66;
+      color: #00ff66;
+      box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+    }
+    .btn-primary {
+      background: #00ff66;
+      color: #000000;
+      font-weight: 800;
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: monospace;
+      font-size: 12px;
+      display: block;
+      transition: all 0.2s;
+      box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+    }
+    .btn-primary:hover {
+      background: #33ff88;
+      box-shadow: 0 0 20px rgba(0, 255, 102, 0.6);
+    }
+    .notes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+      color: #a1a1aa;
+      line-height: 1.5;
+    }
+    .notes-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .check {
+      color: #00ff66;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1><span class="dot"></span> RARE PROTOCOL — Official Video Army Model</h1>
+      <span class="badge">10,078 Autonomous AI Agents</span>
+    </div>
+
+    <!-- Main Grid: Left = Interactive Vector SVG, Right = Video Comparison -->
+    <div class="main-grid">
+      <!-- Left: Interactive SVG -->
+      <div class="card">
+        <div class="card-title">
+          <span id="card-status">MODEL: MATRIX GREEN (CENTER ROBOT)</span>
+          <span>VECTOR SVG</span>
+        </div>
+
+        <div class="svg-viewport" id="svg-container">
+          <img id="svg-display" src="public/rare-crt-robot-sleek.svg" alt="Sleek CRT Robot" style="width: 100%; height: 100%; object-fit: contain;" />
+        </div>
+
+        <!-- Controls: CRT Faces -->
+        <div class="controls-group">
+          <span class="controls-label">CRT SCREEN FACES (FROM ARMY VIDEO):</span>
+          <div class="btn-row">
+            <button class="btn active" onclick="switchFace('flat')" id="btn-flat">- - (Center Video)</button>
+            <button class="btn" onclick="switchFace('cross')" id="btn-cross">+ + (Cross)</button>
+            <button class="btn" onclick="switchFace('dots')" id="btn-dots">● ● (Round)</button>
+            <button class="btn" onclick="switchFace('wink')" id="btn-wink">^ - (Wink)</button>
+            <button class="btn" onclick="switchFace('alert')" id="btn-alert">■ ■ (Alert)</button>
+            <button class="btn" onclick="switchFace('ascii')" id="btn-ascii">&gt; _ (Prompt)</button>
+          </div>
+        </div>
+
+        <!-- Controls: Colorways -->
+        <div class="controls-group">
+          <span class="controls-label">COLORWAY PRESETS:</span>
+          <div class="btn-row">
+            <button class="btn active" onclick="switchColor('matrix')" id="btn-c-matrix">Matrix Green (Official)</button>
+            <button class="btn" onclick="switchColor('solana')" id="btn-c-solana">Solana Purple</button>
+            <button class="btn" onclick="switchColor('amber')" id="btn-c-amber">Cyber Amber</button>
+            <button class="btn" onclick="switchColor('cyan')" id="btn-c-cyan">Quantum Cyan</button>
+            <button class="btn" onclick="switchColor('crimson')" id="btn-c-crimson">Crimson SpecOps</button>
+            <button class="btn" onclick="switchColor('white')" id="btn-c-white">Ghost White</button>
+          </div>
+        </div>
+
+        <a href="public/rare-crt-robot-sleek.svg" target="_blank" class="btn-primary">
+          Open Raw Vector SVG in New Tab ↗
+        </a>
+      </div>
+
+      <!-- Right: Official Video Reference & Details -->
+      <div class="card" style="justify-content: space-between;">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="card-title">
+            <span>OFFICIAL VIDEO REFERENCE</span>
+            <span style="color: #60a5fa;">"Each one is an AI agent"</span>
+          </div>
+
+          <img src="public/rare-army-ref.jpg" alt="Official Intro Video Army Scene" class="ref-img" />
+
+          <ul class="notes-list">
+            <li><span class="check">✓</span> <span><strong>Client ki "The body is bad" problem solved:</strong> Pehle wale mein robot box pakad kar jhuka hua lag raha tha. Ab arms bilkul naturally sides par relaxed hain aur athletic V-taper standing pose hai.</span></li>
+            <li><span class="check">✓</span> <span><strong>100% Video Accurate:</strong> Chest plates, neck cylinder, glowing neon wireframe edges, aur perspective grid floor sab video se match karte hain.</span></li>
+            <li><span class="check">✓</span> <span><strong>10,078 Modular NFTs:</strong> Video mein har robot ka screen expression alag hai (<code>- -</code>, <code>+ +</code>, <code>● ●</code>, <code>^ -</code>), jisse puri collection procedural traits ke saath generate ho sakti hai.</span></li>
+            <li><span class="check">✓</span> <span><strong>Infinitely Scalable:</strong> SVG vector format mein hone ke karan yeh kisi bhi resolution par zero pixelated / crystal clear dikhta hai.</span></li>
+          </ul>
+        </div>
+
+        <div style="padding-top: 10px; border-top: 1px solid #1f2b23; font-size: 11px; color: #71717a; font-family: monospace;">
+          File location: public/rare-crt-robot-sleek.svg
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let curColor = 'matrix';
+    let curFace = 'flat';
+
+    const colors = {
+      matrix: { primary: '#00ff66', name: 'Matrix Green (Official)' },
+      solana: { primary: '#14f195', name: 'Solana Purple/Cyan' },
+      amber: { primary: '#ffaa00', name: 'Cyber Amber' },
+      cyan: { primary: '#00e5ff', name: 'Quantum Cyan' },
+      crimson: { primary: '#ff2a4b', name: 'Crimson SpecOps' },
+      white: { primary: '#ffffff', name: 'Ghost White' }
+    };
+
+    function switchFace(f) {
+      curFace = f;
+      document.querySelectorAll('[id^="btn-"]').forEach(b => {
+        if (!b.id.startsWith('btn-c-')) b.classList.remove('active');
+      });
+      document.getElementById('btn-' + f).classList.add('active');
+      updateStatus();
+    }
+
+    function switchColor(c) {
+      curColor = c;
+      document.querySelectorAll('[id^="btn-c-"]').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-c-' + c).classList.add('active');
+      updateStatus();
+    }
+
+    function updateStatus() {
+      const cw = colors[curColor];
+      document.getElementById('card-status').textContent = `MODEL: ${cw.name.toUpperCase()} (${curFace.toUpperCase()})`;
+      document.getElementById('card-status').style.color = cw.primary;
+    }
+  </script>
+</body>
+</html>

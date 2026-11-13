@@ -1,0 +1,390 @@
+const fs = require('fs');
+const path = require('path');
+
+function generateSleekRobotSVG({
+  primaryColor = '#00ff66',
+  glowColor = '#22ff88',
+  bodyDark = '#06160e',
+  bodyMid = '#0c2619',
+  bodyLight = '#143825',
+  casingColor = '#2d3b32',
+  casingDark = '#1a241e',
+  screenBg = '#020c06',
+  eyeColor = '#00ff66',
+  faceType = 'flat', // 'flat', 'cross', 'dots', 'wink', 'alert', 'ascii'
+  showFloorGrid = true,
+  backgroundMode = 'transparent' // 'transparent' or 'dark'
+} = {}) {
+
+  // Generate face content based on faceType
+  let faceElements = '';
+  if (faceType === 'flat') {
+    // Front Center Robot in Video: "- -" horizontal bar eyes and small bar mouth
+    faceElements = `
+      <!-- Center Robot from Video: Flat bar eyes -->
+      <rect x="250" y="180" width="32" height="10" rx="2" fill="${eyeColor}" />
+      <rect x="318" y="180" width="32" height="10" rx="2" fill="${eyeColor}" />
+      <rect x="286" y="210" width="28" height="6" rx="1.5" fill="${eyeColor}" opacity="0.9" />
+    `;
+  } else if (faceType === 'cross') {
+    // Plus / Star / Cross eyes (Front row left & right robots)
+    faceElements = `
+      <!-- Left Eye Cross -->
+      <rect x="261" y="174" width="10" height="26" rx="2" fill="${eyeColor}" />
+      <rect x="253" y="182" width="26" height="10" rx="2" fill="${eyeColor}" />
+      <!-- Right Eye Cross -->
+      <rect x="329" y="174" width="10" height="26" rx="2" fill="${eyeColor}" />
+      <rect x="321" y="182" width="26" height="10" rx="2" fill="${eyeColor}" />
+      <!-- Mouth -->
+      <rect x="286" y="214" width="28" height="6" rx="1.5" fill="${eyeColor}" opacity="0.9" />
+    `;
+  } else if (faceType === 'dots') {
+    // Circular pixel cluster eyes (Classic robot)
+    faceElements = `
+      <!-- Left Eye Circle -->
+      <circle cx="266" cy="186" r="14" fill="${eyeColor}" />
+      <circle cx="266" cy="186" r="8" fill="#020c06" />
+      <circle cx="266" cy="186" r="4" fill="${eyeColor}" />
+      <!-- Right Eye Circle -->
+      <circle cx="334" cy="186" r="14" fill="${eyeColor}" />
+      <circle cx="334" cy="186" r="8" fill="#020c06" />
+      <circle cx="334" cy="186" r="4" fill="${eyeColor}" />
+      <!-- Mouth -->
+      <rect x="286" y="214" width="28" height="6" rx="1.5" fill="${eyeColor}" opacity="0.9" />
+    `;
+  } else if (faceType === 'wink') {
+    // Playful wink face
+    faceElements = `
+      <!-- Left Eye Arch -->
+      <path d="M 252 192 Q 266 172 280 192" fill="none" stroke="${eyeColor}" stroke-width="7" stroke-linecap="round" />
+      <!-- Right Eye Dot -->
+      <circle cx="334" cy="186" r="12" fill="${eyeColor}" />
+      <!-- Smile Mouth -->
+      <path d="M 288 214 Q 300 226 312 214" fill="none" stroke="${eyeColor}" stroke-width="5" stroke-linecap="round" />
+    `;
+  } else if (faceType === 'alert') {
+    // Solid digital squares
+    faceElements = `
+      <rect x="252" y="176" width="26" height="22" rx="3" fill="${eyeColor}" />
+      <rect x="322" y="176" width="26" height="22" rx="3" fill="${eyeColor}" />
+      <rect x="288" y="214" width="24" height="6" rx="1.5" fill="${eyeColor}" opacity="0.9" />
+    `;
+  } else if (faceType === 'ascii') {
+    // Terminal prompt
+    faceElements = `
+      <text x="245" y="196" font-family="monospace" font-size="28" font-weight="900" fill="${eyeColor}">></text>
+      <rect x="272" y="178" width="14" height="22" fill="${eyeColor}" />
+      <text x="245" y="226" font-family="monospace" font-size="12" font-weight="bold" fill="${eyeColor}" opacity="0.8">ONLINE</text>
+    `;
+  }
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%" style="background: ${backgroundMode === 'dark' ? '#040d08' : 'transparent'};">
+  <defs>
+    <!-- Intense Neon Glow Filter -->
+    <filter id="sleek-neon" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.5" result="blur1" />
+      <feGaussianBlur stdDeviation="6" result="blur2" />
+      <feGaussianBlur stdDeviation="12" result="blur3" />
+      <feMerge>
+        <feMergeNode in="blur3" />
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="screen-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b1" />
+      <feGaussianBlur stdDeviation="8" result="b2" />
+      <feMerge>
+        <feMergeNode in="b2" />
+        <feMergeNode in="b1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Scanlines for CRT screen -->
+    <pattern id="sleek-scanlines" width="100" height="3" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="100" y2="0" stroke="rgba(0,0,0,0.45)" stroke-width="1.2" />
+    </pattern>
+
+    <!-- Screen Phosphor Gradient -->
+    <radialGradient id="crt-phosphor" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#0a2a16" />
+      <stop offset="60%" stop-color="${screenBg}" />
+      <stop offset="100%" stop-color="#010603" />
+    </radialGradient>
+
+    <!-- Monitor Bezel Gradient -->
+    <linearGradient id="monitor-casing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#405045" />
+      <stop offset="45%" stop-color="${casingColor}" />
+      <stop offset="100%" stop-color="${casingDark}" />
+    </linearGradient>
+
+    <linearGradient id="monitor-top-chamfer" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#55685a" />
+      <stop offset="100%" stop-color="${casingColor}" />
+    </linearGradient>
+
+    <!-- Ground Contact Shadow -->
+    <radialGradient id="ground-shadow-grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.7)" />
+      <stop offset="60%" stop-color="rgba(0,0,0,0.2)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+    </radialGradient>
+  </defs>
+
+  <style>
+    .wf-glow {
+      stroke: ${primaryColor};
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: url(#sleek-neon);
+    }
+    .facet {
+      transition: filter 0.2s ease;
+    }
+    .facet:hover {
+      filter: brightness(1.25);
+    }
+  </style>
+
+  ${showFloorGrid ? `
+  <!-- PERSPECTIVE NEON GRID FLOOR (From Video: "Each one is an AI agent") -->
+  <g id="neon-floor-grid" opacity="0.75">
+    <!-- Horizontal Grid Lines -->
+    <line x1="50" y1="745" x2="550" y2="745" stroke="${primaryColor}" stroke-width="2.5" class="wf-glow" />
+    <line x1="90" y1="710" x2="510" y2="710" stroke="${primaryColor}" stroke-width="1.8" class="wf-glow" opacity="0.6" />
+    <line x1="130" y1="680" x2="470" y2="680" stroke="${primaryColor}" stroke-width="1.2" class="wf-glow" opacity="0.35" />
+    <line x1="170" y1="655" x2="430" y2="655" stroke="${primaryColor}" stroke-width="0.8" class="wf-glow" opacity="0.2" />
+
+    <!-- Perspective Grid Lines Receding to Vanishing Point -->
+    <line x1="70" y1="770" x2="250" y2="640" stroke="${primaryColor}" stroke-width="1.5" class="wf-glow" opacity="0.4" />
+    <line x1="170" y1="770" x2="280" y2="640" stroke="${primaryColor}" stroke-width="1.8" class="wf-glow" opacity="0.5" />
+    <line x1="300" y1="770" x2="300" y2="640" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow" opacity="0.7" />
+    <line x1="430" y1="770" x2="320" y2="640" stroke="${primaryColor}" stroke-width="1.8" class="wf-glow" opacity="0.5" />
+    <line x1="530" y1="770" x2="350" y2="640" stroke="${primaryColor}" stroke-width="1.5" class="wf-glow" opacity="0.4" />
+  </g>
+  ` : ''}
+
+  <!-- Ground Contact Shadow Under Feet -->
+  <ellipse cx="255" cy="745" rx="35" ry="8" fill="url(#ground-shadow-grad)" />
+  <ellipse cx="345" cy="745" rx="35" ry="8" fill="url(#ground-shadow-grad)" />
+  <ellipse cx="300" cy="745" rx="110" ry="14" fill="url(#ground-shadow-grad)" opacity="0.6" />
+
+  <!-- ==================== 1. LEGS (SLEEK & ATHLETIC) ==================== -->
+  <g id="robot-legs">
+    <!-- LEFT LEG (Viewer's Left) -->
+    <!-- Thigh Outer Facet -->
+    <polygon points="245,475 228,540 252,580 268,540" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Thigh Inner Facet -->
+    <polygon points="268,475 268,540 252,580 278,575" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Thigh Center Seam -->
+    <line x1="258" y1="475" x2="252" y2="580" stroke="${primaryColor}" stroke-width="1.5" class="wf-glow" opacity="0.7" />
+
+    <!-- Knee Armor Hexagonal Joint -->
+    <polygon points="242,580 262,572 278,580 272,605 252,612 238,600" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+    <circle cx="257" cy="593" r="3" fill="${primaryColor}" filter="url(#sleek-neon)" />
+
+    <!-- Shin / Calf Outer Facet -->
+    <polygon points="244,610 238,680 248,715 258,685" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Shin / Calf Front Plate -->
+    <polygon points="255,610 258,685 248,715 268,715 272,680" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Shin Neon Edge Line -->
+    <line x1="255" y1="610" x2="258" y2="715" stroke="${primaryColor}" stroke-width="1.8" class="wf-glow" />
+
+    <!-- Left Cyber Boot -->
+    <polygon points="234,715 274,715 278,742 230,742" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+    <line x1="230" y1="742" x2="278" y2="742" stroke="${primaryColor}" stroke-width="3.5" class="wf-glow" />
+    <rect x="242" y="723" width="20" height="9" fill="#091f13" stroke="${primaryColor}" stroke-width="1.4" class="wf-glow" />
+
+
+    <!-- RIGHT LEG (Viewer's Right) -->
+    <!-- Thigh Outer Facet -->
+    <polygon points="355,475 372,540 348,580 332,540" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Thigh Inner Facet -->
+    <polygon points="332,475 332,540 348,580 322,575" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Thigh Center Seam -->
+    <line x1="342" y1="475" x2="348" y2="580" stroke="${primaryColor}" stroke-width="1.5" class="wf-glow" opacity="0.7" />
+
+    <!-- Knee Armor Hexagonal Joint -->
+    <polygon points="358,580 338,572 322,580 328,605 348,612 362,600" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+    <circle cx="343" cy="593" r="3" fill="${primaryColor}" filter="url(#sleek-neon)" />
+
+    <!-- Shin / Calf Outer Facet -->
+    <polygon points="356,610 362,680 352,715 342,685" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Shin / Calf Front Plate -->
+    <polygon points="345,610 342,685 352,715 332,715 328,680" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Shin Neon Edge Line -->
+    <line x1="345" y1="610" x2="342" y2="715" stroke="${primaryColor}" stroke-width="1.8" class="wf-glow" />
+
+    <!-- Right Cyber Boot -->
+    <polygon points="326,715 366,715 370,742 322,742" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+    <line x1="322" y1="742" x2="370" y2="742" stroke="${primaryColor}" stroke-width="3.5" class="wf-glow" />
+    <rect x="338" y="723" width="20" height="9" fill="#091f13" stroke="${primaryColor}" stroke-width="1.4" class="wf-glow" />
+  </g>
+
+  <!-- ==================== 2. PELVIS & WAIST ==================== -->
+  <g id="robot-pelvis">
+    <!-- Central Pelvic Shield -->
+    <polygon points="275,445 325,445 315,485 300,498 285,485" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+    <!-- Left Hip Joint -->
+    <polygon points="250,445 275,445 285,485 245,475" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Right Hip Joint -->
+    <polygon points="350,445 325,445 315,485 355,475" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+  </g>
+
+  <!-- ==================== 3. SLEEK ARMS (DOWN AT SIDES) ==================== -->
+  <g id="robot-arms">
+    <!-- LEFT ARM (Viewer's Left - Standing naturally at side) -->
+    <!-- Shoulder Pauldron -->
+    <polygon points="168,300 205,295 212,335 175,342" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+    <polygon points="168,300 152,328 175,342" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2" class="wf-glow facet" />
+
+    <!-- Upper Arm Strut -->
+    <polygon points="172,342 198,338 192,410 166,408" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <line x1="184" y1="340" x2="180" y2="408" stroke="${primaryColor}" stroke-width="1.5" class="wf-glow" opacity="0.6" />
+
+    <!-- Elbow Mechanical Joint -->
+    <polygon points="166,408 192,410 190,430 164,428" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <circle cx="178" cy="419" r="3" fill="${primaryColor}" filter="url(#sleek-neon)" />
+
+    <!-- Forearm Gauntlet (Tapered to wrist) -->
+    <polygon points="164,428 190,430 184,510 160,505" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <line x1="176" y1="429" x2="172" y2="508" stroke="${primaryColor}" stroke-width="1.6" class="wf-glow" />
+
+    <!-- Hand & Relaxed Digits (At Side) -->
+    <polygon points="160,505 184,510 180,535 158,530" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2" class="wf-glow facet" />
+    <!-- Individual Articulated Fingers -->
+    <line x1="162" y1="530" x2="160" y2="558" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow" />
+    <line x1="168" y1="532" x2="167" y2="562" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow" />
+    <line x1="174" y1="533" x2="174" y2="560" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow" />
+    <line x1="180" y1="534" x2="181" y2="554" stroke="${primaryColor}" stroke-width="2" class="wf-glow" />
+
+
+    <!-- RIGHT ARM (Viewer's Right - Standing naturally at side) -->
+    <!-- Shoulder Pauldron -->
+    <polygon points="432,300 395,295 388,335 425,342" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+    <polygon points="432,300 448,328 425,342" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2" class="wf-glow facet" />
+
+    <!-- Upper Arm Strut -->
+    <polygon points="428,342 402,338 408,410 434,408" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <line x1="416" y1="340" x2="420" y2="408" stroke="${primaryColor}" stroke-width="1.5" class="wf-glow" opacity="0.6" />
+
+    <!-- Elbow Mechanical Joint -->
+    <polygon points="434,408 408,410 410,430 436,428" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <circle cx="422" cy="419" r="3" fill="${primaryColor}" filter="url(#sleek-neon)" />
+
+    <!-- Forearm Gauntlet (Tapered to wrist) -->
+    <polygon points="436,428 410,430 416,510 440,505" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <line x1="424" y1="429" x2="428" y2="508" stroke="${primaryColor}" stroke-width="1.6" class="wf-glow" />
+
+    <!-- Hand & Relaxed Digits (At Side) -->
+    <polygon points="440,505 416,510 420,535 442,530" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2" class="wf-glow facet" />
+    <!-- Individual Articulated Fingers -->
+    <line x1="438" y1="530" x2="440" y2="558" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow" />
+    <line x1="432" y1="532" x2="433" y2="562" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow" />
+    <line x1="426" y1="533" x2="426" y2="560" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow" />
+    <line x1="420" y1="534" x2="419" y2="554" stroke="${primaryColor}" stroke-width="2" class="wf-glow" />
+  </g>
+
+  <!-- ==================== 4. ATHLETIC V-TAPER TORSO ==================== -->
+  <g id="robot-torso">
+    <!-- Upper Chest Left Pectoral -->
+    <polygon points="205,295 300,310 295,365 220,360" fill="${bodyLight}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+    <!-- Upper Chest Right Pectoral -->
+    <polygon points="395,295 300,310 305,365 380,360" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow facet" />
+
+    <!-- Center Chest Sternum Wireframe -->
+    <line x1="300" y1="310" x2="300" y2="445" stroke="${primaryColor}" stroke-width="2.4" class="wf-glow" />
+
+    <!-- ID Tag Badge on Left Chest (As in video!) -->
+    <rect x="325" y="325" width="30" height="9" rx="1.5" fill="#0c2617" stroke="${primaryColor}" stroke-width="1.4" class="wf-glow" />
+    <line x1="329" y1="329" x2="351" y2="329" stroke="${primaryColor}" stroke-width="1" opacity="0.8" />
+
+    <!-- Mid Abdominal Facets (V-Taper inward to waist) -->
+    <!-- Left Upper Ab -->
+    <polygon points="220,360 295,365 298,405 240,400" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Right Upper Ab -->
+    <polygon points="380,360 305,365 302,405 360,400" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+
+    <!-- Left Lower Ab / Ribs -->
+    <polygon points="240,400 298,405 300,445 255,445" fill="${bodyMid}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+    <!-- Right Lower Ab / Ribs -->
+    <polygon points="360,400 302,405 300,445 345,445" fill="${bodyDark}" stroke="${primaryColor}" stroke-width="2.2" class="wf-glow facet" />
+
+    <!-- Dynamic Diagonal Wireframe Facet Cuts -->
+    <line x1="220" y1="360" x2="298" y2="405" stroke="${primaryColor}" stroke-width="1.4" class="wf-glow" opacity="0.8" />
+    <line x1="380" y1="360" x2="302" y2="405" stroke="${primaryColor}" stroke-width="1.4" class="wf-glow" opacity="0.8" />
+    <line x1="240" y1="400" x2="300" y2="445" stroke="${primaryColor}" stroke-width="1.4" class="wf-glow" opacity="0.8" />
+    <line x1="360" y1="400" x2="300" y2="445" stroke="${primaryColor}" stroke-width="1.4" class="wf-glow" opacity="0.8" />
+  </g>
+
+  <!-- ==================== 5. MECHANICAL NECK ==================== -->
+  <g id="robot-neck">
+    <rect x="282" y="272" width="36" height="24" rx="2" fill="#13261b" stroke="${primaryColor}" stroke-width="2" class="wf-glow" />
+    <line x1="282" y1="280" x2="318" y2="280" stroke="${primaryColor}" stroke-width="1.6" class="wf-glow" />
+    <line x1="282" y1="288" x2="318" y2="288" stroke="${primaryColor}" stroke-width="1.6" class="wf-glow" />
+  </g>
+
+  <!-- ==================== 6. CRT MONITOR HEAD ==================== -->
+  <g id="crt-monitor-head">
+    <!-- Perspective 3D Casing -->
+    <!-- Top Chamfer of Monitor -->
+    <polygon points="230,118 370,118 392,142 208,142" fill="url(#monitor-top-chamfer)" stroke="${casingDark}" stroke-width="1.6" />
+    <!-- Left Side Chamfer -->
+    <polygon points="230,118 208,142 208,262 222,275" fill="#243027" stroke="${casingDark}" stroke-width="1.6" />
+    <!-- Right Side Chamfer -->
+    <polygon points="370,118 392,142 392,262 378,275" fill="#18211b" stroke="${casingDark}" stroke-width="1.6" />
+    <!-- Bottom Chamfer -->
+    <polygon points="208,262 222,275 378,275 392,262" fill="#121a15" stroke="${casingDark}" stroke-width="1.6" />
+
+    <!-- Monitor Front Bezel Face -->
+    <rect x="214" y="136" width="172" height="136" rx="12" fill="url(#monitor-casing)" stroke="#111a14" stroke-width="2.5" />
+    <rect x="216" y="138" width="168" height="132" rx="10" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+
+    <!-- Inset Screen Bezel -->
+    <rect x="226" y="146" width="148" height="106" rx="6" fill="#040e07" stroke="#0e2013" stroke-width="2.5" />
+
+    <!-- CRT Phosphor Screen Surface -->
+    <rect x="230" y="150" width="140" height="98" rx="5" fill="url(#crt-phosphor)" />
+
+    <!-- Curved Glass Reflection -->
+    <path d="M 232 152 L 368 152 C 350 185, 250 185, 232 152 Z" fill="rgba(255, 255, 255, 0.08)" />
+
+    <!-- Scanline Layer -->
+    <rect x="230" y="150" width="140" height="98" rx="5" fill="url(#sleek-scanlines)" opacity="0.6" pointer-events="none" />
+
+    <!-- ==================== CRT FACE / EYES ==================== -->
+    <g id="screen-face" filter="url(#screen-glow)">
+      ${faceElements}
+    </g>
+
+    <!-- Monitor Chin Controls (Buttons / Knobs) -->
+    <rect x="234" y="258" width="24" height="4" rx="2" fill="#182b1f" />
+    <circle cx="355" cy="260" r="4" fill="#1c2921" stroke="#0e1711" stroke-width="1.2" />
+    <circle cx="355" cy="260" r="1.5" fill="${primaryColor}" opacity="0.8" />
+    <circle cx="368" cy="260" r="3" fill="#1c2921" stroke="#0e1711" stroke-width="1.2" />
+  </g>
+</svg>
+`;
+}
+
+// Generate the official sleek robot
+const svg = generateSleekRobotSVG({
+  primaryColor: '#00ff66',
+  faceType: 'flat', // The exact center front robot in video
+  showFloorGrid: true,
+  backgroundMode: 'transparent'
+});
+
+const outPath = path.join(__dirname, '..', 'public', 'rare-crt-robot-sleek.svg');
+fs.writeFileSync(outPath, svg, 'utf8');
+console.log('Saved sleek standing robot SVG to public/rare-crt-robot-sleek.svg!');
+
+// Also overwrite public/rare-crt-robot.svg
+fs.writeFileSync(path.join(__dirname, '..', 'public', 'rare-crt-robot.svg'), svg, 'utf8');
+console.log('Updated public/rare-crt-robot.svg with sleek model!');
+
