@@ -114,49 +114,41 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
         drawH = drawW / imgAspect;
       }
 
-      // 4. Frame Selection matching Selected Agent (Never morph into an unrelated character!)
+      // 4. Frame Selection matching Selected Agent (Exact 360° rotation for the signature operative)
       const normAngle = ((state.angle % 360) + 360) % 360;
       const agent = state.activeAgent || currentAgent;
-      const isEmeraldSentry = agent.archetype === 'Solana Emerald Sentry';
 
+      const sector = Math.floor(((normAngle + 22.5) % 360) / 45) % 8;
       let targetSrc = agent.image;
       let flip = false;
 
-      if (isEmeraldSentry) {
-        const sector = Math.floor(((normAngle + 22.5) % 360) / 45) % 8;
-        if (sector === 0) {
-          targetSrc = agent.image;
-        } else if (sector === 1) {
-          targetSrc = agent.turnImage || agent.image;
-        } else if (sector === 2) {
-          targetSrc = agent.profileImage || agent.turnImage || agent.image;
-        } else if (sector === 3) {
-          targetSrc = agent.backImage || agent.profileImage;
-        } else if (sector === 4) {
-          targetSrc = agent.backImage || agent.image;
-        } else if (sector === 5) {
-          targetSrc = agent.backImage || agent.profileImage;
-          flip = true;
-        } else if (sector === 6) {
-          targetSrc = agent.profileImage || agent.turnImage || agent.image;
-          flip = true;
-        } else if (sector === 7) {
-          targetSrc = agent.turnImage || agent.image;
-          flip = true;
-        }
-      } else {
-        // Archetype with unique character art: Keep THAT character 100% faithful!
-        // If it has its own turn view, use it at quarter angles
-        if (agent.turnImage && ((normAngle > 35 && normAngle < 145) || (normAngle > 215 && normAngle < 325))) {
-          targetSrc = agent.turnImage;
-          flip = normAngle > 180;
-        } else {
-          targetSrc = agent.image;
-          flip = normAngle > 180;
-        }
+      if (sector === 0) {
+        targetSrc = agent.image;
+        flip = false;
+      } else if (sector === 1) {
+        targetSrc = agent.turnImage || agent.image;
+        flip = false;
+      } else if (sector === 2) {
+        targetSrc = agent.profileImage || agent.turnImage || agent.image;
+        flip = false;
+      } else if (sector === 3) {
+        targetSrc = agent.backImage || agent.profileImage || agent.image;
+        flip = false;
+      } else if (sector === 4) {
+        targetSrc = agent.backImage || agent.image;
+        flip = false;
+      } else if (sector === 5) {
+        targetSrc = agent.backImage || agent.profileImage || agent.image;
+        flip = true;
+      } else if (sector === 6) {
+        targetSrc = agent.profileImage || agent.turnImage || agent.image;
+        flip = true;
+      } else if (sector === 7) {
+        targetSrc = agent.turnImage || agent.image;
+        flip = true;
       }
 
-      const img = state.loadedImages[targetSrc] || state.loadedImages[agent.image];
+      const img = state.loadedImages[targetSrc] || state.loadedImages[agent.image] || state.loadedImages['/assets/agent/rare_front.jpg'];
 
       // Draw subtle ground contact shadow under character feet on pure white
       const centerX = width / 2;
@@ -184,9 +176,8 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
           ctx.scale(-1, 1);
         }
 
-        // Multiply composite + slight contrast boost: blends off-white JPEG backgrounds
-        // seamlessly into 100% pure white (#ffffff), keeping dark armor & neon lights 100% solid!
-        ctx.filter = 'contrast(106%) brightness(103%)';
+        // Multiply composite + slight contrast boost + dynamic colorway hue filter
+        ctx.filter = `contrast(106%) brightness(103%) ${agent.visualFilter || ''}`.trim();
         ctx.globalCompositeOperation = 'multiply';
 
         ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);

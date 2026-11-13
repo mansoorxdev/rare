@@ -157,7 +157,8 @@ export default function HomePage() {
         pdaVault: agentMeta.pdaVault,
         funding: `${deposited} SOL`,
         txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`,
-        image: agentMeta.image
+        image: agentMeta.image,
+        visualFilter: agentMeta.visualFilter
       });
     }, 1800);
   };
@@ -489,6 +490,10 @@ export default function HomePage() {
                         alt={agent.name}
                         loading="lazy"
                         className="w-full h-full object-contain"
+                        style={{
+                          mixBlendMode: 'multiply',
+                          filter: `contrast(106%) brightness(103%) ${agent.visualFilter || ''}`.trim()
+                        }}
                       />
                     </div>
 
@@ -814,7 +819,7 @@ export default function HomePage() {
                   src={mintCelebration.image}
                   alt={mintCelebration.name}
                   className="w-full aspect-square object-contain bg-white"
-                  style={{ mixBlendMode: 'multiply', filter: 'contrast(106%) brightness(103%)' }}
+                  style={{ mixBlendMode: 'multiply', filter: `contrast(106%) brightness(103%) ${mintCelebration.visualFilter || ''}`.trim() }}
                 />
               </div>
 
@@ -884,7 +889,7 @@ export default function HomePage() {
                   src={inspectedAgentModal.image}
                   alt={inspectedAgentModal.name}
                   className="w-full aspect-square object-contain bg-white"
-                  style={{ mixBlendMode: 'multiply', filter: 'contrast(106%) brightness(103%)' }}
+                  style={{ mixBlendMode: 'multiply', filter: `contrast(106%) brightness(103%) ${inspectedAgentModal.visualFilter || ''}`.trim() }}
                 />
               </div>
 
