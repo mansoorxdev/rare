@@ -59,18 +59,12 @@ class PixelCanvas {
 // TRAIT POOLS
 // ==========================================
 const BACKGROUNDS = [
-  { name: 'Electric Blue', color: '#0055ff' },
-  { name: 'Sky Cyan', color: '#1892ff' },
-  { name: 'Midnight Navy', color: '#0a1931' },
-  { name: 'Cyber Purple', color: '#7b2cbf' },
-  { name: 'Solar Yellow', color: '#ffd166' },
-  { name: 'Sunset Orange', color: '#ff6b35' },
-  { name: 'Mint Emerald', color: '#06d6a0' },
-  { name: 'Crimson Red', color: '#e63946' },
-  { name: 'Bubblegum Pink', color: '#ff70a6' },
-  { name: 'Obsidian Black', color: '#121620' },
-  { name: 'Acid Lime', color: '#9ef01a' },
-  { name: 'Royal Indigo', color: '#3a0ca3' }
+  { name: 'Pure White Studio', color: '#ffffff' },
+  { name: 'Solana Pearl White', color: '#ffffff' },
+  { name: 'Minimalist White', color: '#ffffff' },
+  { name: 'Clean Room White', color: '#ffffff' },
+  { name: 'Glacial White', color: '#ffffff' },
+  { name: 'Cybernetic White', color: '#ffffff' }
 ];
 
 const SKINS = [
@@ -213,8 +207,9 @@ function renderNFT({ bg, skin, headwear, eyes, mouth, clothes, accessory }) {
   const BLACK = '#000000';
   const WHITE = '#ffffff';
 
-  // 1. Ground Horizon Line
-  c.rect(0, 23, 24, 1, BLACK);
+  // 1. Ground contact shadow under feet on pure white studio
+  c.rect(7, 23, 10, 1, '#cbd5e1');
+  c.rect(8, 22, 8, 1, '#e2e8f0');
 
   // 2. Legs (y=20 to 22)
   c.rect(8, 20, 3, 3, BLACK);

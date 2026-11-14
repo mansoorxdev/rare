@@ -3,7 +3,7 @@ const path = require('path');
 
 // 24x24 Pixel Art Canvas Engine
 class PixelCanvas {
-  constructor(width = 24, height = 24, bgColor = '#0055ff') {
+  constructor(width = 24, height = 24, bgColor = '#ffffff') {
     this.width = width;
     this.height = height;
     this.bgColor = bgColor;
@@ -51,15 +51,16 @@ class PixelCanvas {
 // SAMPLE 1: CYAN ROBOT WITH STRIPED SHIRT (Image 3)
 // ==========================================
 function buildCyanRobot() {
-  const c = new PixelCanvas(24, 24, '#0055ff');
+  const c = new PixelCanvas(24, 24, '#ffffff');
   const BLACK = '#000000';
   const SKIN = '#35c5d0';
   const WHITE = '#ffffff';
   const SHIRT_Y = '#ffd242';
   const SHIRT_B = '#4facfe';
 
-  // Ground line
-  c.rect(0, 23, 24, 1, BLACK);
+  // Ground shadow on white
+  c.rect(7, 23, 10, 1, '#cbd5e1');
+  c.rect(8, 22, 8, 1, '#e2e8f0');
 
   // Legs (y=20 to 22)
   // Left leg
@@ -121,14 +122,15 @@ function buildCyanRobot() {
 // SAMPLE 2: PURPLE WARRIOR WITH LASER KATANA (Image 4)
 // ==========================================
 function buildPurpleWarrior() {
-  const c = new PixelCanvas(24, 24, '#0055ff');
+  const c = new PixelCanvas(24, 24, '#ffffff');
   const BLACK = '#000000';
   const SKIN = '#8a7bb5';
   const SWORD_CYAN = '#00f0ff';
   const SWORD_PINK = '#ff00aa';
 
-  // Ground line
-  c.rect(0, 23, 24, 1, BLACK);
+  // Ground shadow on white
+  c.rect(7, 23, 10, 1, '#cbd5e1');
+  c.rect(8, 22, 8, 1, '#e2e8f0');
 
   // Legs
   c.rect(8, 20, 3, 3, BLACK);
@@ -189,15 +191,16 @@ function buildPurpleWarrior() {
 // SAMPLE 3: CUTE ANTENNA GIRL ROBOT (Image 2)
 // ==========================================
 function buildAntennaGirl() {
-  const c = new PixelCanvas(24, 24, '#0055ff');
+  const c = new PixelCanvas(24, 24, '#ffffff');
   const BLACK = '#000000';
   const SKIN = '#fca34d';
   const PIGTAIL = '#00e5c5';
   const PINK_DARK = '#ff007f';
   const PINK_LIGHT = '#ffa6c9';
 
-  // Ground line
-  c.rect(0, 23, 24, 1, BLACK);
+  // Ground shadow on white
+  c.rect(7, 23, 10, 1, '#cbd5e1');
+  c.rect(8, 22, 8, 1, '#e2e8f0');
 
   // Legs
   c.rect(8, 20, 3, 3, BLACK);
