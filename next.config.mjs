@@ -47,6 +47,14 @@ const nextConfig = {
 
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/nfts/:id*',
+        destination: '/api/nft/:id*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

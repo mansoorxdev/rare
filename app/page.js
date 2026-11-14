@@ -496,13 +496,12 @@ export default function HomePage() {
                       title="Click to inspect agent specifications"
                     >
                       <img
-                        src={agent.image || '/assets/agent/rare_front.jpg'}
+                        src={agent.image || `/nfts/${agent.id}.svg`}
                         alt={agent.name}
                         loading="lazy"
                         className="w-full h-full object-contain"
                         style={{
-                          mixBlendMode: 'multiply',
-                          filter: `contrast(106%) brightness(103%) ${agent.visualFilter || ''}`.trim()
+                          imageRendering: 'pixelated',
                         }}
                       />
                     </div>
@@ -834,10 +833,10 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 items-center">
               <div className="border-2 border-black bg-white p-2 shadow-[3px_3px_0px_#000] flex items-center justify-center">
                 <img
-                  src={mintCelebration.image}
+                  src={mintCelebration.image || `/nfts/${mintCelebration.id}.svg`}
                   alt={mintCelebration.name}
-                  className="w-full aspect-square object-contain bg-white"
-                  style={{ mixBlendMode: 'multiply', filter: `contrast(106%) brightness(103%) ${mintCelebration.visualFilter || ''}`.trim() }}
+                  className="w-full aspect-square object-contain"
+                  style={{ imageRendering: 'pixelated' }}
                 />
               </div>
 
@@ -904,10 +903,10 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
               <div className="border-2 border-black bg-white p-2 shadow-[4px_4px_0px_#000] flex items-center justify-center">
                 <img
-                  src={inspectedAgentModal.image}
+                  src={inspectedAgentModal.image || `/nfts/${inspectedAgentModal.id}.svg`}
                   alt={inspectedAgentModal.name}
-                  className="w-full aspect-square object-contain bg-white"
-                  style={{ mixBlendMode: 'multiply', filter: `contrast(106%) brightness(103%) ${inspectedAgentModal.visualFilter || ''}`.trim() }}
+                  className="w-full aspect-square object-contain"
+                  style={{ imageRendering: 'pixelated' }}
                 />
               </div>
 
