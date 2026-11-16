@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { usePrivy } from '../components/PrivyClientProvider';
 import Agent360Viewer from '../components/Agent360Viewer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
 export default function HomePage() {
@@ -237,37 +239,8 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ScriptAgent Pixel-Brutalist Header */}
-      <header className="sa-nav">
-        <div className="sa-nav-in">
-          <a className="sa-brand" href="#home" onClick={(e) => scrollToSection(e, 'home')}>
-            <span className="sa-brand-icon">
-              <img src="/rare-logo-icon.png" alt="RARE Protocol" />
-            </span>
-            <span>RARE PROTOCOL</span>
-          </a>
-
-          <nav className="sa-links">
-            <a href="#directory" onClick={(e) => scrollToSection(e, 'directory')}>Agent Roster</a>
-            <a href="#ladder" onClick={(e) => scrollToSection(e, 'ladder')}>Price Ladder</a>
-            <button type="button" onClick={() => setConsoleOpen(true)}>Console Terminal</button>
-            <a href="#specs" onClick={(e) => scrollToSection(e, 'specs')}>PDA Specs</a>
-            <a href="/RARE_Protocol_Whitepaper.pdf" target="_blank" rel="noreferrer">Whitepaper</a>
-          </nav>
-
-          <div className="sa-right">
-            <button
-              type="button"
-              onClick={() => (authenticated ? logout() : login())}
-              className="btn-primary"
-            >
-              {authenticated && user?.wallet?.address
-                ? `${user.wallet.address.slice(0, 4)}...${user.wallet.address.slice(-4)}`
-                : 'Connect Wallet'}
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Global Navigation Bar */}
+      <Navbar />
 
       <div className="wrap">
         {/* CA & Token Broadcast Banner */}
@@ -699,24 +672,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span className="sa-brand-icon" style={{ width: '24px', height: '24px', padding: '2px', boxShadow: 'none' }}>
-              <img src="/rare-logo-icon.png" alt="RARE" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-            </span>
-            <span><b style={{ color: 'var(--ink)' }}>RARE PROTOCOL</b> • 10,078 Autonomous AI Agents on Solana</span>
-          </div>
-          <div style={{ display: 'flex', gap: '20px' }}>
-            <button type="button" onClick={() => setConsoleOpen(true)} style={{ background: 'none', border: 'none', font: 'inherit', color: 'inherit', cursor: 'pointer' }}>
-              Terminal
-            </button>
-            <a href="#directory" onClick={(e) => scrollToSection(e, 'directory')}>Roster</a>
-            <a href="#ladder" onClick={(e) => scrollToSection(e, 'ladder')}>Price Ladder</a>
-            <a href="#specs" onClick={(e) => scrollToSection(e, 'specs')}>PDA Specs</a>
-            <a href="/RARE_Protocol_Whitepaper.pdf" target="_blank" rel="noreferrer">Whitepaper</a>
-          </div>
-        </footer>
+        {/* Global Footer */}
+        <Footer />
       </div>
 
       {/* Terminal Console Modal */}
