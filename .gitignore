@@ -14,6 +14,7 @@ _trash_nm
 
 # metadata folder (10,078 files kept locally to keep Git & Vercel super fast)
 data/metadata/
+public/nfts/
 
 # logs
 npm-debug.log*

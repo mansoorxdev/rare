@@ -30,7 +30,7 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ width: '8px', height: '8px', background: '#10b981', display: 'inline-block', boxShadow: '1px 1px 0px #000' }} />
-          <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-pixel)', fontSize: '13px', color: '#0e2bdf' }}>
+          <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-pixel)', fontSize: '13px', color: '#00aa44' }}>
             RARE #{String(num).padStart(5, '0')}
           </span>
         </div>

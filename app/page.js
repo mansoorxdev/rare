@@ -740,7 +740,7 @@ export default function HomePage() {
               maxWidth: '680px',
               background: '#09090b',
               border: '2px solid #27272a',
-              boxShadow: '8px 8px 0px 0px #0e2bdf',
+              boxShadow: '8px 8px 0px 0px #00aa44',
               overflow: 'hidden'
             }}
             onClick={(e) => e.stopPropagation()}
@@ -790,7 +790,7 @@ export default function HomePage() {
               ))}
               <div ref={terminalEndRef} />
               <form onSubmit={handleTerminalSubmit} style={{ display: 'flex', marginTop: '12px' }}>
-                <span style={{ color: '#0e2bdf', marginRight: '6px', fontWeight: 700 }}>rare@sol:~$</span>
+                <span style={{ color: '#00aa44', marginRight: '6px', fontWeight: 700 }}>rare@sol:~$</span>
                 <input
                   type="text"
                   value={commandInput}
@@ -842,7 +842,7 @@ export default function HomePage() {
 
               <div className="space-y-2 font-mono text-xs">
                 <div className="text-lg font-bold font-display uppercase">{mintCelebration.name}</div>
-                <div className="text-[#0e2bdf] font-bold text-[11px]">SOLANA TOKEN-BOUND ACCOUNT</div>
+                <div className="text-[#00aa44] font-bold text-[11px]">SOLANA TOKEN-BOUND ACCOUNT</div>
                 <div className="p-2 border border-black bg-white space-y-1 text-[11px]">
                   <div><b>PDA Vault:</b> <span className="text-[10px] text-zinc-600 block truncate">{mintCelebration.pdaVault}</span></div>
                   <div><b>Capital Deposited:</b> <span className="text-[#047857] font-bold">{mintCelebration.funding}</span> (90%)</div>
@@ -879,12 +879,12 @@ export default function HomePage() {
           onClick={() => setInspectedAgentModal(null)}
         >
           <div
-            className="w-full max-w-2xl bg-[#fcfaf4] border-2 border-black shadow-[8px_8px_0px_#0e2bdf] p-6 text-black"
+            className="w-full max-w-2xl bg-[#fcfaf4] border-2 border-black shadow-[8px_8px_0px_#00aa44] p-6 text-black"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
               <div className="flex items-center gap-2">
-                <span className="font-pixel text-xs bg-[#0e2bdf] text-white px-2 py-0.5 border border-black">
+                <span className="font-pixel text-xs bg-[#00aa44] text-white px-2 py-0.5 border border-black">
                   #{String(inspectedAgentModal.id).padStart(5, '0')}
                 </span>
                 <h3 className="font-display font-bold text-base uppercase">
@@ -925,7 +925,7 @@ export default function HomePage() {
                   </div>
                   <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
                     <div className="text-[9px] text-zinc-500 font-bold">EXECUTION ENGINE</div>
-                    <div className="font-bold text-[#0e2bdf]">{inspectedAgentModal.engine}</div>
+                    <div className="font-bold text-[#00aa44]">{inspectedAgentModal.engine}</div>
                   </div>
                   <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
                     <div className="text-[9px] text-zinc-500 font-bold">PDA CAPITAL</div>
@@ -939,7 +939,7 @@ export default function HomePage() {
 
                 <div className="p-2 border border-black bg-white text-[10px] break-all">
                   <span className="text-zinc-500 font-bold">PROGRAM DERIVED ADDRESS (PDA):</span>
-                  <div className="font-mono text-[#0e2bdf] font-bold mt-0.5">{inspectedAgentModal.pdaVault}</div>
+                  <div className="font-mono text-[#00aa44] font-bold mt-0.5">{inspectedAgentModal.pdaVault}</div>
                 </div>
               </div>
             </div>

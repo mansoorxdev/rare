@@ -96,7 +96,7 @@ export default function PrivyClientProvider({ children }) {
           onClick={() => setShowWalletModal(false)}
         >
           <div
-            className="w-full max-w-md bg-[#fcfaf4] border-2 border-black shadow-[6px_6px_0px_#0e2bdf] p-6 text-black"
+            className="w-full max-w-md bg-[#fcfaf4] border-2 border-black shadow-[6px_6px_0px_#00aa44] p-6 text-black"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
@@ -128,7 +128,7 @@ export default function PrivyClientProvider({ children }) {
                   key={w.name}
                   type="button"
                   onClick={() => handleConnectWallet(w.name)}
-                  className="w-full flex items-center justify-between p-3 border-2 border-black bg-white hover:bg-[#0e2bdf] hover:text-white hover:translate-x-1 transition-all text-left group shadow-[2px_2px_0px_#000]"
+                  className="w-full flex items-center justify-between p-3 border-2 border-black bg-white hover:bg-[#00aa44] hover:text-white hover:translate-x-1 transition-all text-left group shadow-[2px_2px_0px_#000]"
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-xl">{w.icon}</span>

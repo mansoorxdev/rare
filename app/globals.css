@@ -1,6 +1,6 @@
 /* ==========================================================================
    RARE PROTOCOL — SCRIPTAGENT.APP PIXEL BRUTALIST DESIGN SYSTEM
-   Inspired by ScriptAgent.app (Chakra Petch, Silkscreen, Electric Blue #0e2bdf,
+   Inspired by ScriptAgent.app (Chakra Petch, Silkscreen, Protocol Green #00aa44,
    Parchment Canvas #fcfaf4, Hard Pixel Drop Shadows, Retro Terminal Controls)
    ========================================================================== */
 
@@ -16,18 +16,22 @@
   --hair: #d5cfc0;
   --hair-dark: #18181b;
 
-  --script-blue: #0e2bdf;
-  --script-blue-dark: #091ea0;
-  --script-blue-light: #e0e7ff;
+  --script-green: #00aa44;
+  --script-green-dark: #00782e;
+  --script-green-light: #e6f9ee;
+
+  --script-blue: var(--script-green);
+  --script-blue-dark: var(--script-green-dark);
+  --script-blue-light: var(--script-green-light);
   
-  --live: #10b981;
-  --live-dark: #047857;
+  --live: #00aa44;
+  --live-dark: #00782e;
   --amber: #f59e0b;
   --amber-light: #fef3c7;
   --purple: #8b5cf6;
   --purple-light: #f3e8ff;
-  --sky: #0284c7;
-  --sky-light: #e0f2fe;
+  --sky: #00aa44;
+  --sky-light: #e6f9ee;
 
   --font-display: 'Chakra Petch', system-ui, -apple-system, sans-serif;
   --font-pixel: 'Silkscreen', monospace;
@@ -734,9 +738,9 @@ a {
 }
 
 .rarity-rare {
-  background: var(--sky-light);
-  color: #0369a1;
-  border-color: #38bdf8;
+  background: var(--script-green-light);
+  color: #00782e;
+  border-color: #00aa44;
 }
 
 .rarity-common {

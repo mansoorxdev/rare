@@ -19,7 +19,7 @@ export default function PreviewPage() {
   return (
     <div style={{ background: '#0a0e17', minHeight: '100vh', color: '#fff', fontFamily: 'monospace', padding: '24px' }}>
       <header style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h1 style={{ color: '#00f0ff', fontSize: '2rem', marginBottom: '8px', textShadow: '0 0 16px rgba(0,240,255,0.4)' }}>
+        <h1 style={{ color: '#00ff66', fontSize: '2rem', marginBottom: '8px', textShadow: '0 0 16px rgba(0,255,102,0.4)' }}>
           👾 10,078 RARE Pixel NFTs Explorer
         </h1>
         <p style={{ color: '#94a3b8', fontSize: '0.95rem', maxWidth: '750px', margin: '0 auto' }}>
@@ -38,7 +38,7 @@ export default function PreviewPage() {
             style={{
               padding: '10px 16px',
               borderRadius: '8px',
-              border: '1px solid #00f0ff55',
+              border: '1px solid #00ff6655',
               background: '#111827',
               color: '#fff',
               fontSize: '1rem',
@@ -55,7 +55,7 @@ export default function PreviewPage() {
                 padding: '10px 18px',
                 borderRadius: '8px',
                 border: 'none',
-                background: '#00f0ff',
+                background: '#00ff66',
                 color: '#000',
                 fontWeight: 'bold',
                 cursor: 'pointer'
@@ -69,8 +69,8 @@ export default function PreviewPage() {
 
       {/* Featured Search Result if active */}
       {isValidSearch && (
-        <div style={{ maxWidth: '380px', margin: '0 auto 40px', background: '#111827', border: '2px solid #00f0ff', borderRadius: '16px', padding: '20px', textAlign: 'center' }}>
-          <span style={{ color: '#38bdf8', fontSize: '1.1rem', fontWeight: 'bold' }}>
+        <div style={{ maxWidth: '380px', margin: '0 auto 40px', background: '#111827', border: '2px solid #00ff66', borderRadius: '16px', padding: '20px', textAlign: 'center' }}>
+          <span style={{ color: '#00ff66', fontSize: '1.1rem', fontWeight: 'bold' }}>
             Rare #{String(searchedIdNum).padStart(5, '0')}
           </span>
           <img
@@ -100,7 +100,7 @@ export default function PreviewPage() {
               alt={`Rare #${id}`}
               style={{ width: '100%', aspectRatio: '1', borderRadius: '8px', imageRendering: 'pixelated', display: 'block', marginBottom: '8px' }}
             />
-            <div style={{ fontSize: '0.85rem', color: '#38bdf8', fontWeight: 'bold' }}>
+            <div style={{ fontSize: '0.85rem', color: '#00ff66', fontWeight: 'bold' }}>
               Rare #{String(id).padStart(5, '0')}
             </div>
             <div style={{ fontSize: '0.7rem', color: '#64748b' }}>
@@ -118,7 +118,7 @@ export default function PreviewPage() {
           style={{
             padding: '8px 16px',
             borderRadius: '6px',
-            background: currentPage === 1 ? '#1f2937' : '#0284c7',
+            background: currentPage === 1 ? '#1f2937' : '#00aa44',
             color: '#fff',
             border: 'none',
             cursor: currentPage === 1 ? 'not-allowed' : 'pointer'
@@ -128,7 +128,7 @@ export default function PreviewPage() {
         </button>
 
         <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-          Page <strong style={{ color: '#00f0ff' }}>{currentPage}</strong> of {totalPages}
+          Page <strong style={{ color: '#00ff66' }}>{currentPage}</strong> of {totalPages}
         </span>
 
         <button
@@ -137,7 +137,7 @@ export default function PreviewPage() {
           style={{
             padding: '8px 16px',
             borderRadius: '6px',
-            background: currentPage === totalPages ? '#1f2937' : '#0284c7',
+            background: currentPage === totalPages ? '#1f2937' : '#00aa44',
             color: '#fff',
             border: 'none',
             cursor: currentPage === totalPages ? 'not-allowed' : 'pointer'
@@ -147,8 +147,8 @@ export default function PreviewPage() {
         </button>
       </div>
 
-      <div style={{ maxWidth: '850px', margin: '48px auto 0', background: '#111827', border: '1px solid #00f0ff33', borderRadius: '12px', padding: '20px' }}>
-        <h3 style={{ color: '#00f0ff', marginBottom: '10px' }}>📦 Collection Stats</h3>
+      <div style={{ maxWidth: '850px', margin: '48px auto 0', background: '#111827', border: '1px solid #00ff6633', borderRadius: '12px', padding: '20px' }}>
+        <h3 style={{ color: '#00ff66', marginBottom: '10px' }}>📦 Collection Stats</h3>
         <p style={{ color: '#cbd5e1', fontSize: '0.85rem', lineHeight: '1.6' }}>
           • Total Generated: <strong>10,078 / 10,078</strong> (100% Unique, 0 Duplicates)<br />
           • Format: Native 24×24 Vector SVG (Zero blur, infinite resolution)<br />

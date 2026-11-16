@@ -370,3 +370,4 @@ console.log('Saved ditto video robot SVG to public/rare-crt-robot-ditto.svg!');
 fs.writeFileSync(path.join(__dirname, '..', 'public', 'rare-crt-robot.svg'), svg, 'utf8');
 fs.writeFileSync(path.join(__dirname, '..', 'public', 'rare-crt-robot-sleek.svg'), svg, 'utf8');
 console.log('Updated public/rare-crt-robot.svg and rare-crt-robot-sleek.svg with DITTO model!');
+
