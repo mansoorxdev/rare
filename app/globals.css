@@ -952,3 +952,46 @@ footer a:hover {
   color: var(--script-blue);
   text-decoration: underline;
 }
+
+/* Modal System */
+.rare-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.rare-modal-dialog {
+  width: 100%;
+  max-width: 680px;
+  background: #fcfaf4;
+  border: 2px solid var(--hair-dark);
+  box-shadow: 8px 8px 0px 0px var(--script-green);
+  padding: 24px;
+  color: var(--ink);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.rare-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 640px) {
+  .rare-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

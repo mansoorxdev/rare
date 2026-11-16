@@ -238,89 +238,91 @@ export default function RosterPage() {
       {/* Inspected Agent Modal */}
       {inspectedAgent && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          className="rare-modal-overlay"
           onClick={() => setInspectedAgent(null)}
         >
           <div
-            className="w-full max-w-2xl bg-[#fcfaf4] border-2 border-black shadow-[8px_8px_0px_#00aa44] p-6 text-black"
+            className="rare-modal-dialog"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
-              <div className="flex items-center gap-2">
-                <span className="font-pixel text-xs bg-[#00aa44] text-white px-2 py-0.5 border border-black">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '12px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '11px', background: 'var(--script-green)', color: '#fff', padding: '2px 8px', border: '1px solid #000' }}>
                   #{String(inspectedAgent.id).padStart(5, '0')}
                 </span>
-                <h3 className="font-display font-bold text-base uppercase">
+                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '16px', textTransform: 'uppercase' }}>
                   {inspectedAgent.role}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setInspectedAgent(null)}
-                className="font-pixel text-xs px-2.5 py-0.5 border border-black bg-white hover:bg-black hover:text-white"
+                style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', padding: '2px 8px', border: '2px solid #000', background: '#fff', cursor: 'pointer' }}
               >
                 ✕
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
-              <div className="border-2 border-black bg-white p-2 shadow-[4px_4px_0px_#000] flex items-center justify-center">
+            <div className="rare-modal-grid">
+              <div style={{ border: '2px solid #000', background: '#fff', padding: '8px', boxShadow: '4px 4px 0px #000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   src={`/nfts/${inspectedAgent.id}.svg`}
                   alt={inspectedAgent.name}
-                  className="w-full aspect-square object-contain"
-                  style={{ imageRendering: 'pixelated' }}
+                  style={{ width: '100%', aspectRatio: '1', objectFit: 'contain', imageRendering: 'pixelated' }}
                 />
               </div>
 
-              <div className="flex flex-col justify-between space-y-3 font-mono text-xs">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
                 <div>
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">MISSION PROMPT</span>
-                  <p className="mt-1 p-2.5 border border-black bg-white text-[11px] leading-relaxed italic text-zinc-800">
+                  <span style={{ fontSize: '10px', color: '#71717a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>MISSION PROMPT</span>
+                  <p style={{ marginTop: '4px', padding: '8px 10px', border: '1px solid #000', background: '#fff', fontSize: '11px', fontStyle: 'italic', lineHeight: 1.5 }}>
                     &ldquo;{inspectedAgent.personalityPreview}&rdquo;
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-[11px]">
-                  <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
-                    <div className="text-[9px] text-zinc-500 font-bold">ARCHETYPE</div>
-                    <div className="font-bold text-zinc-900">{inspectedAgent.archetype}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px' }}>
+                  <div style={{ padding: '8px', border: '1px solid #d4d4d8', background: '#f7f5ef' }}>
+                    <div style={{ fontSize: '9px', color: '#71717a', fontWeight: 700 }}>ARCHETYPE</div>
+                    <div style={{ fontWeight: 700 }}>{inspectedAgent.archetype}</div>
                   </div>
-                  <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
-                    <div className="text-[9px] text-zinc-500 font-bold">EXECUTION ENGINE</div>
-                    <div className="font-bold text-[#00aa44]">{inspectedAgent.engine}</div>
+                  <div style={{ padding: '8px', border: '1px solid #d4d4d8', background: '#f7f5ef' }}>
+                    <div style={{ fontSize: '9px', color: '#71717a', fontWeight: 700 }}>EXECUTION ENGINE</div>
+                    <div style={{ fontWeight: 700, color: 'var(--script-green)' }}>{inspectedAgent.engine}</div>
                   </div>
-                  <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
-                    <div className="text-[9px] text-zinc-500 font-bold">PDA CAPITAL</div>
-                    <div className="font-bold text-[#047857]">{inspectedAgent.pdaFunding}</div>
+                  <div style={{ padding: '8px', border: '1px solid #d4d4d8', background: '#f7f5ef' }}>
+                    <div style={{ fontSize: '9px', color: '#71717a', fontWeight: 700 }}>PDA CAPITAL</div>
+                    <div style={{ fontWeight: 700, color: 'var(--script-green-dark)' }}>{inspectedAgent.pdaFunding}</div>
                   </div>
-                  <div className="p-2 border border-zinc-300 bg-[#f7f5ef]">
-                    <div className="text-[9px] text-zinc-500 font-bold">RARITY TIER</div>
-                    <div className="font-bold">{inspectedAgent.rarityTier} ({inspectedAgent.rarityScore}%)</div>
+                  <div style={{ padding: '8px', border: '1px solid #d4d4d8', background: '#f7f5ef' }}>
+                    <div style={{ fontSize: '9px', color: '#71717a', fontWeight: 700 }}>RARITY TIER</div>
+                    <div style={{ fontWeight: 700 }}>{inspectedAgent.rarityTier} ({inspectedAgent.rarityScore}%)</div>
                   </div>
                 </div>
 
-                <div className="p-2 border border-black bg-white text-[10px] break-all">
-                  <span className="text-zinc-500 font-bold">PROGRAM DERIVED ADDRESS (PDA):</span>
-                  <div className="font-mono text-[#00aa44] font-bold mt-0.5">{inspectedAgent.pdaVault}</div>
+                <div style={{ padding: '8px', border: '1px solid #000', background: '#fff', fontSize: '10px' }}>
+                  <span style={{ color: '#71717a', fontWeight: 700 }}>PROGRAM DERIVED ADDRESS (PDA):</span>
+                  <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--script-green-dark)', fontWeight: 700, marginTop: '2px', wordBreak: 'break-all' }}>
+                    {inspectedAgent.pdaVault}
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="border-t-2 border-black pt-4 flex gap-3">
+            <div style={{ borderTop: '2px solid #000', paddingTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <a
                 href={`https://solscan.io/account/${inspectedAgent.pdaVault}`}
                 target="_blank"
                 rel="noreferrer"
-                className="btn-primary flex-1 text-center py-2.5 text-xs font-pixel uppercase"
-                style={{ background: 'var(--script-green)' }}
+                className="btn-primary"
+                style={{ flex: 1, padding: '10px 0', fontSize: '12px', textAlign: 'center', background: 'var(--script-green)' }}
               >
                 Inspect On Solscan ↗
               </a>
               <button
                 type="button"
                 onClick={() => setInspectedAgent(null)}
-                className="btn-secondary py-2.5 px-4 text-xs font-pixel uppercase"
+                className="btn-secondary"
+                style={{ padding: '10px 16px', fontSize: '12px' }}
               >
                 Close
               </button>

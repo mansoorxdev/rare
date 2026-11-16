@@ -92,32 +92,35 @@ export default function PrivyClientProvider({ children }) {
       {/* Retro Pixel-Brutalist Solana Wallet Connection Modal */}
       {showWalletModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+          className="rare-modal-overlay"
           onClick={() => setShowWalletModal(false)}
         >
           <div
-            className="w-full max-w-md bg-[#fcfaf4] border-2 border-black shadow-[6px_6px_0px_#00aa44] p-6 text-black"
+            className="rare-modal-dialog"
+            style={{ maxWidth: '440px' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 bg-[#10b981] border border-black inline-block shadow-[1px_1px_0px_#000]" />
-                <h3 className="font-pixel text-[13px] uppercase tracking-wide">CONNECT SOLANA WALLET</h3>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '12px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ width: '10px', height: '10px', background: '#10b981', border: '1px solid #000', display: 'inline-block' }} />
+                <h3 style={{ fontFamily: 'var(--font-pixel)', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  CONNECT SOLANA WALLET
+                </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setShowWalletModal(false)}
-                className="font-pixel text-xs px-2 py-0.5 border border-black bg-white hover:bg-black hover:text-white"
+                style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', padding: '2px 8px', border: '2px solid #000', background: '#fff', cursor: 'pointer' }}
               >
                 ✕
               </button>
             </div>
 
-            <p className="font-mono text-xs text-zinc-600 mb-4">
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#52525b', marginBottom: '16px', lineHeight: 1.5 }}>
               Select your Solana wallet to mint RARE autonomous agents and deposit 90% capital to token-bound PDA vaults.
             </p>
 
-            <div className="space-y-2 mb-6">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
               {[
                 { name: 'Phantom', icon: '🟣', badge: 'RECOMMENDED' },
                 { name: 'Solflare', icon: '🔥', badge: 'SOLANA NATIVE' },
@@ -128,20 +131,36 @@ export default function PrivyClientProvider({ children }) {
                   key={w.name}
                   type="button"
                   onClick={() => handleConnectWallet(w.name)}
-                  className="w-full flex items-center justify-between p-3 border-2 border-black bg-white hover:bg-[#00aa44] hover:text-white hover:translate-x-1 transition-all text-left group shadow-[2px_2px_0px_#000]"
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '12px 14px',
+                    border: '2px solid #000',
+                    background: '#fff',
+                    boxShadow: '2px 2px 0px #000',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-pixel)',
+                    fontSize: '12px',
+                    textAlign: 'left',
+                    transition: 'all 0.15s'
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--script-green)'; e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#000'; }}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">{w.icon}</span>
-                    <span className="font-pixel text-xs uppercase">{w.name}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '18px' }}>{w.icon}</span>
+                    <span style={{ textTransform: 'uppercase' }}>{w.name}</span>
                   </div>
-                  <span className="font-mono text-[9px] uppercase px-1.5 py-0.5 border border-black bg-[#f1ede3] group-hover:bg-white group-hover:text-black">
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', textTransform: 'uppercase', padding: '2px 6px', border: '1px solid #000', background: '#f1ede3', color: '#000' }}>
                     {w.badge}
                   </span>
                 </button>
               ))}
             </div>
 
-            <div className="pt-3 border-t border-zinc-300 flex items-center justify-between font-mono text-[10px] text-zinc-500">
+            <div style={{ paddingTop: '12px', borderTop: '1px solid #d4d4d8', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#71717a' }}>
               <span>SOLANA MAINNET-BETA</span>
               <span>100% NON-CUSTODIAL</span>
             </div>
