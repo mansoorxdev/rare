@@ -36,6 +36,28 @@ export default function HomePage() {
   const [commandInput, setCommandInput] = useState('');
   const terminalEndRef = useRef(null);
 
+  // Automatic Cycling Showcase for Hero Visual Section
+  const FEATURED_HERO_AGENTS = [143, 1, 15, 27, 42, 69, 88, 120, 256, 333, 512, 777, 888, 1008];
+  const [showcaseIndex, setShowcaseIndex] = useState(0);
+  const [showcaseTransitioning, setShowcaseTransitioning] = useState(false);
+  const [showcaseAutoplay, setShowcaseAutoplay] = useState(true);
+
+  useEffect(() => {
+    if (!showcaseAutoplay) return;
+    const interval = setInterval(() => {
+      setShowcaseTransitioning(true);
+      setTimeout(() => {
+        setShowcaseIndex((prev) => (prev + 1) % FEATURED_HERO_AGENTS.length);
+        setShowcaseTransitioning(false);
+      }, 220);
+    }, 2800);
+
+    return () => clearInterval(interval);
+  }, [showcaseAutoplay, FEATURED_HERO_AGENTS.length]);
+
+  const currentShowcaseId = FEATURED_HERO_AGENTS[showcaseIndex];
+  const currentShowcaseAgent = getAgentMetadata(currentShowcaseId);
+
   // 10,078 Agent Explorer / Roster State
   const [explorerAgents, setExplorerAgents] = useState([]);
   const [explorerSearch, setExplorerSearch] = useState('');
@@ -320,46 +342,125 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Side Visual Banner Card */}
+            {/* Right Side Visual Banner Card (Animated Live Swarm Cycle) */}
             <div>
               <div
                 style={{
                   background: '#121215',
                   border: '2px solid var(--hair)',
-                  boxShadow: '8px 8px 0px 0px var(--script-green)',
+                  boxShadow: '8px 8px 0px 0px var(--script-green), 0 0 35px rgba(0, 255, 102, 0.15)',
                   padding: '24px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   textAlign: 'center',
                   maxWidth: '380px',
-                  margin: '0 auto'
+                  margin: '0 auto',
+                  position: 'relative'
                 }}
               >
+                {/* Header with live pulsing dot & count */}
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '10px', marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-                  <span style={{ fontWeight: 700, color: 'var(--script-green)' }}>● GENESIS #00143</span>
-                  <span style={{ background: '#000', color: '#fff', padding: '2px 6px', fontSize: '9px', fontWeight: 700, border: '1px solid var(--hair-dark)' }}>TOKEN-BOUND</span>
-                </div>
-
-                <div style={{ width: '100%', maxWidth: '260px', aspectRatio: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.1) 0%, #09090b 70%)', border: '1px solid var(--hair)', marginBottom: '14px', position: 'relative' }}>
-                  <img
-                    src="/nfts/143.svg"
-                    alt="Rare #143"
-                    style={{ width: '85%', height: '85%', objectFit: 'contain', imageRendering: 'pixelated', filter: 'drop-shadow(0 10px 14px rgba(0,0,0,0.6))' }}
-                  />
-                  <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--script-green)', color: '#000000', fontSize: '9px', fontWeight: 800, padding: '2px 6px', border: '1px solid #000' }}>
-                    0.018 SOL IN VAULT
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span className="pulse" style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--script-green)', display: 'inline-block' }} />
+                    <span style={{ fontWeight: 800, color: 'var(--script-green)', letterSpacing: '0.04em' }}>
+                      GENESIS #{String(currentShowcaseAgent.id).padStart(5, '0')}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ background: '#000', color: '#fff', padding: '2px 6px', fontSize: '9px', fontWeight: 700, border: '1px solid var(--hair-dark)' }}>
+                      TOKEN-BOUND
+                    </span>
+                    <span style={{ background: 'rgba(0, 255, 102, 0.12)', color: 'var(--script-green)', padding: '2px 6px', fontSize: '9px', fontWeight: 800, border: '1px solid rgba(0, 255, 102, 0.3)' }}>
+                      {showcaseIndex + 1}/{FEATURED_HERO_AGENTS.length}
+                    </span>
                   </div>
                 </div>
 
-                <div style={{ width: '100%', textAlign: 'left', background: '#18181d', border: '1px solid var(--hair)', padding: '10px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
+                {/* Animated NFT Box with Smooth Scale & Fade */}
+                <div
+                  style={{
+                    width: '100%',
+                    maxWidth: '260px',
+                    aspectRatio: '1',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.14) 0%, #09090b 70%)',
+                    border: '1px solid var(--hair)',
+                    marginBottom: '14px',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <img
+                    key={currentShowcaseAgent.id}
+                    src={currentShowcaseAgent.image || `/nfts/${currentShowcaseAgent.id}.svg`}
+                    alt={currentShowcaseAgent.name}
+                    style={{
+                      width: '85%',
+                      height: '85%',
+                      objectFit: 'contain',
+                      imageRendering: 'pixelated',
+                      opacity: showcaseTransitioning ? 0.2 : 1,
+                      transform: showcaseTransitioning ? 'scale(0.88)' : 'scale(1)',
+                      transition: 'opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1), transform 0.22s cubic-bezier(0.4, 0, 0.2, 1)',
+                      filter: 'drop-shadow(0 10px 16px rgba(0,0,0,0.7))'
+                    }}
+                  />
+                  <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--script-green)', color: '#000000', fontSize: '9px', fontWeight: 800, padding: '2px 6px', border: '1px solid #000' }}>
+                    {(currentShowcaseAgent.priceSol * 0.9).toFixed(3)} SOL IN VAULT
+                  </div>
+                </div>
+
+                {/* Details Box */}
+                <div style={{ width: '100%', textAlign: 'left', background: '#18181d', border: '1px solid var(--hair)', padding: '10px 12px', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <span style={{ color: 'var(--dim)' }}>Role:</span>
-                    <b style={{ color: '#ffffff' }}>Prediction Market Oracle</b>
+                    <b style={{ color: '#ffffff' }}>{currentShowcaseAgent.role}</b>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ color: 'var(--dim)' }}>Archetype:</span>
+                    <span style={{ color: 'var(--ink)' }}>{currentShowcaseAgent.archetype}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: 'var(--dim)' }}>PDA Vault:</span>
-                    <span style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '10px' }}>PDA143v8F...Vault</span>
+                    <span style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '10px' }}>{currentShowcaseAgent.pdaVault}</span>
+                  </div>
+                </div>
+
+                {/* Animation Control Bar (Autoplay Indicator & Buttons) */}
+                <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--dim)' }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: showcaseAutoplay ? 'var(--script-green)' : '#71717a' }} />
+                    <span>{showcaseAutoplay ? 'AUTOPLAYING SWARM' : 'PAUSED'}</span>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setShowcaseIndex((prev) => (prev - 1 + FEATURED_HERO_AGENTS.length) % FEATURED_HERO_AGENTS.length)}
+                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '2px 7px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px' }}
+                      title="Previous NFT"
+                    >
+                      ◀
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowcaseAutoplay((prev) => !prev)}
+                      style={{ background: showcaseAutoplay ? 'rgba(0, 255, 102, 0.15)' : '#18181d', color: showcaseAutoplay ? 'var(--script-green)' : '#fff', border: '1px solid var(--hair-dark)', padding: '2px 7px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 700 }}
+                      title={showcaseAutoplay ? 'Pause autoplay' : 'Play autoplay'}
+                    >
+                      {showcaseAutoplay ? '❚❚' : '▶'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowcaseIndex((prev) => (prev + 1) % FEATURED_HERO_AGENTS.length)}
+                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '2px 7px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px' }}
+                      title="Next NFT"
+                    >
+                      ▶
+                    </button>
                   </div>
                 </div>
               </div>
