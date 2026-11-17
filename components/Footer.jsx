@@ -30,13 +30,13 @@ export default function Footer() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
-            background: '#000',
+            background: '#141418',
             color: '#fff',
             padding: '3px 8px',
             fontSize: '11px',
             fontWeight: 700,
             textDecoration: 'none',
-            border: '1px solid #000'
+            border: '1px solid var(--hair-dark)'
           }}
         >
           <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">

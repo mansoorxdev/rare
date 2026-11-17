@@ -28,35 +28,35 @@ export default function SpecsPage() {
 
         {/* 4-Box Quick Verification Summary */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '36px' }}>
-          <div style={{ background: '#fff', border: '2px solid var(--hair-dark)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
+          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>FRAMEWORK</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px' }}>Anchor 0.30.1</div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green-dark)' }}>Solana Rust Framework</span>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>Anchor 0.30.1</div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Solana Rust Framework</span>
           </div>
 
-          <div style={{ background: '#fff', border: '2px solid var(--hair-dark)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
+          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>ON-CHAIN SPLIT</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px' }}>90% PDA / 10% Protocol</div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green-dark)' }}>Hardcoded Invariant</span>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>90% PDA / 10% Protocol</div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Hardcoded Invariant</span>
           </div>
 
-          <div style={{ background: '#fff', border: '2px solid var(--hair-dark)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
+          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>PDA CUSTODY</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px' }}>Token-Bound Anchor CPI</div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green-dark)' }}>Transfers on Secondary</span>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>Token-Bound Anchor CPI</div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Transfers on Secondary</span>
           </div>
 
-          <div style={{ background: '#fff', border: '2px solid var(--hair-dark)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
+          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>TOTAL AGENTS</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px' }}>10,078 Genesis Units</div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green-dark)' }}>Immutable Cap</span>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>10,078 Genesis Units</div>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Immutable Cap</span>
           </div>
         </div>
 
         {/* Detailed Spec Rows */}
-        <div className="spec-box" style={{ background: '#ffffff', border: '2px solid var(--hair-dark)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
-          <div style={{ borderBottom: '2px solid var(--hair-dark)', paddingBottom: '12px', marginBottom: '20px' }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>
+        <div className="spec-box" style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
+          <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '20px' }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
               ⚙️ Anchor Instruction &amp; Seed Definitions
             </h3>
           </div>
@@ -64,12 +64,12 @@ export default function SpecsPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
             <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px' }}>
               <div style={{ color: 'var(--dim)', fontSize: '10px', fontWeight: 700 }}>PROGRAM TREASURY PUBKEY</div>
-              <code style={{ fontSize: '13px', fontWeight: 700, color: 'var(--ink)' }}>{treasury}</code>
+              <code style={{ fontSize: '13px', fontWeight: 700, color: 'var(--script-green)' }}>{treasury}</code>
             </div>
 
             <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px' }}>
               <div style={{ color: 'var(--dim)', fontSize: '10px', fontWeight: 700 }}>PDA VAULT SEED DERIVATION</div>
-              <code style={{ fontSize: '12px', background: '#fff', padding: '4px 8px', border: '1px solid var(--hair)', display: 'block', marginTop: '4px' }}>
+              <code style={{ fontSize: '12px', background: '#09090b', padding: '8px 12px', border: '1px solid var(--hair)', display: 'block', marginTop: '6px', color: 'var(--script-green)' }}>
                 Pubkey::find_program_address(&amp;[b&quot;agent_vault&quot;, mint.key().as_ref(), &amp;agent_id.to_le_bytes()], &amp;program_id)
               </code>
             </div>

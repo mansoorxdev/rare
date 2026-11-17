@@ -44,12 +44,12 @@ export default function LadderPage() {
         </div>
 
         {/* Interactive Capital Split Calculator */}
-        <div style={{ background: '#ffffff', border: '2px solid var(--hair-dark)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid var(--hair-dark)', paddingBottom: '12px', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>
+        <div style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
               ⚡ Interactive Capital Routing Calculator
             </h3>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', background: 'var(--script-green)', color: '#fff', padding: '2px 8px', fontWeight: 700 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', background: 'var(--script-green)', color: '#000000', padding: '2px 8px', fontWeight: 800 }}>
               BAND 1 RATE: 0.02 SOL / AGENT
             </span>
           </div>
@@ -57,7 +57,7 @@ export default function LadderPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px', alignItems: 'center' }}>
             <div>
               <label style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, display: 'block', marginBottom: '8px' }}>
-                SELECT MINT QUANTITY: <b style={{ color: 'var(--script-green-dark)', fontSize: '14px' }}>{calcQty} AGENTS</b>
+                SELECT MINT QUANTITY: <b style={{ color: 'var(--script-green)', fontSize: '14px' }}>{calcQty} AGENTS</b>
               </label>
               <input
                 type="range"
@@ -74,7 +74,7 @@ export default function LadderPage() {
                     type="button"
                     onClick={() => setCalcQty(num)}
                     className="btn-secondary"
-                    style={{ padding: '4px 10px', fontSize: '11px', background: calcQty === num ? 'var(--hair-dark)' : 'var(--parchment-card)', color: calcQty === num ? '#fff' : 'var(--ink)' }}
+                    style={{ padding: '4px 10px', fontSize: '11px', background: calcQty === num ? 'var(--script-green)' : '#18181d', color: calcQty === num ? '#000000' : 'var(--ink)', fontWeight: calcQty === num ? 800 : 600 }}
                   >
                     {num}
                   </button>
@@ -83,31 +83,31 @@ export default function LadderPage() {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-              <div style={{ background: '#fff', border: '1px solid #000', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
+              <div style={{ background: '#18181d', border: '1px solid var(--hair)', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
                 <span style={{ color: 'var(--dim)', display: 'block', marginBottom: '4px' }}>TOTAL MINT CAPITAL:</span>
-                <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ink)' }}>{totalCost} SOL</span>
+                <span style={{ fontSize: '18px', fontWeight: 700, color: '#ffffff' }}>{totalCost} SOL</span>
               </div>
-              <div style={{ background: 'var(--script-green-light)', border: '1px solid var(--script-green)', padding: '12px', boxShadow: '2px 2px 0px var(--script-green)' }}>
-                <span style={{ color: 'var(--script-green-dark)', display: 'block', marginBottom: '4px', fontWeight: 700 }}>90% PDA VAULT DEPOSIT:</span>
-                <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--script-green-dark)' }}>{pdaDeposit} SOL</span>
+              <div style={{ background: 'rgba(0, 255, 102, 0.12)', border: '1px solid var(--script-green)', padding: '12px', boxShadow: '2px 2px 0px rgba(0, 255, 102, 0.4)' }}>
+                <span style={{ color: 'var(--script-green)', display: 'block', marginBottom: '4px', fontWeight: 700 }}>90% PDA VAULT DEPOSIT:</span>
+                <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--script-green)' }}>{pdaDeposit} SOL</span>
               </div>
-              <div style={{ background: '#fff', border: '1px solid #000', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
+              <div style={{ background: '#18181d', border: '1px solid var(--hair)', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
                 <span style={{ color: 'var(--dim)', display: 'block', marginBottom: '4px' }}>10% PROTOCOL TREASURY:</span>
                 <span style={{ fontSize: '18px', fontWeight: 700, color: '#f59e0b' }}>{treasurySplit} SOL</span>
               </div>
-              <div style={{ background: '#fff', border: '1px solid #000', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
+              <div style={{ background: '#18181d', border: '1px solid var(--hair)', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
                 <span style={{ color: 'var(--dim)', display: 'block', marginBottom: '4px' }}>SECONDARY LIQUIDITY:</span>
-                <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--script-green-dark)' }}>100% Retained</span>
+                <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--script-green)' }}>100% Retained</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* 10-Tier Bonding Curve Table */}
-        <div style={{ background: '#fff', border: '2px solid var(--hair-dark)', boxShadow: '4px 4px 0px #000', overflowX: 'auto', marginBottom: '40px' }}>
+        <div style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '4px 4px 0px #000', overflowX: 'auto', marginBottom: '40px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)', fontSize: '12px', textAlign: 'left' }}>
             <thead>
-              <tr style={{ background: 'var(--hair-dark)', color: '#fff', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.05em' }}>
+              <tr style={{ background: '#18181d', color: '#ffffff', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.05em', borderBottom: '1px solid var(--hair)' }}>
                 <th style={{ padding: '12px 16px' }}>Band Tier</th>
                 <th style={{ padding: '12px 16px' }}>Agent ID Range</th>
                 <th style={{ padding: '12px 16px' }}>Mint Price</th>
@@ -122,10 +122,10 @@ export default function LadderPage() {
                   key={item.band}
                   style={{
                     borderBottom: '1px solid var(--hair)',
-                    background: item.band === 1 ? 'var(--script-green-light)' : idx % 2 === 0 ? '#fff' : 'var(--parchment-accent)',
+                    background: item.band === 1 ? 'rgba(0, 255, 102, 0.08)' : idx % 2 === 0 ? '#121215' : '#141418',
                   }}
                 >
-                  <td style={{ padding: '12px 16px', fontWeight: 700 }}>
+                  <td style={{ padding: '12px 16px', fontWeight: 700, color: item.band === 1 ? 'var(--script-green)' : '#ffffff' }}>
                     Band #{item.band}
                   </td>
                   <td style={{ padding: '12px 16px', color: 'var(--dim)' }}>
@@ -134,7 +134,7 @@ export default function LadderPage() {
                   <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--ink)' }}>
                     {item.price} SOL
                   </td>
-                  <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--script-green-dark)' }}>
+                  <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--script-green)' }}>
                     {item.pdaCapital} SOL
                   </td>
                   <td style={{ padding: '12px 16px', color: '#f59e0b', fontWeight: 700 }}>
@@ -147,9 +147,9 @@ export default function LadderPage() {
                         fontSize: '10px',
                         fontWeight: 700,
                         textTransform: 'uppercase',
-                        background: item.band === 1 ? 'var(--script-green)' : '#f4f4f5',
-                        color: item.band === 1 ? '#fff' : '#71717a',
-                        border: '1px solid #000'
+                        background: item.band === 1 ? 'var(--script-green)' : '#18181d',
+                        color: item.band === 1 ? '#000000' : 'var(--dim)',
+                        border: '1px solid var(--hair)'
                       }}
                     >
                       {item.status}
@@ -163,20 +163,20 @@ export default function LadderPage() {
 
         {/* Architecture Specs Callout */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
-          <div style={{ background: '#fcfaf5', border: '2px solid var(--hair-dark)', padding: '20px', boxShadow: '4px 4px 0px #000' }}>
-            <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase' }}>
+          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '20px', boxShadow: '4px 4px 0px #000' }}>
+            <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', color: '#ffffff' }}>
               🔒 Why 90% Capital Routing?
             </h4>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-soft)', lineHeight: 1.6 }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--dim)', lineHeight: 1.6 }}>
               Unlike traditional NFT collections where mint funds leave the ecosystem into team wallets, RARE deposits 90% directly into the newly minted agent&apos;s PDA vault. The NFT itself holds the capital, serving as the agent&apos;s autonomous trading bankroll.
             </p>
           </div>
 
-          <div style={{ background: '#fcfaf5', border: '2px solid var(--hair-dark)', padding: '20px', boxShadow: '4px 4px 0px #000' }}>
-            <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase' }}>
+          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '20px', boxShadow: '4px 4px 0px #000' }}>
+            <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', color: '#ffffff' }}>
               🔄 Secondary Transfer Integrity
             </h4>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--ink-soft)', lineHeight: 1.6 }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--dim)', lineHeight: 1.6 }}>
               Because the PDA wallet is cryptographically bound to the NFT token account via Solana Anchor CPI, transferring the NFT on Magic Eden or Tensor automatically transfers ownership and custody of the underlying PDA capital and accrued profits.
             </p>
           </div>

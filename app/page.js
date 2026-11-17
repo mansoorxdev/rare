@@ -280,41 +280,41 @@ export default function HomePage() {
                 <a
                   href="#mint-engine"
                   className="btn-primary"
-                  style={{ padding: '13px 26px', fontSize: '13px', background: 'var(--script-green)', boxShadow: '4px 4px 0px #000' }}
+                  style={{ padding: '13px 26px', fontSize: '13px', background: 'var(--script-green)', color: '#000000', fontWeight: 800, boxShadow: '4px 4px 0px #000' }}
                 >
                   MINT AGENT (0.02 SOL) ↓
                 </a>
                 <Link
                   href="/roster"
                   className="btn-secondary"
-                  style={{ padding: '13px 22px', fontSize: '13px', background: '#ffffff', boxShadow: '4px 4px 0px #000' }}
+                  style={{ padding: '13px 22px', fontSize: '13px', background: '#18181d', color: '#ffffff', boxShadow: '4px 4px 0px #000' }}
                 >
                   EXPLORE 10,078 ROSTER →
                 </Link>
                 <Link
                   href="/whitepaper"
                   className="btn-secondary"
-                  style={{ padding: '13px 18px', fontSize: '13px', background: '#f4f4f5', boxShadow: '2px 2px 0px #000' }}
+                  style={{ padding: '13px 18px', fontSize: '13px', background: '#141418', color: 'var(--dim)', boxShadow: '2px 2px 0px #000' }}
                 >
                   WHITEPAPER ↗
                 </Link>
               </div>
 
               {/* Protocol Stats Highlights */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', borderTop: '2px solid var(--hair-dark)', paddingTop: '20px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', borderTop: '2px solid var(--hair)', paddingTop: '20px' }}>
                 <div>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>SUPPLY</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800 }}>10,078</div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--script-green-dark)' }}>Genesis Capped</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800, color: '#ffffff' }}>10,078</div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--script-green)' }}>Genesis Capped</div>
                 </div>
                 <div>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>CAPITAL ROUTING</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800, color: 'var(--script-green-dark)' }}>90% PDA</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800, color: 'var(--script-green)' }}>90% PDA</div>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)' }}>Anchor CPI Vaults</div>
                 </div>
                 <div>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>GENESIS FLOOR</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800 }}>0.02 SOL</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800, color: '#ffffff' }}>0.02 SOL</div>
                   <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)' }}>Band 1 Active</div>
                 </div>
               </div>
@@ -324,8 +324,8 @@ export default function HomePage() {
             <div>
               <div
                 style={{
-                  background: '#ffffff',
-                  border: '2px solid var(--hair-dark)',
+                  background: '#121215',
+                  border: '2px solid var(--hair)',
                   boxShadow: '8px 8px 0px 0px var(--script-green)',
                   padding: '24px',
                   display: 'flex',
@@ -336,30 +336,30 @@ export default function HomePage() {
                   margin: '0 auto'
                 }}
               >
-                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e4e4e7', paddingBottom: '10px', marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-                  <span style={{ fontWeight: 700, color: 'var(--script-green-dark)' }}>● GENESIS #00143</span>
-                  <span style={{ background: '#000', color: '#fff', padding: '2px 6px', fontSize: '9px', fontWeight: 700 }}>TOKEN-BOUND</span>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '10px', marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
+                  <span style={{ fontWeight: 700, color: 'var(--script-green)' }}>● GENESIS #00143</span>
+                  <span style={{ background: '#000', color: '#fff', padding: '2px 6px', fontSize: '9px', fontWeight: 700, border: '1px solid var(--hair-dark)' }}>TOKEN-BOUND</span>
                 </div>
 
-                <div style={{ width: '100%', maxWidth: '260px', aspectRatio: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fafafa', border: '1px solid #e4e4e7', marginBottom: '14px', position: 'relative' }}>
+                <div style={{ width: '100%', maxWidth: '260px', aspectRatio: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.1) 0%, #09090b 70%)', border: '1px solid var(--hair)', marginBottom: '14px', position: 'relative' }}>
                   <img
                     src="/nfts/143.svg"
                     alt="Rare #143"
-                    style={{ width: '85%', height: '85%', objectFit: 'contain', imageRendering: 'pixelated' }}
+                    style={{ width: '85%', height: '85%', objectFit: 'contain', imageRendering: 'pixelated', filter: 'drop-shadow(0 10px 14px rgba(0,0,0,0.6))' }}
                   />
-                  <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--script-green)', color: '#fff', fontSize: '9px', fontWeight: 700, padding: '2px 6px', border: '1px solid #000' }}>
+                  <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--script-green)', color: '#000000', fontSize: '9px', fontWeight: 800, padding: '2px 6px', border: '1px solid #000' }}>
                     0.018 SOL IN VAULT
                   </div>
                 </div>
 
-                <div style={{ width: '100%', textAlign: 'left', background: '#f8fafc', border: '1px solid #e4e4e7', padding: '10px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
+                <div style={{ width: '100%', textAlign: 'left', background: '#18181d', border: '1px solid var(--hair)', padding: '10px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <span style={{ color: 'var(--dim)' }}>Role:</span>
-                    <b style={{ color: 'var(--ink)' }}>Prediction Market Oracle</b>
+                    <b style={{ color: '#ffffff' }}>Prediction Market Oracle</b>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: 'var(--dim)' }}>PDA Vault:</span>
-                    <span style={{ color: 'var(--script-green-dark)', fontWeight: 700, fontSize: '10px' }}>PDA143v8F...Vault</span>
+                    <span style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '10px' }}>PDA143v8F...Vault</span>
                   </div>
                 </div>
               </div>
@@ -1000,70 +1000,74 @@ export default function HomePage() {
             className="rare-modal-dialog"
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '12px', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontFamily: 'var(--font-pixel)', fontSize: '11px', background: 'var(--script-green)', color: '#fff', padding: '2px 8px', border: '1px solid #000' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--hair)', paddingBottom: '14px', marginBottom: '18px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 800, background: 'var(--script-green)', color: '#000000', padding: '3px 8px', border: '1px solid #000000' }}>
                   #{String(inspectedAgentModal.id).padStart(5, '0')}
                 </span>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '16px', textTransform: 'uppercase' }}>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '17px', textTransform: 'uppercase', color: '#ffffff', letterSpacing: '0.02em' }}>
                   {inspectedAgentModal.role}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setInspectedAgentModal(null)}
-                style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', padding: '2px 8px', border: '2px solid #000', background: '#fff', cursor: 'pointer' }}
+                style={{ fontFamily: 'var(--font-pixel)', fontSize: '13px', padding: '4px 10px', border: '1px solid var(--hair-dark)', background: '#18181d', color: '#ffffff', cursor: 'pointer', transition: 'all 0.15s ease' }}
+                title="Close"
               >
                 ✕
               </button>
             </div>
 
             <div className="rare-modal-grid">
-              <div style={{ border: '2px solid #000', background: '#fff', padding: '8px', boxShadow: '4px 4px 0px #000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ border: '2px solid var(--hair)', background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.1) 0%, #09090b 70%)', padding: '16px', boxShadow: '4px 4px 0px #000, 0 0 20px rgba(0, 255, 102, 0.12)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   src={inspectedAgentModal.image || `/nfts/${inspectedAgentModal.id}.svg`}
                   alt={inspectedAgentModal.name}
-                  style={{ width: '100%', aspectRatio: '1', objectFit: 'contain', imageRendering: 'pixelated' }}
+                  style={{ width: '100%', aspectRatio: '1', objectFit: 'contain', imageRendering: 'pixelated', filter: 'drop-shadow(0 10px 16px rgba(0,0,0,0.7))' }}
                 />
+                <span style={{ marginTop: '10px', fontFamily: 'var(--font-mono)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--script-green)', background: 'rgba(0, 255, 102, 0.12)', border: '1px solid rgba(0, 255, 102, 0.3)', padding: '2px 8px' }}>
+                  TOKEN-BOUND PDA ASSET
+                </span>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
                 <div>
-                  <span style={{ fontSize: '10px', color: '#71717a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>MISSION PROMPT</span>
-                  <p style={{ marginTop: '4px', padding: '8px 10px', border: '1px solid #000', background: '#fff', fontSize: '11px', fontStyle: 'italic', lineHeight: 1.5 }}>
+                  <span style={{ fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>MISSION PROMPT</span>
+                  <p style={{ marginTop: '4px', padding: '10px 12px', border: '1px solid var(--hair)', borderLeft: '3px solid var(--script-green)', background: '#09090b', fontSize: '11px', color: '#e4e4e7', fontStyle: 'italic', lineHeight: 1.6 }}>
                     &ldquo;{inspectedAgentModal.personalityPreview}&rdquo;
                   </p>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px' }}>
-                  <div style={{ padding: '8px', border: '1px solid #d4d4d8', background: '#f7f5ef' }}>
-                    <div style={{ fontSize: '9px', color: '#71717a', fontWeight: 700 }}>ARCHETYPE</div>
-                    <div style={{ fontWeight: 700 }}>{inspectedAgentModal.archetype}</div>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                    <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>ARCHETYPE</div>
+                    <div style={{ fontWeight: 700, color: '#ffffff', marginTop: '2px' }}>{inspectedAgentModal.archetype}</div>
                   </div>
-                  <div style={{ padding: '8px', border: '1px solid #d4d4d8', background: '#f7f5ef' }}>
-                    <div style={{ fontSize: '9px', color: '#71717a', fontWeight: 700 }}>EXECUTION ENGINE</div>
-                    <div style={{ fontWeight: 700, color: 'var(--script-green)' }}>{inspectedAgentModal.engine}</div>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                    <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>EXECUTION ENGINE</div>
+                    <div style={{ fontWeight: 700, color: 'var(--script-green)', marginTop: '2px' }}>{inspectedAgentModal.engine}</div>
                   </div>
-                  <div style={{ padding: '8px', border: '1px solid #d4d4d8', background: '#f7f5ef' }}>
-                    <div style={{ fontSize: '9px', color: '#71717a', fontWeight: 700 }}>PDA CAPITAL</div>
-                    <div style={{ fontWeight: 700, color: 'var(--script-green-dark)' }}>{inspectedAgentModal.pdaFunding}</div>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                    <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>PDA CAPITAL</div>
+                    <div style={{ fontWeight: 700, color: 'var(--script-green)', marginTop: '2px' }}>{inspectedAgentModal.pdaFunding}</div>
                   </div>
-                  <div style={{ padding: '8px', border: '1px solid #d4d4d8', background: '#f7f5ef' }}>
-                    <div style={{ fontSize: '9px', color: '#71717a', fontWeight: 700 }}>RARITY TIER</div>
-                    <div style={{ fontWeight: 700 }}>{inspectedAgentModal.rarityTier} ({inspectedAgentModal.rarityScore}%)</div>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                    <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>RARITY TIER</div>
+                    <div style={{ fontWeight: 700, color: '#ffffff', marginTop: '2px' }}>{inspectedAgentModal.rarityTier} ({inspectedAgentModal.rarityScore}%)</div>
                   </div>
                 </div>
 
-                <div style={{ padding: '8px', border: '1px solid #000', background: '#fff', fontSize: '10px' }}>
-                  <span style={{ color: '#71717a', fontWeight: 700 }}>PROGRAM DERIVED ADDRESS (PDA):</span>
-                  <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--script-green-dark)', fontWeight: 700, marginTop: '2px', wordBreak: 'break-all' }}>
+                <div style={{ padding: '10px 12px', border: '1px solid var(--hair)', background: '#09090b', fontSize: '10px' }}>
+                  <span style={{ color: 'var(--dim)', fontWeight: 700 }}>PROGRAM DERIVED ADDRESS (PDA):</span>
+                  <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--script-green)', fontWeight: 700, marginTop: '4px', wordBreak: 'break-all', fontSize: '11px' }}>
                     {inspectedAgentModal.pdaVault}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div style={{ borderTop: '2px solid #000', paddingTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <button
                 type="button"
                 onClick={() => {
@@ -1071,7 +1075,7 @@ export default function HomePage() {
                   setInspectedAgentModal(null);
                 }}
                 className="btn-primary"
-                style={{ flex: 1, padding: '10px 0', fontSize: '12px', textAlign: 'center', background: 'var(--script-green)' }}
+                style={{ flex: 1, padding: '11px 0', fontSize: '12px', textAlign: 'center', background: 'var(--script-green)', color: '#000000', fontWeight: 800 }}
               >
                 Inspect In 3D Turntable ↑
               </button>
@@ -1079,7 +1083,7 @@ export default function HomePage() {
                 type="button"
                 onClick={() => handleDownloadManifest(inspectedAgentModal)}
                 className="btn-secondary"
-                style={{ padding: '10px 16px', fontSize: '12px' }}
+                style={{ padding: '11px 18px', fontSize: '12px', background: '#18181d', color: '#ffffff' }}
               >
                 Download Metaplex JSON
               </button>

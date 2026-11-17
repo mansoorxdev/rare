@@ -23,18 +23,18 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
           justifyContent: 'space-between',
           paddingBottom: '8px',
           marginBottom: '14px',
-          borderBottom: '1px solid rgba(0,0,0,0.18)',
+          borderBottom: '1px solid var(--hair)',
           fontFamily: 'var(--font-mono)',
           fontSize: '12px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '8px', height: '8px', background: '#10b981', display: 'inline-block', boxShadow: '1px 1px 0px #000' }} />
-          <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-pixel)', fontSize: '13px', color: '#00aa44' }}>
+          <span style={{ width: '8px', height: '8px', background: 'var(--script-green)', display: 'inline-block', boxShadow: '0 0 6px var(--script-green)' }} />
+          <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-pixel)', fontSize: '13px', color: 'var(--script-green)' }}>
             RARE #{String(num).padStart(5, '0')}
           </span>
         </div>
-        <span style={{ fontSize: '11px', fontWeight: 700, color: '#3f3f46', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--dim)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           {currentAgent.role} • {currentAgent.archetype}
         </span>
       </div>
@@ -46,9 +46,9 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
           width: '100%',
           maxWidth: '460px',
           height: '460px',
-          border: '2px solid var(--hair-dark)',
-          boxShadow: '6px 6px 0px 0px var(--script-blue)',
-          background: '#ffffff',
+          border: '2px solid var(--hair)',
+          boxShadow: '6px 6px 0px 0px var(--script-green)',
+          background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.08) 0%, #0d0e12 65%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -60,7 +60,7 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
         onMouseLeave={() => setIsHovered(false)}
         title={`Rare #${String(num).padStart(5, '0')} - 24x24 Vector Pixel NFT`}
       >
-        {/* Crisp Vector Pixel Art Image on Pure White Studio Floor */}
+        {/* Crisp Vector Pixel Art Image on Studio Floor */}
         <img
           src={imgSrc}
           alt={currentAgent.name || `Rare #${num}`}
@@ -71,9 +71,11 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
             height: 'auto',
             objectFit: 'contain',
             imageRendering: 'pixelated',
-            transition: 'transform 0.2s ease',
+            transition: 'transform 0.2s ease, filter 0.2s ease',
             transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-            filter: 'drop-shadow(0 14px 20px rgba(0, 0, 0, 0.12))',
+            filter: isHovered
+              ? 'drop-shadow(0 0 20px rgba(0, 255, 102, 0.4)) drop-shadow(0 14px 20px rgba(0, 0, 0, 0.6))'
+              : 'drop-shadow(0 14px 20px rgba(0, 0, 0, 0.6))',
           }}
         />
 
@@ -88,13 +90,14 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
               }}
               className="btn-secondary"
               style={{
-                padding: '6px 14px',
+                padding: '7px 16px',
                 fontSize: '11px',
                 fontFamily: 'var(--font-mono)',
                 fontWeight: 700,
                 letterSpacing: '0.06em',
-                background: '#ffffff',
-                border: '2px solid var(--hair-dark)',
+                background: '#18181d',
+                color: '#ffffff',
+                border: '1.5px solid var(--hair-dark)',
                 boxShadow: '2px 2px 0px #000',
                 display: 'flex',
                 alignItems: 'center',
@@ -103,7 +106,7 @@ export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgen
               }}
               title="Click to pick another unsold agent"
             >
-              <span style={{ fontSize: '12px' }}>↻</span>
+              <span style={{ fontSize: '12px', color: 'var(--script-green)' }}>↻</span>
               <span>change</span>
             </button>
           </div>
