@@ -37,7 +37,7 @@ export default function WhitepaperPage() {
         </div>
 
         {/* Document Container */}
-        <div style={{ background: '#fcfaf4', border: '2px solid var(--hair-dark)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: 'clamp(24px, 4vw, 48px)', maxWidth: '980px', margin: '0 auto', fontFamily: 'var(--font-sans)', color: 'var(--ink)', lineHeight: 1.7 }}>
+        <div style={{ background: '#ffffff', border: '2px solid var(--hair-dark)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: 'clamp(24px, 4vw, 48px)', maxWidth: '980px', margin: '0 auto', fontFamily: 'var(--font-sans)', color: 'var(--ink)', lineHeight: 1.7 }}>
           {/* Section 1 */}
           <section style={{ marginBottom: '40px' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green-dark)', fontWeight: 700, textTransform: 'uppercase' }}>

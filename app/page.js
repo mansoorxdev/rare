@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { usePrivy } from '../components/PrivyClientProvider';
 import Agent360Viewer from '../components/Agent360Viewer';
 import Navbar from '../components/Navbar';
@@ -87,7 +88,7 @@ export default function HomePage() {
 
   const handleSelectAgentFor360 = (id) => {
     setRareId(String(id));
-    const heroEl = document.getElementById('home');
+    const heroEl = document.getElementById('mint-engine') || document.getElementById('home');
     if (heroEl) {
       heroEl.scrollIntoView({ behavior: 'smooth' });
     }
@@ -243,6 +244,162 @@ export default function HomePage() {
       <Navbar />
 
       <div className="wrap">
+        {/* ============================================================ */}
+        {/* GRAND PROTOCOL HERO LANDING SECTION                          */}
+        {/* ============================================================ */}
+        <section className="protocol-hero" id="home">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', marginBottom: '20px' }}>
+            <div className="protocol-hero-badge">
+              <span className="pulse" />
+              <span>SOLANA MAINNET-BETA // 10,078 TOKEN-BOUND AUTONOMOUS AGENTS</span>
+            </div>
+
+            <a
+              href="https://x.com"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-twitter-black"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              <span>Follow @RARE on X</span>
+            </a>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '32px' }}>
+            <div>
+              <h1 className="protocol-hero-title">
+                THE AUTONOMOUS <span style={{ color: 'var(--script-green)', textShadow: '0 0 24px rgba(0, 170, 68, 0.25)' }}>AI AGENT SWARM</span> ON SOLANA.
+              </h1>
+              <p className="protocol-hero-subtitle">
+                10,078 sovereign AI agents with token-bound PDA vaults. 90% of mint capital is deposited directly into each agent&apos;s on-chain wallet via Solana Anchor CPI to fund autonomous execution, trading, and arbitrage.
+              </p>
+
+              <div className="protocol-hero-actions">
+                <a
+                  href="#mint-engine"
+                  className="btn-primary"
+                  style={{ padding: '13px 26px', fontSize: '13px', background: 'var(--script-green)', boxShadow: '4px 4px 0px #000' }}
+                >
+                  MINT AGENT (0.02 SOL) ↓
+                </a>
+                <Link
+                  href="/roster"
+                  className="btn-secondary"
+                  style={{ padding: '13px 22px', fontSize: '13px', background: '#ffffff', boxShadow: '4px 4px 0px #000' }}
+                >
+                  EXPLORE 10,078 ROSTER →
+                </Link>
+                <Link
+                  href="/whitepaper"
+                  className="btn-secondary"
+                  style={{ padding: '13px 18px', fontSize: '13px', background: '#f4f4f5', boxShadow: '2px 2px 0px #000' }}
+                >
+                  WHITEPAPER ↗
+                </Link>
+              </div>
+
+              {/* Protocol Stats Highlights */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', borderTop: '2px solid var(--hair-dark)', paddingTop: '20px' }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>SUPPLY</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800 }}>10,078</div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--script-green-dark)' }}>Genesis Capped</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>CAPITAL ROUTING</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800, color: 'var(--script-green-dark)' }}>90% PDA</div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)' }}>Anchor CPI Vaults</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>GENESIS FLOOR</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800 }}>0.02 SOL</div>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)' }}>Band 1 Active</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side Visual Banner Card */}
+            <div>
+              <div
+                style={{
+                  background: '#ffffff',
+                  border: '2px solid var(--hair-dark)',
+                  boxShadow: '8px 8px 0px 0px var(--script-green)',
+                  padding: '24px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  maxWidth: '380px',
+                  margin: '0 auto'
+                }}
+              >
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e4e4e7', paddingBottom: '10px', marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
+                  <span style={{ fontWeight: 700, color: 'var(--script-green-dark)' }}>● GENESIS #00143</span>
+                  <span style={{ background: '#000', color: '#fff', padding: '2px 6px', fontSize: '9px', fontWeight: 700 }}>TOKEN-BOUND</span>
+                </div>
+
+                <div style={{ width: '100%', maxWidth: '260px', aspectRatio: '1', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fafafa', border: '1px solid #e4e4e7', marginBottom: '14px', position: 'relative' }}>
+                  <img
+                    src="/nfts/143.svg"
+                    alt="Rare #143"
+                    style={{ width: '85%', height: '85%', objectFit: 'contain', imageRendering: 'pixelated' }}
+                  />
+                  <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--script-green)', color: '#fff', fontSize: '9px', fontWeight: 700, padding: '2px 6px', border: '1px solid #000' }}>
+                    0.018 SOL IN VAULT
+                  </div>
+                </div>
+
+                <div style={{ width: '100%', textAlign: 'left', background: '#f8fafc', border: '1px solid #e4e4e7', padding: '10px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ color: 'var(--dim)' }}>Role:</span>
+                    <b style={{ color: 'var(--ink)' }}>Prediction Market Oracle</b>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: 'var(--dim)' }}>PDA Vault:</span>
+                    <span style={{ color: 'var(--script-green-dark)', fontWeight: 700, fontSize: '10px' }}>PDA143v8F...Vault</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 3 Value Pillars */}
+          <div className="protocol-hero-pillars">
+            <div className="protocol-hero-pillar">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '18px' }}>🔒</span>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>90% Token-Bound PDA</h3>
+              </div>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
+                Every minted agent is an on-chain NFT that owns its own program-derived wallet holding 90% of the mint price to fund autonomous execution.
+              </p>
+            </div>
+
+            <div className="protocol-hero-pillar">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '18px' }}>⚡</span>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>Anchor CPI Architecture</h3>
+              </div>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
+                Solana Anchor Cross-Program Invocation guarantees cryptographic split of funds. No human or team multi-sig can bypass the routing logic.
+              </p>
+            </div>
+
+            <div className="protocol-hero-pillar">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '18px' }}>📈</span>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>10-Tier Bonding Curve</h3>
+              </div>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
+                Strict supply cap of 10,078 units scaling across 10 deterministic price bands starting from 0.02 SOL up to 0.212 SOL with secondary liquidity retention.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* CA & Token Broadcast Banner */}
         <section className="ca-banner">
           <div className="ca-banner-left">
@@ -272,7 +429,7 @@ export default function HomePage() {
         </section>
 
         {/* Hero Section: 3D Turntable + Token-Bound Mint Deck */}
-        <section className="sa-hero" id="home">
+        <section className="sa-hero" id="mint-engine">
           <div className="sa-hero-corner">
             <div className="sa-hero-ribbon">SOLANA</div>
           </div>
@@ -291,9 +448,11 @@ export default function HomePage() {
             <div>
               <span className="sa-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 <img src="/rare-logo-icon.png" alt="" style={{ width: '14px', height: '14px', objectFit: 'contain' }} />
-                <span>10,078 Token-Bound Autonomous Agents</span>
+                <span>On-Chain PDA Funding Engine</span>
               </span>
-              <h1>10,078 AUTONOMOUS AI AGENTS ON SOLANA.</h1>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
+                MINT &amp; ACTIVATE GENESIS AGENTS
+              </h2>
               <p className="sa-hero-p">
                 Each agent is an on-chain NFT with its own token-bound PDA wallet. When you mint, 90% of what you pay is deposited directly into the agent&apos;s wallet to fund its autonomous trading, arbitrage, and on-chain execution.
               </p>

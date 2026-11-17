@@ -44,7 +44,7 @@ export default function LadderPage() {
         </div>
 
         {/* Interactive Capital Split Calculator */}
-        <div style={{ background: '#fcfaf4', border: '2px solid var(--hair-dark)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
+        <div style={{ background: '#ffffff', border: '2px solid var(--hair-dark)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid var(--hair-dark)', paddingBottom: '12px', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>
               ⚡ Interactive Capital Routing Calculator

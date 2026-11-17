@@ -54,7 +54,7 @@ export default function SpecsPage() {
         </div>
 
         {/* Detailed Spec Rows */}
-        <div className="spec-box" style={{ background: '#fcfaf4', border: '2px solid var(--hair-dark)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
+        <div className="spec-box" style={{ background: '#ffffff', border: '2px solid var(--hair-dark)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
           <div style={{ borderBottom: '2px solid var(--hair-dark)', paddingBottom: '12px', marginBottom: '20px' }}>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>
               ⚙️ Anchor Instruction &amp; Seed Definitions

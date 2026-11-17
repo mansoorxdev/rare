@@ -15,13 +15,35 @@ export default function Footer() {
         </span>
       </div>
 
-      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
         <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
         <Link href="/roster" style={{ color: 'inherit', textDecoration: 'none' }}>Agent Roster</Link>
         <Link href="/ladder" style={{ color: 'inherit', textDecoration: 'none' }}>Price Ladder</Link>
         <Link href="/specs" style={{ color: 'inherit', textDecoration: 'none' }}>PDA Specs</Link>
         <Link href="/terminal" style={{ color: 'inherit', textDecoration: 'none' }}>Terminal</Link>
         <Link href="/whitepaper" style={{ color: 'inherit', textDecoration: 'none' }}>Whitepaper</Link>
+        <a
+          href="https://x.com"
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: '#000',
+            color: '#fff',
+            padding: '3px 8px',
+            fontSize: '11px',
+            fontWeight: 700,
+            textDecoration: 'none',
+            border: '1px solid #000'
+          }}
+        >
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+          <span>Twitter</span>
+        </a>
         <a href="https://solscan.io/account/3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
           Solscan ↗
         </a>
