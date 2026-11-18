@@ -17,7 +17,19 @@ export default function PrivyClientProvider({ children }) {
           accentColor: '#00ff66',
           logo: 'https://rare-puce.vercel.app/rare-logo-icon.png',
           showWalletLoginFirst: true,
-          walletList: ['phantom', 'solflare', 'backpack', 'coinbase_wallet']
+          walletChainType: 'ethereum-and-solana',
+          walletList: [
+            'detected_solana_wallets',
+            'detected_ethereum_wallets',
+            'phantom',
+            'metamask',
+            'solflare',
+            'backpack',
+            'coinbase_wallet',
+            'rainbow',
+            'okx_wallet',
+            'wallet_connect'
+          ]
         },
         loginMethods: ['wallet', 'email', 'google', 'twitter'],
         embeddedWallets: {
