@@ -438,7 +438,7 @@ export default function HomePage() {
                 <div
                   key={`details-${currentShowcaseAgent.id}`}
                   className="hero-text-anim"
-                  style={{ width: '100%', textAlign: 'left', background: '#18181d', border: '1px solid var(--hair)', padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '14px', borderRadius: '4px' }}
+                  style={{ width: '100%', textAlign: 'left', background: '#18181d', border: '1px solid var(--hair)', padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '0', borderRadius: '4px' }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <span style={{ color: 'var(--dim)' }}>Role:</span>
@@ -451,60 +451,6 @@ export default function HomePage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: 'var(--dim)' }}>PDA Vault:</span>
                     <span style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '10px' }}>{currentShowcaseAgent.pdaVault}</span>
-                  </div>
-                </div>
-
-                {/* Real-time Cycle Countdown Progress Bar */}
-                <div style={{ width: '100%', height: '2px', background: 'rgba(255, 255, 255, 0.08)', marginBottom: '10px', overflow: 'hidden', borderRadius: '2px' }}>
-                  {showcaseAutoplay && (
-                    <div
-                      key={`progress-${currentShowcaseAgent.id}`}
-                      style={{
-                        height: '100%',
-                        background: 'var(--script-green)',
-                        boxShadow: '0 0 8px var(--script-green)',
-                        animation: 'cycleProgressBar 3.2s linear forwards'
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Animation Control Bar (Autoplay Indicator & Buttons) */}
-                <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--dim)' }}>
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: showcaseAutoplay ? 'var(--script-green)' : '#71717a' }} />
-                    <span>{showcaseAutoplay ? 'LIVE AGENT SWARM' : 'PAUSED'}</span>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '6px' }}>
-                    <button
-                      type="button"
-                      onClick={() => setShowcaseIndex((prev) => (prev - 1 + FEATURED_HERO_AGENTS.length) % FEATURED_HERO_AGENTS.length)}
-                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '4px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' }}
-                      title="Previous NFT"
-                    >
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="15 18 9 12 15 6"/></svg>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowcaseAutoplay((prev) => !prev)}
-                      style={{ background: showcaseAutoplay ? 'rgba(0, 255, 102, 0.15)' : '#18181d', color: showcaseAutoplay ? 'var(--script-green)' : '#fff', border: '1px solid var(--hair-dark)', padding: '4px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' }}
-                      title={showcaseAutoplay ? 'Pause autoplay' : 'Play autoplay'}
-                    >
-                      {showcaseAutoplay ? (
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                      ) : (
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowcaseIndex((prev) => (prev + 1) % FEATURED_HERO_AGENTS.length)}
-                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '4px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' }}
-                      title="Next NFT"
-                    >
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="9 18 15 12 9 6"/></svg>
-                    </button>
                   </div>
                 </div>
               </div>
