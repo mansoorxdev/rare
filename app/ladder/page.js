@@ -44,15 +44,15 @@ export default function LadderPage() {
         </div>
 
         {/* Interactive Capital Split Calculator */}
-        <div style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
+        <div style={{ background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.85) 0%, rgba(10, 13, 19, 0.95) 100%)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-lg)', boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.6)', padding: '28px', marginBottom: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '14px', marginBottom: '24px', flexWrap: 'wrap', gap: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="var(--script-green)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 800, textTransform: 'uppercase', color: '#ffffff', letterSpacing: '0.02em' }}>
                 Interactive Capital Routing Calculator
               </h3>
             </div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', background: 'var(--script-green)', color: '#000000', padding: '2px 8px', fontWeight: 800 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', background: 'rgba(0, 229, 153, 0.12)', color: 'var(--script-green)', border: '1px solid rgba(0, 229, 153, 0.3)', borderRadius: 'var(--radius-sm)', padding: '3px 10px', fontWeight: 800 }}>
               BAND 1 RATE: 0.02 SOL / AGENT
             </span>
           </div>
@@ -77,7 +77,7 @@ export default function LadderPage() {
                     type="button"
                     onClick={() => setCalcQty(num)}
                     className="btn-secondary"
-                    style={{ padding: '4px 10px', fontSize: '11px', background: calcQty === num ? 'var(--script-green)' : '#18181d', color: calcQty === num ? '#000000' : 'var(--ink)', fontWeight: calcQty === num ? 800 : 600 }}
+                    style={{ padding: '5px 12px', fontSize: '11px', background: calcQty === num ? 'var(--script-green)' : 'rgba(255, 255, 255, 0.04)', color: calcQty === num ? '#04140e' : 'var(--ink)', fontWeight: calcQty === num ? 800 : 600, border: calcQty === num ? '1px solid var(--script-green)' : '1px solid var(--hair)' }}
                   >
                     {num}
                   </button>
@@ -86,19 +86,19 @@ export default function LadderPage() {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-              <div style={{ background: '#18181d', border: '1px solid var(--hair)', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--hair)', borderRadius: 'var(--radius-sm)', padding: '14px' }}>
                 <span style={{ color: 'var(--dim)', display: 'block', marginBottom: '4px' }}>TOTAL MINT CAPITAL:</span>
                 <span style={{ fontSize: '18px', fontWeight: 700, color: '#ffffff' }}>{totalCost} SOL</span>
               </div>
-              <div style={{ background: 'rgba(0, 255, 102, 0.12)', border: '1px solid var(--script-green)', padding: '12px', boxShadow: '2px 2px 0px rgba(0, 255, 102, 0.4)' }}>
+              <div style={{ background: 'rgba(0, 229, 153, 0.08)', border: '1px solid rgba(0, 229, 153, 0.35)', borderRadius: 'var(--radius-sm)', padding: '14px', boxShadow: '0 0 20px -5px rgba(0, 229, 153, 0.15)' }}>
                 <span style={{ color: 'var(--script-green)', display: 'block', marginBottom: '4px', fontWeight: 700 }}>90% PDA VAULT DEPOSIT:</span>
                 <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--script-green)' }}>{pdaDeposit} SOL</span>
               </div>
-              <div style={{ background: '#18181d', border: '1px solid var(--hair)', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--hair)', borderRadius: 'var(--radius-sm)', padding: '14px' }}>
                 <span style={{ color: 'var(--dim)', display: 'block', marginBottom: '4px' }}>10% PROTOCOL TREASURY:</span>
                 <span style={{ fontSize: '18px', fontWeight: 700, color: '#f59e0b' }}>{treasurySplit} SOL</span>
               </div>
-              <div style={{ background: '#18181d', border: '1px solid var(--hair)', padding: '12px', boxShadow: '2px 2px 0px #000' }}>
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--hair)', borderRadius: 'var(--radius-sm)', padding: '14px' }}>
                 <span style={{ color: 'var(--dim)', display: 'block', marginBottom: '4px' }}>SECONDARY LIQUIDITY:</span>
                 <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--script-green)' }}>100% Retained</span>
               </div>
@@ -107,66 +107,69 @@ export default function LadderPage() {
         </div>
 
         {/* 10-Tier Bonding Curve Table */}
-        <div style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '4px 4px 0px #000', overflowX: 'auto', marginBottom: '40px' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)', fontSize: '12px', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ background: '#18181d', color: '#ffffff', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.05em', borderBottom: '1px solid var(--hair)' }}>
-                <th style={{ padding: '12px 16px' }}>Band Tier</th>
-                <th style={{ padding: '12px 16px' }}>Agent ID Range</th>
-                <th style={{ padding: '12px 16px' }}>Mint Price</th>
-                <th style={{ padding: '12px 16px' }}>90% PDA Capital</th>
-                <th style={{ padding: '12px 16px' }}>10% Treasury</th>
-                <th style={{ padding: '12px 16px' }}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {LADDER_BANDS.map((item, idx) => (
-                <tr
-                  key={item.band}
-                  style={{
-                    borderBottom: '1px solid var(--hair)',
-                    background: item.band === 1 ? 'rgba(0, 255, 102, 0.08)' : idx % 2 === 0 ? '#121215' : '#141418',
-                  }}
-                >
-                  <td style={{ padding: '12px 16px', fontWeight: 700, color: item.band === 1 ? 'var(--script-green)' : '#ffffff' }}>
-                    Band #{item.band}
-                  </td>
-                  <td style={{ padding: '12px 16px', color: 'var(--dim)' }}>
-                    {item.range}
-                  </td>
-                  <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--ink)' }}>
-                    {item.price} SOL
-                  </td>
-                  <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--script-green)' }}>
-                    {item.pdaCapital} SOL
-                  </td>
-                  <td style={{ padding: '12px 16px', color: '#f59e0b', fontWeight: 700 }}>
-                    {item.treasury} SOL
-                  </td>
-                  <td style={{ padding: '12px 16px' }}>
-                    <span
-                      style={{
-                        padding: '2px 8px',
-                        fontSize: '10px',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        background: item.band === 1 ? 'var(--script-green)' : '#18181d',
-                        color: item.band === 1 ? '#000000' : 'var(--dim)',
-                        border: '1px solid var(--hair)'
-                      }}
-                    >
-                      {item.status}
-                    </span>
-                  </td>
+        <div style={{ background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.85) 0%, rgba(10, 13, 19, 0.95) 100%)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-lg)', boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.6)', overflow: 'hidden', marginBottom: '40px' }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)', fontSize: '12px', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ background: 'rgba(255, 255, 255, 0.03)', color: '#ffffff', textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.05em', borderBottom: '1px solid var(--hair)' }}>
+                  <th style={{ padding: '14px 18px' }}>Band Tier</th>
+                  <th style={{ padding: '14px 18px' }}>Agent ID Range</th>
+                  <th style={{ padding: '14px 18px' }}>Mint Price</th>
+                  <th style={{ padding: '14px 18px' }}>90% PDA Capital</th>
+                  <th style={{ padding: '14px 18px' }}>10% Treasury</th>
+                  <th style={{ padding: '14px 18px' }}>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {LADDER_BANDS.map((item, idx) => (
+                  <tr
+                    key={item.band}
+                    style={{
+                      borderBottom: '1px solid var(--hair)',
+                      background: item.band === 1 ? 'rgba(0, 229, 153, 0.06)' : idx % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.015)',
+                    }}
+                  >
+                    <td style={{ padding: '12px 18px', fontWeight: 700, color: item.band === 1 ? 'var(--script-green)' : '#ffffff' }}>
+                      Band #{item.band}
+                    </td>
+                    <td style={{ padding: '12px 18px', color: 'var(--dim)' }}>
+                      {item.range}
+                    </td>
+                    <td style={{ padding: '12px 18px', fontWeight: 700, color: 'var(--ink)' }}>
+                      {item.price} SOL
+                    </td>
+                    <td style={{ padding: '12px 18px', fontWeight: 700, color: 'var(--script-green)' }}>
+                      {item.pdaCapital} SOL
+                    </td>
+                    <td style={{ padding: '12px 18px', color: '#f59e0b', fontWeight: 700 }}>
+                      {item.treasury} SOL
+                    </td>
+                    <td style={{ padding: '12px 18px' }}>
+                      <span
+                        style={{
+                          padding: '3px 8px',
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          borderRadius: 'var(--radius-sm)',
+                          background: item.band === 1 ? 'var(--script-green)' : 'rgba(255, 255, 255, 0.04)',
+                          color: item.band === 1 ? '#04140e' : 'var(--dim)',
+                          border: item.band === 1 ? '1px solid var(--script-green)' : '1px solid var(--hair)'
+                        }}
+                      >
+                        {item.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Architecture Specs Callout */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
-          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '20px', boxShadow: '4px 4px 0px #000' }}>
+          <div className="protocol-hero-pillar">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
@@ -178,7 +181,7 @@ export default function LadderPage() {
             </p>
           </div>
 
-          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '20px', boxShadow: '4px 4px 0px #000' }}>
+          <div className="protocol-hero-pillar">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
               <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>

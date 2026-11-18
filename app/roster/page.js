@@ -115,7 +115,7 @@ export default function RosterPage() {
         </div>
 
         {/* Filter & Search Bar */}
-        <div style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '4px 4px 0px #000', padding: '16px 20px', marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.8) 0%, rgba(10, 13, 19, 0.95) 100%)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-lg)', boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.6)', padding: '16px 20px', marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, color: 'var(--dim)', marginRight: '6px' }}>
               RARITY:
@@ -143,12 +143,13 @@ export default function RosterPage() {
                 fontFamily: 'var(--font-mono)',
                 fontSize: '12px',
                 padding: '8px 14px',
-                border: '2px solid var(--hair-dark)',
-                background: '#09090b',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: 'var(--radius-sm)',
+                background: 'rgba(10, 13, 19, 0.85)',
                 color: '#ffffff',
                 width: '240px',
                 outline: 'none',
-                boxShadow: '2px 2px 0px #000'
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
               }}
             />
           </div>
@@ -160,19 +161,9 @@ export default function RosterPage() {
             <div
               key={agent.id}
               className="agent-card"
-              style={{
-                background: '#121215',
-                border: '2px solid var(--hair)',
-                padding: '16px',
-                boxShadow: '4px 4px 0px #000000',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                gap: '12px'
-              }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '8px' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 800, background: 'var(--script-green)', color: '#000000', padding: '2px 7px', border: '1px solid #000' }}>
+                <span className="agent-num-badge">
                   #{String(agent.id).padStart(5, '0')}
                 </span>
                 <span className={`rarity-badge rarity-${agent.rarityTier.toLowerCase()}`}>
@@ -183,19 +174,7 @@ export default function RosterPage() {
               {/* Agent SVG Avatar Box */}
               <div
                 onClick={() => setInspectedAgent(agent)}
-                style={{
-                  width: '100%',
-                  aspectRatio: '1',
-                  background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.08) 0%, #09090b 70%)',
-                  border: '1.5px solid var(--hair)',
-                  boxShadow: '2px 2px 0px #000',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'border-color 0.15s ease'
-                }}
+                className="agent-avatar-box"
               >
                 <img
                   src={`/nfts/${agent.id}.svg`}
@@ -213,7 +192,7 @@ export default function RosterPage() {
                 </div>
               </div>
 
-              <div style={{ background: '#18181d', border: '1px solid var(--hair)', padding: '8px 10px', fontSize: '10px', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--hair)', borderRadius: 'var(--radius-sm)', padding: '8px 10px', fontSize: '10px', fontFamily: 'var(--font-mono)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3px' }}>
                   <span style={{ color: 'var(--dim)' }}>PDA Capital:</span>
                   <span style={{ fontWeight: 700, color: 'var(--script-green)' }}>{agent.pdaFunding}</span>
@@ -228,7 +207,7 @@ export default function RosterPage() {
                 type="button"
                 onClick={() => setInspectedAgent(agent)}
                 className="btn-card-inspect"
-                style={{ width: '100%', textAlign: 'center', padding: '8px 0', fontSize: '11px', background: 'var(--script-green)', color: '#000000', fontWeight: 800 }}
+                style={{ width: '100%', textAlign: 'center' }}
               >
                 Inspect Agent Specs ↗
               </button>
@@ -286,7 +265,7 @@ export default function RosterPage() {
               <button
                 type="button"
                 onClick={() => setInspectedAgent(null)}
-                style={{ fontFamily: 'var(--font-pixel)', fontSize: '13px', padding: '4px 10px', border: '1px solid var(--hair-dark)', background: '#18181d', color: '#ffffff', cursor: 'pointer', transition: 'all 0.15s ease' }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', padding: '3px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hair-dark)', background: 'rgba(255, 255, 255, 0.05)', color: '#ffffff', cursor: 'pointer', transition: 'all 0.15s ease' }}
                 title="Close"
               >
                 ✕
@@ -294,13 +273,13 @@ export default function RosterPage() {
             </div>
 
             <div className="rare-modal-grid">
-              <div style={{ border: '2px solid var(--hair)', background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.1) 0%, #09090b 70%)', padding: '16px', boxShadow: '4px 4px 0px #000, 0 0 20px rgba(0, 255, 102, 0.12)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ border: '1px solid var(--hair)', background: 'radial-gradient(circle at 50% 65%, rgba(0, 229, 153, 0.12) 0%, #080a0f 75%)', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   src={`/nfts/${inspectedAgent.id}.svg`}
                   alt={inspectedAgent.name}
                   style={{ width: '100%', aspectRatio: '1', objectFit: 'contain', imageRendering: 'pixelated', filter: 'drop-shadow(0 10px 16px rgba(0,0,0,0.7))' }}
                 />
-                <span style={{ marginTop: '10px', fontFamily: 'var(--font-mono)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--script-green)', background: 'rgba(0, 255, 102, 0.12)', border: '1px solid rgba(0, 255, 102, 0.3)', padding: '2px 8px' }}>
+                <span style={{ marginTop: '10px', fontFamily: 'var(--font-mono)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--script-green)', background: 'rgba(0, 229, 153, 0.12)', border: '1px solid rgba(0, 229, 153, 0.3)', borderRadius: 'var(--radius-sm)', padding: '2px 8px' }}>
                   TOKEN-BOUND PDA ASSET
                 </span>
               </div>
@@ -308,31 +287,31 @@ export default function RosterPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
                 <div>
                   <span style={{ fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>MISSION PROMPT</span>
-                  <p style={{ marginTop: '4px', padding: '10px 12px', border: '1px solid var(--hair)', borderLeft: '3px solid var(--script-green)', background: '#09090b', fontSize: '11px', color: '#e4e4e7', fontStyle: 'italic', lineHeight: 1.6 }}>
+                  <p style={{ marginTop: '4px', padding: '10px 12px', border: '1px solid var(--hair)', borderLeft: '3px solid var(--script-green)', background: 'rgba(0, 229, 153, 0.04)', borderRadius: 'var(--radius-sm)', fontSize: '11px', color: '#e4e4e7', fontStyle: 'italic', lineHeight: 1.6 }}>
                     &ldquo;{inspectedAgent.personalityPreview}&rdquo;
                   </p>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px' }}>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
                     <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>ARCHETYPE</div>
                     <div style={{ fontWeight: 700, color: '#ffffff', marginTop: '2px' }}>{inspectedAgent.archetype}</div>
                   </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
                     <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>EXECUTION ENGINE</div>
                     <div style={{ fontWeight: 700, color: 'var(--script-green)', marginTop: '2px' }}>{inspectedAgent.engine}</div>
                   </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
                     <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>PDA CAPITAL</div>
                     <div style={{ fontWeight: 700, color: 'var(--script-green)', marginTop: '2px' }}>{inspectedAgent.pdaFunding}</div>
                   </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
                     <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>RARITY TIER</div>
                     <div style={{ fontWeight: 700, color: '#ffffff', marginTop: '2px' }}>{inspectedAgent.rarityTier} ({inspectedAgent.rarityScore}%)</div>
                   </div>
                 </div>
 
-                <div style={{ padding: '10px 12px', border: '1px solid var(--hair)', background: '#09090b', fontSize: '10px' }}>
+                <div style={{ padding: '10px 12px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.02)', borderRadius: 'var(--radius-sm)', fontSize: '10px' }}>
                   <span style={{ color: 'var(--dim)', fontWeight: 700 }}>PROGRAM DERIVED ADDRESS (PDA):</span>
                   <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--script-green)', fontWeight: 700, marginTop: '4px', wordBreak: 'break-all', fontSize: '11px' }}>
                     {inspectedAgent.pdaVault}
@@ -352,16 +331,11 @@ export default function RosterPage() {
                   padding: '12px 16px',
                   fontSize: '12px',
                   textAlign: 'center',
-                  background: isMinting ? '#18181d' : 'var(--script-green)',
-                  color: isMinting ? 'var(--script-green)' : '#000000',
-                  fontWeight: 800,
                   cursor: isMinting ? 'wait' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px',
-                  boxShadow: '0 0 16px rgba(0, 255, 102, 0.3)',
-                  border: '1px solid var(--script-green)'
+                  gap: '8px'
                 }}
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -371,7 +345,7 @@ export default function RosterPage() {
                 type="button"
                 onClick={() => setInspectedAgent(null)}
                 className="btn-secondary"
-                style={{ padding: '11px 18px', fontSize: '12px', background: '#18181d', color: '#ffffff' }}
+                style={{ padding: '11px 18px', fontSize: '12px', cursor: 'pointer' }}
               >
                 Close
               </button>
@@ -388,12 +362,12 @@ export default function RosterPage() {
         >
           <div
             className="rare-modal-dialog"
-            style={{ maxWidth: '580px', background: '#121215', border: '1px solid var(--hair-dark)' }}
+            style={{ maxWidth: '580px' }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ width: '10px', height: '10px', background: 'var(--script-green)', border: '1px solid #000', display: 'inline-block' }} />
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--script-green)', boxShadow: '0 0 10px var(--script-green)', display: 'inline-block' }} />
                 <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--script-green)', letterSpacing: '0.04em' }}>
                   AGENT ACTIVATED // ON-CHAIN PDA FUNDED
                 </h3>
@@ -401,14 +375,14 @@ export default function RosterPage() {
               <button
                 type="button"
                 onClick={() => setMintCelebration(null)}
-                style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', padding: '2px 8px', border: '1px solid var(--hair-dark)', background: '#18181d', color: '#ffffff', cursor: 'pointer' }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', padding: '3px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hair-dark)', background: 'rgba(255, 255, 255, 0.05)', color: '#ffffff', cursor: 'pointer' }}
               >
                 ✕
               </button>
             </div>
 
             <div className="rare-modal-grid">
-              <div style={{ border: '1px solid var(--hair)', background: '#09090b', padding: '12px', boxShadow: '0 0 16px rgba(0, 255, 102, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ border: '1px solid var(--hair)', background: 'radial-gradient(circle at 50% 60%, rgba(0, 229, 153, 0.1) 0%, #080a0f 75%)', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   src={mintCelebration.image || `/nfts/${mintCelebration.id}.svg`}
                   alt={mintCelebration.name}
@@ -419,7 +393,7 @@ export default function RosterPage() {
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div style={{ fontSize: '18px', fontWeight: 800, fontFamily: 'var(--font-display)', textTransform: 'uppercase', color: '#ffffff' }}>{mintCelebration.name}</div>
                 <div style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '11px' }}>SOLANA TOKEN-BOUND ACCOUNT</div>
-                <div style={{ padding: '12px', border: '1px solid var(--hair)', background: '#18181d', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', color: '#ffffff' }}>
+                <div style={{ padding: '12px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', color: '#ffffff' }}>
                   <div><b style={{ color: 'var(--dim)' }}>PDA Vault:</b> <span style={{ fontSize: '10px', color: 'var(--script-green)', display: 'block', wordBreak: 'break-all', marginTop: '2px' }}>{mintCelebration.pdaVault}</span></div>
                   <div><b style={{ color: 'var(--dim)' }}>Capital Deposited:</b> <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>{mintCelebration.funding}</span> (90%)</div>
                   <div><b style={{ color: 'var(--dim)' }}>Protocol Split:</b> 10% Treasury</div>
@@ -433,7 +407,7 @@ export default function RosterPage() {
                 target="_blank"
                 rel="noreferrer"
                 className="btn-primary"
-                style={{ flex: 1, textAlign: 'center', padding: '10px 0', fontSize: '12px', background: 'var(--script-green)', color: '#000000', fontWeight: 800 }}
+                style={{ flex: 1, textAlign: 'center', padding: '10px 0', fontSize: '12px' }}
               >
                 View On Solscan ↗
               </a>
@@ -441,7 +415,7 @@ export default function RosterPage() {
                 type="button"
                 onClick={() => setMintCelebration(null)}
                 className="btn-secondary"
-                style={{ flex: 1, padding: '10px 0', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair)' }}
+                style={{ flex: 1, padding: '10px 0', fontSize: '12px', cursor: 'pointer' }}
               >
                 Close & Explore
               </button>

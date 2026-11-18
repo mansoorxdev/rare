@@ -37,7 +37,7 @@ export default function WhitepaperPage() {
         </div>
 
         {/* Document Container */}
-        <div style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: 'clamp(24px, 4vw, 48px)', maxWidth: '980px', margin: '0 auto', fontFamily: 'var(--font-sans)', color: 'var(--ink)', lineHeight: 1.7 }}>
+        <div style={{ background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.9) 0%, rgba(10, 13, 19, 0.98) 100%)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: 'var(--radius-xl)', boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px -5px rgba(0, 229, 153, 0.12)', padding: 'clamp(28px, 5vw, 56px)', maxWidth: '980px', margin: '0 auto', fontFamily: 'var(--font-sans)', color: 'var(--ink)', lineHeight: 1.7 }}>
           {/* Section 1 */}
           <section style={{ marginBottom: '40px' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)', fontWeight: 700, textTransform: 'uppercase' }}>
@@ -65,7 +65,7 @@ export default function WhitepaperPage() {
             <p style={{ marginBottom: '14px', color: 'var(--ink-soft)' }}>
               Inspired by ERC-6551 but engineered natively for Solana&apos;s sub-second finality and low rent costs, RARE leverages Anchor PDAs derived from the agent&apos;s token mint address:
             </p>
-            <div style={{ background: '#09090b', color: 'var(--script-green)', fontFamily: 'var(--font-mono)', fontSize: '12px', padding: '16px', border: '1px solid var(--hair)', marginBottom: '16px' }}>
+            <div style={{ background: 'rgba(0, 0, 0, 0.5)', color: 'var(--script-green)', fontFamily: 'var(--font-mono)', fontSize: '12px', padding: '16px', border: '1px solid var(--hair)', borderRadius: 'var(--radius-sm)', marginBottom: '16px' }}>
               PDA_Vault = Pubkey::find_program_address([b&quot;agent_vault&quot;, mint_pubkey, agent_id], program_id)
             </div>
             <p style={{ color: 'var(--ink-soft)' }}>
@@ -107,7 +107,7 @@ export default function WhitepaperPage() {
             <p style={{ marginBottom: '14px', color: 'var(--ink-soft)' }}>
               The RARE Anchor program implements strict access-control checks:
             </p>
-            <div style={{ background: '#09090b', border: '1px solid var(--hair)', padding: '16px', fontFamily: 'var(--font-mono)', fontSize: '12px', marginBottom: '20px', color: 'var(--ink-soft)', lineHeight: 1.8 }}>
+            <div style={{ background: 'rgba(0, 0, 0, 0.5)', border: '1px solid var(--hair)', borderRadius: 'var(--radius-sm)', padding: '16px', fontFamily: 'var(--font-mono)', fontSize: '12px', marginBottom: '20px', color: 'var(--ink-soft)', lineHeight: 1.8 }}>
               • <b style={{ color: '#ffffff' }}>Zero Team Backdoors:</b> Mint capital is routed in the exact same CPI instruction.<br />
               • <b style={{ color: '#ffffff' }}>Supply Ceiling:</b> Program rejects any mint request exceeding ID 10,078.<br />
               • <b style={{ color: '#ffffff' }}>No Flash-Loan Drainage:</b> PDA funds require signed multi-oracle validation for off-chain execution calls.<br />
@@ -117,7 +117,7 @@ export default function WhitepaperPage() {
               <a
                 href="/roster"
                 className="btn-primary"
-                style={{ padding: '12px 26px', fontSize: '12px', background: 'var(--script-green)', color: '#000000', fontWeight: 800, textTransform: 'uppercase' }}
+                style={{ padding: '12px 26px', fontSize: '12px' }}
               >
                 Explore 10,078 Agent Roster →
               </a>

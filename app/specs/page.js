@@ -28,33 +28,33 @@ export default function SpecsPage() {
 
         {/* 4-Box Quick Verification Summary */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '36px' }}>
-          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
+          <div className="stat-card">
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>FRAMEWORK</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>Anchor 0.30.1</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, marginTop: '4px', color: '#ffffff' }}>Anchor 0.30.1</div>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Solana Rust Framework</span>
           </div>
 
-          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
+          <div className="stat-card">
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>ON-CHAIN SPLIT</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>90% PDA / 10% Protocol</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, marginTop: '4px', color: '#ffffff' }}>90% PDA / 10% Protocol</div>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Hardcoded Invariant</span>
           </div>
 
-          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
+          <div className="stat-card">
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>PDA CUSTODY</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>Token-Bound Anchor CPI</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, marginTop: '4px', color: '#ffffff' }}>Token-Bound Anchor CPI</div>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Transfers on Secondary</span>
           </div>
 
-          <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '16px', boxShadow: '3px 3px 0px #000' }}>
+          <div className="stat-card">
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>TOTAL AGENTS</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>10,078 Genesis Units</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, marginTop: '4px', color: '#ffffff' }}>10,078 Genesis Units</div>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Immutable Cap</span>
           </div>
         </div>
 
         {/* Detailed Spec Rows */}
-        <div className="spec-box" style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
+        <div className="spec-box" style={{ marginBottom: '40px' }}>
           <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
@@ -70,7 +70,7 @@ export default function SpecsPage() {
 
             <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px' }}>
               <div style={{ color: 'var(--dim)', fontSize: '10px', fontWeight: 700 }}>PDA VAULT SEED DERIVATION</div>
-              <code style={{ fontSize: '12px', background: '#09090b', padding: '8px 12px', border: '1px solid var(--hair)', display: 'block', marginTop: '6px', color: 'var(--script-green)' }}>
+              <code style={{ fontSize: '12px', background: 'rgba(0, 0, 0, 0.5)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hair)', display: 'block', marginTop: '6px', color: 'var(--script-green)' }}>
                 Pubkey::find_program_address(&amp;[b&quot;agent_vault&quot;, mint.key().as_ref(), &amp;agent_id.to_le_bytes()], &amp;program_id)
               </code>
             </div>
@@ -96,12 +96,12 @@ export default function SpecsPage() {
         </div>
 
         {/* Real Smart Contract Code Snippet */}
-        <div style={{ background: '#09090b', border: '2px solid #27272a', boxShadow: '6px 6px 0px 0px var(--script-green)', overflow: 'hidden' }}>
-          <div style={{ padding: '10px 16px', background: '#18181b', borderBottom: '1px solid #27272a', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.95) 0%, rgba(10, 13, 19, 0.98) 100%)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: 'var(--radius-lg)', boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px -5px rgba(0, 229, 153, 0.15)', overflow: 'hidden' }}>
+          <div style={{ padding: '12px 18px', background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)', fontWeight: 700 }}>
               anchor/programs/rare_protocol/src/lib.rs (RUST)
             </span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: '#71717a' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)' }}>
               SOLANA ANCHOR CPI
             </span>
           </div>

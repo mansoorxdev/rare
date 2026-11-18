@@ -169,17 +169,17 @@ export default function TerminalPage() {
         </div>
 
         {/* Terminal Screen Frame */}
-        <div style={{ background: '#09090b', border: '2px solid #27272a', boxShadow: '8px 8px 0px 0px var(--script-green)', overflow: 'hidden' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', background: '#18181b', borderBottom: '1px solid #27272a', fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#a1a1aa' }}>
+        <div style={{ background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.95) 0%, rgba(10, 13, 19, 0.98) 100%)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: 'var(--radius-lg)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 35px -5px rgba(0, 229, 153, 0.15)', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 18px', background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="sa-brand-icon" style={{ width: '18px', height: '18px', padding: '1px', boxShadow: 'none', border: '1px solid #3f3f46' }}>
+              <span className="sa-brand-icon" style={{ width: '18px', height: '18px', padding: '1px', boxShadow: 'none' }}>
                 <img src="/rare-logo-icon.png" alt="RARE" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </span>
               <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>
                 ANCHOR CPI TELEMETRY // TOKEN-BOUND AGENT CONSOLE
               </span>
             </div>
-            <span style={{ color: '#71717a' }}>SOLANA MAINNET-BETA</span>
+            <span style={{ color: 'var(--dim)' }}>SOLANA MAINNET-BETA</span>
           </div>
 
           <div style={{ padding: '24px', fontFamily: 'var(--font-mono)', fontSize: '12px', minHeight: '420px', maxHeight: '560px', overflowY: 'auto', lineHeight: 1.6 }}>

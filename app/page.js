@@ -322,21 +322,21 @@ export default function HomePage() {
                 <a
                   href="#mint-engine"
                   className="btn-primary"
-                  style={{ padding: '13px 26px', fontSize: '13px', background: 'var(--script-green)', color: '#000000', fontWeight: 800, boxShadow: '4px 4px 0px #000' }}
+                  style={{ padding: '13px 26px', fontSize: '13px' }}
                 >
                   MINT AGENT (0.02 SOL) ↓
                 </a>
                 <Link
                   href="/roster"
                   className="btn-secondary"
-                  style={{ padding: '13px 22px', fontSize: '13px', background: '#18181d', color: '#ffffff', boxShadow: '4px 4px 0px #000' }}
+                  style={{ padding: '13px 22px', fontSize: '13px' }}
                 >
                   EXPLORE 10,078 ROSTER →
                 </Link>
                 <Link
                   href="/whitepaper"
                   className="btn-secondary"
-                  style={{ padding: '13px 18px', fontSize: '13px', background: '#141418', color: 'var(--dim)', boxShadow: '2px 2px 0px #000' }}
+                  style={{ padding: '13px 18px', fontSize: '13px' }}
                 >
                   WHITEPAPER ↗
                 </Link>
@@ -438,7 +438,7 @@ export default function HomePage() {
                 <div
                   key={`details-${currentShowcaseAgent.id}`}
                   className="hero-text-anim"
-                  style={{ width: '100%', textAlign: 'left', background: '#18181d', border: '1px solid var(--hair)', padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '0', borderRadius: '4px' }}
+                  style={{ width: '100%', textAlign: 'left', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--hair)', padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '0', borderRadius: 'var(--radius-sm)' }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <span style={{ color: 'var(--dim)' }}>Role:</span>
@@ -945,9 +945,11 @@ export default function HomePage() {
             style={{
               width: '100%',
               maxWidth: '680px',
-              background: '#09090b',
-              border: '2px solid #27272a',
-              boxShadow: '8px 8px 0px 0px #00aa44',
+              background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.96) 0%, rgba(10, 13, 19, 0.98) 100%)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 35px -5px rgba(0, 229, 153, 0.15)',
               overflow: 'hidden'
             }}
             onClick={(e) => e.stopPropagation()}
@@ -957,23 +959,23 @@ export default function HomePage() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: '10px 16px',
-                background: '#18181b',
-                borderBottom: '1px solid #27272a',
+                padding: '12px 18px',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
                 fontFamily: 'var(--font-mono)',
                 fontSize: '11px',
-                color: '#a1a1aa'
+                color: 'var(--dim)'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span className="sa-brand-icon" style={{ width: '18px', height: '18px', padding: '1px', boxShadow: 'none', border: '1px solid #3f3f46' }}>
+                <span className="sa-brand-icon" style={{ width: '18px', height: '18px', padding: '1px', boxShadow: 'none' }}>
                   <img src="/rare-logo-icon.png" alt="RARE" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </span>
-                <span style={{ color: '#22c55e', fontWeight: 700 }}>ANCHOR CPI TELEMETRY // TOKEN-BOUND AGENT CONSOLE</span>
+                <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>ANCHOR CPI TELEMETRY // TOKEN-BOUND AGENT CONSOLE</span>
               </div>
               <button
                 onClick={() => setConsoleOpen(false)}
-                style={{ background: 'none', border: 'none', color: '#fff', fontSize: '16px', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: '#fff', fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}
               >
                 ×
               </button>
@@ -1019,12 +1021,12 @@ export default function HomePage() {
         >
           <div
             className="rare-modal-dialog"
-            style={{ maxWidth: '580px', background: '#121215', border: '1px solid var(--hair-dark)' }}
+            style={{ maxWidth: '580px' }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ width: '10px', height: '10px', background: 'var(--script-green)', border: '1px solid #000', display: 'inline-block' }} />
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--script-green)', boxShadow: '0 0 10px var(--script-green)', display: 'inline-block' }} />
                 <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--script-green)', letterSpacing: '0.04em' }}>
                   AGENT ACTIVATED // ON-CHAIN PDA FUNDED
                 </h3>
@@ -1032,14 +1034,14 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => setMintCelebration(null)}
-                style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', padding: '2px 8px', border: '1px solid var(--hair-dark)', background: '#18181d', color: '#ffffff', cursor: 'pointer' }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', padding: '3px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hair-dark)', background: 'rgba(255, 255, 255, 0.05)', color: '#ffffff', cursor: 'pointer' }}
               >
                 ✕
               </button>
             </div>
 
             <div className="rare-modal-grid">
-              <div style={{ border: '1px solid var(--hair)', background: '#09090b', padding: '12px', boxShadow: '0 0 16px rgba(0, 255, 102, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ border: '1px solid var(--hair)', background: 'radial-gradient(circle at 50% 60%, rgba(0, 229, 153, 0.1) 0%, #080a0f 75%)', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   src={mintCelebration.image || `/nfts/${mintCelebration.id}.svg`}
                   alt={mintCelebration.name}
@@ -1050,7 +1052,7 @@ export default function HomePage() {
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div style={{ fontSize: '18px', fontWeight: 800, fontFamily: 'var(--font-display)', textTransform: 'uppercase', color: '#ffffff' }}>{mintCelebration.name}</div>
                 <div style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '11px' }}>SOLANA TOKEN-BOUND ACCOUNT</div>
-                <div style={{ padding: '12px', border: '1px solid var(--hair)', background: '#18181d', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', color: '#ffffff' }}>
+                <div style={{ padding: '12px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', color: '#ffffff' }}>
                   <div><b style={{ color: 'var(--dim)' }}>PDA Vault:</b> <span style={{ fontSize: '10px', color: 'var(--script-green)', display: 'block', wordBreak: 'break-all', marginTop: '2px' }}>{mintCelebration.pdaVault}</span></div>
                   <div><b style={{ color: 'var(--dim)' }}>Capital Deposited:</b> <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>{mintCelebration.funding}</span> (90%)</div>
                   <div><b style={{ color: 'var(--dim)' }}>Protocol Split:</b> 10% Treasury</div>
@@ -1064,7 +1066,7 @@ export default function HomePage() {
                 target="_blank"
                 rel="noreferrer"
                 className="btn-primary"
-                style={{ flex: 1, textAlign: 'center', padding: '10px 0', fontSize: '12px', background: 'var(--script-green)', color: '#000000', fontWeight: 800 }}
+                style={{ flex: 1, textAlign: 'center', padding: '10px 0', fontSize: '12px' }}
               >
                 View On Solscan ↗
               </a>
@@ -1072,7 +1074,7 @@ export default function HomePage() {
                 type="button"
                 onClick={() => handleDownloadManifest(mintCelebration)}
                 className="btn-secondary"
-                style={{ padding: '10px 14px', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair)', cursor: 'pointer' }}
+                style={{ padding: '10px 14px', fontSize: '12px', cursor: 'pointer' }}
               >
                 Download Metaplex JSON ↓
               </button>
@@ -1080,7 +1082,7 @@ export default function HomePage() {
                 type="button"
                 onClick={() => setMintCelebration(null)}
                 className="btn-secondary"
-                style={{ padding: '10px 16px', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair)', cursor: 'pointer' }}
+                style={{ padding: '10px 16px', fontSize: '12px', cursor: 'pointer' }}
               >
                 Close
               </button>
@@ -1111,7 +1113,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => setInspectedAgentModal(null)}
-                style={{ fontFamily: 'var(--font-pixel)', fontSize: '13px', padding: '4px 10px', border: '1px solid var(--hair-dark)', background: '#18181d', color: '#ffffff', cursor: 'pointer', transition: 'all 0.15s ease' }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', padding: '3px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hair-dark)', background: 'rgba(255, 255, 255, 0.05)', color: '#ffffff', cursor: 'pointer', transition: 'all 0.15s ease' }}
                 title="Close"
               >
                 ✕
@@ -1119,13 +1121,13 @@ export default function HomePage() {
             </div>
 
             <div className="rare-modal-grid">
-              <div style={{ border: '2px solid var(--hair)', background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.1) 0%, #09090b 70%)', padding: '16px', boxShadow: '4px 4px 0px #000, 0 0 20px rgba(0, 255, 102, 0.12)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ border: '1px solid var(--hair)', background: 'radial-gradient(circle at 50% 65%, rgba(0, 229, 153, 0.12) 0%, #080a0f 75%)', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   src={inspectedAgentModal.image || `/nfts/${inspectedAgentModal.id}.svg`}
                   alt={inspectedAgentModal.name}
                   style={{ width: '100%', aspectRatio: '1', objectFit: 'contain', imageRendering: 'pixelated', filter: 'drop-shadow(0 10px 16px rgba(0,0,0,0.7))' }}
                 />
-                <span style={{ marginTop: '10px', fontFamily: 'var(--font-mono)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--script-green)', background: 'rgba(0, 255, 102, 0.12)', border: '1px solid rgba(0, 255, 102, 0.3)', padding: '2px 8px' }}>
+                <span style={{ marginTop: '10px', fontFamily: 'var(--font-mono)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--script-green)', background: 'rgba(0, 229, 153, 0.12)', border: '1px solid rgba(0, 229, 153, 0.3)', borderRadius: 'var(--radius-sm)', padding: '2px 8px' }}>
                   TOKEN-BOUND PDA ASSET
                 </span>
               </div>
@@ -1133,31 +1135,31 @@ export default function HomePage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
                 <div>
                   <span style={{ fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>MISSION PROMPT</span>
-                  <p style={{ marginTop: '4px', padding: '10px 12px', border: '1px solid var(--hair)', borderLeft: '3px solid var(--script-green)', background: '#09090b', fontSize: '11px', color: '#e4e4e7', fontStyle: 'italic', lineHeight: 1.6 }}>
+                  <p style={{ marginTop: '4px', padding: '10px 12px', border: '1px solid var(--hair)', borderLeft: '3px solid var(--script-green)', background: 'rgba(0, 229, 153, 0.04)', borderRadius: 'var(--radius-sm)', fontSize: '11px', color: '#e4e4e7', fontStyle: 'italic', lineHeight: 1.6 }}>
                     &ldquo;{inspectedAgentModal.personalityPreview}&rdquo;
                   </p>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px' }}>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
                     <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>ARCHETYPE</div>
                     <div style={{ fontWeight: 700, color: '#ffffff', marginTop: '2px' }}>{inspectedAgentModal.archetype}</div>
                   </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
                     <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>EXECUTION ENGINE</div>
                     <div style={{ fontWeight: 700, color: 'var(--script-green)', marginTop: '2px' }}>{inspectedAgentModal.engine}</div>
                   </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
                     <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>PDA CAPITAL</div>
                     <div style={{ fontWeight: 700, color: 'var(--script-green)', marginTop: '2px' }}>{inspectedAgentModal.pdaFunding}</div>
                   </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: '#18181d' }}>
+                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
                     <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>RARITY TIER</div>
                     <div style={{ fontWeight: 700, color: '#ffffff', marginTop: '2px' }}>{inspectedAgentModal.rarityTier} ({inspectedAgentModal.rarityScore}%)</div>
                   </div>
                 </div>
 
-                <div style={{ padding: '10px 12px', border: '1px solid var(--hair)', background: '#09090b', fontSize: '10px' }}>
+                <div style={{ padding: '10px 12px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.02)', borderRadius: 'var(--radius-sm)', fontSize: '10px' }}>
                   <span style={{ color: 'var(--dim)', fontWeight: 700 }}>PROGRAM DERIVED ADDRESS (PDA):</span>
                   <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--script-green)', fontWeight: 700, marginTop: '4px', wordBreak: 'break-all', fontSize: '11px' }}>
                     {inspectedAgentModal.pdaVault}
@@ -1177,16 +1179,11 @@ export default function HomePage() {
                   padding: '12px 16px',
                   fontSize: '12px',
                   textAlign: 'center',
-                  background: isMinting ? '#18181d' : 'var(--script-green)',
-                  color: isMinting ? 'var(--script-green)' : '#000000',
-                  fontWeight: 800,
                   cursor: isMinting ? 'wait' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px',
-                  boxShadow: '0 0 16px rgba(0, 255, 102, 0.3)',
-                  border: '1px solid var(--script-green)'
+                  gap: '8px'
                 }}
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -1196,7 +1193,7 @@ export default function HomePage() {
                 type="button"
                 onClick={() => setInspectedAgentModal(null)}
                 className="btn-secondary"
-                style={{ padding: '11px 18px', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair-dark)', cursor: 'pointer' }}
+                style={{ padding: '11px 18px', fontSize: '12px', cursor: 'pointer' }}
               >
                 Close
               </button>
