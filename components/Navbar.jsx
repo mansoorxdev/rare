@@ -8,7 +8,13 @@ import { usePrivy } from './PrivyClientProvider';
 export default function Navbar() {
   const pathname = usePathname();
   const { authenticated, user, login, logout } = usePrivy();
-  const walletAddress = user?.wallet?.address || user?.wallets?.[0]?.address;
+  
+  // Prioritize Solana chain address for multichain wallets
+  const solanaAccount = user?.linkedAccounts?.find(
+    (acc) => acc.type === 'wallet' && (acc.chainType === 'solana' || !acc.address?.startsWith('0x'))
+  );
+  const activeWallet = solanaAccount || user?.wallet || user?.wallets?.[0];
+  const walletAddress = activeWallet?.address;
 
   const navLinks = [
     { label: 'Home', href: '/' },
