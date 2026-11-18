@@ -39,18 +39,13 @@ export default function HomePage() {
   // Automatic Cycling Showcase for Hero Visual Section
   const FEATURED_HERO_AGENTS = [143, 1, 15, 27, 42, 69, 88, 120, 256, 333, 512, 777, 888, 1008];
   const [showcaseIndex, setShowcaseIndex] = useState(0);
-  const [showcaseTransitioning, setShowcaseTransitioning] = useState(false);
   const [showcaseAutoplay, setShowcaseAutoplay] = useState(true);
 
   useEffect(() => {
     if (!showcaseAutoplay) return;
     const interval = setInterval(() => {
-      setShowcaseTransitioning(true);
-      setTimeout(() => {
-        setShowcaseIndex((prev) => (prev + 1) % FEATURED_HERO_AGENTS.length);
-        setShowcaseTransitioning(false);
-      }, 220);
-    }, 2800);
+      setShowcaseIndex((prev) => (prev + 1) % FEATURED_HERO_AGENTS.length);
+    }, 3200);
 
     return () => clearInterval(interval);
   }, [showcaseAutoplay, FEATURED_HERO_AGENTS.length]);
@@ -342,26 +337,16 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Side Visual Banner Card (Animated Live Swarm Cycle) */}
+            {/* Right Side Visual Banner Card (Cinematic Animated Swarm Cycle) */}
             <div>
-              <div
-                style={{
-                  background: '#121215',
-                  border: '2px solid var(--hair)',
-                  boxShadow: '8px 8px 0px 0px var(--script-green), 0 0 35px rgba(0, 255, 102, 0.15)',
-                  padding: '24px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  maxWidth: '380px',
-                  margin: '0 auto',
-                  position: 'relative'
-                }}
-              >
+              <div className="hero-showcase-card">
                 {/* Header with live pulsing dot & count */}
-                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '10px', marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
+                  <div
+                    key={`head-${currentShowcaseAgent.id}`}
+                    className="hero-text-anim"
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  >
                     <span className="pulse" style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--script-green)', display: 'inline-block' }} />
                     <span style={{ fontWeight: 800, color: 'var(--script-green)', letterSpacing: '0.04em' }}>
                       GENESIS #{String(currentShowcaseAgent.id).padStart(5, '0')}
@@ -377,44 +362,59 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* Animated NFT Box with Smooth Scale & Fade */}
-                <div
-                  style={{
-                    width: '100%',
-                    maxWidth: '260px',
-                    aspectRatio: '1',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.14) 0%, #09090b 70%)',
-                    border: '1px solid var(--hair)',
-                    marginBottom: '14px',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}
-                >
-                  <img
+                {/* Animated NFT Box with Smooth 3D Slide & Laser Scanline */}
+                <div className="hero-nft-viewport">
+                  {/* High-tech biometric laser scanline */}
+                  <div className="holo-scanline-beam" />
+
+                  {/* Silky 3D Slide Card */}
+                  <div
                     key={currentShowcaseAgent.id}
-                    src={currentShowcaseAgent.image || `/nfts/${currentShowcaseAgent.id}.svg`}
-                    alt={currentShowcaseAgent.name}
-                    style={{
-                      width: '85%',
-                      height: '85%',
-                      objectFit: 'contain',
-                      imageRendering: 'pixelated',
-                      opacity: showcaseTransitioning ? 0.2 : 1,
-                      transform: showcaseTransitioning ? 'scale(0.88)' : 'scale(1)',
-                      transition: 'opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1), transform 0.22s cubic-bezier(0.4, 0, 0.2, 1)',
-                      filter: 'drop-shadow(0 10px 16px rgba(0,0,0,0.7))'
-                    }}
-                  />
-                  <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--script-green)', color: '#000000', fontSize: '9px', fontWeight: 800, padding: '2px 6px', border: '1px solid #000' }}>
-                    {(currentShowcaseAgent.priceSol * 0.9).toFixed(3)} SOL IN VAULT
+                    className="hero-nft-card-inner animate-in"
+                  >
+                    {/* Subtle Holographic Glass Glare */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 45%, rgba(0,255,102,0.12) 100%)',
+                        pointerEvents: 'none',
+                        zIndex: 2
+                      }}
+                    />
+
+                    <img
+                      src={currentShowcaseAgent.image || `/nfts/${currentShowcaseAgent.id}.svg`}
+                      alt={currentShowcaseAgent.name}
+                      style={{
+                        width: '88%',
+                        height: '88%',
+                        objectFit: 'contain',
+                        imageRendering: 'pixelated',
+                        filter: 'drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45))',
+                        position: 'relative',
+                        zIndex: 1
+                      }}
+                    />
+
+                    {/* Solana PDA Vault Indicator Pill */}
+                    <div style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(0, 0, 0, 0.85)', color: 'var(--script-green)', fontSize: '8px', fontWeight: 800, padding: '2px 5px', border: '1px solid var(--script-green)', borderRadius: '3px', letterSpacing: '0.05em', zIndex: 3 }}>
+                      SOLANA PDA
+                    </div>
+
+                    {/* Vault Balance Pill */}
+                    <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--script-green)', color: '#000000', fontSize: '9px', fontWeight: 800, padding: '2px 6px', border: '1px solid #000', borderRadius: '3px', boxShadow: '0 2px 6px rgba(0,0,0,0.4)', zIndex: 3 }}>
+                      {(currentShowcaseAgent.priceSol * 0.9).toFixed(3)} SOL IN VAULT
+                    </div>
                   </div>
                 </div>
 
-                {/* Details Box */}
-                <div style={{ width: '100%', textAlign: 'left', background: '#18181d', border: '1px solid var(--hair)', padding: '10px 12px', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '12px' }}>
+                {/* Details Box with Smooth Slide-Up Transition */}
+                <div
+                  key={`details-${currentShowcaseAgent.id}`}
+                  className="hero-text-anim"
+                  style={{ width: '100%', textAlign: 'left', background: '#18181d', border: '1px solid var(--hair)', padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '14px', borderRadius: '4px' }}
+                >
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <span style={{ color: 'var(--dim)' }}>Role:</span>
                     <b style={{ color: '#ffffff' }}>{currentShowcaseAgent.role}</b>
@@ -429,18 +429,33 @@ export default function HomePage() {
                   </div>
                 </div>
 
+                {/* Real-time Cycle Countdown Progress Bar */}
+                <div style={{ width: '100%', height: '2px', background: 'rgba(255, 255, 255, 0.08)', marginBottom: '10px', overflow: 'hidden', borderRadius: '2px' }}>
+                  {showcaseAutoplay && (
+                    <div
+                      key={`progress-${currentShowcaseAgent.id}`}
+                      style={{
+                        height: '100%',
+                        background: 'var(--script-green)',
+                        boxShadow: '0 0 8px var(--script-green)',
+                        animation: 'cycleProgressBar 3.2s linear forwards'
+                      }}
+                    />
+                  )}
+                </div>
+
                 {/* Animation Control Bar (Autoplay Indicator & Buttons) */}
                 <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '10px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--dim)' }}>
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: showcaseAutoplay ? 'var(--script-green)' : '#71717a' }} />
-                    <span>{showcaseAutoplay ? 'AUTOPLAYING SWARM' : 'PAUSED'}</span>
+                    <span>{showcaseAutoplay ? 'LIVE AGENT SWARM' : 'PAUSED'}</span>
                   </div>
 
                   <div style={{ display: 'flex', gap: '6px' }}>
                     <button
                       type="button"
                       onClick={() => setShowcaseIndex((prev) => (prev - 1 + FEATURED_HERO_AGENTS.length) % FEATURED_HERO_AGENTS.length)}
-                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '2px 7px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px' }}
+                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px', borderRadius: '2px' }}
                       title="Previous NFT"
                     >
                       ◀
@@ -448,7 +463,7 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setShowcaseAutoplay((prev) => !prev)}
-                      style={{ background: showcaseAutoplay ? 'rgba(0, 255, 102, 0.15)' : '#18181d', color: showcaseAutoplay ? 'var(--script-green)' : '#fff', border: '1px solid var(--hair-dark)', padding: '2px 7px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 700 }}
+                      style={{ background: showcaseAutoplay ? 'rgba(0, 255, 102, 0.15)' : '#18181d', color: showcaseAutoplay ? 'var(--script-green)' : '#fff', border: '1px solid var(--hair-dark)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 700, borderRadius: '2px' }}
                       title={showcaseAutoplay ? 'Pause autoplay' : 'Play autoplay'}
                     >
                       {showcaseAutoplay ? '❚❚' : '▶'}
@@ -456,7 +471,7 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setShowcaseIndex((prev) => (prev + 1) % FEATURED_HERO_AGENTS.length)}
-                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '2px 7px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px' }}
+                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px', borderRadius: '2px' }}
                       title="Next NFT"
                     >
                       ▶
