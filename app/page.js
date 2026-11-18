@@ -169,16 +169,10 @@ export default function HomePage() {
       setIsMinting(false);
       setMintStatus(`Success! Rare #${newId} activated. 90% (${deposited} SOL) deposited into Agent PDA.`);
       setMintCelebration({
-        id: newId,
+        ...agentMeta,
         quantity,
-        name: agentMeta.name,
-        role: agentMeta.role,
-        archetype: agentMeta.archetype,
-        pdaVault: agentMeta.pdaVault,
         funding: `${deposited} SOL`,
-        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`,
-        image: agentMeta.image,
-        visualFilter: agentMeta.visualFilter
+        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`
       });
     }, 1800);
   };
@@ -206,16 +200,10 @@ export default function HomePage() {
       setMintStatus(`Success! Rare #${agent.id} activated. 90% (${deposited} SOL) deposited into Agent PDA.`);
       setInspectedAgentModal(null);
       setMintCelebration({
-        id: agent.id,
+        ...agent,
         quantity: 1,
-        name: agent.name,
-        role: agent.role,
-        archetype: agent.archetype,
-        pdaVault: agent.pdaVault,
         funding: `${deposited} SOL`,
-        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`,
-        image: agent.image,
-        visualFilter: agent.visualFilter
+        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`
       });
     }, 1800);
   };
@@ -1120,7 +1108,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px' }}>
+            <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <a
                 href={`https://solscan.io/account/${treasuryWallet}`}
                 target="_blank"
@@ -1132,11 +1120,19 @@ export default function HomePage() {
               </a>
               <button
                 type="button"
+                onClick={() => handleDownloadManifest(mintCelebration)}
+                className="btn-secondary"
+                style={{ padding: '10px 14px', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair)', cursor: 'pointer' }}
+              >
+                Download Metaplex JSON ↓
+              </button>
+              <button
+                type="button"
                 onClick={() => setMintCelebration(null)}
                 className="btn-secondary"
-                style={{ flex: 1, padding: '10px 0', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair)' }}
+                style={{ padding: '10px 16px', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair)', cursor: 'pointer' }}
               >
-                Close & Explore
+                Close
               </button>
             </div>
           </div>
@@ -1248,11 +1244,11 @@ export default function HomePage() {
               </button>
               <button
                 type="button"
-                onClick={() => handleDownloadManifest(inspectedAgentModal)}
+                onClick={() => setInspectedAgentModal(null)}
                 className="btn-secondary"
-                style={{ padding: '11px 18px', fontSize: '12px', background: '#18181d', color: '#ffffff' }}
+                style={{ padding: '11px 18px', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair-dark)', cursor: 'pointer' }}
               >
-                Download Metaplex JSON
+                Close
               </button>
             </div>
           </div>

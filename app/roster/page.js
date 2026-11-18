@@ -33,16 +33,10 @@ export default function RosterPage() {
       setIsMinting(false);
       setInspectedAgent(null);
       setMintCelebration({
-        id: agent.id,
+        ...agent,
         quantity: 1,
-        name: agent.name,
-        role: agent.role,
-        archetype: agent.archetype,
-        pdaVault: agent.pdaVault,
         funding: `${deposited} SOL`,
-        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`,
-        image: agent.image,
-        visualFilter: agent.visualFilter
+        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`
       });
     }, 1800);
   };
