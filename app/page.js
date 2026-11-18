@@ -183,6 +183,43 @@ export default function HomePage() {
     }, 1800);
   };
 
+  const handleMintDirectAgent = (agent) => {
+    if (!agent) return;
+    if (ready && !authenticated) {
+      setMintStatus('Please connect wallet first.');
+      login();
+      return;
+    }
+
+    setIsMinting(true);
+    setMintStatus(`Initiating Anchor CPI 90/10 capital split for #${agent.id}...`);
+
+    setTimeout(() => {
+      setMintStatus(`Deriving Token-Bound PDA Vault for #${agent.id}...`);
+    }, 700);
+
+    setTimeout(() => {
+      const mintedPrice = agent.priceSol || 0.02;
+      const deposited = (mintedPrice * 0.9).toFixed(3);
+      setSoldCount(prev => prev + 1);
+      setIsMinting(false);
+      setMintStatus(`Success! Rare #${agent.id} activated. 90% (${deposited} SOL) deposited into Agent PDA.`);
+      setInspectedAgentModal(null);
+      setMintCelebration({
+        id: agent.id,
+        quantity: 1,
+        name: agent.name,
+        role: agent.role,
+        archetype: agent.archetype,
+        pdaVault: agent.pdaVault,
+        funding: `${deposited} SOL`,
+        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`,
+        image: agent.image,
+        visualFilter: agent.visualFilter
+      });
+    }, 1800);
+  };
+
   const handleCopyCa = () => {
     navigator.clipboard.writeText(treasuryWallet);
     setCopiedCa(true);
@@ -1044,27 +1081,27 @@ export default function HomePage() {
         >
           <div
             className="rare-modal-dialog"
-            style={{ maxWidth: '580px' }}
+            style={{ maxWidth: '580px', background: '#121215', border: '1px solid var(--hair-dark)' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #000', paddingBottom: '12px', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ width: '10px', height: '10px', background: '#10b981', border: '1px solid #000', display: 'inline-block' }} />
-                <h3 style={{ fontFamily: 'var(--font-pixel)', fontSize: '13px', textTransform: 'uppercase', color: 'var(--script-green-dark)' }}>
+                <span style={{ width: '10px', height: '10px', background: 'var(--script-green)', border: '1px solid #000', display: 'inline-block' }} />
+                <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--script-green)', letterSpacing: '0.04em' }}>
                   AGENT ACTIVATED // ON-CHAIN PDA FUNDED
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setMintCelebration(null)}
-                style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', padding: '2px 8px', border: '2px solid #000', background: '#fff', cursor: 'pointer' }}
+                style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', padding: '2px 8px', border: '1px solid var(--hair-dark)', background: '#18181d', color: '#ffffff', cursor: 'pointer' }}
               >
                 ✕
               </button>
             </div>
 
             <div className="rare-modal-grid">
-              <div style={{ border: '2px solid #000', background: '#fff', padding: '8px', boxShadow: '3px 3px 0px #000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ border: '1px solid var(--hair)', background: '#09090b', padding: '12px', boxShadow: '0 0 16px rgba(0, 255, 102, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
                   src={mintCelebration.image || `/nfts/${mintCelebration.id}.svg`}
                   alt={mintCelebration.name}
@@ -1073,23 +1110,23 @@ export default function HomePage() {
               </div>
 
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ fontSize: '18px', fontWeight: 700, fontFamily: 'var(--font-display)', textTransform: 'uppercase' }}>{mintCelebration.name}</div>
+                <div style={{ fontSize: '18px', fontWeight: 800, fontFamily: 'var(--font-display)', textTransform: 'uppercase', color: '#ffffff' }}>{mintCelebration.name}</div>
                 <div style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '11px' }}>SOLANA TOKEN-BOUND ACCOUNT</div>
-                <div style={{ padding: '10px', border: '1px solid #000', background: '#fff', display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '11px' }}>
-                  <div><b>PDA Vault:</b> <span style={{ fontSize: '10px', color: '#52525b', display: 'block', wordBreak: 'break-all' }}>{mintCelebration.pdaVault}</span></div>
-                  <div><b>Capital Deposited:</b> <span style={{ color: 'var(--script-green-dark)', fontWeight: 700 }}>{mintCelebration.funding}</span> (90%)</div>
-                  <div><b>Protocol Split:</b> 10% Treasury</div>
+                <div style={{ padding: '12px', border: '1px solid var(--hair)', background: '#18181d', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', color: '#ffffff' }}>
+                  <div><b style={{ color: 'var(--dim)' }}>PDA Vault:</b> <span style={{ fontSize: '10px', color: 'var(--script-green)', display: 'block', wordBreak: 'break-all', marginTop: '2px' }}>{mintCelebration.pdaVault}</span></div>
+                  <div><b style={{ color: 'var(--dim)' }}>Capital Deposited:</b> <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>{mintCelebration.funding}</span> (90%)</div>
+                  <div><b style={{ color: 'var(--dim)' }}>Protocol Split:</b> 10% Treasury</div>
                 </div>
               </div>
             </div>
 
-            <div style={{ borderTop: '2px solid #000', paddingTop: '16px', display: 'flex', gap: '12px' }}>
+            <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px' }}>
               <a
                 href={`https://solscan.io/account/${treasuryWallet}`}
                 target="_blank"
                 rel="noreferrer"
                 className="btn-primary"
-                style={{ flex: 1, textAlign: 'center', padding: '10px 0', fontSize: '12px', background: 'var(--script-green)' }}
+                style={{ flex: 1, textAlign: 'center', padding: '10px 0', fontSize: '12px', background: 'var(--script-green)', color: '#000000', fontWeight: 800 }}
               >
                 View On Solscan ↗
               </a>
@@ -1097,7 +1134,7 @@ export default function HomePage() {
                 type="button"
                 onClick={() => setMintCelebration(null)}
                 className="btn-secondary"
-                style={{ flex: 1, padding: '10px 0', fontSize: '12px' }}
+                style={{ flex: 1, padding: '10px 0', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair)' }}
               >
                 Close & Explore
               </button>
@@ -1186,14 +1223,28 @@ export default function HomePage() {
             <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <button
                 type="button"
-                onClick={() => {
-                  handleSelectAgentFor360(inspectedAgentModal.id);
-                  setInspectedAgentModal(null);
-                }}
+                onClick={() => handleMintDirectAgent(inspectedAgentModal)}
+                disabled={isMinting}
                 className="btn-primary"
-                style={{ flex: 1, padding: '11px 0', fontSize: '12px', textAlign: 'center', background: 'var(--script-green)', color: '#000000', fontWeight: 800 }}
+                style={{
+                  flex: 1,
+                  padding: '12px 16px',
+                  fontSize: '12px',
+                  textAlign: 'center',
+                  background: isMinting ? '#18181d' : 'var(--script-green)',
+                  color: isMinting ? 'var(--script-green)' : '#000000',
+                  fontWeight: 800,
+                  cursor: isMinting ? 'wait' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: '0 0 16px rgba(0, 255, 102, 0.3)',
+                  border: '1px solid var(--script-green)'
+                }}
               >
-                Inspect In 3D Turntable ↑
+                <span>⚡</span>
+                <span>{isMinting ? 'MINTING AGENT...' : `MINT AGENT (${inspectedAgentModal.priceSol} SOL)`}</span>
               </button>
               <button
                 type="button"

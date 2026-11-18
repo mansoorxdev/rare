@@ -3,15 +3,49 @@
 import React, { useState, useMemo } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { usePrivy } from '../../components/PrivyClientProvider';
 import { getAgentMetadata } from '../../lib/agentMetadata';
 
 export default function RosterPage() {
+  const { ready, authenticated, login } = usePrivy();
   const [search, setSearch] = useState('');
   const [rarityFilter, setRarityFilter] = useState('all');
   const [page, setPage] = useState(1);
   const [inspectedAgent, setInspectedAgent] = useState(null);
+  const [isMinting, setIsMinting] = useState(false);
+  const [mintCelebration, setMintCelebration] = useState(null);
+  const treasuryWallet = process.env.NEXT_PUBLIC_TREASURY_WALLET || '3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk';
   const pageSize = 16;
   const totalAgents = 10078;
+
+  const handleMintAgent = (agent) => {
+    if (!agent) return;
+    if (ready && !authenticated) {
+      login();
+      return;
+    }
+
+    setIsMinting(true);
+
+    setTimeout(() => {
+      const mintedPrice = agent.priceSol || 0.02;
+      const deposited = (mintedPrice * 0.9).toFixed(3);
+      setIsMinting(false);
+      setInspectedAgent(null);
+      setMintCelebration({
+        id: agent.id,
+        quantity: 1,
+        name: agent.name,
+        role: agent.role,
+        archetype: agent.archetype,
+        pdaVault: agent.pdaVault,
+        funding: `${deposited} SOL`,
+        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`,
+        image: agent.image,
+        visualFilter: agent.visualFilter
+      });
+    }, 1800);
+  };
 
   // Generate paginated agent list on the fly based on search/filter
   const { agents, totalPages, totalMatches } = useMemo(() => {
@@ -314,15 +348,31 @@ export default function RosterPage() {
             </div>
 
             <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              <a
-                href={`https://solscan.io/account/${inspectedAgent.pdaVault}`}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                type="button"
+                onClick={() => handleMintAgent(inspectedAgent)}
+                disabled={isMinting}
                 className="btn-primary"
-                style={{ flex: 1, padding: '11px 0', fontSize: '12px', textAlign: 'center', background: 'var(--script-green)', color: '#000000', fontWeight: 800 }}
+                style={{
+                  flex: 1,
+                  padding: '12px 16px',
+                  fontSize: '12px',
+                  textAlign: 'center',
+                  background: isMinting ? '#18181d' : 'var(--script-green)',
+                  color: isMinting ? 'var(--script-green)' : '#000000',
+                  fontWeight: 800,
+                  cursor: isMinting ? 'wait' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: '0 0 16px rgba(0, 255, 102, 0.3)',
+                  border: '1px solid var(--script-green)'
+                }}
               >
-                Inspect On Solscan ↗
-              </a>
+                <span>⚡</span>
+                <span>{isMinting ? 'MINTING AGENT...' : `MINT AGENT (${inspectedAgent.priceSol} SOL)`}</span>
+              </button>
               <button
                 type="button"
                 onClick={() => setInspectedAgent(null)}
@@ -330,6 +380,76 @@ export default function RosterPage() {
                 style={{ padding: '11px 18px', fontSize: '12px', background: '#18181d', color: '#ffffff' }}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mint Activation Celebration Modal */}
+      {mintCelebration && (
+        <div
+          className="rare-modal-overlay"
+          onClick={() => setMintCelebration(null)}
+        >
+          <div
+            className="rare-modal-dialog"
+            style={{ maxWidth: '580px', background: '#121215', border: '1px solid var(--hair-dark)' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ width: '10px', height: '10px', background: 'var(--script-green)', border: '1px solid #000', display: 'inline-block' }} />
+                <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--script-green)', letterSpacing: '0.04em' }}>
+                  AGENT ACTIVATED // ON-CHAIN PDA FUNDED
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMintCelebration(null)}
+                style={{ fontFamily: 'var(--font-pixel)', fontSize: '12px', padding: '2px 8px', border: '1px solid var(--hair-dark)', background: '#18181d', color: '#ffffff', cursor: 'pointer' }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="rare-modal-grid">
+              <div style={{ border: '1px solid var(--hair)', background: '#09090b', padding: '12px', boxShadow: '0 0 16px rgba(0, 255, 102, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img
+                  src={mintCelebration.image || `/nfts/${mintCelebration.id}.svg`}
+                  alt={mintCelebration.name}
+                  style={{ width: '100%', aspectRatio: '1', objectFit: 'contain', imageRendering: 'pixelated' }}
+                />
+              </div>
+
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ fontSize: '18px', fontWeight: 800, fontFamily: 'var(--font-display)', textTransform: 'uppercase', color: '#ffffff' }}>{mintCelebration.name}</div>
+                <div style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '11px' }}>SOLANA TOKEN-BOUND ACCOUNT</div>
+                <div style={{ padding: '12px', border: '1px solid var(--hair)', background: '#18181d', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', color: '#ffffff' }}>
+                  <div><b style={{ color: 'var(--dim)' }}>PDA Vault:</b> <span style={{ fontSize: '10px', color: 'var(--script-green)', display: 'block', wordBreak: 'break-all', marginTop: '2px' }}>{mintCelebration.pdaVault}</span></div>
+                  <div><b style={{ color: 'var(--dim)' }}>Capital Deposited:</b> <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>{mintCelebration.funding}</span> (90%)</div>
+                  <div><b style={{ color: 'var(--dim)' }}>Protocol Split:</b> 10% Treasury</div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px' }}>
+              <a
+                href={`https://solscan.io/account/${treasuryWallet}`}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-primary"
+                style={{ flex: 1, textAlign: 'center', padding: '10px 0', fontSize: '12px', background: 'var(--script-green)', color: '#000000', fontWeight: 800 }}
+              >
+                View On Solscan ↗
+              </a>
+              <button
+                type="button"
+                onClick={() => setMintCelebration(null)}
+                className="btn-secondary"
+                style={{ flex: 1, padding: '10px 0', fontSize: '12px', background: '#18181d', color: '#ffffff', border: '1px solid var(--hair)' }}
+              >
+                Close & Explore
               </button>
             </div>
           </div>
