@@ -40,6 +40,13 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       </head>
       <body>
+        <div className="cyber-bg-viewport" aria-hidden="true">
+          <div className="cyber-grid-plane" />
+          <div className="cyber-orb cyber-orb-1" />
+          <div className="cyber-orb cyber-orb-2" />
+          <div className="cyber-orb cyber-orb-3" />
+          <div className="cyber-scanline-ambient" />
+        </div>
         <PrivyClientProvider>
           {children}
         </PrivyClientProvider>

@@ -19,8 +19,8 @@ export default function PreviewPage() {
   return (
     <div style={{ background: '#0a0e17', minHeight: '100vh', color: '#fff', fontFamily: 'monospace', padding: '24px' }}>
       <header style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h1 style={{ color: '#00ff66', fontSize: '2rem', marginBottom: '8px', textShadow: '0 0 16px rgba(0,255,102,0.4)' }}>
-          👾 10,078 RARE Pixel NFTs Explorer
+        <h1 style={{ color: '#00ff66', fontSize: '2rem', marginBottom: '8px', textShadow: '0 0 16px rgba(0,255,102,0.4)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          10,078 RARE Pixel NFTs Explorer
         </h1>
         <p style={{ color: '#94a3b8', fontSize: '0.95rem', maxWidth: '750px', margin: '0 auto' }}>
           All 10,078 Unique 24×24 Vector Pixel Art NFTs are generated & live! Native razor-sharp SVGs with Solana Token-Bound PDA Wallets.
@@ -148,7 +148,7 @@ export default function PreviewPage() {
       </div>
 
       <div style={{ maxWidth: '850px', margin: '48px auto 0', background: '#111827', border: '1px solid #00ff6633', borderRadius: '12px', padding: '20px' }}>
-        <h3 style={{ color: '#00ff66', marginBottom: '10px' }}>📦 Collection Stats</h3>
+        <h3 style={{ color: '#00ff66', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Collection Stats</h3>
         <p style={{ color: '#cbd5e1', fontSize: '0.85rem', lineHeight: '1.6' }}>
           • Total Generated: <strong>10,078 / 10,078</strong> (100% Unique, 0 Duplicates)<br />
           • Format: Native 24×24 Vector SVG (Zero blur, infinite resolution)<br />

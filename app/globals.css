@@ -57,6 +57,143 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  position: relative;
+}
+
+/* ==========================================================================
+   CYBERPUNK AMBIENT BACKGROUND ANIMATION
+   ========================================================================== */
+.cyber-bg-viewport {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  background-color: #09090b;
+}
+
+/* Moving perspective cyber grid */
+.cyber-grid-plane {
+  position: absolute;
+  inset: -80px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 255, 102, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 102, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: cyberGridFlow 28s linear infinite;
+  mask-image: radial-gradient(circle at 50% 30%, black 45%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, black 45%, transparent 85%);
+}
+
+@keyframes cyberGridFlow {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(48px);
+  }
+}
+
+/* Atmospheric Glowing Neon Nebulae / Floating Orbs */
+.cyber-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(85px);
+  opacity: 0.5;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.cyber-orb-1 {
+  top: -10%;
+  left: 10%;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(0, 255, 102, 0.18) 0%, rgba(0, 204, 85, 0.05) 50%, transparent 70%);
+  animation: orbFloat1 18s ease-in-out infinite alternate;
+}
+
+.cyber-orb-2 {
+  top: 35%;
+  right: -5%;
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.14) 0%, rgba(16, 185, 129, 0.04) 50%, transparent 70%);
+  animation: orbFloat2 24s ease-in-out infinite alternate;
+}
+
+.cyber-orb-3 {
+  bottom: -5%;
+  left: 25%;
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle, rgba(0, 170, 68, 0.12) 0%, rgba(0, 255, 102, 0.03) 50%, transparent 70%);
+  animation: orbFloat3 22s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(50px, 40px) scale(1.15);
+  }
+  100% {
+    transform: translate(-30px, 60px) scale(0.95);
+  }
+}
+
+@keyframes orbFloat2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-60px, -40px) scale(1.18);
+  }
+  100% {
+    transform: translate(-30px, 35px) scale(0.92);
+  }
+}
+
+@keyframes orbFloat3 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(45px, -50px) scale(1.1);
+  }
+  100% {
+    transform: translate(20px, 30px) scale(1);
+  }
+}
+
+/* Subtle moving horizontal laser scanline */
+.cyber-scanline-ambient {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 255, 102, 0.3) 50%, transparent 100%);
+  animation: ambientScanline 12s ease-in-out infinite;
+  opacity: 0.45;
+}
+
+@keyframes ambientScanline {
+  0% {
+    top: -5%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
 }
 
 ::selection {

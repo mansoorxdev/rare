@@ -46,9 +46,12 @@ export default function LadderPage() {
         {/* Interactive Capital Split Calculator */}
         <div style={{ background: '#121215', border: '2px solid var(--hair)', boxShadow: '6px 6px 0px 0px var(--script-green)', padding: '24px', marginBottom: '40px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
-              ⚡ Interactive Capital Routing Calculator
-            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="var(--script-green)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
+                Interactive Capital Routing Calculator
+              </h3>
+            </div>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', background: 'var(--script-green)', color: '#000000', padding: '2px 8px', fontWeight: 800 }}>
               BAND 1 RATE: 0.02 SOL / AGENT
             </span>
@@ -164,18 +167,24 @@ export default function LadderPage() {
         {/* Architecture Specs Callout */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
           <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '20px', boxShadow: '4px 4px 0px #000' }}>
-            <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', color: '#ffffff' }}>
-              🔒 Why 90% Capital Routing?
-            </h4>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
+                Why 90% Capital Routing?
+              </h4>
+            </div>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--dim)', lineHeight: 1.6 }}>
               Unlike traditional NFT collections where mint funds leave the ecosystem into team wallets, RARE deposits 90% directly into the newly minted agent&apos;s PDA vault. The NFT itself holds the capital, serving as the agent&apos;s autonomous trading bankroll.
             </p>
           </div>
 
           <div style={{ background: '#121215', border: '2px solid var(--hair)', padding: '20px', boxShadow: '4px 4px 0px #000' }}>
-            <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', color: '#ffffff' }}>
-              🔄 Secondary Transfer Integrity
-            </h4>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
+                Secondary Transfer Integrity
+              </h4>
+            </div>
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--dim)', lineHeight: 1.6 }}>
               Because the PDA wallet is cryptographically bound to the NFT token account via Solana Anchor CPI, transferring the NFT on Magic Eden or Tensor automatically transfers ownership and custody of the underlying PDA capital and accrued profits.
             </p>

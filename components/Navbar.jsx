@@ -8,6 +8,7 @@ import { usePrivy } from './PrivyClientProvider';
 export default function Navbar() {
   const pathname = usePathname();
   const { authenticated, user, login, logout } = usePrivy();
+  const walletAddress = user?.wallet?.address || user?.wallets?.[0]?.address;
 
   const navLinks = [
     { label: 'Home', href: '/' },
@@ -69,8 +70,8 @@ export default function Navbar() {
             onClick={() => (authenticated ? logout() : login())}
             className="btn-primary"
           >
-            {authenticated && user?.wallet?.address
-              ? `${user.wallet.address.slice(0, 4)}...${user.wallet.address.slice(-4)}`
+            {authenticated && walletAddress
+              ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
               : 'Connect Wallet'}
           </button>
         </div>

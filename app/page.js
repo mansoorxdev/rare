@@ -480,26 +480,30 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setShowcaseIndex((prev) => (prev - 1 + FEATURED_HERO_AGENTS.length) % FEATURED_HERO_AGENTS.length)}
-                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px', borderRadius: '2px' }}
+                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '4px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' }}
                       title="Previous NFT"
                     >
-                      ◀
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="15 18 9 12 15 6"/></svg>
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowcaseAutoplay((prev) => !prev)}
-                      style={{ background: showcaseAutoplay ? 'rgba(0, 255, 102, 0.15)' : '#18181d', color: showcaseAutoplay ? 'var(--script-green)' : '#fff', border: '1px solid var(--hair-dark)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 700, borderRadius: '2px' }}
+                      style={{ background: showcaseAutoplay ? 'rgba(0, 255, 102, 0.15)' : '#18181d', color: showcaseAutoplay ? 'var(--script-green)' : '#fff', border: '1px solid var(--hair-dark)', padding: '4px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' }}
                       title={showcaseAutoplay ? 'Pause autoplay' : 'Play autoplay'}
                     >
-                      {showcaseAutoplay ? '❚❚' : '▶'}
+                      {showcaseAutoplay ? (
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                      ) : (
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      )}
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowcaseIndex((prev) => (prev + 1) % FEATURED_HERO_AGENTS.length)}
-                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '3px 8px', cursor: 'pointer', fontFamily: 'var(--font-mono)', fontSize: '10px', borderRadius: '2px' }}
+                      style={{ background: '#18181d', color: '#fff', border: '1px solid var(--hair-dark)', padding: '4px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '2px' }}
                       title="Next NFT"
                     >
-                      ▶
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="9 18 15 12 9 6"/></svg>
                     </button>
                   </div>
                 </div>
@@ -510,8 +514,8 @@ export default function HomePage() {
           {/* 3 Value Pillars */}
           <div className="protocol-hero-pillars">
             <div className="protocol-hero-pillar">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <span style={{ fontSize: '18px' }}>🔒</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>90% Token-Bound PDA</h3>
               </div>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
@@ -520,8 +524,8 @@ export default function HomePage() {
             </div>
 
             <div className="protocol-hero-pillar">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <span style={{ fontSize: '18px' }}>⚡</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--script-green)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>Anchor CPI Architecture</h3>
               </div>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
@@ -530,8 +534,8 @@ export default function HomePage() {
             </div>
 
             <div className="protocol-hero-pillar">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                <span style={{ fontSize: '18px' }}>📈</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
                 <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>10-Tier Bonding Curve</h3>
               </div>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
@@ -648,7 +652,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="buy-split-note">
-                  <span>✦</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--script-green)"><circle cx="12" cy="12" r="4"/></svg>
                   <span><b>90% directly deposited into Agent PDA Vault</b> • 10% to Protocol Treasury • Wallet follows the NFT on secondary transfer.</span>
                 </div>
 
@@ -1239,7 +1243,7 @@ export default function HomePage() {
                   border: '1px solid var(--script-green)'
                 }}
               >
-                <span>⚡</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 <span>{isMinting ? 'MINTING AGENT...' : `MINT AGENT (${inspectedAgentModal.priceSol} SOL)`}</span>
               </button>
               <button
