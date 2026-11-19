@@ -32,21 +32,14 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,700&family=Fragment+Mono:ital@0;1&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"
           rel="stylesheet"
         />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
         <link rel="icon" type="image/png" sizes="64x64" href="/favicon-dark.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       </head>
-      <body>
-        <div className="cyber-bg-viewport" aria-hidden="true">
-          <div className="cyber-grid-plane" />
-          <div className="cyber-orb cyber-orb-1" />
-          <div className="cyber-orb cyber-orb-2" />
-          <div className="cyber-orb cyber-orb-3" />
-          <div className="cyber-scanline-ambient" />
-        </div>
+      <body className="bg-[#050505] text-[#f6efe2] antialiased selection:bg-[#f6efe2] selection:text-[#050505]">
         <PrivyClientProvider>
           {children}
         </PrivyClientProvider>

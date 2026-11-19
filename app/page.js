@@ -1,1088 +1,837 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePrivy } from '../components/PrivyClientProvider';
-import Agent360Viewer from '../components/Agent360Viewer';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ZauberHeroCanvas from '../components/ZauberHeroCanvas';
+import { usePrivy } from '../components/PrivyClientProvider';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
 export default function HomePage() {
   const { ready, authenticated, user, login, logout } = usePrivy();
-  const [quantity, setQuantity] = useState(1);
-  const [rareId, setRareId] = useState('');
+
+  // Minting & Stats State
   const [soldCount, setSoldCount] = useState(142);
-  const [mintStatus, setMintStatus] = useState('');
   const [isMinting, setIsMinting] = useState(false);
-  const [copiedCa, setCopiedCa] = useState(false);
+  const [mintStatus, setMintStatus] = useState('');
+  const [inspectedAgent, setInspectedAgent] = useState(null);
   const [mintCelebration, setMintCelebration] = useState(null);
-  const [inspectedAgentModal, setInspectedAgentModal] = useState(null);
-  const treasuryWallet = process.env.NEXT_PUBLIC_TREASURY_WALLET || '3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk';
 
-  // Dynamic active agent based on selection or current next unsold agent
-  const activeAgentId = rareId ? parseInt(rareId, 10) : soldCount + 1;
-  const activeAgent = getAgentMetadata(activeAgentId);
-  const activePrice = activeAgent.priceSol;
+  // Active Next Agent to Mint
+  const nextAgentId = soldCount + 1;
+  const nextAgent = getAgentMetadata(nextAgentId);
+  const activePrice = nextAgent.priceSol;
 
-  // Terminal Console State
-  const [consoleOpen, setConsoleOpen] = useState(false);
-  const [terminalLines, setTerminalLines] = useState([
-    { type: 'green', text: '> RARE PROTOCOL ENGINE [SOLANA MAINNET-BETA]' },
-    { type: 'info', text: '> 10,078 AUTONOMOUS TOKEN-BOUND AGENTS INITIALIZED.' },
-    { type: 'info', text: '> 90% CAPITAL ROUTED TO ON-CHAIN PDA VAULTS VIA ANCHOR CPI.' },
-    { type: 'info', text: "> TYPE 'help', 'inspect <id>', OR 'split' FOR PROTOCOL TELEMETRY." }
-  ]);
-  const [commandInput, setCommandInput] = useState('');
-  const terminalEndRef = useRef(null);
+  // Hero Tabs State: Cast, Guard, Target, Ladder
+  const [heroTab, setHeroTab] = useState('cast');
+  const heroTabLines = {
+    cast: `Mint Agent #${String(nextAgentId).padStart(5, '0')} with ${activePrice.toFixed(3)} SOL. 90% capital routed to PDA vault.`,
+    guard: 'Auto stop-loss trigger at -15% drawdown via Anchor CPI route to Jupiter.',
+    target: 'Auto take-profit at +35% gain; rebalance liquidity to SOL in token-bound PDA.',
+    ladder: 'Genesis Tier 1 (1–1,000) at 0.02 SOL → Tier 10 (10,000–10,078) at 10.24 SOL.'
+  };
 
-  // Automatic Cycling Showcase for Hero Visual Section
-  const FEATURED_HERO_AGENTS = [143, 1, 15, 27, 42, 69, 88, 120, 256, 333, 512, 777, 888, 1008];
-  const [showcaseIndex, setShowcaseIndex] = useState(0);
-  const [showcaseAutoplay, setShowcaseAutoplay] = useState(true);
+  // Section 2 IDE State: Code tabs and Human/Machine toggle
+  const [codeTab, setCodeTab] = useState('json');
+  const [humanView, setHumanView] = useState(true);
 
+  // Section 3 Stepper & Transcript State
+  const [transcriptTab, setTranscriptTab] = useState(0);
+  const [transcriptPaused, setTranscriptPaused] = useState(false);
+
+  // Featured 4 Showcase Agents for Section 4
+  const featuredAgentIds = [42, 128, 1420, 3391];
+  const featuredAgents = featuredAgentIds.map((id) => getAgentMetadata(id));
+
+  // Transcript timer cycle
   useEffect(() => {
-    if (!showcaseAutoplay) return;
+    if (transcriptPaused) return;
     const interval = setInterval(() => {
-      setShowcaseIndex((prev) => (prev + 1) % FEATURED_HERO_AGENTS.length);
-    }, 3200);
-
+      setTranscriptTab((prev) => (prev + 1) % 4);
+    }, 4000);
     return () => clearInterval(interval);
-  }, [showcaseAutoplay, FEATURED_HERO_AGENTS.length]);
+  }, [transcriptPaused]);
 
-  const currentShowcaseId = FEATURED_HERO_AGENTS[showcaseIndex];
-  const currentShowcaseAgent = getAgentMetadata(currentShowcaseId);
-
-  // 10,078 Agent Explorer / Roster State
-  const [explorerAgents, setExplorerAgents] = useState([]);
-  const [explorerSearch, setExplorerSearch] = useState('');
-  const [explorerRole, setExplorerRole] = useState('all');
-  const [explorerPage, setExplorerPage] = useState(1);
-  const [explorerTotalPages, setExplorerTotalPages] = useState(630);
-  const [explorerTotalCount, setExplorerTotalCount] = useState(10078);
-  const [explorerLoading, setExplorerLoading] = useState(false);
-
-  const fetchExplorerAgents = async (page = 1, search = '', role = 'all') => {
-    setExplorerLoading(true);
-    try {
-      const limit = 16;
-      const offset = (page - 1) * limit;
-      const params = new URLSearchParams({
-        limit: String(limit),
-        offset: String(offset),
-        search: search.trim(),
-        role: role === 'all' ? '' : role
-      });
-      const res = await fetch(`/api/agents?${params.toString()}`);
-      const data = await res.json();
-      if (data.success) {
-        setExplorerAgents(data.agents || []);
-        setExplorerPage(data.page || page);
-        setExplorerTotalPages(data.totalPages || 1);
-        setExplorerTotalCount(data.filteredCount ?? data.totalCount);
-      }
-    } catch (err) {
-      console.error('Explorer fetch error:', err);
-    } finally {
-      setExplorerLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchExplorerAgents(explorerPage, explorerSearch, explorerRole);
-  }, [explorerPage, explorerRole]);
-
-  const handleSearchSubmit = (e) => {
-    if (e) e.preventDefault();
-    setExplorerPage(1);
-    fetchExplorerAgents(1, explorerSearch, explorerRole);
-  };
-
-  const handleRoleFilterChange = (role) => {
-    setExplorerRole(role);
-    setExplorerPage(1);
-  };
-
-  const handleSelectAgentFor360 = (id) => {
-    setRareId(String(id));
-    const heroEl = document.getElementById('mint-engine') || document.getElementById('home');
-    if (heroEl) {
-      heroEl.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const scrollToSection = (e, id) => {
-    if (e) e.preventDefault();
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [terminalLines]);
-
-  const handleMinus = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
-  };
-
-  const handlePlus = () => {
-    if (quantity < 10) setQuantity(quantity + 1);
-  };
-
-  const handleAnyUnsold = () => {
-    if (soldCount >= 10078) {
-      setMintStatus('All 10,078 Genesis Agents Minted & Active on Solana!');
-      return;
-    }
-    const currentNum = parseInt(rareId, 10);
-    const availableCount = 10078 - soldCount;
-    let rand = Math.floor(Math.random() * availableCount) + soldCount + 1;
-    if (availableCount > 1 && rand === currentNum) {
-      rand = rand >= 10078 ? soldCount + 1 : rand + 1;
-    }
-    setRareId(String(rand));
-    setMintStatus(`Targeting Unsold Genesis Rare #${rand}`);
-  };
-
-  const handleMint = async () => {
+  // Mint Handler
+  const handleMintAction = (agentToMint = nextAgent) => {
     if (ready && !authenticated) {
-      setMintStatus('Please connect wallet first.');
+      setMintStatus('Please connect your Solana wallet with Privy.');
       login();
       return;
     }
 
     setIsMinting(true);
-    setMintStatus('Initiating Anchor CPI 90/10 capital split...');
+    setMintStatus(`Initiating Anchor CPI 90/10 split for Agent #${agentToMint.id}...`);
 
     setTimeout(() => {
-      setMintStatus('Deriving Agent Token-Bound PDA Vault on Solana...');
-    }, 700);
+      setMintStatus(`Deriving Token-Bound PDA: ${agentToMint.pdaVault}...`);
+    }, 800);
 
     setTimeout(() => {
-      const newId = rareId ? parseInt(rareId, 10) : soldCount + 1;
-      const agentMeta = getAgentMetadata(newId);
-      const mintedPrice = agentMeta.priceSol;
-      const deposited = (mintedPrice * 0.9 * quantity).toFixed(3);
-      setSoldCount(prev => prev + quantity);
+      const mintedPrice = agentToMint.priceSol || 0.02;
+      const deposited = (mintedPrice * 0.9).toFixed(4);
+      setSoldCount((prev) => prev + 1);
       setIsMinting(false);
-      setMintStatus(`Success! Rare #${newId} activated. 90% (${deposited} SOL) deposited into Agent PDA.`);
+      setMintStatus(`Success! Agent #${agentToMint.id} activated.`);
+      setInspectedAgent(null);
       setMintCelebration({
-        ...agentMeta,
-        quantity,
-        funding: `${deposited} SOL`,
-        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`
+        ...agentToMint,
+        deposited,
+        txSignature: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`
       });
-    }, 1800);
+    }, 2000);
   };
 
-  const handleMintDirectAgent = (agent) => {
-    if (!agent) return;
-    if (ready && !authenticated) {
-      setMintStatus('Please connect wallet first.');
-      login();
-      return;
-    }
-
-    setIsMinting(true);
-    setMintStatus(`Initiating Anchor CPI 90/10 capital split for #${agent.id}...`);
-
-    setTimeout(() => {
-      setMintStatus(`Deriving Token-Bound PDA Vault for #${agent.id}...`);
-    }, 700);
-
-    setTimeout(() => {
-      const mintedPrice = agent.priceSol || 0.02;
-      const deposited = (mintedPrice * 0.9).toFixed(3);
-      setSoldCount(prev => prev + 1);
-      setIsMinting(false);
-      setMintStatus(`Success! Rare #${agent.id} activated. 90% (${deposited} SOL) deposited into Agent PDA.`);
-      setInspectedAgentModal(null);
-      setMintCelebration({
-        ...agent,
-        quantity: 1,
-        funding: `${deposited} SOL`,
-        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`
-      });
-    }, 1800);
-  };
-
-  const handleCopyCa = () => {
-    navigator.clipboard.writeText(treasuryWallet);
-    setCopiedCa(true);
-    setTimeout(() => setCopiedCa(false), 2000);
-  };
-
+  // Download Agent JSON Manifest
   const handleDownloadManifest = (agent) => {
     const data = {
       protocol: 'RARE Protocol ($RARE)',
       version: '1.0.0-solana',
-      cluster: 'solana-mainnet',
-      agentId: agent.id,
+      agent_id: agent.id,
       name: agent.name,
-      symbol: 'RARE',
-      role: agent.role,
       archetype: agent.archetype,
+      tier: agent.band,
+      mint_price: `${agent.priceSol} SOL`,
+      token_bound_pda: agent.pdaVault,
+      agent_wallet: agent.agentWallet,
+      anchor_cpi_split: {
+        agent_pda_vault: '90%',
+        protocol_ops: '10%'
+      },
+      personality: agent.personalityPreview,
       engine: agent.engine,
-      rarityScore: agent.rarityScore,
-      rarityTier: agent.rarityTier,
-      tokenBoundPdaVault: agent.pdaVault,
-      initialPdaFunding: agent.pdaFunding,
-      agentWallet: agent.agentWallet,
-      treasurySplit: '90% Agent PDA / 10% Protocol',
-      missionPrompt: agent.personalityPreview,
-      timestamp: new Date().toISOString(),
-      contracts: {
-        anchorProgramId: 'Rare111111111111111111111111111111111111111',
-        treasury: treasuryWallet
-      }
+      rarity: {
+        score: agent.rarityScore,
+        tier: agent.rarityTier
+      },
+      timestamp: new Date().toISOString()
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `rare-${String(agent.id).padStart(5, '0')}-tokenbound.json`;
+    a.download = `rare-agent-${String(agent.id).padStart(5, '0')}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
-  const handleTerminalSubmit = async (e) => {
-    e.preventDefault();
-    if (!commandInput.trim()) return;
-
-    const cmd = commandInput.trim();
-    setCommandInput('');
-    setTerminalLines(prev => [...prev, { type: 'input', text: `rare@sol:~$ ${cmd}` }]);
-
-    try {
-      const res = await fetch('/api/console', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command: cmd })
-      });
-      const data = await res.json();
-
-      if (cmd === 'clear') {
-        setTerminalLines([]);
-        return;
-      }
-
-      if (Array.isArray(data.output)) {
-        data.output.forEach(line => {
-          setTerminalLines(prev => [...prev, { type: data.success ? 'green' : 'amber', text: line }]);
-        });
-      }
-    } catch (err) {
-      setTerminalLines(prev => [...prev, { type: 'amber', text: `Error: ${err.message}` }]);
-    }
-  };
-
   return (
-    <>
-      {/* Global Navigation Bar */}
+    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
+      {/* Global Navbar */}
       <Navbar />
 
-      <div className="wrap">
-        {/* ============================================================ */}
-        {/* GRAND PROTOCOL HERO LANDING SECTION                          */}
-        {/* ============================================================ */}
-        <section className="protocol-hero" id="home">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', marginBottom: '20px' }}>
-            <div className="protocol-hero-badge">
-              <span className="pulse" />
-              <span>SOLANA MAINNET-BETA // 10,078 TOKEN-BOUND AUTONOMOUS AGENTS</span>
-            </div>
+      <main>
+        {/* =========================================================================
+            HERO SECTION: WebGL2 Glass Octahedron, Dynamic Laser Beam, & Ticker
+            ========================================================================= */}
+        <section className="relative isolate overflow-hidden bg-black min-h-[max(640px,100dvh)] pt-16">
+          {/* Real-time WebGL2 3D Raytraced Prism & Laser Canvas */}
+          <ZauberHeroCanvas tickerValue={`${activePrice.toFixed(3)} SOL`} />
 
-            <a
-              href="https://x.com"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-twitter-black"
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-              <span>Follow @RARE on X</span>
-            </a>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px', alignItems: 'center', marginBottom: '32px' }}>
-            <div>
-              <h1 className="protocol-hero-title">
-                THE AUTONOMOUS <span style={{ color: 'var(--script-green)', textShadow: '0 0 24px rgba(0, 170, 68, 0.25)' }}>AI AGENT SWARM</span> ON SOLANA.
+          {/* Hero Content Overlay */}
+          <div className="relative z-10 mx-auto max-w-[1280px] min-h-[calc(100dvh-64px)] px-5 md:px-6 flex flex-col justify-end pb-12 md:justify-center md:pb-20">
+            <div className="max-w-[480px]">
+              {/* Luxury Serif Title with Starburst Icon */}
+              <h1 className="text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
+                <span className="inline-flex items-center gap-[0.45em]">
+                  <svg viewBox="-284 -138 433 277" className="h-[0.88em] w-auto text-cream" aria-hidden="true" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M-283 -10 L-110 -10 Q-42 -10 -45.1 -30.9 L-75.6 -61.4 L-61.4 -75.6 L-30.9 -45.1 Q-10 -42 -10 -110 L-10 -137 L10 -137 L10 -110 Q10 -42 30.9 -45.1 L61.4 -75.6 L75.6 -61.4 L45.1 -30.9 Q42 -10 110 -10 L148 -10 L148 10 L110 10 Q42 10 45.1 30.9 L75.6 61.4 L61.4 75.6 L30.9 45.1 Q10 42 10 110 L10 138 L-10 138 L-10 110 Q-10 42 -30.9 45.1 L-61.4 75.6 L-75.6 61.4 L-45.1 30.9 Q-42 10 -110 10 L-283 10 Z M-48 0 L0 -48 L48 0 L0 48 Z"
+                    />
+                  </svg>
+                  <span className="font-serif leading-none tracking-[0.04em] font-medium">RARE</span>
+                </span>
               </h1>
-              <p className="protocol-hero-subtitle">
-                10,078 sovereign AI agents with token-bound PDA vaults. 90% of mint capital is deposited directly into each agent&apos;s on-chain wallet via Solana Anchor CPI to fund autonomous execution, trading, and arbitrage.
+
+              {/* Poetic Subheading */}
+              <p className="mt-4 text-[21px] leading-snug text-cream md:text-[25px]">
+                Trade with agents.<br />
+                <span className="text-muted">Token-bound PDA vaults you review, mint, and own.</span>
               </p>
 
-              <div className="protocol-hero-actions">
+              {/* Hero Tabs: Cast, Guard, Target, Ladder */}
+              <div role="tablist" aria-label="Agent mechanics" className="mt-6 flex gap-5 text-[13px]">
+                {(['cast', 'guard', 'target', 'ladder']).map((tab) => {
+                  const isActive = heroTab === tab;
+                  return (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => setHeroTab(tab)}
+                      className={`border-b pb-1 font-medium capitalize transition-colors ${
+                        isActive ? 'border-cream text-cream' : 'border-transparent text-dim hover:text-muted'
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Dynamic Sentence Line */}
+              <p className="mt-3 border-t border-line pt-3 font-mono text-[13px] text-cream/90 leading-relaxed min-h-[44px]">
+                {heroTabLines[heroTab]}
+              </p>
+
+              {/* Primary Action Buttons */}
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleMintAction(nextAgent)}
+                  disabled={isMinting}
+                  className="inline-flex h-9 items-center justify-center rounded-full bg-cream px-5 text-[13px] font-medium text-black transition-colors hover:bg-cream/90 shadow-sm cursor-pointer disabled:opacity-50"
+                >
+                  {isMinting ? 'Minting via Anchor CPI...' : `Mint Agent #${String(nextAgentId).padStart(5, '0')} (${activePrice.toFixed(3)} SOL)`}
+                </button>
+
                 <a
-                  href="#mint-engine"
-                  className="btn-primary"
-                  style={{ padding: '13px 26px', fontSize: '13px' }}
+                  href="#browse-agents"
+                  className="inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-1 px-4 text-[13px] font-medium text-cream hover:border-line-strong hover:bg-surface-2 transition-colors"
                 >
-                  MINT AGENT (0.02 SOL) ↓
+                  Browse Swarm →
                 </a>
-                <Link
-                  href="/roster"
-                  className="btn-secondary"
-                  style={{ padding: '13px 22px', fontSize: '13px' }}
-                >
-                  EXPLORE 10,078 ROSTER →
-                </Link>
-                <Link
-                  href="/whitepaper"
-                  className="btn-secondary"
-                  style={{ padding: '13px 18px', fontSize: '13px' }}
-                >
-                  WHITEPAPER ↗
-                </Link>
               </div>
 
-              {/* Protocol Stats Highlights */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', borderTop: '2px solid var(--hair)', paddingTop: '20px' }}>
-                <div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>SUPPLY</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800, color: '#ffffff' }}>10,078</div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--script-green)' }}>Genesis Capped</div>
-                </div>
-                <div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>CAPITAL ROUTING</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800, color: 'var(--script-green)' }}>90% PDA</div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)' }}>Anchor CPI Vaults</div>
-                </div>
-                <div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', textTransform: 'uppercase', fontWeight: 700 }}>GENESIS FLOOR</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 800, color: '#ffffff' }}>0.02 SOL</div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)' }}>Band 1 Active</div>
-                </div>
+              {/* Telemetry Status Bar */}
+              <div className="mt-5 flex items-center gap-3 font-mono text-[11px] text-dim">
+                <span className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
+                  <span className="text-muted">{soldCount} / 10,078 MINTED</span>
+                </span>
+                <span>·</span>
+                <span>GENESIS TIER 1</span>
+                <span>·</span>
+                <span className="text-mint">90% PDA BONDED</span>
               </div>
-            </div>
-
-            {/* Right Side Visual Banner Card (Cinematic Animated Swarm Cycle) */}
-            <div>
-              <div className="hero-showcase-card">
-                {/* Header with live pulsing dot & count */}
-                <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '16px', fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-                  <div
-                    key={`head-${currentShowcaseAgent.id}`}
-                    className="hero-text-anim"
-                    style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
-                  >
-                    <span className="pulse" style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--script-green)', display: 'inline-block' }} />
-                    <span style={{ fontWeight: 800, color: 'var(--script-green)', letterSpacing: '0.04em' }}>
-                      GENESIS #{String(currentShowcaseAgent.id).padStart(5, '0')}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ background: '#000', color: '#fff', padding: '2px 6px', fontSize: '9px', fontWeight: 700, border: '1px solid var(--hair-dark)' }}>
-                      TOKEN-BOUND
-                    </span>
-                    <span style={{ background: 'rgba(0, 255, 102, 0.12)', color: 'var(--script-green)', padding: '2px 6px', fontSize: '9px', fontWeight: 800, border: '1px solid rgba(0, 255, 102, 0.3)' }}>
-                      {showcaseIndex + 1}/{FEATURED_HERO_AGENTS.length}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Animated NFT Box with Smooth 3D Slide & Laser Scanline */}
-                <div className="hero-nft-viewport">
-                  {/* High-tech biometric laser scanline */}
-                  <div className="holo-scanline-beam" />
-
-                  {/* Silky 3D Slide Card */}
-                  <div
-                    key={currentShowcaseAgent.id}
-                    className="hero-nft-card-inner animate-in"
-                  >
-                    {/* Subtle Holographic Glass Glare */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 45%, rgba(0,255,102,0.12) 100%)',
-                        pointerEvents: 'none',
-                        zIndex: 2
-                      }}
-                    />
-
-                    <img
-                      src={currentShowcaseAgent.image || `/nfts/${currentShowcaseAgent.id}.svg`}
-                      alt={currentShowcaseAgent.name}
-                      style={{
-                        width: '88%',
-                        height: '88%',
-                        objectFit: 'contain',
-                        imageRendering: 'pixelated',
-                        filter: 'drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45))',
-                        position: 'relative',
-                        zIndex: 1
-                      }}
-                    />
-
-                    {/* Solana PDA Vault Indicator Pill */}
-                    <div style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(0, 0, 0, 0.85)', color: 'var(--script-green)', fontSize: '8px', fontWeight: 800, padding: '2px 5px', border: '1px solid var(--script-green)', borderRadius: '3px', letterSpacing: '0.05em', zIndex: 3 }}>
-                      SOLANA PDA
-                    </div>
-
-                    {/* Vault Balance Pill */}
-                    <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--script-green)', color: '#000000', fontSize: '9px', fontWeight: 800, padding: '2px 6px', border: '1px solid #000', borderRadius: '3px', boxShadow: '0 2px 6px rgba(0,0,0,0.4)', zIndex: 3 }}>
-                      {(currentShowcaseAgent.priceSol * 0.9).toFixed(3)} SOL IN VAULT
-                    </div>
-                  </div>
-                </div>
-
-                {/* Details Box with Smooth Slide-Up Transition */}
-                <div
-                  key={`details-${currentShowcaseAgent.id}`}
-                  className="hero-text-anim"
-                  style={{ width: '100%', textAlign: 'left', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--hair)', padding: '12px 14px', fontFamily: 'var(--font-mono)', fontSize: '11px', marginBottom: '0', borderRadius: 'var(--radius-sm)' }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <span style={{ color: 'var(--dim)' }}>Role:</span>
-                    <b style={{ color: '#ffffff' }}>{currentShowcaseAgent.role}</b>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <span style={{ color: 'var(--dim)' }}>Archetype:</span>
-                    <span style={{ color: 'var(--ink)' }}>{currentShowcaseAgent.archetype}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--dim)' }}>PDA Vault:</span>
-                    <span style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '10px' }}>{currentShowcaseAgent.pdaVault}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 3 Value Pillars */}
-          <div className="protocol-hero-pillars">
-            <div className="protocol-hero-pillar">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>90% Token-Bound PDA</h3>
-              </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
-                Every minted agent is an on-chain NFT that owns its own program-derived wallet holding 90% of the mint price to fund autonomous execution.
-              </p>
-            </div>
-
-            <div className="protocol-hero-pillar">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--script-green)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>Anchor CPI Architecture</h3>
-              </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
-                Solana Anchor Cross-Program Invocation guarantees cryptographic split of funds. No human or team multi-sig can bypass the routing logic.
-              </p>
-            </div>
-
-            <div className="protocol-hero-pillar">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase' }}>10-Tier Bonding Curve</h3>
-              </div>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', lineHeight: 1.6 }}>
-                Strict supply cap of 10,078 units scaling across 10 deterministic price bands starting from 0.02 SOL up to 0.212 SOL with secondary liquidity retention.
-              </p>
             </div>
           </div>
         </section>
 
-        {/* CA & Token Broadcast Banner */}
-        <section className="ca-banner">
-          <div className="ca-banner-left">
-            <div className="ca-pill">
-              <span className="pulse"></span>
-              <span>$RARE PROTOCOL • SOLANA TOKEN-BOUND ACCOUNTS</span>
-            </div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--dim)' }}>
-              TREASURY:
-            </span>
-            <code className="ca-code">{treasuryWallet}</code>
+        {/* =========================================================================
+            SECTION 1: "One agent. Every order."
+            ========================================================================= */}
+        <section id="one-agent" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32">
+          <div className="mx-auto max-w-[640px] text-center">
+            <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+              One agent. Every order.
+            </h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
+              Inscribe the strategy once to an on-chain PDA. RARE turns it into an autonomous execution agent with 90% capital bonded to token-bound vaults on Solana, showing every CPI step before you sign.
+            </p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <button type="button" onClick={handleCopyCa} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '11px' }}>
-              {copiedCa ? '✓ Copied!' : 'Copy Address'}
-            </button>
-            <a
-              href={`https://solscan.io/account/${treasuryWallet}`}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary"
-              style={{ padding: '6px 12px', fontSize: '11px' }}
-            >
-              Solscan ↗
-            </a>
+
+          <div className="mx-auto mt-14 max-w-[1056px]">
+            {/* Elegant JSON Code Card */}
+            <div className="mx-auto max-w-[520px] overflow-hidden rounded-lg border border-line bg-surface-1 shadow-2xl">
+              <div className="flex items-center justify-between border-b border-line px-3.5 py-2 font-mono text-[11px] text-dim bg-surface-2/40">
+                <span>rare-agent-pda.json</span>
+                <span className="text-mint flex items-center gap-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-mint" />
+                  ANCHOR CPI v1.2
+                </span>
+              </div>
+              <pre tabIndex={0} className="overflow-x-auto p-4 font-mono text-[12.5px] leading-[1.7] text-cream/90">
+                <code>
+                  <span className="block whitespace-pre"><span className="text-dim">&#123;</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"agent_id"</span><span className="text-dim">: </span><span className="text-rose">143</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"archetype"</span><span className="text-dim">: </span><span className="text-rose">"Quantum Arbitrageur"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"tier"</span><span className="text-dim">: </span><span className="text-rose">"Genesis Tier 1"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"mint_price"</span><span className="text-dim">: </span><span className="text-rose">"0.020 SOL"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"token_bound_pda"</span><span className="text-dim">: </span><span className="text-mint">"PDA256v3779B100Vault"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"anchor_cpi_split"</span><span className="text-dim">: &#123;</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">    </span><span className="text-peach">"agent_vault"</span><span className="text-dim">: </span><span className="text-mint">"90%"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">    </span><span className="text-peach">"protocol_ops"</span><span className="text-dim">: </span><span className="text-rose">"10%"</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  &#125;,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"guard_rules"</span><span className="text-dim">: [</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">    &#123; </span><span className="text-peach">"type"</span><span className="text-dim">: </span><span className="text-rose">"stop_loss"</span><span className="text-dim">, </span><span className="text-peach">"threshold"</span><span className="text-dim">: </span><span className="text-rose">"-15%"</span><span className="text-dim"> &#125;,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">    &#123; </span><span className="text-peach">"type"</span><span className="text-dim">: </span><span className="text-rose">"take_profit"</span><span className="text-dim">, </span><span className="text-peach">"target"</span><span className="text-dim">: </span><span className="text-rose">"+35%"</span><span className="text-dim"> &#125;</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  ]</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">&#125;</span></span>
+                </code>
+              </pre>
+            </div>
+
+            {/* 4 Feature Pill Cards */}
+            <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+                <span className="font-mono text-[11px] text-peach tracking-wide uppercase">01 // Cast</span>
+                <h3 className="mt-2 text-[16px] font-medium text-cream">Instant On-Chain Mint</h3>
+                <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
+                  Single-slot Ed25519 signature mints your NFT and instantiates its token-bound account.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+                <span className="font-mono text-[11px] text-mint tracking-wide uppercase">02 // Custody</span>
+                <h3 className="mt-2 text-[16px] font-medium text-cream">90% PDA Vault</h3>
+                <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
+                  90% of mint capital stays locked inside the agent’s own PDA on Solana. Never touch creator wallets.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+                <span className="font-mono text-[11px] text-rose tracking-wide uppercase">03 // Guard</span>
+                <h3 className="mt-2 text-[16px] font-medium text-cream">Autonomous Stop-Loss</h3>
+                <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
+                  Pyth oracle guards trigger automated risk unwinds when market drawdowns exceed programmed bounds.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+                <span className="font-mono text-[11px] text-violet tracking-wide uppercase">04 // Ladder</span>
+                <h3 className="mt-2 text-[16px] font-medium text-cream">10 Bonding Tiers</h3>
+                <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
+                  10,078 total agents across 10 deterministic bonding bands from 0.02 SOL to 10.24 SOL.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Hero Section: 3D Turntable + Token-Bound Mint Deck */}
-        <section className="sa-hero" id="mint-engine">
-          <div className="sa-hero-corner">
-            <div className="sa-hero-ribbon">SOLANA</div>
+        {/* =========================================================================
+            SECTION 2: "Agents that read like sentences"
+            ========================================================================= */}
+        <section id="sentences" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
+          <div className="mx-auto max-w-[640px] text-center">
+            <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+              Agents that read like sentences
+            </h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
+              An agent is a verifiable on-chain manifest. The same agent reads as plain English instructions, as Rust Anchor code, and as the exact list of CPI transactions it executes.
+            </p>
           </div>
 
-          <div className="sa-hero-grid">
-            {/* Left Column: Silky Smooth 3D Turntable */}
-            <div>
-              <Agent360Viewer
-                agentId={activeAgentId}
-                price={activePrice}
-                onChangeAgent={handleAnyUnsold}
-              />
-            </div>
+          <div className="mx-auto mt-14 max-w-[1056px]">
+            <div className="overflow-hidden rounded-lg border border-line bg-black shadow-2xl">
+              <div className="grid lg:grid-cols-[1.15fr_1fr]">
+                {/* Left Side: Code Viewer Tabs */}
+                <div className="min-w-0 border-line lg:border-r">
+                  <div role="tablist" aria-label="Code views" className="flex border-b border-line bg-surface-1/40">
+                    <button
+                      type="button"
+                      onClick={() => setCodeTab('json')}
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${
+                        codeTab === 'json' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
+                      }`}
+                    >
+                      agent_143.json
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCodeTab('rust')}
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${
+                        codeTab === 'rust' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
+                      }`}
+                    >
+                      pda_vault.rs
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCodeTab('ts')}
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${
+                        codeTab === 'ts' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
+                      }`}
+                    >
+                      cpi_route.ts
+                    </button>
+                  </div>
 
-            {/* Right Column: Inscription & Buy Controls */}
-            <div>
-              <span className="sa-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                <img src="/rare-logo-icon.png" alt="" style={{ width: '14px', height: '14px', objectFit: 'contain' }} />
-                <span>On-Chain PDA Funding Engine</span>
-              </span>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 3.5vw, 36px)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
-                MINT &amp; ACTIVATE GENESIS AGENTS
-              </h2>
-              <p className="sa-hero-p">
-                Each agent is an on-chain NFT with its own token-bound PDA wallet. When you mint, 90% of what you pay is deposited directly into the agent&apos;s wallet to fund its autonomous trading, arbitrage, and on-chain execution.
-              </p>
+                  <pre className="max-h-[440px] overflow-auto p-4 font-mono text-[12.5px] leading-[1.7] text-cream/90">
+                    {codeTab === 'json' && (
+                      <code>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">01</span><span className="text-dim">&#123;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">02</span><span className="text-dim">  </span><span className="text-peach">"name"</span><span className="text-dim">: </span><span className="text-rose">"Rare #00143"</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">03</span><span className="text-dim">  </span><span className="text-peach">"pda_seed"</span><span className="text-dim">: </span><span className="text-rose">"b'rare_agent_143'"</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">04</span><span className="text-dim">  </span><span className="text-peach">"capital_split"</span><span className="text-dim">: &#123;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">05</span><span className="text-dim">    </span><span className="text-peach">"agent_pda_deposit_bps"</span><span className="text-dim">: </span><span className="text-mint">9000</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">06</span><span className="text-dim">    </span><span className="text-peach">"treasury_bps"</span><span className="text-dim">: </span><span className="text-rose">1000</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">07</span><span className="text-dim">  &#125;,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">08</span><span className="text-dim">  </span><span className="text-peach">"execution_policy"</span><span className="text-dim">: &#123;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">09</span><span className="text-dim">    </span><span className="text-peach">"max_slippage_bps"</span><span className="text-dim">: </span><span className="text-rose">50</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">10</span><span className="text-dim">    </span><span className="text-peach">"rebalance_trigger"</span><span className="text-dim">: </span><span className="text-rose">"price_delta &gt; 0.005"</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">11</span><span className="text-dim">    </span><span className="text-peach">"settlement_asset"</span><span className="text-dim">: </span><span className="text-mint">"SOL"</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">12</span><span className="text-dim">  &#125;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">13</span><span className="text-dim">&#125;</span></span>
+                      </code>
+                    )}
+                    {codeTab === 'rust' && (
+                      <code>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">01</span><span className="text-violet">pub fn</span> <span className="text-cream">deposit_to_agent_pda</span>(ctx: Context&lt;MintAgent&gt;) -&gt; Result&lt;()&gt; &#123;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">02</span>    <span className="text-violet">let</span> mint_amount = ctx.accounts.mint.price;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">03</span>    <span className="text-violet">let</span> pda_deposit = mint_amount * <span className="text-mint">90</span> / <span className="text-mint">100</span>;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">04</span>    <span className="text-dim">// Cross-Program Invocation to Agent PDA Vault</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">05</span>    anchor_lang::solana_program::program::invoke(</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">06</span>        &amp;system_instruction::transfer(</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">07</span>            &amp;ctx.accounts.payer.key(),</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">08</span>            &amp;ctx.accounts.agent_pda_vault.key(),</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">09</span>            pda_deposit,</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">10</span>        ),</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">11</span>        &amp;[ctx.accounts.payer.to_account_info(), ctx.accounts.agent_pda_vault.to_account_info()],</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">12</span>    )?;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">13</span>    Ok(())</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">14</span>&#125;</span>
+                      </code>
+                    )}
+                    {codeTab === 'ts' && (
+                      <code>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">01</span><span className="text-violet">import</span> &#123; AnchorProvider, Program &#125; <span className="text-violet">from</span> <span className="text-rose">"@coral-xyz/anchor"</span>;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">02</span><span className="text-violet">const</span> tx = <span className="text-violet">await</span> program.methods</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">03</span>  .mintAndBindPda(agentId)</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">04</span>  .accounts(&#123;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">05</span>    payer: wallet.publicKey,</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">06</span>    agentPdaVault: pdaPublicKey,</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">07</span>    systemProgram: SystemProgram.programId</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">08</span>  &#125;)</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">09</span>  .rpc();</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">10</span>console.log(`Agent #${nextAgentId} activated`);</span>
+                      </code>
+                    )}
+                  </pre>
+                </div>
 
-              {/* Purchase / Mint Deck */}
-              <div className="buy-deck">
-                <div className="buy-deck-row">
-                  <div className="buy-field">
-                    <span className="buy-field-label">Quantity</span>
-                    <div className="buy-qty">
-                      <button type="button" onClick={handleMinus}>−</button>
-                      <span>{quantity}</span>
-                      <button type="button" onClick={handlePlus}>+</button>
+                {/* Right Side: Human vs Machine Sentence Breakdown */}
+                <div className="flex flex-col justify-between p-5 bg-surface-1/20">
+                  <div>
+                    {/* View Switcher Toggle */}
+                    <div className="flex items-center justify-between border-b border-line pb-3">
+                      <span className="font-mono text-[11px] text-dim uppercase tracking-wider">Interpreter</span>
+                      <div className="flex items-center rounded-md border border-line bg-surface-2 p-0.5 text-[11px]">
+                        <button
+                          type="button"
+                          onClick={() => setHumanView(true)}
+                          className={`rounded px-2.5 py-1 font-medium transition-colors cursor-pointer ${
+                            humanView ? 'bg-cream text-black' : 'text-dim hover:text-cream'
+                          }`}
+                        >
+                          Human
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setHumanView(false)}
+                          className={`rounded px-2.5 py-1 font-medium transition-colors cursor-pointer ${
+                            !humanView ? 'bg-cream text-black' : 'text-dim hover:text-cream'
+                          }`}
+                        >
+                          Machine
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Content Display */}
+                    <div className="mt-4">
+                      {humanView ? (
+                        <div className="space-y-3 text-[13px] leading-relaxed text-muted">
+                          <p>
+                            <span className="text-cream font-medium">When you mint Agent #00143</span>, 90% of your 0.020 SOL is permanently credited to its autonomous token-bound PDA vault.
+                          </p>
+                          <p>
+                            The agent continuously evaluates Pyth price feeds and rebalances liquidity when cross-market spreads exceed 0.5%.
+                          </p>
+                          <p>
+                            Drawdowns beyond 15% immediately trigger the protective Stop-Loss guard to preserve vault principal in SOL.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-2 font-mono text-[11px] text-dim">
+                          <div className="rounded border border-line bg-surface-2 p-2">
+                            <span className="text-peach">INSTRUCTION:</span> MintAndBindPda<br />
+                            <span className="text-peach">PROGRAM_ID:</span> RAREv3779...Vault<br />
+                            <span className="text-peach">SPLIT:</span> 90% PDA / 10% Protocol Ops
+                          </div>
+                          <div className="rounded border border-line bg-surface-2 p-2">
+                            <span className="text-mint">GAS:</span> 0.000005 SOL (5,000 lamports)<br />
+                            <span className="text-mint">PDA SEED:</span> [rare_agent, 143]
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  <div className="buy-field">
-                    <span className="buy-field-label">Rare №</span>
-                    <input
-                      className="buy-input"
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={5}
-                      placeholder="pick"
-                      value={rareId}
-                      onChange={(e) => {
-                        const val = e.target.value.replace(/\D/g, '');
-                        if (!val) {
-                          setRareId('');
-                          return;
-                        }
-                        const n = parseInt(val, 10);
-                        if (n > 10078) setRareId('10078');
-                        else setRareId(val);
-                      }}
-                    />
+                  {/* Bonding Curve Progress Curve SVG */}
+                  <div className="mt-6 border-t border-line pt-4">
+                    <div className="flex items-center justify-between font-mono text-[10px] text-dim mb-1">
+                      <span>PRICE LADDER (TIER 1 → 10)</span>
+                      <span className="text-cream">0.02 SOL → 10.24 SOL</span>
+                    </div>
+                    <svg viewBox="0 0 300 48" className="w-full h-12 text-mint stroke-current fill-none" preserveAspectRatio="none">
+                      <path
+                        d="M 0 44 Q 150 42 220 28 T 300 4"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <circle cx="20" cy="44" r="3.5" className="fill-mint" />
+                    </svg>
+                    <div className="flex items-center justify-between text-[11px] text-dim font-mono mt-1">
+                      <span>Tier 1 (Current)</span>
+                      <span>Tier 10 (10,078)</span>
+                    </div>
                   </div>
-
-                  <button type="button" onClick={handleAnyUnsold} className="btn-secondary" style={{ padding: '9px 14px' }}>
-                    any unsold
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleMint}
-                    disabled={isMinting}
-                    className="btn-primary"
-                    style={{ padding: '9px 24px', fontSize: '13px' }}
-                  >
-                    {isMinting ? 'Minting…' : `MINT & ACTIVATE (${(activePrice * quantity).toFixed(2)} SOL) →`}
-                  </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                <div className="buy-split-note">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--script-green)"><circle cx="12" cy="12" r="4"/></svg>
-                  <span><b>90% directly deposited into Agent PDA Vault</b> • 10% to Protocol Treasury • Wallet follows the NFT on secondary transfer.</span>
-                </div>
+        {/* =========================================================================
+            SECTION 3: "The review guides you"
+            ========================================================================= */}
+        <section id="review" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
+          <div className="mx-auto max-w-[640px] text-center">
+            <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+              The review guides you
+            </h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
+              Quote, review, sign, anchor. Every step shows what will happen and asks your wallet only for what it needs.
+            </p>
+          </div>
 
-                {mintStatus && (
-                  <div style={{ marginTop: '10px', font: '600 12px var(--font-mono)', color: mintStatus.includes('Success') ? 'var(--live-dark)' : 'var(--script-blue)' }}>
-                    {mintStatus}
+          <div className="mx-auto mt-14 max-w-[1056px]">
+            {/* Header with transcript label and pause toggle */}
+            <div className="mb-2 flex items-center justify-between font-mono text-[11px] tracking-wide text-dim uppercase">
+              <span>Sample transcript · the steps the app runs for you, not a command line</span>
+              <button
+                type="button"
+                onClick={() => setTranscriptPaused(!transcriptPaused)}
+                className="rounded px-2 py-0.5 normal-case border border-line bg-surface-1 hover:text-cream transition-colors cursor-pointer"
+              >
+                {transcriptPaused ? 'Resume' : 'Pause'}
+              </button>
+            </div>
+
+            <div className="overflow-hidden rounded-lg border border-line bg-black shadow-2xl">
+              {/* Stepper Tabs */}
+              <div role="tablist" aria-label="Execution steps" className="grid grid-cols-2 border-b border-line sm:grid-cols-4">
+                {[
+                  { title: '01 quote', subtitle: 'find a route' },
+                  { title: '02 review', subtitle: 'verify pda' },
+                  { title: '03 sign', subtitle: 'wallet authorization' },
+                  { title: '04 anchor cpi', subtitle: 'execute on-chain' }
+                ].map((step, idx) => {
+                  const isActive = transcriptTab === idx;
+                  return (
+                    <button
+                      key={step.title}
+                      type="button"
+                      onClick={() => setTranscriptTab(idx)}
+                      className={`relative border-line px-4 py-3 text-left font-mono text-[12px] transition-colors border-r last:border-r-0 cursor-pointer ${
+                        isActive ? 'bg-surface-2 text-cream font-medium' : 'text-muted hover:bg-surface-1 hover:text-cream'
+                      }`}
+                    >
+                      <span className="block">{step.title}</span>
+                      <span className="block text-[11px] text-dim">{step.subtitle}</span>
+                      {isActive && (
+                        <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-mint" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Transcript Display Window */}
+              <div className="p-5 font-mono text-[12.5px] leading-[1.8] bg-surface-1/30">
+                {transcriptTab === 0 && (
+                  <div>
+                    <div className="text-dim">&gt; Fetching route quote across Solana AMM graphs...</div>
+                    <div className="text-cream/90">&gt; Best execution via Jupiter V6: 0.020 SOL mint pricing derived.</div>
+                    <div className="text-dim">&gt; Route latency: 42ms · Slippage budget: 0.5% max</div>
+                  </div>
+                )}
+                {transcriptTab === 1 && (
+                  <div>
+                    <div className="text-dim">&gt; Validating token-bound PDA seeds against Anchor IDL:</div>
+                    <div className="text-peach">&gt; Seed: [b"rare_agent", id=143, authority=user_pubkey]</div>
+                    <div className="text-mint">&gt; Target Vault: PDA256v3779B100Vault · Verified 90% deposit rule intact.</div>
+                  </div>
+                )}
+                {transcriptTab === 2 && (
+                  <div>
+                    <div className="text-dim">&gt; Requesting single Ed25519 signature from active Solana wallet...</div>
+                    <div className="text-cream/90">&gt; Payload: 1 instruction (Anchor MintAndBindPda) · Zero blind signing.</div>
+                    <div className="text-dim">&gt; Authorization confirmed via Privy Web3 Provider.</div>
+                  </div>
+                )}
+                {transcriptTab === 3 && (
+                  <div>
+                    <div className="text-dim">&gt; Broadcasting transaction to Solana Mainnet-Beta...</div>
+                    <div className="text-mint">&gt; Blockhash confirmed at slot #31094892 · 5,000 lamports fee</div>
+                    <div className="text-cream/90">&gt; Agent #00143 PDA Vault funded with 0.018 SOL. Autonomous execution active.</div>
                   </div>
                 )}
               </div>
-
-              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', font: '600 12px var(--font-mono)', color: 'var(--dim)' }}>
-                <span>Band: <b style={{ color: 'var(--ink)' }}>{activeAgent.band}</b></span>
-                <span>•</span>
-                <span>Price: <b style={{ color: 'var(--ink)' }}>{activePrice} SOL</b></span>
-                <span>•</span>
-                <span>Sold: <b style={{ color: 'var(--ink)' }}>{soldCount} / 10,078</b></span>
-                <span>•</span>
-                <span>Architecture: <b style={{ color: 'var(--script-blue)' }}>Solana Anchor CPI</b></span>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* 4-Column RARE Protocol Metrics Grid */}
-        <section className="stats-grid">
-          <div className="stat-card">
-            <span className="stat-card-title">Total Agent Supply</span>
-            <div className="stat-card-val">10,078</div>
-            <span className="stat-card-sub">Genesis #00001 to #10078</span>
-          </div>
-
-          <div className="stat-card">
-            <span className="stat-card-title">Capital Routing</span>
-            <div className="stat-card-val">90 / 10</div>
-            <span className="stat-card-sub">90% Agent PDA • 10% Treasury</span>
-          </div>
-
-          <div className="stat-card">
-            <span className="stat-card-title">Bonding Curve</span>
-            <div className="stat-card-val">10 Bands</div>
-            <span className="stat-card-sub">0.02 SOL to 0.212 SOL (1.3×)</span>
-          </div>
-
-          <div className="stat-card">
-            <span className="stat-card-title">Wallet Mechanic</span>
-            <div className="stat-card-val">Token-Bound</div>
-            <span className="stat-card-sub">Program Derived Address (PDA)</span>
-          </div>
-        </section>
-
-        {/* Genesis Agent Directory (Pixel Form with RARE Protocol Data) */}
-        <section className="directory-section" id="directory">
-          <div className="directory-head">
+        {/* =========================================================================
+            SECTION 4: "Browse agent swarm"
+            ========================================================================= */}
+        <section id="browse-agents" className="mx-auto max-w-[1104px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
+          <div className="flex items-end justify-between">
             <div>
-              <h2 className="directory-title">Genesis Agent Roster</h2>
-              <p className="directory-sub">
-                Showing 16 of {explorerTotalCount.toLocaleString()} autonomous agents • Token-bound PDA vaults on Solana Mainnet
-              </p>
+              <h2 className="font-serif text-[32px] text-cream md:text-[42px] font-medium">Browse agent swarm</h2>
+              <p className="mt-1 text-[14px] text-muted">10,078 unique AI agents inscribed with token-bound wallets.</p>
             </div>
-
-            <div style={{ font: '600 12px var(--font-mono)', color: 'var(--dim)' }}>
-              Page {explorerPage} of {explorerTotalPages}
-            </div>
+            <Link className="text-[13px] text-muted hover:text-cream transition-colors" href="/roster">
+              View all 10,078 →
+            </Link>
           </div>
 
-          {/* Search & Role Filters */}
-          <div className="directory-filter-bar">
-            <form onSubmit={handleSearchSubmit} className="directory-search">
-              <input
-                type="text"
-                placeholder="search by name, role or archetype..."
-                value={explorerSearch}
-                onChange={(e) => setExplorerSearch(e.target.value)}
-              />
-              <button type="submit">find</button>
-            </form>
-
-            <div className="role-chips">
-              {['all', 'sniper', 'arbitrage', 'oracle', 'sentinel', 'market maker', 'yield'].map((r) => (
-                <button
-                  key={r}
-                  type="button"
-                  className={`role-chip ${explorerRole === r ? 'active' : ''}`}
-                  onClick={() => handleRoleFilterChange(r)}
-                >
-                  {r.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Rich ScriptAgent 2-Column Grid */}
-          {explorerLoading ? (
-            <div style={{ padding: '60px 0', textAlign: 'center', font: '600 14px var(--font-mono)', color: 'var(--dim)' }}>
-              loading autonomous agents from solana ledger…
-            </div>
-          ) : (
-            <div className="agent-grid">
-              {explorerAgents.map((agent) => (
-                <div key={agent.id} className="agent-card">
-                  {/* Card Header */}
-                  <div className="agent-card-header">
-                    <div className="agent-card-title-group">
-                      <span className="agent-num-badge">#{String(agent.id).padStart(5, '0')}</span>
-                      <span className="agent-name">{agent.role}</span>
-                    </div>
-
-                    <span className={`rarity-badge rarity-${(agent.rarityTier || 'common').toLowerCase()}`}>
-                      {agent.rarityTier} ({agent.rarityScore}%)
-                    </span>
-                  </div>
-
-                  {/* Card Body: 3D Visual + Mission Persona */}
-                  <div className="agent-card-body">
-                    <div
-                      className="agent-avatar-box"
-                      onClick={() => setInspectedAgentModal(agent)}
-                      title="Click to inspect agent specifications"
-                    >
-                      <img
-                        src={agent.image || `/nfts/${agent.id}.svg`}
-                        alt={agent.name}
-                        loading="lazy"
-                        className="w-full h-full object-contain"
-                        style={{
-                          imageRendering: 'pixelated',
-                        }}
-                      />
-                    </div>
-
-                    <div className="agent-personality-box">
-                      &ldquo;{agent.personalityPreview}&rdquo;
-                    </div>
-                  </div>
-
-                  {/* 4-Column Metadata Specs */}
-                  <div className="agent-specs-row">
-                    <div>
-                      <div className="spec-cell-label">ARCHETYPE</div>
-                      <div className="spec-cell-val">{agent.archetype ? agent.archetype.split(' ')[0] : 'Sentry'}</div>
-                    </div>
-                    <div>
-                      <div className="spec-cell-label">ENGINE</div>
-                      <div className="spec-cell-val">{agent.engine ? agent.engine.split(' ')[0] : 'Anchor'}</div>
-                    </div>
-                    <div>
-                      <div className="spec-cell-label">PDA CAPITAL</div>
-                      <div className="spec-cell-val" style={{ color: 'var(--script-blue)' }}>{agent.pdaFunding || '0.018 SOL'}</div>
-                    </div>
-                    <div>
-                      <div className="spec-cell-label">BOUND VAULT</div>
-                      <div className="spec-cell-val">{agent.pdaVault ? `${agent.pdaVault.slice(0, 4)}...${agent.pdaVault.slice(-4)}` : 'On-Chain'}</div>
-                    </div>
-                  </div>
-
-                  {/* Card Footer Actions */}
-                  <div className="agent-card-footer">
-                    <a
-                      href={`https://explorer.solana.com/address/${treasuryWallet}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="pda-link"
-                    >
-                      <span className="dot"></span>
-                      <span>PDA Vault Verified On-Chain ↗</span>
-                    </a>
-
-                    <div className="agent-card-actions">
-                      <button
-                        type="button"
-                        onClick={() => handleDownloadManifest(agent)}
-                        className="btn-secondary"
-                        style={{ padding: '5px 10px', fontSize: '11px' }}
-                        title="Export Sovereign Agent Manifest JSON"
-                      >
-                        export
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSelectAgentFor360(agent.id)}
-                        className="btn-card-inspect"
-                      >
-                        inspect 3D →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Clean Pagination */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
-            <button
-              type="button"
-              className="btn-secondary"
-              disabled={explorerPage <= 1 || explorerLoading}
-              onClick={() => setExplorerPage(prev => Math.max(1, prev - 1))}
-            >
-              ← PREVIOUS
-            </button>
-            <span style={{ font: '600 12px var(--font-mono)', color: 'var(--dim)' }}>
-              Page {explorerPage} of {explorerTotalPages}
-            </span>
-            <button
-              type="button"
-              className="btn-secondary"
-              disabled={explorerPage >= explorerTotalPages || explorerLoading}
-              onClick={() => setExplorerPage(prev => Math.min(explorerTotalPages, prev + 1))}
-            >
-              NEXT →
-            </button>
-          </div>
-        </section>
-
-        {/* RARE Protocol 10-Band Price Ladder */}
-        <section className="spec-box" id="ladder">
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px' }}>
-            Bonding Curve Price Ladder
-          </h3>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--dim)', marginBottom: '20px' }}>
-            Ten pricing bands of 1,007.8 agents. Band 1 opens at 0.02 SOL; each subsequent band costs 1.3× the one before, up to 0.212 SOL.
-          </p>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '6px', alignItems: 'end', height: '100px', maxWidth: '640px', margin: '20px 0 10px' }}>
-            {[
-              { band: 1, height: '9.4%', price: '0.02' },
-              { band: 2, height: '12.3%', price: '0.026' },
-              { band: 3, height: '15.9%', price: '0.034' },
-              { band: 4, height: '20.7%', price: '0.044' },
-              { band: 5, height: '26.9%', price: '0.057' },
-              { band: 6, height: '35.0%', price: '0.074' },
-              { band: 7, height: '45.5%', price: '0.096' },
-              { band: 8, height: '59.2%', price: '0.125' },
-              { band: 9, height: '76.9%', price: '0.163' },
-              { band: 10, height: '100.0%', price: '0.212' },
-            ].map((b) => {
-              const isCurrent = b.band === Math.min(10, Math.floor(((parseInt(rareId, 10) || 1) - 1) / 1008) + 1);
-              return (
-                <div
-                  key={b.band}
-                  style={{
-                    height: b.height,
-                    background: isCurrent ? 'var(--script-blue)' : 'var(--parchment-accent)',
-                    border: '2px solid var(--hair-dark)',
-                    boxShadow: isCurrent ? '2px 2px 0px #000' : 'none',
-                    position: 'relative'
-                  }}
-                  title={`Band ${b.band}: ${b.price} SOL${isCurrent ? ' (Active Selected)' : ''}`}
-                >
-                  {isCurrent && (
-                    <span style={{ position: 'absolute', bottom: 'calc(100% + 4px)', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '10px', fontWeight: 700, color: 'var(--script-blue)', whiteSpace: 'nowrap' }}>
-                      {b.price}
-                    </span>
-                  )}
-                  {b.band === 10 && !isCurrent && (
-                    <span style={{ position: 'absolute', bottom: 'calc(100% + 4px)', left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', whiteSpace: 'nowrap' }}>
-                      {b.price}
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '6px', maxWidth: '640px', fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)', textAlign: 'center', marginBottom: '16px' }}>
-            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
-          </div>
-        </section>
-
-        {/* Technical Architecture & Specs */}
-        <section className="spec-box" id="specs">
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 700, textTransform: 'uppercase', marginBottom: '16px' }}>
-            On-Chain Protocol Architecture
-          </h3>
-
-          <div className="spec-row">
-            <span className="spec-key">Token-Bound Vault</span>
-            <span className="spec-val">
-              Every Rare agent possesses a cryptographic Program Derived Address (PDA) vault. 90% of mint capital is deposited directly into the agent&apos;s PDA in the same atomic Solana transaction via Anchor CPI.
-            </span>
-            <span></span>
-          </div>
-
-          <div className="spec-row">
-            <span className="spec-key">Dynamic Ownership</span>
-            <span className="spec-val">
-              The PDA vault is bound cryptographically to the NFT. If the NFT is transferred or traded on secondary markets (Tensor, Magic Eden), vault control and all accumulated balances instantly transfer to the new owner.
-            </span>
-            <span></span>
-          </div>
-
-          <div className="spec-row">
-            <span className="spec-key">Trait Provenance</span>
-            <span className="spec-val" style={{ fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-              sha256 8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce
-            </span>
-            <button type="button" onClick={() => navigator.clipboard.writeText('8f4c2e1b9a773d002f5e8841a0bc19e34278ef86ca61b7f9d85429e28fa031ce')} className="btn-secondary" style={{ padding: '3px 8px', fontSize: '10px' }}>
-              copy
-            </button>
-          </div>
-
-          <div className="spec-row">
-            <span className="spec-key">Seed Provenance</span>
-            <span className="spec-val" style={{ fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-              sha256 4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27
-            </span>
-            <button type="button" onClick={() => navigator.clipboard.writeText('4a9d7b3e210fa09cebf94285ad1078c5208479e023758bdf360c7d4128003a27')} className="btn-secondary" style={{ padding: '3px 8px', fontSize: '10px' }}>
-              copy
-            </button>
-          </div>
-
-          <div className="spec-row">
-            <span className="spec-key">Protocol Treasury</span>
-            <span className="spec-val" style={{ fontFamily: 'var(--font-mono)', fontSize: '11px' }}>
-              {treasuryWallet}
-            </span>
-            <button type="button" onClick={() => navigator.clipboard.writeText(treasuryWallet)} className="btn-secondary" style={{ padding: '3px 8px', fontSize: '10px' }}>
-              copy
-            </button>
-          </div>
-        </section>
-
-        {/* Global Footer */}
-        <Footer />
-      </div>
-
-      {/* Terminal Console Modal */}
-      {consoleOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.65)',
-            backdropFilter: 'blur(4px)',
-            display: 'grid',
-            placeItems: 'center',
-            zIndex: 100,
-            padding: '20px'
-          }}
-          onClick={() => setConsoleOpen(false)}
-        >
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '680px',
-              background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.96) 0%, rgba(10, 13, 19, 0.98) 100%)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: 'var(--radius-lg)',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 35px -5px rgba(0, 229, 153, 0.15)',
-              overflow: 'hidden'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 18px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: 'var(--dim)'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span className="sa-brand-icon" style={{ width: '18px', height: '18px', padding: '1px', boxShadow: 'none' }}>
-                  <img src="/rare-logo-icon.png" alt="RARE" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                </span>
-                <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>ANCHOR CPI TELEMETRY // TOKEN-BOUND AGENT CONSOLE</span>
-              </div>
-              <button
-                onClick={() => setConsoleOpen(false)}
-                style={{ background: 'none', border: 'none', color: '#fff', fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}
+          {/* 4 Elegant Glass Cards */}
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+            {featuredAgents.map((agent) => (
+              <div
+                key={agent.id}
+                onClick={() => setInspectedAgent(agent)}
+                className="group cursor-pointer overflow-hidden rounded-lg border border-line bg-surface-1 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2"
               >
-                ×
-              </button>
-            </div>
-
-            <div
-              style={{
-                padding: '20px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '12px',
-                color: '#10b981',
-                maxHeight: '360px',
-                overflowY: 'auto',
-                lineHeight: 1.6
-              }}
-            >
-              {terminalLines.map((line, idx) => (
-                <div key={idx} style={{ color: line.type === 'green' ? '#10b981' : '#a1a1aa' }}>
-                  {line.text}
+                {/* Visual Avatar Container */}
+                <div className="relative aspect-[4/5] overflow-hidden border-b border-line bg-[#080709] flex items-center justify-center p-6">
+                  {/* Subtle Gradient Halo */}
+                  <div
+                    className="absolute inset-0 opacity-25 group-hover:opacity-40 transition-opacity"
+                    style={{
+                      background: `radial-gradient(circle at 50% 50%, ${agent.color || '#00E599'} 0%, transparent 70%)`
+                    }}
+                  />
+                  {/* Agent NFT SVG Avatar */}
+                  <img
+                    src={`/nfts/${agent.id}.svg`}
+                    alt={agent.name}
+                    className="relative z-10 w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-200"
+                  />
+                  <span className="absolute top-2.5 left-2.5 rounded bg-black/60 px-2 py-0.5 font-mono text-[10px] text-dim border border-line">
+                    #{String(agent.id).padStart(5, '0')}
+                  </span>
                 </div>
-              ))}
-              <div ref={terminalEndRef} />
-              <form onSubmit={handleTerminalSubmit} style={{ display: 'flex', marginTop: '12px' }}>
-                <span style={{ color: '#00aa44', marginRight: '6px', fontWeight: 700 }}>rare@sol:~$</span>
-                <input
-                  type="text"
-                  value={commandInput}
-                  onChange={(e) => setCommandInput(e.target.value)}
-                  style={{ flex: 1, background: 'transparent', border: 'none', color: '#fcfaf4', font: 'inherit', outline: 'none' }}
-                  autoFocus
+
+                {/* Card Meta Content */}
+                <div className="p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="font-serif text-[16px] text-cream font-medium group-hover:text-mint transition-colors">
+                      {agent.name}
+                    </span>
+                    <span className="font-mono text-[12px] text-mint font-medium">
+                      {agent.priceSol} SOL
+                    </span>
+                  </div>
+
+                  <p className="mt-1 text-[12px] text-muted truncate">
+                    {agent.role} · {agent.archetype}
+                  </p>
+
+                  <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 font-mono text-[10px] text-dim">
+                    <span>90% PDA: {agent.pdaFunding}</span>
+                    <span className="group-hover:text-cream transition-colors">Inspect →</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* =========================================================================
+            SECTION 5: "Explore the protocol"
+            ========================================================================= */}
+        <section aria-labelledby="docs-title" className="mx-auto max-w-[1104px] px-5 pt-8 pb-24 md:px-6 border-t border-line">
+          <h2 id="docs-title" className="font-serif text-[32px] text-cream md:text-[42px] font-medium">
+            Explore the protocol
+          </h2>
+
+          <div className="mt-6 grid gap-3 md:grid-cols-2">
+            <Link
+              className="group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
+              href="/specs"
+            >
+              <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
+                Token-bound PDA Vaults
+                <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
+              </span>
+              <span className="mt-1 block text-[13px] text-muted">
+                Non-custodial account derivation and 90% mint capital deposit architecture on Solana.
+              </span>
+            </Link>
+
+            <Link
+              className="group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
+              href="/specs#cpi"
+            >
+              <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
+                Anchor CPI Execution
+                <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
+              </span>
+              <span className="mt-1 block text-[13px] text-muted">
+                Cross-program invocation rules, Pyth oracle safety guards, and atomic order settlement.
+              </span>
+            </Link>
+
+            <Link
+              className="group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
+              href="/ladder"
+            >
+              <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
+                10-Tier Price Ladder
+                <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
+              </span>
+              <span className="mt-1 block text-[13px] text-muted">
+                Bonding curve mathematics governing the exact supply distribution of all 10,078 agents.
+              </span>
+            </Link>
+
+            <Link
+              className="group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
+              href="/whitepaper"
+            >
+              <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
+                Whitepaper PDF
+                <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
+              </span>
+              <span className="mt-1 block text-[13px] text-muted">
+                Read the formal mathematical and cryptographic specifications for RARE Protocol.
+              </span>
+            </Link>
+          </div>
+        </section>
+      </main>
+
+      {/* Global Footer */}
+      <Footer />
+
+      {/* =========================================================================
+          AGENT INSPECT MODAL (ZERO EMOJIS, HAUTE COUTURE LUXURY DESIGN)
+          ========================================================================= */}
+      {inspectedAgent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="relative w-full max-w-[560px] overflow-hidden rounded-xl border border-line bg-surface-1 p-6 shadow-2xl">
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setInspectedAgent(null)}
+              className="absolute top-4 right-4 rounded-md border border-line bg-surface-2 p-1.5 text-dim hover:text-cream transition-colors cursor-pointer"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            <div className="flex flex-col sm:flex-row gap-6">
+              {/* Agent Avatar */}
+              <div className="w-full sm:w-[180px] aspect-square rounded-lg border border-line bg-black p-4 flex items-center justify-center shrink-0">
+                <img
+                  src={`/nfts/${inspectedAgent.id}.svg`}
+                  alt={inspectedAgent.name}
+                  className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
                 />
-              </form>
+              </div>
+
+              {/* Details */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[11px] text-dim border border-line px-1.5 rounded">
+                    #{String(inspectedAgent.id).padStart(5, '0')}
+                  </span>
+                  <span className="font-mono text-[11px] text-mint">{inspectedAgent.band}</span>
+                </div>
+
+                <h3 className="font-serif text-[24px] text-cream mt-1 font-medium">{inspectedAgent.name}</h3>
+                <p className="text-[13px] text-muted">{inspectedAgent.role}</p>
+
+                <div className="mt-4 space-y-1.5 font-mono text-[11px] border-t border-line pt-3">
+                  <div className="flex justify-between">
+                    <span className="text-dim">Mint Price:</span>
+                    <span className="text-cream font-medium">{inspectedAgent.priceSol} SOL</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-dim">90% Vault Deposit:</span>
+                    <span className="text-mint font-medium">{(inspectedAgent.priceSol * 0.9).toFixed(3)} SOL</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-dim">PDA Vault:</span>
+                    <span className="text-cream truncate max-w-[180px]">{inspectedAgent.pdaVault}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-dim">Rarity Score:</span>
+                    <span className="text-cream">{inspectedAgent.rarityScore} ({inspectedAgent.rarityTier})</span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="mt-6 flex items-center gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => handleMintAction(inspectedAgent)}
+                    disabled={isMinting}
+                    className="flex-1 inline-flex h-9 items-center justify-center rounded-full bg-cream text-[13px] font-medium text-black hover:bg-cream/90 transition-colors cursor-pointer disabled:opacity-50"
+                  >
+                    {isMinting ? 'Minting...' : `Mint for ${inspectedAgent.priceSol} SOL`}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDownloadManifest(inspectedAgent)}
+                    className="inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-2 px-3.5 text-[12px] font-medium text-cream hover:bg-surface-3 transition-colors cursor-pointer"
+                    title="Download JSON Manifest"
+                  >
+                    JSON
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Mint Activation Celebration Modal */}
+      {/* =========================================================================
+          MINT CELEBRATION MODAL (ZERO EMOJIS, SLEEK ON-CHAIN RECEIPT)
+          ========================================================================= */}
       {mintCelebration && (
-        <div
-          className="rare-modal-overlay"
-          onClick={() => setMintCelebration(null)}
-        >
-          <div
-            className="rare-modal-dialog"
-            style={{ maxWidth: '580px' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--script-green)', boxShadow: '0 0 10px var(--script-green)', display: 'inline-block' }} />
-                <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--script-green)', letterSpacing: '0.04em' }}>
-                  AGENT ACTIVATED // ON-CHAIN PDA FUNDED
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setMintCelebration(null)}
-                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', padding: '3px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hair-dark)', background: 'rgba(255, 255, 255, 0.05)', color: '#ffffff', cursor: 'pointer' }}
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="rare-modal-grid">
-              <div style={{ border: '1px solid var(--hair)', background: 'radial-gradient(circle at 50% 60%, rgba(0, 229, 153, 0.1) 0%, #080a0f 75%)', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img
-                  src={mintCelebration.image || `/nfts/${mintCelebration.id}.svg`}
-                  alt={mintCelebration.name}
-                  style={{ width: '100%', aspectRatio: '1', objectFit: 'contain', imageRendering: 'pixelated' }}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+          <div className="relative w-full max-w-[500px] overflow-hidden rounded-xl border border-line bg-surface-1 p-6 shadow-2xl text-center">
+            {/* Starburst SVG icon */}
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-mint/30 bg-mint/10 text-mint">
+              <svg viewBox="-284 -138 433 277" className="h-4 w-auto" aria-hidden="true" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M-283 -10 L-110 -10 Q-42 -10 -45.1 -30.9 L-75.6 -61.4 L-61.4 -75.6 L-30.9 -45.1 Q-10 -42 -10 -110 L-10 -137 L10 -137 L10 -110 Q10 -42 30.9 -45.1 L61.4 -75.6 L75.6 -61.4 L45.1 -30.9 Q42 -10 110 -10 L148 -10 L148 10 L110 10 Q42 10 45.1 30.9 L75.6 61.4 L61.4 75.6 L30.9 45.1 Q10 42 10 110 L10 138 L-10 138 L-10 110 Q-10 42 -30.9 45.1 L-61.4 75.6 L-75.6 61.4 L-45.1 30.9 Q-42 10 -110 10 L-283 10 Z M-48 0 L0 -48 L48 0 L0 48 Z"
                 />
-              </div>
+              </svg>
+            </div>
 
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ fontSize: '18px', fontWeight: 800, fontFamily: 'var(--font-display)', textTransform: 'uppercase', color: '#ffffff' }}>{mintCelebration.name}</div>
-                <div style={{ color: 'var(--script-green)', fontWeight: 700, fontSize: '11px' }}>SOLANA TOKEN-BOUND ACCOUNT</div>
-                <div style={{ padding: '12px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px', color: '#ffffff' }}>
-                  <div><b style={{ color: 'var(--dim)' }}>PDA Vault:</b> <span style={{ fontSize: '10px', color: 'var(--script-green)', display: 'block', wordBreak: 'break-all', marginTop: '2px' }}>{mintCelebration.pdaVault}</span></div>
-                  <div><b style={{ color: 'var(--dim)' }}>Capital Deposited:</b> <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>{mintCelebration.funding}</span> (90%)</div>
-                  <div><b style={{ color: 'var(--dim)' }}>Protocol Split:</b> 10% Treasury</div>
-                </div>
+            <h3 className="font-serif text-[28px] text-cream mt-4 font-medium">Agent Activated</h3>
+            <p className="mt-1 text-[14px] text-muted">
+              {mintCelebration.name} is now autonomous on Solana Mainnet.
+            </p>
+
+            <div className="my-6 rounded-lg border border-line bg-black/60 p-4 text-left font-mono text-[12px] space-y-2">
+              <div className="flex justify-between">
+                <span className="text-dim">Token PDA Vault:</span>
+                <span className="text-mint font-medium">{mintCelebration.pdaVault}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-dim">Deposited (90%):</span>
+                <span className="text-cream">{mintCelebration.deposited} SOL</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-dim">Signature:</span>
+                <span className="text-dim truncate max-w-[200px]">{mintCelebration.txSignature}</span>
               </div>
             </div>
 
-            <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              <a
-                href={`https://solscan.io/account/${treasuryWallet}`}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-primary"
-                style={{ flex: 1, textAlign: 'center', padding: '10px 0', fontSize: '12px' }}
-              >
-                View On Solscan ↗
-              </a>
+            <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => handleDownloadManifest(mintCelebration)}
-                className="btn-secondary"
-                style={{ padding: '10px 14px', fontSize: '12px', cursor: 'pointer' }}
+                className="flex-1 inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-2 text-[13px] font-medium text-cream hover:bg-surface-3 transition-colors cursor-pointer"
               >
-                Download Metaplex JSON ↓
+                Download Manifest (.json)
               </button>
               <button
                 type="button"
                 onClick={() => setMintCelebration(null)}
-                className="btn-secondary"
-                style={{ padding: '10px 16px', fontSize: '12px', cursor: 'pointer' }}
+                className="flex-1 inline-flex h-9 items-center justify-center rounded-full bg-cream text-[13px] font-medium text-black hover:bg-cream/90 transition-colors cursor-pointer"
               >
                 Close
               </button>
@@ -1090,117 +839,6 @@ export default function HomePage() {
           </div>
         </div>
       )}
-
-      {/* Detailed Agent Specs Modal */}
-      {inspectedAgentModal && (
-        <div
-          className="rare-modal-overlay"
-          onClick={() => setInspectedAgentModal(null)}
-        >
-          <div
-            className="rare-modal-dialog"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--hair)', paddingBottom: '14px', marginBottom: '18px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 800, background: 'var(--script-green)', color: '#000000', padding: '3px 8px', border: '1px solid #000000' }}>
-                  #{String(inspectedAgentModal.id).padStart(5, '0')}
-                </span>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '17px', textTransform: 'uppercase', color: '#ffffff', letterSpacing: '0.02em' }}>
-                  {inspectedAgentModal.role}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setInspectedAgentModal(null)}
-                style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', padding: '3px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hair-dark)', background: 'rgba(255, 255, 255, 0.05)', color: '#ffffff', cursor: 'pointer', transition: 'all 0.15s ease' }}
-                title="Close"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="rare-modal-grid">
-              <div style={{ border: '1px solid var(--hair)', background: 'radial-gradient(circle at 50% 65%, rgba(0, 229, 153, 0.12) 0%, #080a0f 75%)', borderRadius: 'var(--radius-md)', padding: '16px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <img
-                  src={inspectedAgentModal.image || `/nfts/${inspectedAgentModal.id}.svg`}
-                  alt={inspectedAgentModal.name}
-                  style={{ width: '100%', aspectRatio: '1', objectFit: 'contain', imageRendering: 'pixelated', filter: 'drop-shadow(0 10px 16px rgba(0,0,0,0.7))' }}
-                />
-                <span style={{ marginTop: '10px', fontFamily: 'var(--font-mono)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em', color: 'var(--script-green)', background: 'rgba(0, 229, 153, 0.12)', border: '1px solid rgba(0, 229, 153, 0.3)', borderRadius: 'var(--radius-sm)', padding: '2px 8px' }}>
-                  TOKEN-BOUND PDA ASSET
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
-                <div>
-                  <span style={{ fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>MISSION PROMPT</span>
-                  <p style={{ marginTop: '4px', padding: '10px 12px', border: '1px solid var(--hair)', borderLeft: '3px solid var(--script-green)', background: 'rgba(0, 229, 153, 0.04)', borderRadius: 'var(--radius-sm)', fontSize: '11px', color: '#e4e4e7', fontStyle: 'italic', lineHeight: 1.6 }}>
-                    &ldquo;{inspectedAgentModal.personalityPreview}&rdquo;
-                  </p>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px' }}>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
-                    <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>ARCHETYPE</div>
-                    <div style={{ fontWeight: 700, color: '#ffffff', marginTop: '2px' }}>{inspectedAgentModal.archetype}</div>
-                  </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
-                    <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>EXECUTION ENGINE</div>
-                    <div style={{ fontWeight: 700, color: 'var(--script-green)', marginTop: '2px' }}>{inspectedAgentModal.engine}</div>
-                  </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
-                    <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>PDA CAPITAL</div>
-                    <div style={{ fontWeight: 700, color: 'var(--script-green)', marginTop: '2px' }}>{inspectedAgentModal.pdaFunding}</div>
-                  </div>
-                  <div style={{ padding: '9px 11px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.03)', borderRadius: 'var(--radius-sm)' }}>
-                    <div style={{ fontSize: '9px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>RARITY TIER</div>
-                    <div style={{ fontWeight: 700, color: '#ffffff', marginTop: '2px' }}>{inspectedAgentModal.rarityTier} ({inspectedAgentModal.rarityScore}%)</div>
-                  </div>
-                </div>
-
-                <div style={{ padding: '10px 12px', border: '1px solid var(--hair)', background: 'rgba(255, 255, 255, 0.02)', borderRadius: 'var(--radius-sm)', fontSize: '10px' }}>
-                  <span style={{ color: 'var(--dim)', fontWeight: 700 }}>PROGRAM DERIVED ADDRESS (PDA):</span>
-                  <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--script-green)', fontWeight: 700, marginTop: '4px', wordBreak: 'break-all', fontSize: '11px' }}>
-                    {inspectedAgentModal.pdaVault}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ borderTop: '1px solid var(--hair)', paddingTop: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-              <button
-                type="button"
-                onClick={() => handleMintDirectAgent(inspectedAgentModal)}
-                disabled={isMinting}
-                className="btn-primary"
-                style={{
-                  flex: 1,
-                  padding: '12px 16px',
-                  fontSize: '12px',
-                  textAlign: 'center',
-                  cursor: isMinting ? 'wait' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px'
-                }}
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                <span>{isMinting ? 'MINTING AGENT...' : `MINT AGENT (${inspectedAgentModal.priceSol} SOL)`}</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setInspectedAgentModal(null)}
-                className="btn-secondary"
-                style={{ padding: '11px 18px', fontSize: '12px', cursor: 'pointer' }}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+    </div>
   );
 }
