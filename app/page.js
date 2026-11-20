@@ -776,11 +776,10 @@ export default function HomePage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleDownloadManifest(inspectedAgent)}
-                    className="inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-2 px-3.5 text-[12px] font-medium text-cream hover:bg-surface-3 transition-colors cursor-pointer"
-                    title="Download JSON Manifest"
+                    onClick={() => setInspectedAgent(null)}
+                    className="inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-2 px-4 text-[12px] font-medium text-cream hover:bg-surface-3 transition-colors cursor-pointer"
                   >
-                    JSON
+                    Close
                   </button>
                 </div>
               </div>

@@ -40,6 +40,42 @@ export default function RosterPage() {
     }, 1800);
   };
 
+  // Download Manifest ONLY AFTER successful mint
+  const handleDownloadManifest = (agent) => {
+    if (!agent) return;
+    const data = {
+      protocol: 'RARE Protocol ($RARE)',
+      version: '1.0.0-solana',
+      agent_id: agent.id,
+      name: agent.name,
+      archetype: agent.archetype,
+      tier: agent.band,
+      mint_price: `${agent.priceSol} SOL`,
+      token_bound_pda: agent.pdaVault,
+      anchor_cpi_split: {
+        agent_pda_vault: '90%',
+        protocol_ops: '10%'
+      },
+      personality: agent.personalityPreview,
+      engine: agent.engine,
+      rarity: {
+        score: agent.rarityScore,
+        tier: agent.rarityTier
+      },
+      txSignature: agent.txHash,
+      timestamp: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `rare-agent-${String(agent.id).padStart(5, '0')}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   // Generate paginated agent list on the fly based on search/filter
   const { agents, totalPages } = useMemo(() => {
     let result = [];
@@ -337,13 +373,22 @@ export default function RosterPage() {
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setMintCelebration(null)}
-              className="w-full inline-flex h-9 items-center justify-center rounded-full bg-cream text-[13px] font-medium text-black hover:bg-cream/90 transition-colors cursor-pointer"
-            >
-              Close
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleDownloadManifest(mintCelebration)}
+                className="flex-1 inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-2 text-[13px] font-medium text-cream hover:bg-surface-3 transition-colors cursor-pointer"
+              >
+                Download Manifest (.json)
+              </button>
+              <button
+                type="button"
+                onClick={() => setMintCelebration(null)}
+                className="flex-1 inline-flex h-9 items-center justify-center rounded-full bg-cream text-[13px] font-medium text-black hover:bg-cream/90 transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
