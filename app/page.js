@@ -134,15 +134,14 @@ export default function HomePage() {
           {/* Hero Content Overlay with Guaranteed Safe Spacing Below Fixed Navbar */}
           <div className="hero-content-wrapper">
             <div className="max-w-[500px]">
-              {/* Luxury Serif Title with Starburst Icon */}
+              {/* Luxury Serif Title with Brand Logo */}
               <h1 className="text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
-                <span className="inline-flex items-center gap-[0.45em]">
-                  <svg viewBox="-284 -138 433 277" className="h-[0.88em] w-auto text-cream" aria-hidden="true" fill="currentColor">
-                    <path
-                      fillRule="evenodd"
-                      d="M-283 -10 L-110 -10 Q-42 -10 -45.1 -30.9 L-75.6 -61.4 L-61.4 -75.6 L-30.9 -45.1 Q-10 -42 -10 -110 L-10 -137 L10 -137 L10 -110 Q10 -42 30.9 -45.1 L61.4 -75.6 L75.6 -61.4 L45.1 -30.9 Q42 -10 110 -10 L148 -10 L148 10 L110 10 Q42 10 45.1 30.9 L75.6 61.4 L61.4 75.6 L30.9 45.1 Q10 42 10 110 L10 138 L-10 138 L-10 110 Q-10 42 -30.9 45.1 L-61.4 75.6 L-75.6 61.4 L-45.1 30.9 Q-42 10 -110 10 L-283 10 Z M-48 0 L0 -48 L48 0 L0 48 Z"
-                    />
-                  </svg>
+                <span className="inline-flex items-center gap-[0.35em]">
+                  <img
+                    src="/rare-logo-icon.png"
+                    alt="RARE Protocol"
+                    className="h-[0.85em] w-auto object-contain drop-shadow-[0_0_20px_rgba(0,229,153,0.35)] inline-block align-middle"
+                  />
                   <span className="font-serif leading-none tracking-[0.04em] font-medium">RARE</span>
                 </span>
               </h1>
@@ -800,14 +799,13 @@ export default function HomePage() {
             className="agent-celebration-card"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Starburst SVG icon */}
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-mint/30 bg-mint/10 text-mint">
-              <svg viewBox="-284 -138 433 277" className="h-4 w-auto" aria-hidden="true" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M-283 -10 L-110 -10 Q-42 -10 -45.1 -30.9 L-75.6 -61.4 L-61.4 -75.6 L-30.9 -45.1 Q-10 -42 -10 -110 L-10 -137 L10 -137 L10 -110 Q10 -42 30.9 -45.1 L61.4 -75.6 L75.6 -61.4 L45.1 -30.9 Q42 -10 110 -10 L148 -10 L148 10 L110 10 Q42 10 45.1 30.9 L75.6 61.4 L61.4 75.6 L30.9 45.1 Q10 42 10 110 L10 138 L-10 138 L-10 110 Q-10 42 -30.9 45.1 L-61.4 75.6 L-75.6 61.4 L-45.1 30.9 Q-42 10 -110 10 L-283 10 Z M-48 0 L0 -48 L48 0 L0 48 Z"
-                />
-              </svg>
+            {/* RARE Protocol Logo */}
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-mint/30 bg-mint/10 p-2 text-mint">
+              <img
+                src="/rare-logo-icon.png"
+                alt="RARE"
+                className="h-full w-auto object-contain drop-shadow-[0_0_10px_rgba(0,229,153,0.5)]"
+              />
             </div>
 
             <h3 className="font-serif text-[28px] text-cream mt-4 font-medium">Agent Activated</h3>

@@ -29,12 +29,11 @@ export default function Navbar() {
       <div className="flex h-16 items-center gap-5 px-4 md:px-6 max-w-[1280px] mx-auto w-full">
         {/* Brand Logo & Wordmark */}
         <Link aria-label="RARE Protocol home" className="flex items-center gap-2.5 text-cream group" href="/">
-          <svg viewBox="-284 -138 433 277" className="h-3.5 w-auto text-cream group-hover:text-mint transition-colors" aria-hidden="true" fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M-283 -10 L-110 -10 Q-42 -10 -45.1 -30.9 L-75.6 -61.4 L-61.4 -75.6 L-30.9 -45.1 Q-10 -42 -10 -110 L-10 -137 L10 -137 L10 -110 Q10 -42 30.9 -45.1 L61.4 -75.6 L75.6 -61.4 L45.1 -30.9 Q42 -10 110 -10 L148 -10 L148 10 L110 10 Q42 10 45.1 30.9 L75.6 61.4 L61.4 75.6 L30.9 45.1 Q10 42 10 110 L10 138 L-10 138 L-10 110 Q-10 42 -30.9 45.1 L-61.4 75.6 L-75.6 61.4 L-45.1 30.9 Q-42 10 -110 10 L-283 10 Z M-48 0 L0 -48 L48 0 L0 48 Z"
-            />
-          </svg>
+          <img
+            src="/rare-logo-icon.png"
+            alt="RARE Protocol Logo"
+            className="h-7 w-auto object-contain drop-shadow-[0_0_10px_rgba(0,229,153,0.35)] group-hover:scale-105 transition-transform"
+          />
           <span className="font-serif text-[18px] tracking-[0.06em] font-medium">RARE</span>
         </Link>
 

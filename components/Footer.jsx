@@ -90,12 +90,11 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-14 pt-8 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 text-[12px] text-dim">
           <div className="flex items-center gap-3">
-            <svg viewBox="-284 -138 433 277" className="h-3 w-auto text-cream/70" aria-hidden="true" fill="currentColor">
-              <path
-                fillRule="evenodd"
-                d="M-283 -10 L-110 -10 Q-42 -10 -45.1 -30.9 L-75.6 -61.4 L-61.4 -75.6 L-30.9 -45.1 Q-10 -42 -10 -110 L-10 -137 L10 -137 L10 -110 Q10 -42 30.9 -45.1 L61.4 -75.6 L75.6 -61.4 L45.1 -30.9 Q42 -10 110 -10 L148 -10 L148 10 L110 10 Q42 10 45.1 30.9 L75.6 61.4 L61.4 75.6 L30.9 45.1 Q10 42 10 110 L10 138 L-10 138 L-10 110 Q-10 42 -30.9 45.1 L-61.4 75.6 L-75.6 61.4 L-45.1 30.9 Q-42 10 -110 10 L-283 10 Z M-48 0 L0 -48 L48 0 L0 48 Z"
-              />
-            </svg>
+            <img
+              src="/rare-logo-icon.png"
+              alt="RARE Protocol Logo"
+              className="h-6 w-auto object-contain drop-shadow-[0_0_8px_rgba(0,229,153,0.3)]"
+            />
             <span className="font-serif text-[14px] text-cream font-medium">RARE PROTOCOL</span>
             <span className="text-dim/60">·</span>
             <span>10,078 Autonomous AI Agents</span>
