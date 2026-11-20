@@ -127,12 +127,12 @@ export default function HomePage() {
         {/* =========================================================================
             HERO SECTION: WebGL2 Glass Octahedron, Dynamic Laser Beam, & Ticker
             ========================================================================= */}
-        <section className="relative isolate overflow-hidden bg-black min-h-[max(640px,100dvh)] pt-16">
+        <section className="relative isolate overflow-hidden bg-black min-h-[max(680px,100dvh)]">
           {/* Real-time WebGL2 3D Raytraced Prism & Laser Canvas */}
           <ZauberHeroCanvas tickerValue={`${activePrice.toFixed(3)} SOL`} />
 
-          {/* Hero Content Overlay */}
-          <div className="relative z-10 mx-auto max-w-[1280px] min-h-[calc(100dvh-64px)] px-5 md:px-6 flex flex-col justify-end pb-12 md:justify-center md:pb-20">
+          {/* Hero Content Overlay with Guaranteed Safe Spacing Below Fixed Navbar */}
+          <div className="relative z-10 mx-auto max-w-[1280px] min-h-[max(680px,100dvh)] px-5 md:px-6 flex flex-col justify-center pt-32 pb-16 md:pt-40 md:pb-24">
             <div className="max-w-[480px]">
               {/* Luxury Serif Title with Starburst Icon */}
               <h1 className="text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
