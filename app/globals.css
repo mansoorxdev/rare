@@ -314,3 +314,71 @@ body {
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95) !important;
   text-align: center !important;
 }
+
+
+/* ==========================================================================
+   PAGE CONTAINERS & GUARANTEED NAVBAR CLEARANCE
+   ========================================================================== */
+.page-container {
+  width: 100% !important;
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  padding-top: 130px !important;
+  padding-bottom: 96px !important;
+}
+
+@media (min-width: 768px) {
+  .page-container {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    padding-top: 150px !important;
+    padding-bottom: 112px !important;
+  }
+}
+
+.hero-content-wrapper {
+  position: relative !important;
+  z-index: 10 !important;
+  width: 100% !important;
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  padding-top: 140px !important;
+  padding-bottom: 80px !important;
+}
+
+@media (min-width: 768px) {
+  .hero-content-wrapper {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    padding-top: 170px !important;
+    padding-bottom: 112px !important;
+  }
+}
+
+/* Universal Padding Top Utilities */
+.pt-16 { padding-top: 64px !important; }
+.pt-20 { padding-top: 80px !important; }
+.pt-24 { padding-top: 96px !important; }
+.pt-28 { padding-top: 112px !important; }
+.pt-32 { padding-top: 128px !important; }
+.pt-36 { padding-top: 144px !important; }
+.pt-40 { padding-top: 160px !important; }
+.pt-44 { padding-top: 176px !important; }
+.pt-48 { padding-top: 192px !important; }
+.pt-52 { padding-top: 208px !important; }
+
+@media (min-width: 768px) {
+  .md\:pt-28 { padding-top: 112px !important; }
+  .md\:pt-32 { padding-top: 128px !important; }
+  .md\:pt-36 { padding-top: 144px !important; }
+  .md\:pt-40 { padding-top: 160px !important; }
+  .md\:pt-44 { padding-top: 176px !important; }
+  .md\:pt-48 { padding-top: 192px !important; }
+  .md\:pt-52 { padding-top: 208px !important; }
+}

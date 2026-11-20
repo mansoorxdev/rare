@@ -28,7 +28,7 @@ export default function LadderPage() {
     <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
       <Navbar />
 
-      <main className="mx-auto max-w-[1280px] px-5 pt-32 pb-24 md:px-6 md:pt-36">
+      <main className="page-container">
         {/* Page Header */}
         <div className="mx-auto max-w-[800px] text-center mb-14">
           <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">

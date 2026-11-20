@@ -132,7 +132,7 @@ export default function HomePage() {
           <ZauberHeroCanvas tickerValue={`${activePrice.toFixed(3)} SOL`} />
 
           {/* Hero Content Overlay with Guaranteed Safe Spacing Below Fixed Navbar */}
-          <div className="relative z-10 mx-auto max-w-[1280px] px-5 md:px-6 pt-36 pb-20 sm:pt-44 md:pt-48 md:pb-28 lg:pt-52">
+          <div className="hero-content-wrapper">
             <div className="max-w-[500px]">
               {/* Luxury Serif Title with Starburst Icon */}
               <h1 className="text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
