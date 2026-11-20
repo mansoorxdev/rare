@@ -3,111 +3,68 @@
 import React, { useState } from 'react';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
-export default function Agent360Viewer({ agentId = 1, price = 0.02, onChangeAgent }) {
+export default function Agent360Viewer({ agentId = 1, onChangeAgent }) {
   const num = parseInt(agentId, 10) || 1;
   const currentAgent = getAgentMetadata(num);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Fallback to /nfts/1.svg if image not set
   const imgSrc = currentAgent.image || `/nfts/${num}.svg`;
 
   return (
-    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div className="w-full flex flex-col items-center">
       {/* Active Selected Agent Badge Bar */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '460px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingBottom: '8px',
-          marginBottom: '14px',
-          borderBottom: '1px solid var(--hair)',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '12px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '8px', height: '8px', background: 'var(--script-green)', display: 'inline-block', boxShadow: '0 0 6px var(--script-green)' }} />
-          <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-pixel)', fontSize: '13px', color: 'var(--script-green)' }}>
+      <div className="w-full max-w-[460px] flex items-center justify-between pb-2 mb-3 border-b border-line font-mono text-[12px]">
+        <div className="flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
+          <span className="font-medium text-cream">
             RARE #{String(num).padStart(5, '0')}
           </span>
         </div>
-        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--dim)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          {currentAgent.role} • {currentAgent.archetype}
+        <span className="text-[11px] text-dim uppercase tracking-wider truncate max-w-[240px]">
+          {currentAgent.role} · {currentAgent.archetype}
         </span>
       </div>
 
       {/* Hero NFT Viewport */}
       <div
-        style={{
-          position: 'relative',
-          width: '100%',
-          maxWidth: '460px',
-          height: '460px',
-          border: '2px solid var(--hair)',
-          boxShadow: '6px 6px 0px 0px var(--script-green)',
-          background: 'radial-gradient(circle at 50% 65%, rgba(0, 255, 102, 0.08) 0%, #0d0e12 65%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '28px',
-          overflow: 'hidden',
-          userSelect: 'none',
-        }}
+        className="relative w-full max-w-[460px] aspect-square rounded-xl border border-line bg-surface-1 flex items-center justify-center p-8 overflow-hidden select-none shadow-2xl transition-[border-color] duration-200 hover:border-line-strong"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         title={`Rare #${String(num).padStart(5, '0')} - 24x24 Vector Pixel NFT`}
       >
-        {/* Crisp Vector Pixel Art Image on Studio Floor */}
+        {/* Subtle Ambient Glow */}
+        <div
+          className="absolute inset-0 opacity-20 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${currentAgent.color || '#00E599'} 0%, transparent 70%)`,
+            opacity: isHovered ? 0.35 : 0.2
+          }}
+        />
+
+        {/* Vector Pixel Art Image */}
         <img
           src={imgSrc}
           alt={currentAgent.name || `Rare #${num}`}
+          className="relative z-10 max-w-[80%] max-h-[80%] w-auto h-auto object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.7)] transition-transform duration-200"
           style={{
-            maxWidth: '82%',
-            maxHeight: '82%',
-            width: 'auto',
-            height: 'auto',
-            objectFit: 'contain',
-            imageRendering: 'pixelated',
-            transition: 'transform 0.2s ease, filter 0.2s ease',
-            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-            filter: isHovered
-              ? 'drop-shadow(0 0 20px rgba(0, 255, 102, 0.4)) drop-shadow(0 14px 20px rgba(0, 0, 0, 0.6))'
-              : 'drop-shadow(0 14px 20px rgba(0, 0, 0, 0.6))',
+            transform: isHovered ? 'scale(1.05)' : 'scale(1)'
           }}
         />
 
         {/* Change character button at bottom */}
         {onChangeAgent && (
-          <div style={{ position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20">
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 onChangeAgent();
               }}
-              className="btn-secondary"
-              style={{
-                padding: '7px 16px',
-                fontSize: '11px',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 700,
-                letterSpacing: '0.06em',
-                background: '#18181d',
-                color: '#ffffff',
-                border: '1.5px solid var(--hair-dark)',
-                boxShadow: '2px 2px 0px #000',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                cursor: 'pointer',
-              }}
-              title="Click to pick another unsold agent"
+              className="rounded-full border border-line bg-surface-2/90 backdrop-blur-md px-4 py-1.5 font-mono text-[11px] text-muted hover:text-cream hover:border-line-strong hover:bg-surface-3 transition-colors flex items-center gap-1.5 cursor-pointer shadow-lg"
+              title="Click to cycle agent"
             >
-              <span style={{ fontSize: '12px', color: 'var(--script-green)' }}>↻</span>
-              <span>change</span>
+              <span className="text-mint text-[12px]">↻</span>
+              <span>Change Agent</span>
             </button>
           </div>
         )}

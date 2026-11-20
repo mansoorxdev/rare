@@ -7,11 +7,11 @@ import { getAgentMetadata } from '../../lib/agentMetadata';
 
 export default function TerminalPage() {
   const [lines, setLines] = useState([
-    { type: 'green', text: '========================================================================' },
-    { type: 'green', text: 'RARE PROTOCOL TELEMETRY CONSOLE // SOLANA ANCHOR CPI MAINNET-BETA' },
-    { type: 'green', text: '10,078 TOKEN-BOUND AUTONOMOUS AGENTS // 90% CAPITAL PDA VAULTS' },
-    { type: 'green', text: '========================================================================' },
-    { type: 'info', text: "> Type 'help' to see all commands, or click any shortcut below." },
+    { type: 'mint', text: '========================================================================' },
+    { type: 'mint', text: 'RARE PROTOCOL TELEMETRY CONSOLE // SOLANA ANCHOR CPI MAINNET-BETA' },
+    { type: 'mint', text: '10,078 TOKEN-BOUND AUTONOMOUS AGENTS // 90% CAPITAL PDA VAULTS' },
+    { type: 'mint', text: '========================================================================' },
+    { type: 'dim', text: "> Type 'help' to inspect all commands, or click any command pill below." },
   ]);
   const [input, setInput] = useState('');
   const endRef = useRef(null);
@@ -33,7 +33,7 @@ export default function TerminalPage() {
     switch (cmd) {
       case 'help':
         newLines.push(
-          { type: 'info', text: 'AVAILABLE PROTOCOL COMMANDS:' },
+          { type: 'dim', text: 'AVAILABLE PROTOCOL COMMANDS:' },
           { type: 'text', text: '  status       - View live Solana network & mint telemetry' },
           { type: 'text', text: '  inspect <id> - Inspect traits, PDA vault, and capital for agent ID (1-10078)' },
           { type: 'text', text: '  pda <id>     - Derive token-bound PDA address & seed verification' },
@@ -46,28 +46,28 @@ export default function TerminalPage() {
 
       case 'status':
         newLines.push(
-          { type: 'green', text: '[+] NETWORK: Solana Mainnet-Beta (Anchor CPI v0.30.1)' },
-          { type: 'info', text: '[+] TOTAL SUPPLY: 10,078 Autonomous AI Agents' },
-          { type: 'info', text: '[+] MINT STATUS: Active (Band 1 @ 0.02 SOL)' },
-          { type: 'info', text: '[+] CAPITAL VAULTS: 90% Allocated to Token-Bound PDAs' },
-          { type: 'info', text: '[+] TREASURY: 3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk' }
+          { type: 'mint', text: '[+] NETWORK: Solana Mainnet-Beta (Anchor CPI v0.30.1)' },
+          { type: 'text', text: '[+] TOTAL SUPPLY: 10,078 Autonomous AI Agents' },
+          { type: 'text', text: '[+] MINT STATUS: Active (Band 1 @ 0.020 SOL)' },
+          { type: 'mint', text: '[+] CAPITAL VAULTS: 90% Allocated to Token-Bound PDAs' },
+          { type: 'dim', text: '[+] TREASURY: 3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk' }
         );
         break;
 
       case 'inspect': {
         const idNum = parseInt(arg, 10);
         if (isNaN(idNum) || idNum < 1 || idNum > 10078) {
-          newLines.push({ type: 'error', text: 'ERROR: Please provide a valid Agent ID between 1 and 10078 (e.g. inspect 143)' });
+          newLines.push({ type: 'rose', text: 'ERROR: Please provide a valid Agent ID between 1 and 10078 (e.g. inspect 143)' });
         } else {
           const agent = getAgentMetadata(idNum);
           newLines.push(
-            { type: 'green', text: `[+] AGENT: ${agent.name} (${agent.role})` },
+            { type: 'mint', text: `[+] AGENT: ${agent.name} (${agent.role})` },
             { type: 'text', text: `    Archetype:    ${agent.archetype}` },
             { type: 'text', text: `    Rarity:       ${agent.rarityTier} (${agent.rarityScore}%)` },
             { type: 'text', text: `    Engine:       ${agent.engine}` },
             { type: 'text', text: `    PDA Vault:    ${agent.pdaVault}` },
-            { type: 'green', text: `    PDA Capital:  ${agent.pdaFunding} (90% Allocated)` },
-            { type: 'text', text: `    Mission:      "${agent.personalityPreview}"` }
+            { type: 'mint', text: `    PDA Capital:  ${agent.pdaFunding} (90% Allocated)` },
+            { type: 'dim', text: `    Personality:  "${agent.personalityPreview}"` }
           );
         }
         break;
@@ -76,13 +76,13 @@ export default function TerminalPage() {
       case 'pda': {
         const idNum = parseInt(arg, 10);
         if (isNaN(idNum) || idNum < 1 || idNum > 10078) {
-          newLines.push({ type: 'error', text: 'ERROR: Please provide a valid Agent ID between 1 and 10078 (e.g. pda 143)' });
+          newLines.push({ type: 'rose', text: 'ERROR: Please provide a valid Agent ID between 1 and 10078 (e.g. pda 143)' });
         } else {
           const agent = getAgentMetadata(idNum);
           newLines.push(
-            { type: 'green', text: `[+] SEED: b"agent_vault" + mint_pubkey + #${idNum}` },
-            { type: 'info', text: `[+] DERIVED PDA: ${agent.pdaVault}` },
-            { type: 'text', text: `[+] TOKEN-BOUND CUSTODY: Cryptographically locked to NFT mint account.` }
+            { type: 'mint', text: `[+] SEED: b"agent_vault" + mint_pubkey + #${idNum}` },
+            { type: 'text', text: `[+] DERIVED PDA: ${agent.pdaVault}` },
+            { type: 'dim', text: `[+] TOKEN-BOUND CUSTODY: Cryptographically locked to NFT mint account.` }
           );
         }
         break;
@@ -90,39 +90,40 @@ export default function TerminalPage() {
 
       case 'split':
         newLines.push(
-          { type: 'green', text: '[+] ANCHOR CPI INVARIANT: 9000 BPS (90%) / 1000 BPS (10%)' },
-          { type: 'text', text: '    • 90% of every mint is deposited into the agent\'s PDA wallet.' },
+          { type: 'mint', text: '[+] ANCHOR CPI INVARIANT: 9000 BPS (90%) / 1000 BPS (10%)' },
+          { type: 'text', text: "    • 90% of every mint is deposited into the agent's PDA wallet." },
           { type: 'text', text: '    • 10% is routed to the protocol development treasury.' },
-          { type: 'text', text: '    • Neither team nor minter can drain PDA capital without protocol authority.' }
+          { type: 'dim', text: '    • Neither team nor minter can drain PDA capital without protocol authority.' }
         );
         break;
 
       case 'ladder':
         newLines.push(
-          { type: 'info', text: 'BONDING CURVE TIERS (10 BANDS):' },
-          { type: 'text', text: '  Band 1:  #00001 - #01008  @  0.020 SOL  (PDA: 0.0180 SOL) [ACTIVE]' },
-          { type: 'text', text: '  Band 2:  #01009 - #02016  @  0.026 SOL  (PDA: 0.0234 SOL)' },
-          { type: 'text', text: '  Band 3:  #02017 - #03024  @  0.034 SOL  (PDA: 0.0306 SOL)' },
-          { type: 'text', text: '  Band 4:  #03025 - #04032  @  0.044 SOL  (PDA: 0.0396 SOL)' },
-          { type: 'text', text: '  Band 5:  #04033 - #05040  @  0.057 SOL  (PDA: 0.0513 SOL)' },
-          { type: 'text', text: '  Band 10: #09073 - #10078  @  0.212 SOL  (PDA: 0.1908 SOL)' }
+          { type: 'mint', text: '[+] PROTOCOL PRICE LADDER (10 BANDS):' },
+          { type: 'text', text: '    Band 1  (#00001 - #01008): 0.020 SOL (90% PDA: 0.0180 SOL) - [ACTIVE]' },
+          { type: 'text', text: '    Band 2  (#01009 - #02016): 0.026 SOL (90% PDA: 0.0234 SOL)' },
+          { type: 'text', text: '    Band 3  (#02017 - #03024): 0.034 SOL (90% PDA: 0.0306 SOL)' },
+          { type: 'text', text: '    Band 5  (#04033 - #05040): 0.057 SOL (90% PDA: 0.0513 SOL)' },
+          { type: 'text', text: '    Band 10 (#09073 - #10078): 0.212 SOL (90% PDA: 0.1908 SOL)' }
         );
         break;
 
       case 'treasury':
         newLines.push(
-          { type: 'green', text: '[+] PROTOCOL TREASURY: 3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk' },
-          { type: 'info', text: '[+] SOLSCAN: https://solscan.io/account/3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk' }
+          { type: 'mint', text: '[+] TREASURY PUBKEY: 3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk' },
+          { type: 'text', text: '    Explorer: https://solscan.io/account/3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk' }
         );
         break;
 
       case 'clear':
-        setLines([]);
-        setInput('');
-        return;
+        newLines = [];
+        break;
 
       default:
-        newLines.push({ type: 'error', text: `Command not recognized: '${cmd}'. Type 'help' for available commands.` });
+        newLines.push({
+          type: 'rose',
+          text: `Command not recognized: '${cmd}'. Type 'help' to view available commands.`
+        });
         break;
     }
 
@@ -130,89 +131,101 @@ export default function TerminalPage() {
     setInput('');
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    executeCommand(input);
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      executeCommand(input);
+    }
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
       <Navbar />
 
-      <main className="wrap" style={{ paddingTop: '28px', paddingBottom: '60px' }}>
-        <div style={{ marginBottom: '24px' }}>
-          <div className="ca-pill" style={{ marginBottom: '12px' }}>
-            <span className="pulse" />
-            <span>SOLANA TELEMETRY TERMINAL // LIVE PROTOCOL CONSOLE</span>
+      <main className="mx-auto max-w-[1280px] px-5 pt-28 pb-24 md:px-6">
+        {/* Page Header */}
+        <div className="mx-auto max-w-[800px] text-center mb-12">
+          <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
+            <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
+            <span>INTERACTIVE ANCHOR CPI CONSOLE // MAINNET-BETA</span>
           </div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-0.02em', marginBottom: '8px' }}>
-            Protocol Cyber Console
+
+          <h1 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+            Protocol Telemetry Console
           </h1>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--dim)', maxWidth: '780px' }}>
-            Execute on-chain diagnostic queries, inspect token-bound agent PDAs, and trace Anchor CPI capital routing directly through the terminal.
+          <p className="mt-4 text-[15px] leading-relaxed text-muted">
+            Direct real-time terminal interface to the RARE Protocol on Solana. Query agent state, derive PDA vault seeds, and audit the 90/10 Anchor CPI invariant.
           </p>
         </div>
 
-        {/* Shortcut Action Buttons */}
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
-          {['help', 'status', 'inspect 143', 'pda 143', 'split', 'ladder', 'treasury', 'clear'].map((action) => (
+        {/* Quick Command Shortcut Pills */}
+        <div className="flex items-center justify-center gap-2 flex-wrap mb-8 font-mono text-[11px]">
+          {['status', 'inspect 143', 'pda 143', 'split', 'ladder', 'treasury', 'clear'].map((c) => (
             <button
-              key={action}
+              key={c}
               type="button"
-              onClick={() => executeCommand(action)}
-              className="btn-secondary"
-              style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', padding: '5px 12px' }}
+              onClick={() => executeCommand(c)}
+              className="rounded-full border border-line bg-surface-1 px-3.5 py-1 text-dim hover:text-cream hover:border-line-strong hover:bg-surface-2 transition-colors cursor-pointer"
             >
-              $ {action}
+              $ {c}
             </button>
           ))}
         </div>
 
-        {/* Terminal Screen Frame */}
-        <div style={{ background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.95) 0%, rgba(10, 13, 19, 0.98) 100%)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: 'var(--radius-lg)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 35px -5px rgba(0, 229, 153, 0.15)', overflow: 'hidden' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 18px', background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--dim)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="sa-brand-icon" style={{ width: '18px', height: '18px', padding: '1px', boxShadow: 'none' }}>
-                <img src="/rare-logo-icon.png" alt="RARE" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-              </span>
-              <span style={{ color: 'var(--script-green)', fontWeight: 700 }}>
-                ANCHOR CPI TELEMETRY // TOKEN-BOUND AGENT CONSOLE
-              </span>
+        {/* Monolithic Terminal Container */}
+        <div className="mx-auto max-w-[1000px] rounded-xl border border-line bg-surface-1 overflow-hidden shadow-2xl">
+          {/* Header Bar */}
+          <div className="border-b border-line bg-surface-2/60 px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-rose/60" />
+              <span className="h-2.5 w-2.5 rounded-full bg-peach/60" />
+              <span className="h-2.5 w-2.5 rounded-full bg-mint/60" />
+              <span className="font-mono text-[11px] text-dim ml-2">rare-protocol-cli // terminal</span>
             </div>
-            <span style={{ color: 'var(--dim)' }}>SOLANA MAINNET-BETA</span>
+            <span className="font-mono text-[10px] text-mint">SOLANA ACTIVE</span>
           </div>
 
-          <div style={{ padding: '24px', fontFamily: 'var(--font-mono)', fontSize: '12px', minHeight: '420px', maxHeight: '560px', overflowY: 'auto', lineHeight: 1.6 }}>
-            {lines.map((l, i) => (
-              <div
-                key={i}
-                style={{
-                  color: l.type === 'green' ? 'var(--script-green)' : l.type === 'error' ? '#ef4444' : l.type === 'cmd' ? '#fff' : l.type === 'info' ? '#38bdf8' : '#a1a1aa',
-                  fontWeight: l.type === 'green' || l.type === 'cmd' ? 700 : 400,
-                  marginBottom: '3px'
-                }}
-              >
-                {l.text}
-              </div>
-            ))}
-            <div ref={endRef} />
+          {/* Terminal Output */}
+          <div className="p-6 font-mono text-[12.5px] leading-[1.8] min-h-[420px] max-h-[560px] overflow-y-auto bg-black/80 space-y-1">
+            {lines.map((l, idx) => {
+              let colorClass = 'text-cream/90';
+              if (l.type === 'mint') colorClass = 'text-mint font-medium';
+              if (l.type === 'cmd') colorClass = 'text-peach font-medium';
+              if (l.type === 'dim') colorClass = 'text-dim';
+              if (l.type === 'rose') colorClass = 'text-rose';
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', marginTop: '16px' }}>
-              <span style={{ color: 'var(--script-green)', marginRight: '8px', fontWeight: 700 }}>rare@sol:~$</span>
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type a command (try 'help', 'status', 'inspect 143')..."
-                style={{ flex: 1, background: 'transparent', border: 'none', color: '#fcfaf4', font: 'inherit', outline: 'none' }}
-                autoFocus
-              />
-            </form>
+              return (
+                <div key={idx} className={`${colorClass} whitespace-pre-wrap break-all`}>
+                  {l.text}
+                </div>
+              );
+            })}
+            <div ref={endRef} />
+          </div>
+
+          {/* Input Prompt */}
+          <div className="border-t border-line bg-surface-1 px-4 py-3 flex items-center gap-3">
+            <span className="font-mono text-[12px] text-mint font-medium shrink-0">rare@sol:~$</span>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Type command (e.g. status, inspect 143, split) and press Enter..."
+              className="w-full bg-transparent font-mono text-[12.5px] text-cream placeholder:text-dim/60 focus:outline-none"
+              autoFocus
+            />
+            <button
+              type="button"
+              onClick={() => executeCommand(input)}
+              className="rounded-md border border-line bg-surface-2 px-3 py-1 font-mono text-[11px] text-dim hover:text-cream hover:border-line-strong transition-colors cursor-pointer shrink-0"
+            >
+              Run
+            </button>
           </div>
         </div>
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }

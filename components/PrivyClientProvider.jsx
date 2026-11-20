@@ -14,7 +14,7 @@ export default function PrivyClientProvider({ children }) {
       config={{
         appearance: {
           theme: 'dark',
-          accentColor: '#00ff66',
+          accentColor: '#00E599',
           logo: 'https://rare-puce.vercel.app/rare-logo-icon.png',
           showWalletLoginFirst: true,
           walletChainType: 'ethereum-and-solana',

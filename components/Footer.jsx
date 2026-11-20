@@ -45,8 +45,9 @@ export default function Footer() {
           <div>
             <h3 className="text-[13px] font-medium text-cream tracking-wide">Developers</h3>
             <ul className="mt-3 space-y-2 text-[13px]">
+              <li><Link className="text-dim hover:text-cream transition-colors" href="/terminal">Telemetry Terminal</Link></li>
+              <li><Link className="text-dim hover:text-cream transition-colors" href="/preview">Pixel NFT Explorer</Link></li>
               <li><a className="text-dim hover:text-cream transition-colors" href="/api/agents" target="_blank" rel="noreferrer">Agent API JSON</a></li>
-              <li><a className="text-dim hover:text-cream transition-colors" href="https://github.com" target="_blank" rel="noreferrer">Anchor Smart Contract</a></li>
               <li><Link className="text-dim hover:text-cream transition-colors" href="/specs">PDA Program IDL</Link></li>
             </ul>
           </div>

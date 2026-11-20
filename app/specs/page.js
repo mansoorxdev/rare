@@ -8,149 +8,132 @@ export default function SpecsPage() {
   const treasury = '3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk';
 
   return (
-    <>
+    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
       <Navbar />
 
-      <main className="wrap" style={{ paddingTop: '28px', paddingBottom: '60px' }}>
-        {/* Header */}
-        <div style={{ marginBottom: '32px' }}>
-          <div className="ca-pill" style={{ marginBottom: '12px' }}>
-            <span className="pulse" />
+      <main className="mx-auto max-w-[1280px] px-5 pt-28 pb-24 md:px-6">
+        {/* Page Header */}
+        <div className="mx-auto max-w-[800px] text-center mb-14">
+          <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
+            <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
             <span>SOLANA ANCHOR CPI ARCHITECTURE // SPEC v1.0.4</span>
           </div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-0.02em', marginBottom: '8px' }}>
+
+          <h1 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
             Protocol Specifications &amp; PDA Architecture
           </h1>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--dim)', maxWidth: '780px' }}>
-            Technical deep-dive into the Solana Anchor program, Program Derived Address (PDA) seed derivation, 90/10 capital routing CPI, and token-bound account security invariants.
+          <p className="mt-4 text-[15px] leading-relaxed text-muted">
+            Technical specifications for the Solana Anchor program, Program Derived Address (PDA) seed derivation, 90/10 capital routing CPI, and token-bound account security invariants.
           </p>
         </div>
 
-        {/* 4-Box Quick Verification Summary */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '36px' }}>
-          <div className="stat-card">
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>FRAMEWORK</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, marginTop: '4px', color: '#ffffff' }}>Anchor 0.30.1</div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Solana Rust Framework</span>
+        {/* 4-Box Summary Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+            <span className="font-mono text-[10px] text-dim uppercase tracking-wider block">FRAMEWORK</span>
+            <div className="font-serif text-[22px] text-cream font-medium mt-1">Anchor 0.30.1</div>
+            <span className="font-mono text-[11px] text-mint mt-1 block">Solana Rust Framework</span>
           </div>
 
-          <div className="stat-card">
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>ON-CHAIN SPLIT</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, marginTop: '4px', color: '#ffffff' }}>90% PDA / 10% Protocol</div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Hardcoded Invariant</span>
+          <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+            <span className="font-mono text-[10px] text-dim uppercase tracking-wider block">ON-CHAIN SPLIT</span>
+            <div className="font-serif text-[22px] text-cream font-medium mt-1">90% PDA / 10% Protocol</div>
+            <span className="font-mono text-[11px] text-mint mt-1 block">Hardcoded Invariant</span>
           </div>
 
-          <div className="stat-card">
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>PDA CUSTODY</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, marginTop: '4px', color: '#ffffff' }}>Token-Bound Anchor CPI</div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Transfers on Secondary</span>
+          <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+            <span className="font-mono text-[10px] text-dim uppercase tracking-wider block">PDA CUSTODY</span>
+            <div className="font-serif text-[22px] text-cream font-medium mt-1">Token-Bound Anchor CPI</div>
+            <span className="font-mono text-[11px] text-mint mt-1 block">Transfers on Secondary</span>
           </div>
 
-          <div className="stat-card">
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)', fontWeight: 700, textTransform: 'uppercase' }}>TOTAL AGENTS</span>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, marginTop: '4px', color: '#ffffff' }}>10,078 Genesis Units</div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)' }}>Immutable Cap</span>
+          <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+            <span className="font-mono text-[10px] text-dim uppercase tracking-wider block">TOTAL AGENTS</span>
+            <div className="font-serif text-[22px] text-cream font-medium mt-1">10,078 Genesis Units</div>
+            <span className="font-mono text-[11px] text-mint mt-1 block">Immutable Cap</span>
           </div>
         </div>
 
-        {/* Detailed Spec Rows */}
-        <div className="spec-box" style={{ marginBottom: '40px' }}>
-          <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--script-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 700, textTransform: 'uppercase', color: '#ffffff' }}>
+        {/* Detailed Spec Container */}
+        <div className="rounded-xl border border-line bg-surface-1 p-6 md:p-8 mb-12 shadow-2xl">
+          <div className="border-b border-line pb-4 mb-6">
+            <h2 className="font-serif text-[22px] text-cream font-medium">
               Anchor Instruction &amp; Seed Definitions
-            </h3>
+            </h2>
+            <p className="text-[13px] text-muted">Cryptographic parameters governing vault creation and authority.</p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
-            <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px' }}>
-              <div style={{ color: 'var(--dim)', fontSize: '10px', fontWeight: 700 }}>PROGRAM TREASURY PUBKEY</div>
-              <code style={{ fontSize: '13px', fontWeight: 700, color: 'var(--script-green)' }}>{treasury}</code>
+          <div className="space-y-6 font-mono text-[12.5px]">
+            <div className="border-b border-line pb-5">
+              <span className="text-[11px] text-dim uppercase block mb-1">PROGRAM TREASURY PUBKEY</span>
+              <code className="text-[13px] text-mint select-all">{treasury}</code>
             </div>
 
-            <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px' }}>
-              <div style={{ color: 'var(--dim)', fontSize: '10px', fontWeight: 700 }}>PDA VAULT SEED DERIVATION</div>
-              <code style={{ fontSize: '12px', background: 'rgba(0, 0, 0, 0.5)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--hair)', display: 'block', marginTop: '6px', color: 'var(--script-green)' }}>
-                Pubkey::find_program_address(&amp;[b&quot;agent_vault&quot;, mint.key().as_ref(), &amp;agent_id.to_le_bytes()], &amp;program_id)
-              </code>
+            <div className="border-b border-line pb-5">
+              <span className="text-[11px] text-dim uppercase block mb-2">PDA VAULT SEED DERIVATION</span>
+              <pre className="overflow-x-auto rounded-lg border border-line bg-black/60 p-4 text-[12px] text-cream/90 leading-relaxed">
+                <code>Pubkey::find_program_address(&amp;[b"agent_vault", mint.key().as_ref(), &amp;agent_id.to_le_bytes()], &amp;program_id)</code>
+              </pre>
             </div>
 
-            <div style={{ borderBottom: '1px solid var(--hair)', paddingBottom: '12px' }}>
-              <div style={{ color: 'var(--dim)', fontSize: '10px', fontWeight: 700 }}>CPI CAPITAL ROUTING FLOW</div>
-              <p style={{ marginTop: '4px', lineHeight: 1.6, color: 'var(--ink-soft)' }}>
-                Upon calling <code>mint_agent(ctx, agent_id)</code>, the Anchor program executes two atomic <code>system_program::transfer</code> Cross-Program Invocations in the same transaction block:
-                <br />
-                1. <b>90% (9,000 BPS)</b>: Transferred from minter wallet directly to the newly derived <code>agent_vault</code> PDA.
-                <br />
-                2. <b>10% (1,000 BPS)</b>: Transferred from minter wallet directly to the protocol treasury address.
+            <div className="border-b border-line pb-5">
+              <span className="text-[11px] text-dim uppercase block mb-2">CPI CAPITAL ROUTING FLOW</span>
+              <p className="text-[13px] text-muted font-sans leading-relaxed">
+                Upon calling <code className="font-mono text-cream">mint_agent(ctx, agent_id)</code>, the Anchor program executes two atomic <code className="font-mono text-cream">system_program::transfer</code> Cross-Program Invocations in the same transaction block:
               </p>
+              <ul className="mt-3 space-y-1.5 list-disc list-inside text-[13px] text-muted font-sans">
+                <li><strong className="text-mint font-medium font-mono">90% (9,000 BPS):</strong> Transferred from minter wallet directly to the newly derived <code className="font-mono text-cream">agent_vault</code> PDA.</li>
+                <li><strong className="text-peach font-medium font-mono">10% (1,000 BPS):</strong> Transferred from minter wallet directly to the protocol treasury address.</li>
+              </ul>
             </div>
 
             <div>
-              <div style={{ color: 'var(--dim)', fontSize: '10px', fontWeight: 700 }}>SECONDARY MARKET RETENTION</div>
-              <p style={{ marginTop: '4px', lineHeight: 1.6, color: 'var(--ink-soft)' }}>
-                The agent&apos;s PDA vault authority is bound to the owner of the NFT. If the NFT is listed or sold on Magic Eden or Tensor, custody of the PDA vault and its autonomous trading capital transfers to the buyer without withdrawing any collateral.
+              <span className="text-[11px] text-dim uppercase block mb-2">SECONDARY MARKET RETENTION</span>
+              <p className="text-[13px] text-muted font-sans leading-relaxed">
+                The agent's PDA vault authority is bound to the owner of the NFT. If the NFT is listed or sold on Magic Eden or Tensor, custody of the PDA vault and its autonomous trading capital transfers to the buyer without withdrawing any collateral.
               </p>
             </div>
           </div>
         </div>
 
         {/* Real Smart Contract Code Snippet */}
-        <div style={{ background: 'linear-gradient(180deg, rgba(16, 21, 30, 0.95) 0%, rgba(10, 13, 19, 0.98) 100%)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: 'var(--radius-lg)', boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px -5px rgba(0, 229, 153, 0.15)', overflow: 'hidden' }}>
-          <div style={{ padding: '12px 18px', background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--script-green)', fontWeight: 700 }}>
-              anchor/programs/rare_protocol/src/lib.rs (RUST)
-            </span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--dim)' }}>
-              SOLANA ANCHOR CPI
+        <div className="rounded-xl border border-line bg-black overflow-hidden shadow-2xl">
+          <div className="border-b border-line bg-surface-1/60 px-5 py-3 flex items-center justify-between">
+            <span className="font-mono text-[12px] text-cream font-medium">rare_protocol / src / lib.rs</span>
+            <span className="font-mono text-[11px] text-mint flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-mint" />
+              SOLANA MAINNET-BETA
             </span>
           </div>
 
-          <pre style={{ padding: '20px', fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#e4e4e7', overflowX: 'auto', lineHeight: 1.6 }}>
-{`// Mint an Autonomous Agent NFT with 90/10 On-Chain Capital Split
-pub fn mint_agent(ctx: Context<MintAgent>, agent_id: u32) -> Result<()> {
-    let config = &mut ctx.accounts.config;
-    require!(!config.is_paused, RareError::MintingPaused);
-    require!(config.total_minted < config.total_supply, RareError::MaxSupplyReached);
-    require!(agent_id >= 1 && agent_id <= config.total_supply, RareError::InvalidRareId);
-
-    let price = config.base_price_lamports;
-
-    // Calculate 90/10 Split
-    let agent_share = (price as u128 * config.agent_split_bps as u128 / 10000) as u64;
-    let treasury_share = price.checked_sub(agent_share).unwrap();
-
-    // 1. CPI Transfer 90% into Agent Token-Bound PDA Vault
-    transfer(
-        CpiContext::new(
-            ctx.accounts.system_program.to_account_info(),
-            Transfer {
-                from: ctx.accounts.minter.to_account_info(),
-                to: ctx.accounts.agent_vault.to_account_info(),
-            },
-        ),
-        agent_share,
-    )?;
-
-    // 2. CPI Transfer 10% into Protocol Treasury
-    transfer(
-        CpiContext::new(
-            ctx.accounts.system_program.to_account_info(),
-            Transfer {
-                from: ctx.accounts.minter.to_account_info(),
-                to: ctx.accounts.treasury.to_account_info(),
-            },
-        ),
-        treasury_share,
-    )?;
-
-    Ok(())
-}`}
+          <pre className="overflow-x-auto p-5 font-mono text-[12.5px] leading-[1.8] text-cream/90">
+            <code>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">01</span><span className="text-violet">pub fn</span> <span className="text-cream">mint_agent</span>(ctx: Context&lt;MintAgent&gt;, agent_id: u16) -&gt; Result&lt;()&gt; &#123;</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">02</span>    <span className="text-violet">let</span> mint_price = get_band_price(agent_id);</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">03</span>    <span className="text-violet">let</span> pda_deposit = mint_price * <span className="text-mint">90</span> / <span className="text-mint">100</span>;</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">04</span>    <span className="text-violet">let</span> treasury_deposit = mint_price - pda_deposit;</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">05</span></span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">06</span>    <span className="text-dim">// 1. Atomic Anchor CPI transfer to Agent Token-Bound PDA Vault</span></span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">07</span>    anchor_lang::solana_program::program::invoke(</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">08</span>        &amp;system_instruction::transfer(&amp;ctx.accounts.payer.key(), &amp;ctx.accounts.agent_vault.key(), pda_deposit),</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">09</span>        &amp;[ctx.accounts.payer.to_account_info(), ctx.accounts.agent_vault.to_account_info()],</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">10</span>    )?;</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">11</span></span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">12</span>    <span className="text-dim">// 2. Protocol operations split (10%)</span></span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">13</span>    anchor_lang::solana_program::program::invoke(</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">14</span>        &amp;system_instruction::transfer(&amp;ctx.accounts.payer.key(), &amp;ctx.accounts.treasury.key(), treasury_deposit),</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">15</span>        &amp;[ctx.accounts.payer.to_account_info(), ctx.accounts.treasury.to_account_info()],</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">16</span>    )?;</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">17</span></span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">18</span>    msg!(<span className="text-rose">"Agent #&#123;&#125; minted with 90% capital CPI vault initialization"</span>, agent_id);</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">19</span>    Ok(())</span>
+              <span className="block whitespace-pre"><span className="text-dim select-none mr-4">20</span>&#125;</span>
+            </code>
           </pre>
         </div>
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }

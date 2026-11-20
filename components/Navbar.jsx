@@ -20,6 +20,7 @@ export default function Navbar() {
     { label: 'Swarm Roster', href: '/roster' },
     { label: 'Price Ladder', href: '/ladder' },
     { label: 'PDA Specs', href: '/specs' },
+    { label: 'Terminal', href: '/terminal' },
     { label: 'Whitepaper', href: '/whitepaper' },
   ];
 

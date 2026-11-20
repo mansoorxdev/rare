@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 export default function PreviewPage() {
   const [searchId, setSearchId] = useState('');
@@ -17,146 +19,111 @@ export default function PreviewPage() {
   const isValidSearch = searchedIdNum >= 1 && searchedIdNum <= totalNFTs;
 
   return (
-    <div style={{ background: '#0a0e17', minHeight: '100vh', color: '#fff', fontFamily: 'monospace', padding: '24px' }}>
-      <header style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h1 style={{ color: '#00ff66', fontSize: '2rem', marginBottom: '8px', textShadow: '0 0 16px rgba(0,255,102,0.4)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-          10,078 RARE Pixel NFTs Explorer
-        </h1>
-        <p style={{ color: '#94a3b8', fontSize: '0.95rem', maxWidth: '750px', margin: '0 auto' }}>
-          All 10,078 Unique 24×24 Vector Pixel Art NFTs are generated & live! Native razor-sharp SVGs with Solana Token-Bound PDA Wallets.
-        </p>
+    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
+      <Navbar />
 
-        {/* Search bar */}
-        <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
-          <input
-            type="number"
-            min="1"
-            max="10078"
-            placeholder="Jump to ID (1 - 10078)..."
-            value={searchId}
-            onChange={(e) => setSearchId(e.target.value)}
-            style={{
-              padding: '10px 16px',
-              borderRadius: '8px',
-              border: '1px solid #00ff6655',
-              background: '#111827',
-              color: '#fff',
-              fontSize: '1rem',
-              width: '240px',
-              outline: 'none'
-            }}
-          />
-          {isValidSearch && (
-            <button
-              onClick={() => {
-                setCurrentPage(Math.ceil(searchedIdNum / pageSize));
-              }}
-              style={{
-                padding: '10px 18px',
-                borderRadius: '8px',
-                border: 'none',
-                background: '#00ff66',
-                color: '#000',
-                fontWeight: 'bold',
-                cursor: 'pointer'
-              }}
-            >
-              Go to #{String(searchedIdNum).padStart(5, '0')}
-            </button>
-          )}
-        </div>
-      </header>
+      <main className="mx-auto max-w-[1280px] px-5 pt-28 pb-24 md:px-6">
+        {/* Header */}
+        <div className="mx-auto max-w-[800px] text-center mb-12">
+          <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
+            <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
+            <span>10,078 UNIQUE ON-CHAIN VECTORS // 24x24 ASSETS</span>
+          </div>
 
-      {/* Featured Search Result if active */}
-      {isValidSearch && (
-        <div style={{ maxWidth: '380px', margin: '0 auto 40px', background: '#111827', border: '2px solid #00ff66', borderRadius: '16px', padding: '20px', textAlign: 'center' }}>
-          <span style={{ color: '#00ff66', fontSize: '1.1rem', fontWeight: 'bold' }}>
-            Rare #{String(searchedIdNum).padStart(5, '0')}
-          </span>
-          <img
-            src={`/nfts/${searchedIdNum}.svg`}
-            alt={`NFT #${searchedIdNum}`}
-            style={{ width: '100%', aspectRatio: '1', borderRadius: '12px', marginTop: '12px', imageRendering: 'pixelated' }}
-          />
-        </div>
-      )}
+          <h1 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+            Pixel NFT Explorer
+          </h1>
+          <p className="mt-4 text-[15px] leading-relaxed text-muted">
+            All 10,078 unique vector pixel art NFTs inscribed on Solana. Every asset is paired with its autonomous token-bound PDA vault.
+          </p>
 
-      {/* Gallery Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: '16px', maxWidth: '1300px', margin: '0 auto' }}>
-        {currentNFTs.map((id) => (
-          <div
-            key={id}
-            style={{
-              background: '#111827',
-              border: '1px solid #1f2937',
-              borderRadius: '12px',
-              padding: '12px',
-              textAlign: 'center',
-              transition: 'transform 0.15s ease, border-color 0.15s ease'
-            }}
-          >
-            <img
-              src={`/nfts/${id}.svg`}
-              alt={`Rare #${id}`}
-              style={{ width: '100%', aspectRatio: '1', borderRadius: '8px', imageRendering: 'pixelated', display: 'block', marginBottom: '8px' }}
+          {/* Search bar */}
+          <div className="mt-8 flex items-center justify-center gap-2 max-w-[360px] mx-auto">
+            <input
+              type="number"
+              min="1"
+              max="10078"
+              placeholder="Jump to ID (1 - 10078)..."
+              value={searchId}
+              onChange={(e) => setSearchId(e.target.value)}
+              className="w-full rounded-lg border border-line bg-surface-1 px-3.5 py-2 font-mono text-[12px] text-cream placeholder:text-dim focus:border-cream focus:outline-none transition-colors"
             />
-            <div style={{ fontSize: '0.85rem', color: '#00ff66', fontWeight: 'bold' }}>
-              Rare #{String(id).padStart(5, '0')}
-            </div>
-            <div style={{ fontSize: '0.7rem', color: '#64748b' }}>
-              Solana Agent
+            {isValidSearch && (
+              <button
+                type="button"
+                onClick={() => setCurrentPage(Math.ceil(searchedIdNum / pageSize))}
+                className="rounded-lg bg-cream px-4 py-2 font-mono text-[12px] font-medium text-black hover:bg-cream/90 transition-colors shrink-0 cursor-pointer"
+              >
+                Go #{searchedIdNum}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Featured Search Result if active */}
+        {isValidSearch && (
+          <div className="max-w-[320px] mx-auto mb-12 rounded-xl border border-mint/40 bg-surface-1 p-5 text-center shadow-2xl">
+            <span className="font-mono text-[12px] text-mint font-medium">
+              Rare #{String(searchedIdNum).padStart(5, '0')}
+            </span>
+            <div className="aspect-square w-full rounded-lg bg-black border border-line p-4 my-3 flex items-center justify-center">
+              <img
+                src={`/nfts/${searchedIdNum}.svg`}
+                alt={`NFT #${searchedIdNum}`}
+                className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+              />
             </div>
           </div>
-        ))}
-      </div>
+        )}
 
-      {/* Pagination Controls */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '14px', marginTop: '36px' }}>
-        <button
-          onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-          disabled={currentPage === 1}
-          style={{
-            padding: '8px 16px',
-            borderRadius: '6px',
-            background: currentPage === 1 ? '#1f2937' : '#00aa44',
-            color: '#fff',
-            border: 'none',
-            cursor: currentPage === 1 ? 'not-allowed' : 'pointer'
-          }}
-        >
-          ◀ Prev
-        </button>
+        {/* 24-Card Gallery Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-14">
+          {currentNFTs.map((id) => (
+            <div
+              key={id}
+              className="group overflow-hidden rounded-lg border border-line bg-surface-1 p-3 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2 text-center"
+            >
+              <div className="aspect-square w-full rounded-md bg-black/60 border border-line/40 p-2 flex items-center justify-center mb-2">
+                <img
+                  src={`/nfts/${id}.svg`}
+                  alt={`Rare #${id}`}
+                  className="w-full h-full object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform"
+                />
+              </div>
+              <span className="font-mono text-[11px] text-dim group-hover:text-cream transition-colors">
+                #{String(id).padStart(5, '0')}
+              </span>
+            </div>
+          ))}
+        </div>
 
-        <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-          Page <strong style={{ color: '#00ff66' }}>{currentPage}</strong> of {totalPages}
-        </span>
+        {/* Pagination Bar */}
+        <div className="flex items-center justify-center gap-4 font-mono text-[12px]">
+          <button
+            type="button"
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="rounded-full border border-line bg-surface-1 px-4 py-1.5 text-muted hover:text-cream hover:border-line-strong transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+          >
+            ← Previous
+          </button>
 
-        <button
-          onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-          disabled={currentPage === totalPages}
-          style={{
-            padding: '8px 16px',
-            borderRadius: '6px',
-            background: currentPage === totalPages ? '#1f2937' : '#00aa44',
-            color: '#fff',
-            border: 'none',
-            cursor: currentPage === totalPages ? 'not-allowed' : 'pointer'
-          }}
-        >
-          Next ▶
-        </button>
-      </div>
+          <span className="text-dim">
+            Page <span className="text-cream font-medium">{currentPage}</span> of <span className="text-cream">{totalPages}</span>
+          </span>
 
-      <div style={{ maxWidth: '850px', margin: '48px auto 0', background: '#111827', border: '1px solid #00ff6633', borderRadius: '12px', padding: '20px' }}>
-        <h3 style={{ color: '#00ff66', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Collection Stats</h3>
-        <p style={{ color: '#cbd5e1', fontSize: '0.85rem', lineHeight: '1.6' }}>
-          • Total Generated: <strong>10,078 / 10,078</strong> (100% Unique, 0 Duplicates)<br />
-          • Format: Native 24×24 Vector SVG (Zero blur, infinite resolution)<br />
-          • Location: <code>public/nfts/</code> (1.svg to 10078.svg)<br />
-          • Metaplex Metadata: <code>data/metadata/</code> (1.json to 10078.json)<br />
-          • Master Audit Manifest: <code>data/collection_manifest.json</code> &amp; <code>data/wallets_audit.csv</code>
-        </p>
-      </div>
+          <button
+            type="button"
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="rounded-full border border-line bg-surface-1 px-4 py-1.5 text-muted hover:text-cream hover:border-line-strong transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+          >
+            Next →
+          </button>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }
