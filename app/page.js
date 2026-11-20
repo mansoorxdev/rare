@@ -162,9 +162,8 @@ export default function HomePage() {
                       key={tab}
                       type="button"
                       onClick={() => setHeroTab(tab)}
-                      className={`border-b pb-1 font-medium capitalize transition-colors ${
-                        isActive ? 'border-cream text-cream' : 'border-transparent text-dim hover:text-muted'
-                      }`}
+                      className={`border-b pb-1 font-medium capitalize transition-colors ${isActive ? 'border-cream text-cream' : 'border-transparent text-dim hover:text-muted'
+                        }`}
                     >
                       {tab}
                     </button>
@@ -314,27 +313,24 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setCodeTab('json')}
-                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${
-                        codeTab === 'json' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
-                      }`}
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${codeTab === 'json' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
+                        }`}
                     >
                       agent_143.json
                     </button>
                     <button
                       type="button"
                       onClick={() => setCodeTab('rust')}
-                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${
-                        codeTab === 'rust' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
-                      }`}
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${codeTab === 'rust' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
+                        }`}
                     >
                       pda_vault.rs
                     </button>
                     <button
                       type="button"
                       onClick={() => setCodeTab('ts')}
-                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${
-                        codeTab === 'ts' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
-                      }`}
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${codeTab === 'ts' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
+                        }`}
                     >
                       cpi_route.ts
                     </button>
@@ -403,18 +399,16 @@ export default function HomePage() {
                         <button
                           type="button"
                           onClick={() => setHumanView(true)}
-                          className={`rounded px-2.5 py-1 font-medium transition-colors cursor-pointer ${
-                            humanView ? 'bg-cream text-black' : 'text-dim hover:text-cream'
-                          }`}
+                          className={`rounded px-2.5 py-1 font-medium transition-colors cursor-pointer ${humanView ? 'bg-cream text-black' : 'text-dim hover:text-cream'
+                            }`}
                         >
                           Human
                         </button>
                         <button
                           type="button"
                           onClick={() => setHumanView(false)}
-                          className={`rounded px-2.5 py-1 font-medium transition-colors cursor-pointer ${
-                            !humanView ? 'bg-cream text-black' : 'text-dim hover:text-cream'
-                          }`}
+                          className={`rounded px-2.5 py-1 font-medium transition-colors cursor-pointer ${!humanView ? 'bg-cream text-black' : 'text-dim hover:text-cream'
+                            }`}
                         >
                           Machine
                         </button>
@@ -517,9 +511,8 @@ export default function HomePage() {
                       key={step.title}
                       type="button"
                       onClick={() => setTranscriptTab(idx)}
-                      className={`relative border-line px-4 py-3 text-left font-mono text-[12px] transition-colors border-r last:border-r-0 cursor-pointer ${
-                        isActive ? 'bg-surface-2 text-cream font-medium' : 'text-muted hover:bg-surface-1 hover:text-cream'
-                      }`}
+                      className={`relative border-line px-4 py-3 text-left font-mono text-[12px] transition-colors border-r last:border-r-0 cursor-pointer ${isActive ? 'bg-surface-2 text-cream font-medium' : 'text-muted hover:bg-surface-1 hover:text-cream'
+                        }`}
                     >
                       <span className="block">{step.title}</span>
                       <span className="block text-[11px] text-dim">{step.subtitle}</span>
@@ -710,8 +703,14 @@ export default function HomePage() {
           AGENT INSPECT MODAL (ZERO EMOJIS, HAUTE COUTURE LUXURY DESIGN)
           ========================================================================= */}
       {inspectedAgent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[560px] overflow-hidden rounded-xl border border-line bg-surface-1 p-6 shadow-2xl">
+        <div
+          className="agent-modal-backdrop"
+          onClick={() => setInspectedAgent(null)}
+        >
+          <div
+            className="agent-modal-card"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close button */}
             <button
               type="button"
@@ -724,18 +723,18 @@ export default function HomePage() {
               </svg>
             </button>
 
-            <div className="flex flex-col sm:flex-row gap-6">
+            <div className="agent-modal-layout">
               {/* Agent Avatar */}
-              <div className="w-full sm:w-[180px] aspect-square rounded-lg border border-line bg-black p-4 flex items-center justify-center shrink-0">
+              <div className="agent-modal-avatar-box">
                 <img
                   src={`/nfts/${inspectedAgent.id}.svg`}
                   alt={inspectedAgent.name}
-                  className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+                  className="pixel-avatar"
                 />
               </div>
 
               {/* Details */}
-              <div className="flex-1 min-w-0">
+              <div className="agent-modal-info">
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-[11px] text-dim border border-line px-1.5 rounded">
                     #{String(inspectedAgent.id).padStart(5, '0')}
@@ -794,8 +793,14 @@ export default function HomePage() {
           MINT CELEBRATION MODAL (ZERO EMOJIS, SLEEK ON-CHAIN RECEIPT)
           ========================================================================= */}
       {mintCelebration && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-          <div className="relative w-full max-w-[500px] overflow-hidden rounded-xl border border-line bg-surface-1 p-6 shadow-2xl text-center">
+        <div
+          className="agent-modal-backdrop"
+          onClick={() => setMintCelebration(null)}
+        >
+          <div
+            className="agent-celebration-card"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Starburst SVG icon */}
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-mint/30 bg-mint/10 text-mint">
               <svg viewBox="-284 -138 433 277" className="h-4 w-auto" aria-hidden="true" fill="currentColor">

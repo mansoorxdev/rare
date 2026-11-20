@@ -116,11 +116,10 @@ export default function RosterPage() {
                   key={tier}
                   type="button"
                   onClick={() => { setRarityFilter(tier); setPage(1); }}
-                  className={`rounded-full px-3.5 py-1 text-[12px] font-mono capitalize transition-colors cursor-pointer ${
-                    isActive
+                  className={`rounded-full px-3.5 py-1 text-[12px] font-mono capitalize transition-colors cursor-pointer ${isActive
                       ? 'bg-cream text-black font-medium'
                       : 'border border-line bg-surface-2 text-dim hover:text-cream hover:border-line-strong'
-                  }`}
+                    }`}
                 >
                   {tier}
                 </button>
@@ -229,8 +228,14 @@ export default function RosterPage() {
 
       {/* Inspected Agent Modal (Zero emojis, haute-couture) */}
       {inspectedAgent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="relative w-full max-w-[560px] overflow-hidden rounded-xl border border-line bg-surface-1 p-6 shadow-2xl">
+        <div
+          className="agent-modal-backdrop"
+          onClick={() => setInspectedAgent(null)}
+        >
+          <div
+            className="agent-modal-card"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               onClick={() => setInspectedAgent(null)}
@@ -242,16 +247,16 @@ export default function RosterPage() {
               </svg>
             </button>
 
-            <div className="flex flex-col sm:flex-row gap-6">
-              <div className="w-full sm:w-[180px] aspect-square rounded-lg border border-line bg-black p-4 flex items-center justify-center shrink-0">
+            <div className="agent-modal-layout">
+              <div className="agent-modal-avatar-box">
                 <img
                   src={`/nfts/${inspectedAgent.id}.svg`}
                   alt={inspectedAgent.name}
-                  className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+                  className="pixel-avatar"
                 />
               </div>
 
-              <div className="flex-1 min-w-0">
+              <div className="agent-modal-info">
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-[11px] text-dim border border-line px-1.5 rounded">
                     #{String(inspectedAgent.id).padStart(5, '0')}
@@ -306,8 +311,14 @@ export default function RosterPage() {
 
       {/* Mint Celebration Modal */}
       {mintCelebration && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-          <div className="relative w-full max-w-[480px] overflow-hidden rounded-xl border border-line bg-surface-1 p-6 shadow-2xl text-center">
+        <div
+          className="agent-modal-backdrop"
+          onClick={() => setMintCelebration(null)}
+        >
+          <div
+            className="agent-celebration-card"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h3 className="font-serif text-[28px] text-cream font-medium">Agent Activated</h3>
             <p className="mt-1 text-[14px] text-muted">{mintCelebration.name} is now live on Solana.</p>
 

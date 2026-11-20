@@ -77,11 +77,10 @@ export default function LadderPage() {
                     key={num}
                     type="button"
                     onClick={() => setCalcQty(num)}
-                    className={`rounded-full px-3.5 py-1 text-[12px] font-mono transition-colors cursor-pointer ${
-                      calcQty === num
+                    className={`rounded-full px-3.5 py-1 text-[12px] font-mono transition-colors cursor-pointer ${calcQty === num
                         ? 'bg-cream text-black font-medium'
                         : 'border border-line bg-surface-2 text-dim hover:text-cream hover:border-line-strong'
-                    }`}
+                      }`}
                   >
                     {num}
                   </button>
@@ -131,9 +130,8 @@ export default function LadderPage() {
                   return (
                     <tr
                       key={item.band}
-                      className={`transition-colors ${
-                        isCurrent ? 'bg-mint/5 hover:bg-mint/10' : 'hover:bg-surface-2'
-                      }`}
+                      className={`transition-colors ${isCurrent ? 'bg-mint/5 hover:bg-mint/10' : 'hover:bg-surface-2'
+                        }`}
                     >
                       <td className="px-6 py-3.5">
                         <span className={`font-medium ${isCurrent ? 'text-mint' : 'text-cream'}`}>
