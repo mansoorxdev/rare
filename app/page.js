@@ -132,8 +132,8 @@ export default function HomePage() {
           <ZauberHeroCanvas tickerValue={`${activePrice.toFixed(3)} SOL`} />
 
           {/* Hero Content Overlay with Guaranteed Safe Spacing Below Fixed Navbar */}
-          <div className="relative z-10 mx-auto max-w-[1280px] min-h-[max(680px,100dvh)] px-5 md:px-6 flex flex-col justify-center pt-32 pb-16 md:pt-40 md:pb-24">
-            <div className="max-w-[480px]">
+          <div className="relative z-10 mx-auto max-w-[1280px] px-5 md:px-6 pt-36 pb-20 sm:pt-44 md:pt-48 md:pb-28 lg:pt-52">
+            <div className="max-w-[500px]">
               {/* Luxury Serif Title with Starburst Icon */}
               <h1 className="text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
                 <span className="inline-flex items-center gap-[0.45em]">
@@ -580,8 +580,8 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* 4 Elegant Glass Cards */}
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+          {/* 4 Compact, Elegant Agent Cards */}
+          <div className="mt-8 home-swarm-grid">
             {featuredAgents.map((agent) => (
               <div
                 key={agent.id}
@@ -589,43 +589,49 @@ export default function HomePage() {
                 className="group cursor-pointer overflow-hidden rounded-lg border border-line bg-surface-1 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2"
               >
                 {/* Visual Avatar Container */}
-                <div className="relative aspect-[4/5] overflow-hidden border-b border-line bg-[#080709] flex items-center justify-center p-6">
+                <div className="roster-card-box">
                   {/* Subtle Gradient Halo */}
                   <div
-                    className="absolute inset-0 opacity-25 group-hover:opacity-40 transition-opacity"
+                    className="absolute inset-0 opacity-20 group-hover:opacity-35 transition-opacity"
                     style={{
                       background: `radial-gradient(circle at 50% 50%, ${agent.color || '#00E599'} 0%, transparent 70%)`
                     }}
                   />
                   {/* Agent NFT SVG Avatar */}
-                  <img
-                    src={`/nfts/${agent.id}.svg`}
-                    alt={agent.name}
-                    className="relative z-10 w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-200"
-                  />
-                  <span className="absolute top-2.5 left-2.5 rounded bg-black/60 px-2 py-0.5 font-mono text-[10px] text-dim border border-line">
+                  <div className="roster-card-frame">
+                    <img
+                      src={`/nfts/${agent.id}.svg`}
+                      alt={agent.name}
+                      className="pixel-avatar"
+                      loading="lazy"
+                    />
+                  </div>
+                  <span className="absolute top-2 left-2 z-20 rounded bg-black/75 px-1.5 py-0.5 font-mono text-[9px] text-dim border border-line">
                     #{String(agent.id).padStart(5, '0')}
+                  </span>
+                  <span className="absolute top-2 right-2 z-20 rounded bg-black/75 px-1.5 py-0.5 font-mono text-[9px] text-mint border border-line">
+                    {agent.rarityTier}
                   </span>
                 </div>
 
                 {/* Card Meta Content */}
-                <div className="p-4">
-                  <div className="flex items-center justify-between">
-                    <span className="font-serif text-[16px] text-cream font-medium group-hover:text-mint transition-colors">
+                <div className="p-3.5">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="font-serif text-[15px] text-cream font-medium truncate group-hover:text-mint transition-colors">
                       {agent.name}
                     </span>
-                    <span className="font-mono text-[12px] text-mint font-medium">
+                    <span className="font-mono text-[11px] text-mint font-medium shrink-0">
                       {agent.priceSol} SOL
                     </span>
                   </div>
 
-                  <p className="mt-1 text-[12px] text-muted truncate">
+                  <p className="mt-0.5 text-[11px] text-muted truncate">
                     {agent.role} · {agent.archetype}
                   </p>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 font-mono text-[10px] text-dim">
+                  <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 font-mono text-[10px] text-dim">
                     <span>90% PDA: {agent.pdaFunding}</span>
-                    <span className="group-hover:text-cream transition-colors">Inspect →</span>
+                    <span className="text-cream/80 group-hover:text-mint transition-colors">Inspect →</span>
                   </div>
                 </div>
               </div>

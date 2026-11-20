@@ -89,7 +89,7 @@ export default function RosterPage() {
     <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
       <Navbar />
 
-      <main className="mx-auto max-w-[1280px] px-5 pt-28 pb-24 md:px-6">
+      <main className="mx-auto max-w-[1280px] px-5 pt-32 pb-24 md:px-6 md:pt-36">
         {/* Page Header */}
         <div className="mx-auto max-w-[800px] text-center mb-12">
           <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
@@ -139,55 +139,59 @@ export default function RosterPage() {
           </div>
         </div>
 
-        {/* 16-Agent Responsive Grid */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-14">
+        {/* Compact, Haute-Couture Agent Grid */}
+        <div className="roster-grid mb-14">
           {agents.map((agent) => (
             <div
               key={agent.id}
               onClick={() => setInspectedAgent(agent)}
               className="group cursor-pointer overflow-hidden rounded-lg border border-line bg-surface-1 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2"
             >
-              {/* Avatar Box */}
-              <div className="relative aspect-[4/5] overflow-hidden border-b border-line bg-[#080709] flex items-center justify-center p-6">
+              {/* Avatar Box (Square framed token preview) */}
+              <div className="roster-card-box">
                 <div
-                  className="absolute inset-0 opacity-25 group-hover:opacity-40 transition-opacity"
+                  className="absolute inset-0 opacity-20 group-hover:opacity-35 transition-opacity"
                   style={{
                     background: `radial-gradient(circle at 50% 50%, ${agent.color || '#00E599'} 0%, transparent 70%)`
                   }}
                 />
-                <img
-                  src={`/nfts/${agent.id}.svg`}
-                  alt={agent.name}
-                  className="relative z-10 w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-200"
-                />
-                <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                  <span className="rounded bg-black/60 px-2 py-0.5 font-mono text-[10px] text-dim border border-line">
-                    #{String(agent.id).padStart(5, '0')}
-                  </span>
+
+                <div className="roster-card-frame">
+                  <img
+                    src={`/nfts/${agent.id}.svg`}
+                    alt={agent.name}
+                    className="pixel-avatar"
+                    loading="lazy"
+                  />
                 </div>
-                <span className="absolute top-2.5 right-2.5 rounded bg-black/60 px-2 py-0.5 font-mono text-[10px] text-mint border border-line">
+
+                {/* Badges */}
+                <span className="absolute top-2 left-2 z-20 rounded bg-black/75 px-1.5 py-0.5 font-mono text-[9px] text-dim border border-line">
+                  #{String(agent.id).padStart(5, '0')}
+                </span>
+                <span className="absolute top-2 right-2 z-20 rounded bg-black/75 px-1.5 py-0.5 font-mono text-[9px] text-mint border border-line">
                   {agent.rarityTier}
                 </span>
               </div>
 
               {/* Card Meta */}
-              <div className="p-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-[16px] text-cream font-medium group-hover:text-mint transition-colors">
+              <div className="p-3.5">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-serif text-[15px] text-cream font-medium truncate group-hover:text-mint transition-colors">
                     {agent.role}
                   </span>
-                  <span className="font-mono text-[12px] text-mint font-medium">
+                  <span className="font-mono text-[11px] text-mint font-medium shrink-0">
                     {agent.priceSol} SOL
                   </span>
                 </div>
 
-                <p className="mt-1 text-[12px] text-muted truncate">
-                  Archetype: <span className="text-cream">{agent.archetype}</span>
+                <p className="mt-0.5 text-[11px] text-muted truncate">
+                  {agent.archetype}
                 </p>
 
-                <div className="mt-3 flex items-center justify-between border-t border-line/60 pt-2.5 font-mono text-[10px] text-dim">
+                <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 font-mono text-[10px] text-dim">
                   <span>90% PDA: {agent.pdaFunding}</span>
-                  <span className="group-hover:text-cream transition-colors">Inspect →</span>
+                  <span className="text-cream/80 group-hover:text-mint transition-colors">Inspect →</span>
                 </div>
               </div>
             </div>

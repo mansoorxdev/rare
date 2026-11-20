@@ -22,7 +22,7 @@ export default function PreviewPage() {
     <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
       <Navbar />
 
-      <main className="mx-auto max-w-[1280px] px-5 pt-28 pb-24 md:px-6">
+      <main className="mx-auto max-w-[1280px] px-5 pt-32 pb-24 md:px-6 md:pt-36">
         {/* Header */}
         <div className="mx-auto max-w-[800px] text-center mb-12">
           <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
@@ -87,7 +87,8 @@ export default function PreviewPage() {
                 <img
                   src={`/nfts/${id}.svg`}
                   alt={`Rare #${id}`}
-                  className="w-full h-full object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform"
+                  className="w-full h-full object-contain pixel-avatar filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform"
+                  loading="lazy"
                 />
               </div>
               <span className="font-mono text-[11px] text-dim group-hover:text-cream transition-colors">

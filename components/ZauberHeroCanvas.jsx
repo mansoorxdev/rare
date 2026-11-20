@@ -433,8 +433,8 @@ export default function ZauberHeroCanvas({ tickerValue = '10,078' }) {
         dCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
         drawDigits(dCtx, tickerValue, {
           color: '#f6efe2',
-          alpha: 0.12,
-          region: { x: 0.42, y: 0.22, w: 0.55, h: 0.58 }
+          alpha: 0.05,
+          region: { x: 0.44, y: 0.24, w: 0.52, h: 0.54 }
         });
         if (rendererRef.current) {
           rendererRef.current.setDigits(bgDigitsCanvas);
