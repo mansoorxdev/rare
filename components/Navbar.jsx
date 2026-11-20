@@ -58,15 +58,6 @@ export default function Navbar() {
 
         {/* Right Actions */}
         <div className="ml-auto flex items-center gap-2.5">
-          {/* Quick Search Pill */}
-          <Link
-            href="/roster"
-            className="flex h-8 items-center gap-4 rounded-md border border-line bg-surface-1 px-2.5 text-[12px] text-dim hover:border-line-strong hover:text-muted transition-colors"
-          >
-            <span>Search agents…</span>
-            <kbd className="font-mono text-[10px] text-dim border border-line px-1 rounded bg-black/40">⌘K</kbd>
-          </Link>
-
           {/* Twitter / X Link */}
           <a
             href="https://x.com"
