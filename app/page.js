@@ -127,12 +127,12 @@ export default function HomePage() {
         {/* =========================================================================
             HERO SECTION: WebGL2 Glass Octahedron, Dynamic Laser Beam, & Ticker
             ========================================================================= */}
-        <section className="relative isolate overflow-hidden bg-black min-h-[max(680px,100dvh)]">
+        <section className="relative isolate overflow-hidden bg-black min-h-[max(680px,100dvh)]" style={{ position: 'relative', overflow: 'hidden', minHeight: 'max(680px, 100vh)' }}>
           {/* Real-time WebGL2 3D Raytraced Prism & Laser Canvas */}
           <ZauberHeroCanvas tickerValue={`${activePrice.toFixed(3)} SOL`} />
 
           {/* Hero Content Overlay with Guaranteed Safe Spacing Below Fixed Navbar */}
-          <div className="hero-content-wrapper">
+          <div className="hero-content-wrapper" style={{ position: 'relative', zIndex: 10 }}>
             <div className="max-w-[500px]">
               {/* Luxury Serif Title with Brand Logo */}
               <h1 className="text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
@@ -140,7 +140,10 @@ export default function HomePage() {
                   <img
                     src="/rare-logo-icon.png"
                     alt="RARE Protocol"
-                    className="h-[0.85em] w-auto object-contain drop-shadow-[0_0_20px_rgba(0,229,153,0.35)] inline-block align-middle"
+                    className="object-contain drop-shadow-[0_0_20px_rgba(0,229,153,0.35)] inline-block align-middle"
+                    style={{ height: '44px', width: 'auto', maxHeight: '44px', maxWidth: '44px', objectFit: 'contain', verticalAlign: 'middle', display: 'inline-block', flexShrink: 0 }}
+                    width={44}
+                    height={44}
                   />
                   <span className="font-serif leading-none tracking-[0.04em] font-medium">RARE</span>
                 </span>
@@ -804,7 +807,10 @@ export default function HomePage() {
               <img
                 src="/rare-logo-icon.png"
                 alt="RARE"
-                className="h-full w-auto object-contain drop-shadow-[0_0_10px_rgba(0,229,153,0.5)]"
+                className="object-contain drop-shadow-[0_0_10px_rgba(0,229,153,0.5)]"
+                style={{ height: '36px', width: 'auto', maxHeight: '36px', maxWidth: '36px', objectFit: 'contain', display: 'block' }}
+                width={36}
+                height={36}
               />
             </div>
 

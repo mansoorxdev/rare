@@ -93,7 +93,10 @@ export default function Footer() {
             <img
               src="/rare-logo-icon.png"
               alt="RARE Protocol Logo"
-              className="h-6 w-auto object-contain drop-shadow-[0_0_8px_rgba(0,229,153,0.3)]"
+              className="object-contain drop-shadow-[0_0_8px_rgba(0,229,153,0.3)]"
+              style={{ height: '22px', width: 'auto', maxHeight: '22px', maxWidth: '22px', objectFit: 'contain', display: 'block', flexShrink: 0 }}
+              width={22}
+              height={22}
             />
             <span className="font-serif text-[14px] text-cream font-medium">RARE PROTOCOL</span>
             <span className="text-dim/60">·</span>

@@ -468,11 +468,12 @@ export default function ZauberHeroCanvas({ tickerValue = '10,078' }) {
       const elapsed = (now - startTime) * 0.001;
       const { w, h, dpr } = dimsRef.current;
 
-      // Crystal origin point on screen (roughly 68% X, 48% Y on desktop)
+      // Crystal origin point on screen (safely anchored on the right side on desktop)
       const isMobile = w < 768;
+      const isTablet = w >= 768 && w < 1180;
       const origin = {
-        x: isMobile ? 0.5 : 0.68,
-        y: isMobile ? 0.38 : 0.48
+        x: isMobile ? 0.5 : (isTablet ? 0.78 : 0.72),
+        y: isMobile ? 0.28 : 0.46
       };
 
       // Interactive laser beam angle calculation
@@ -503,7 +504,7 @@ export default function ZauberHeroCanvas({ tickerValue = '10,078' }) {
         rendererRef.current.render(
           {
             center: { x: origin.x * w, y: origin.y * h },
-            radius: isMobile ? Math.min(w, h) * 0.28 : Math.min(w, h) * 0.36,
+            radius: isMobile ? Math.min(w, h) * 0.18 : Math.min(w, h) * (isTablet ? 0.22 : 0.26),
             time: elapsed,
             tumble: 0.65,
             light: [-0.6, 0.8, 1.2],
@@ -529,7 +530,22 @@ export default function ZauberHeroCanvas({ tickerValue = '10,078' }) {
   }, [tickerValue]);
 
   return (
-    <div ref={containerRef} className="pointer-events-none absolute inset-0 overflow-hidden bg-[#050505]">
+    <div
+      ref={containerRef}
+      className="pointer-events-none absolute inset-0 overflow-hidden bg-[#050505]"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+        pointerEvents: 'none',
+        zIndex: 0
+      }}
+    >
       {/* Background Digital Ticker Display */}
       <canvas
         ref={bgDigitsCanvasRef}
