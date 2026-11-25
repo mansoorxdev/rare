@@ -376,13 +376,13 @@ export default function HomePage() {
                 </h1>
 
                 {/* Poetic Subheading */}
-                <p className="hero-anim-sub mt-3 text-[21px] leading-snug text-cream md:text-[25px]">
+                <p className="hero-anim-sub mt-5 md:mt-6 text-[21px] leading-[1.35] text-cream md:text-[25px]">
                   Trade with agents.<br />
-                  <span className="text-muted">Token-bound PDA vaults you review, mint, and own.</span>
+                  <span className="text-muted block mt-1">Token-bound PDA vaults you review, mint, and own.</span>
                 </p>
 
                 {/* Hero Tabs: Cast, Guard, Target, Ladder */}
-                <div role="tablist" aria-label="Agent mechanics" className="hero-anim-tabs mt-4 flex gap-5 text-[13px]">
+                <div role="tablist" aria-label="Agent mechanics" className="hero-anim-tabs mt-7 md:mt-8 flex gap-6 text-[13.5px]">
                   {(['cast', 'guard', 'target', 'ladder']).map((tab) => {
                     const isActive = heroTab === tab;
                     return (
@@ -390,7 +390,7 @@ export default function HomePage() {
                         key={tab}
                         type="button"
                         onClick={() => setHeroTab(tab)}
-                        className={`border-b pb-1 font-medium capitalize transition-colors cursor-pointer ${isActive ? 'border-cream text-cream' : 'border-transparent text-dim hover:text-muted'
+                        className={`border-b-2 pb-1.5 font-medium capitalize transition-colors cursor-pointer ${isActive ? 'border-cream text-cream' : 'border-transparent text-dim hover:text-muted'
                           }`}
                       >
                         {tab}
@@ -400,31 +400,31 @@ export default function HomePage() {
                 </div>
 
                 {/* Dynamic Sentence Line */}
-                <p className="hero-anim-line mt-2.5 border-t border-line pt-2.5 font-mono text-[13px] text-cream/90 leading-relaxed min-h-[44px]">
+                <p className="hero-anim-line mt-4 border-t border-line/80 pt-3.5 font-mono text-[13px] text-cream/90 leading-relaxed min-h-[46px]">
                   {heroTabLines[heroTab]}
                 </p>
 
                 {/* Primary Action Buttons */}
-                <div className="mt-4.5 flex flex-wrap items-center gap-3">
+                <div className="mt-7 flex flex-wrap items-center gap-3.5">
                   <button
                     type="button"
                     onClick={() => handleMintAction(nextAgent)}
                     disabled={isMinting}
-                    className="hero-anim-btn inline-flex h-9 items-center justify-center rounded-full bg-cream px-5 text-[13px] font-medium text-black transition-all hover:bg-cream/90 hover:shadow-[0_0_20px_rgba(246,239,226,0.3)] shadow-sm cursor-pointer disabled:opacity-50"
+                    className="hero-anim-btn inline-flex h-9.5 items-center justify-center rounded-full bg-cream px-5 text-[13px] font-medium text-black transition-all hover:bg-cream/90 hover:shadow-[0_0_20px_rgba(246,239,226,0.3)] shadow-sm cursor-pointer disabled:opacity-50"
                   >
                     {isMinting ? 'Minting via Anchor CPI...' : `Mint Agent #${String(nextAgentId).padStart(5, '0')} (${activePrice.toFixed(3)} SOL)`}
                   </button>
 
                   <a
                     href="#browse-agents"
-                    className="hero-anim-btn inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-1 px-4 text-[13px] font-medium text-cream hover:border-line-strong hover:bg-surface-2 transition-colors"
+                    className="hero-anim-btn inline-flex h-9.5 items-center justify-center rounded-full border border-line bg-surface-1 px-4.5 text-[13px] font-medium text-cream hover:border-line-strong hover:bg-surface-2 transition-colors"
                   >
                     Browse Swarm →
                   </a>
                 </div>
 
                 {/* Telemetry Status Bar */}
-                <div className="hero-anim-telemetry mt-3.5 flex items-center gap-3 font-mono text-[11px] text-dim">
+                <div className="hero-anim-telemetry mt-5 flex items-center gap-3 font-mono text-[11px] text-dim">
                   <span className="flex items-center gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
                     <span className="text-muted">{soldCount} / 10,078 MINTED</span>
