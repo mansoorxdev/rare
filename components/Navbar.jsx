@@ -27,62 +27,80 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-[#eef4fc]/85 backdrop-blur-md border-b border-black/[0.06] transition-colors">
-      <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1360px] mx-auto w-full gap-4">
-        {/* Brand Logo & Wordmark */}
-        <Link aria-label="RARE Protocol home" className="flex items-center gap-2.5 text-neutral-900 group shrink-0" href="/">
-          <img
-            src="/rare-logo-icon.png"
-            alt="RARE Protocol Logo"
-            className="object-contain drop-shadow-sm group-hover:scale-105 transition-transform"
-            style={{ height: '28px', width: 'auto', maxHeight: '28px', maxWidth: '28px', objectFit: 'contain', display: 'block', flexShrink: 0 }}
-            width={28}
-            height={28}
-          />
-          <span className="font-sans text-[20px] font-bold tracking-tight text-neutral-950">RARE</span>
-        </Link>
+    <header className="gamma-navbar">
+      <div className="gamma-navbar-inner">
+        {/* Brand Logo & Wordmark (Gamma exact position) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <Link aria-label="RARE Protocol home" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: '#0f172a' }} href="/">
+            <img
+              src="/rare-logo-icon.png"
+              alt="RARE Protocol Logo"
+              style={{ height: '26px', width: 'auto', maxHeight: '26px', objectFit: 'contain', display: 'block' }}
+              width={26}
+              height={26}
+            />
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '20px', fontWeight: 800, letterSpacing: '-0.03em', color: '#0f172a' }}>
+              RARE
+            </span>
+          </Link>
 
-        {/* Center: Gamma-style Pill Search Bar */}
-        <div className="hidden md:flex items-center gap-2.5 rounded-full bg-white/70 hover:bg-white border border-black/[0.08] px-3.5 py-1.5 shadow-sm text-[13px] text-neutral-500 w-full max-w-[340px] lg:max-w-[420px] transition-all focus-within:border-black/30 focus-within:bg-white focus-within:ring-2 focus-within:ring-black/5">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-400 shrink-0">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input
-            type="text"
-            placeholder="Search for agents, collections or traits"
-            value={searchVal}
-            onChange={(e) => setSearchVal(e.target.value)}
-            className="bg-transparent border-none outline-none text-[13px] text-neutral-800 placeholder-neutral-400 w-full font-sans"
-          />
+          {/* Gamma-style Pill Search Bar */}
+          <div className="gamma-search-pill" style={{ display: 'none' }} id="gamma-desktop-search">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#94a3b8', flexShrink: 0 }}>
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              placeholder="Search for agents, collections or traits"
+              value={searchVal}
+              onChange={(e) => setSearchVal(e.target.value)}
+              className="gamma-search-input"
+            />
+          </div>
         </div>
 
-        {/* Navigation Links */}
-        <nav aria-label="Main" className="hidden xl:flex items-center gap-6 text-[13.5px] text-neutral-600 font-medium">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`transition-colors hover:text-black ${
-                  isActive ? 'text-black font-semibold' : 'text-neutral-600'
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+        {/* Right Section: Nav links, Twitter, Privy Wallet Pill, Hamburger */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
+          {/* Navigation Links */}
+          <nav aria-label="Main" className="hidden lg:flex" style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  style={{
+                    fontSize: '13.5px',
+                    fontWeight: isActive ? 600 : 500,
+                    color: isActive ? '#0f172a' : '#475569',
+                    textDecoration: 'none',
+                    transition: 'color 0.15s ease'
+                  }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-2.5 shrink-0">
           {/* Twitter / X Link */}
           <a
             href="https://x.com/rare_agent?s=11"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/60 border border-black/[0.08] text-neutral-600 hover:text-black hover:bg-white transition-colors shadow-sm"
+            style={{
+              display: 'inline-flex',
+              height: '36px',
+              width: '36px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '9999px',
+              background: 'rgba(255, 255, 255, 0.75)',
+              border: '1px solid rgba(15, 23, 42, 0.1)',
+              color: '#0f172a',
+              textDecoration: 'none'
+            }}
             title="Follow RARE Protocol on X"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -94,7 +112,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => (authenticated ? logout() : login())}
-            className="inline-flex h-9 items-center justify-center rounded-full bg-[#111] hover:bg-black text-white px-5 text-[13px] font-semibold transition-all shadow-sm hover:shadow-md cursor-pointer"
+            className="gamma-btn-black"
           >
             {authenticated && walletAddress
               ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
@@ -105,7 +123,19 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/70 border border-black/[0.08] text-neutral-800 hover:bg-white transition-colors cursor-pointer shadow-sm"
+            className="lg:hidden"
+            style={{
+              display: 'inline-flex',
+              height: '36px',
+              width: '36px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '9999px',
+              background: 'rgba(255, 255, 255, 0.75)',
+              border: '1px solid rgba(15, 23, 42, 0.1)',
+              color: '#0f172a',
+              cursor: 'pointer'
+            }}
             aria-label="Toggle navigation menu"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -119,19 +149,44 @@ export default function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-t border-black/[0.06] bg-[#eef4fc]/95 backdrop-blur-xl px-5 py-4 space-y-3">
+        <div style={{
+          position: 'absolute',
+          top: '68px',
+          left: 0,
+          right: 0,
+          background: 'rgba(240, 246, 254, 0.98)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(15, 23, 42, 0.08)',
+          padding: '16px 24px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px'
+        }}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-[14px] font-medium text-neutral-800 hover:text-black py-1"
+              style={{
+                fontSize: '14.5px',
+                fontWeight: 600,
+                color: '#0f172a',
+                textDecoration: 'none',
+                padding: '4px 0'
+              }}
             >
               {link.label}
             </Link>
           ))}
         </div>
       )}
+      <style jsx>{`
+        @media (min-width: 768px) {
+          #gamma-desktop-search {
+            display: flex !important;
+          }
+        }
+      `}</style>
     </header>
   );
 }

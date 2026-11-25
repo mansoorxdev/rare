@@ -337,7 +337,7 @@ export default function HomePage() {
   );
 
   return (
-    <div ref={pageContainerRef} className="min-h-screen bg-[#edf3fb] text-neutral-900 selection:bg-purple-600 selection:text-white font-sans antialiased">
+    <div ref={pageContainerRef} className="gamma-page-container">
       {/* Global Navbar */}
       <Navbar />
 
@@ -345,120 +345,213 @@ export default function HomePage() {
         {/* =========================================================================
             HERO SECTION: Exact Gamma.io (Mobbin Reference) Aesthetic
             ========================================================================= */}
-        <section className="relative isolate overflow-hidden bg-gradient-to-b from-[#e8f1fc] via-[#edf4fc] to-[#f4f7fb] pt-24 sm:pt-28 pb-10 md:pb-14">
-          <div className="relative z-10 mx-auto w-full max-w-[1360px] px-5 sm:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] items-center gap-10 lg:gap-14">
-              {/* Left Column: Category, Big Display Headline, Subtitle, Pill Buttons */}
-              <div className="max-w-[560px]">
-                {/* Category Header with Icon (Exact match to Gamma "Prints") */}
-                <div className="flex items-center gap-2 text-[14px] font-semibold text-neutral-800 mb-4">
-                  <span className="p-1 rounded bg-neutral-900 text-white flex items-center justify-center">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
-                    </svg>
-                  </span>
-                  <span>Autonomous Agents</span>
-                </div>
-
-                {/* Display Title: "Introducing RARE" */}
-                <h1 className="hero-anim-title text-[44px] sm:text-[56px] md:text-[68px] lg:text-[76px] font-sans font-bold tracking-[-0.035em] text-[#0f172a] leading-[1.03]">
-                  Introducing RARE
-                </h1>
-
-                {/* Subtitle */}
-                <p className="hero-anim-sub mt-4 text-[16px] sm:text-[18px] text-neutral-600 leading-relaxed">
-                  RARE is Solana's first token-bound agent protocol. Review, mint, and own autonomous AI agents with 90% capital bonded to dedicated on-chain PDA vaults.
-                </p>
-
-                {/* Primary Action Buttons (Solid black pill CTA like Gamma) */}
-                <div className="mt-7 flex flex-wrap items-center gap-3.5">
-                  <button
-                    type="button"
-                    onClick={() => handleMintAction(nextAgent)}
-                    disabled={isMinting}
-                    className="inline-flex h-12 items-center justify-center rounded-full bg-[#111] hover:bg-black text-white px-7 text-[14px] font-semibold transition-all shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50"
-                  >
-                    {isMinting ? 'Minting via Anchor...' : `Mint Agent #${String(nextAgentId).padStart(5, '0')} (${activePrice.toFixed(3)} SOL)`}
-                  </button>
-
-                  <a
-                    href="#browse-agents"
-                    className="inline-flex h-12 items-center justify-center rounded-full bg-white/90 hover:bg-white text-neutral-900 border border-black/[0.08] px-6 text-[14px] font-medium transition-all shadow-sm"
-                  >
-                    Browse Swarm
-                  </a>
-                </div>
-
-                {/* Telemetry Status Bar */}
-                <div className="mt-5 flex items-center gap-3 font-mono text-[11.5px] text-neutral-500">
-                  <span className="flex items-center gap-1.5 font-semibold text-neutral-800">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>{soldCount} / 10,078 MINTED</span>
-                  </span>
-                  <span>·</span>
-                  <span>GENESIS TIER 1</span>
-                  <span>·</span>
-                  <span className="font-semibold text-purple-700">90% PDA BONDED</span>
-                </div>
+        <section className="gamma-hero-section">
+          <div className="gamma-hero-grid">
+            {/* Left Column: Category, Big Display Headline, Subtitle, Pill Buttons */}
+            <div>
+              {/* Category Header with Icon (Exact match to Gamma "Prints") */}
+              <div className="gamma-badge">
+                <span className="gamma-badge-icon">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+                  </svg>
+                </span>
+                <span>Autonomous Agents</span>
               </div>
 
-              {/* Right Column: Gamma Elevated Showcase Card with Stacked Agent NFTs */}
-              <div className="hero-anim-showcase flex justify-center lg:justify-end items-center">
-                <GammaHeroShowcase onSelectAgent={(agent) => setInspectedAgent(agent)} />
+              {/* Display Title: "Introducing RARE" */}
+              <h1 className="hero-anim-title gamma-hero-title">
+                Introducing RARE
+              </h1>
+
+              {/* Subtitle */}
+              <p className="hero-anim-sub gamma-hero-subtitle">
+                RARE is Solana's first token-bound agent protocol. Review, mint, and own autonomous AI agents with 90% capital bonded to dedicated on-chain PDA vaults.
+              </p>
+
+              {/* Primary Action Buttons (Exact Gamma Pill CTAs) */}
+              <div className="gamma-hero-actions">
+                <button
+                  type="button"
+                  onClick={() => handleMintAction(nextAgent)}
+                  disabled={isMinting}
+                  className="gamma-btn-black"
+                  style={{ padding: '12px 28px', fontSize: '14.5px' }}
+                >
+                  {isMinting ? 'Minting via Anchor...' : `Mint Agent #${String(nextAgentId).padStart(5, '0')} (${activePrice.toFixed(3)} SOL)`}
+                </button>
+
+                <a
+                  href="#browse-agents"
+                  className="gamma-btn-white"
+                  style={{ padding: '12px 26px', fontSize: '14.5px' }}
+                >
+                  Browse Swarm
+                </a>
+              </div>
+
+              {/* Telemetry Status Bar */}
+              <div className="gamma-telemetry">
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#0f172a' }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '9999px', background: '#10b981', display: 'inline-block' }} />
+                  <span>{soldCount} / 10,078 MINTED</span>
+                </span>
+                <span>·</span>
+                <span>GENESIS TIER 1</span>
+                <span>·</span>
+                <span style={{ color: '#7c3aed', fontWeight: 700 }}>90% PDA BONDED</span>
               </div>
             </div>
 
-            {/* Bottom Featured Dock / Horizontal Cards Slider (Exact match to Gamma's bottom dock in screenshot) */}
-            <div className="mt-14 pt-4 border-t border-black/[0.06]">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-                {/* Dock Item 1: Prints / Swarm Active */}
-                <div className="group rounded-2xl bg-gradient-to-br from-purple-700 to-indigo-700 p-3 sm:p-3.5 text-white shadow-md relative overflow-hidden cursor-pointer transition-transform hover:-translate-y-1">
-                  <div className="aspect-[16/10] w-full rounded-xl bg-purple-900/40 p-2 flex items-center justify-center relative overflow-hidden mb-2">
-                    <img src="/nfts/143.svg" alt="Prints" className="w-12 h-12 object-contain" />
-                    <span className="absolute top-1.5 left-1.5 text-[10px] font-semibold bg-black/60 px-1.5 py-0.5 rounded">Active</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[12px] font-semibold">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                      <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
-                      <rect x="7" y="7" width="10" height="10" fill="currentColor"/>
-                    </svg>
-                    <span>Swarm Agents</span>
-                  </div>
-                </div>
+            {/* Right Column: Gamma Elevated Showcase Card with Stacked Agent NFTs */}
+            <div className="hero-anim-showcase" style={{ display: 'flex', justifyContent: 'center' }}>
+              <GammaHeroShowcase onSelectAgent={(agent) => setInspectedAgent(agent)} />
+            </div>
+          </div>
 
-                {/* Dock Item 2: TwelveFold / Quantum Arb */}
-                <div className="group rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100/60 p-3 sm:p-3.5 text-neutral-900 border border-black/[0.06] shadow-sm relative overflow-hidden cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-md">
-                  <div className="aspect-[16/10] w-full rounded-xl bg-blue-200/50 p-2 flex items-center justify-center relative overflow-hidden mb-2">
-                    <img src="/nfts/140.svg" alt="TwelveFold" className="w-12 h-12 object-contain" />
-                  </div>
-                  <div className="text-[12px] font-semibold text-neutral-800">TwelveFold PDA</div>
+          {/* Bottom Featured Dock / Horizontal Cards Slider (Exact match to Gamma's bottom dock in screenshot) */}
+          <div className="gamma-dock">
+            <div className="gamma-dock-grid">
+              {/* Dock Item 1: Prints / Swarm Active */}
+              <div
+                className="gamma-dock-item"
+                style={{
+                  background: 'linear-gradient(135deg, #7e22ce 0%, #4f46e5 100%)',
+                  color: '#ffffff'
+                }}
+              >
+                <div style={{
+                  width: '100%',
+                  aspectRatio: '16/10',
+                  borderRadius: '12px',
+                  background: 'rgba(0, 0, 0, 0.25)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  marginBottom: '8px'
+                }}>
+                  <img src="/nfts/143.svg" alt="Active Swarm" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+                  <span style={{
+                    position: 'absolute',
+                    top: '6px',
+                    left: '6px',
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    background: 'rgba(0, 0, 0, 0.65)',
+                    padding: '2px 6px',
+                    borderRadius: '4px'
+                  }}>Active</span>
                 </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 700 }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
+                    <rect x="7" y="7" width="10" height="10" fill="currentColor"/>
+                  </svg>
+                  <span>Swarm Agents</span>
+                </div>
+              </div>
 
-                {/* Dock Item 3: Squared / Liquidity */}
-                <div className="group rounded-2xl bg-[#0c0d12] p-3 sm:p-3.5 text-white shadow-sm relative overflow-hidden cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-md">
-                  <div className="aspect-[16/10] w-full rounded-xl bg-neutral-900 p-2 flex items-center justify-center relative overflow-hidden mb-2">
-                    <span className="font-mono text-[14px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                      squared
-                    </span>
-                  </div>
-                  <div className="text-[12px] font-semibold text-neutral-200">Squared Core</div>
+              {/* Dock Item 2: TwelveFold / Quantum Arb */}
+              <div
+                className="gamma-dock-item"
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid rgba(15, 23, 42, 0.08)',
+                  color: '#0f172a'
+                }}
+              >
+                <div style={{
+                  width: '100%',
+                  aspectRatio: '16/10',
+                  borderRadius: '12px',
+                  background: '#f1f5f9',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '8px'
+                }}>
+                  <img src="/nfts/140.svg" alt="TwelveFold" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
                 </div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>TwelveFold PDA</div>
+              </div>
 
-                {/* Dock Item 4: Uncommon Patterns / 10-Tier Ladder */}
-                <div className="group rounded-2xl bg-gradient-to-br from-amber-950 to-neutral-900 p-3 sm:p-3.5 text-white shadow-sm relative overflow-hidden cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-md">
-                  <div className="aspect-[16/10] w-full rounded-xl bg-black/40 p-2 flex items-center justify-center relative overflow-hidden mb-2">
-                    <img src="/nfts/141.svg" alt="Uncommon Patterns" className="w-12 h-12 object-contain" />
-                  </div>
-                  <div className="text-[11px] font-medium text-neutral-300 truncate">10-Tier Bonding Ladder</div>
+              {/* Dock Item 3: Squared / Liquidity */}
+              <div
+                className="gamma-dock-item"
+                style={{
+                  background: '#0c0d14',
+                  color: '#ffffff'
+                }}
+              >
+                <div style={{
+                  width: '100%',
+                  aspectRatio: '16/10',
+                  borderRadius: '12px',
+                  background: '#161922',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '8px'
+                }}>
+                  <span style={{
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    fontSize: '14px',
+                    fontWeight: 800,
+                    background: 'linear-gradient(90deg, #c084fc, #f472b6)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent'
+                  }}>
+                    squared
+                  </span>
                 </div>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: '#e2e8f0' }}>Squared Core</div>
+              </div>
 
-                {/* Dock Item 5: Megapunks / Pixel Avatars */}
-                <div className="group rounded-2xl bg-[#988a6d] p-3 sm:p-3.5 text-white shadow-sm relative overflow-hidden cursor-pointer transition-transform hover:-translate-y-1 hover:shadow-md">
-                  <div className="aspect-[16/10] w-full rounded-xl bg-black/20 p-2 flex items-center justify-center relative overflow-hidden mb-2">
-                    <img src="/nfts/142.svg" alt="Megapunks" className="w-12 h-12 object-contain" />
-                  </div>
-                  <div className="text-[12px] font-semibold text-white">Megapunks Swarm</div>
+              {/* Dock Item 4: Uncommon Patterns */}
+              <div
+                className="gamma-dock-item"
+                style={{
+                  background: '#181216',
+                  color: '#ffffff'
+                }}
+              >
+                <div style={{
+                  width: '100%',
+                  aspectRatio: '16/10',
+                  borderRadius: '12px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '8px'
+                }}>
+                  <img src="/nfts/141.svg" alt="Uncommon Patterns" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
                 </div>
+                <div style={{ fontSize: '11px', fontWeight: 500, color: '#94a3b8' }}>10-Tier Bonding Ladder</div>
+              </div>
+
+              {/* Dock Item 5: Megapunks */}
+              <div
+                className="gamma-dock-item"
+                style={{
+                  background: '#988a6d',
+                  color: '#ffffff'
+                }}
+              >
+                <div style={{
+                  width: '100%',
+                  aspectRatio: '16/10',
+                  borderRadius: '12px',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '8px'
+                }}>
+                  <img src="/nfts/142.svg" alt="Megapunks" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+                </div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#ffffff' }}>Megapunks Swarm</div>
               </div>
             </div>
           </div>
