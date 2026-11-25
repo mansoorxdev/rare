@@ -355,9 +355,9 @@ export default function HomePage() {
             }}
           />
 
-          {/* Hero Content: Clean 2-column grid inside standard max-w-[1280px] */}
-          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-6 pt-24 pb-16 md:pt-28 md:pb-20">
-            <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-12">
+          {/* Hero Content: Clean 2-column grid inside compact max-w-[1080px] with tighter X-axis gap */}
+          <div className="relative z-10 mx-auto w-full max-w-[1080px] px-5 md:px-6 pt-24 pb-16 md:pt-28 md:pb-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-6">
               {/* Left Column: Headline, tabs, CTA */}
               <div className="max-w-[520px]">
                 {/* Luxury Serif Title with Brand Logo */}
@@ -437,7 +437,7 @@ export default function HomePage() {
               </div>
 
               {/* Right Column: Hero Quantum Orb & Telemetry Animation */}
-              <div className="hero-anim-showcase flex justify-center items-center">
+              <div className="hero-anim-showcase flex justify-center md:justify-start items-center">
                 <HeroQuantumOrb />
               </div>
             </div>
