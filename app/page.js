@@ -345,7 +345,7 @@ export default function HomePage() {
         {/* =========================================================================
             HERO SECTION: Haute-Couture GSAP Stagger Entrance & 3D Interactive Showcase
             ========================================================================= */}
-        <section className="relative isolate overflow-hidden bg-black min-h-[max(640px,100dvh)] flex items-center" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section className="relative isolate overflow-hidden bg-black min-h-[max(640px,100dvh)] flex items-center">
           {/* Subtle ambient glow in background (non-blocking) */}
           <div
             aria-hidden="true"
@@ -355,11 +355,11 @@ export default function HomePage() {
             }}
           />
 
-          {/* Hero Content Overlay with Guaranteed Safe Spacing Below Fixed Navbar */}
-          <div className="hero-content-wrapper" style={{ position: 'relative', zIndex: 10 }}>
-            <div className="hero-split-grid">
+          {/* Hero Content: Clean 2-column grid inside standard max-w-[1280px] */}
+          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-6 pt-24 pb-16 md:pt-28 md:pb-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-12">
               {/* Left Column: Headline, tabs, CTA */}
-              <div className="w-full max-w-[540px] shrink-0">
+              <div className="max-w-[520px]">
                 {/* Luxury Serif Title with Brand Logo */}
                 <h1 className="hero-anim-title text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
                   <span className="inline-flex items-center gap-[0.35em]">
@@ -437,7 +437,7 @@ export default function HomePage() {
               </div>
 
               {/* Right Column: Hero Quantum Orb & Telemetry Animation */}
-              <div className="hero-anim-showcase w-full max-w-[420px] flex justify-center items-center shrink-0">
+              <div className="hero-anim-showcase flex justify-center items-center">
                 <HeroQuantumOrb />
               </div>
             </div>

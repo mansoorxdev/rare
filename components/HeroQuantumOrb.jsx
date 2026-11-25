@@ -368,11 +368,12 @@ export default function HeroQuantumOrb() {
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '440px',
+        maxWidth: '380px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        margin: '0 auto'
       }}
     >
       {/* 3D Hardware Accelerated Canvas */}
