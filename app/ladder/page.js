@@ -53,7 +53,7 @@ export default function LadderPage() {
               </h2>
               <p className="text-[13px] text-muted">Estimate atomic PDA allocation across mint batches.</p>
             </div>
-            <span className="self-start sm:self-auto font-mono text-[11px] text-mint border border-mint/30 bg-mint/10 rounded-full px-3 py-1">
+            <span className="inline-flex items-center justify-center self-start sm:self-center font-mono text-[11px] leading-none text-mint border border-mint/30 bg-mint/10 rounded-full px-3.5 py-1.5 text-center shrink-0">
               BAND 1 RATE: 0.020 SOL / AGENT
             </span>
           </div>
