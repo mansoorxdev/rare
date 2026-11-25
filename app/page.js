@@ -409,15 +409,31 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Bottom Featured Dock / Horizontal Cards Slider (Exact match to Gamma's bottom dock in screenshot) */}
+          {/* Bottom Featured Dock / 5 Core Autonomous Agent Archetypes */}
           <div className="gamma-dock">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '9999px', background: '#7c3aed' }} />
+                <span style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                  Core Agent Archetypes
+                </span>
+              </div>
+              <Link href="/roster" style={{ fontSize: '12px', fontWeight: 600, color: '#7c3aed', textDecoration: 'none' }}>
+                Explore Swarm Roster →
+              </Link>
+            </div>
+
             <div className="gamma-dock-grid">
-              {/* Dock Item 1: Prints / Swarm Active */}
-              <div
+              {/* Archetype 1: Quantum Arbitrage */}
+              <Link
+                href="/roster"
                 className="gamma-dock-item"
                 style={{
                   background: 'linear-gradient(135deg, #7e22ce 0%, #4f46e5 100%)',
-                  color: '#ffffff'
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
               >
                 <div style={{
@@ -429,130 +445,208 @@ export default function HomePage() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
-                  marginBottom: '8px'
+                  marginBottom: '10px'
                 }}>
-                  <img src="/nfts/143.svg" alt="Active Swarm" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+                  <img src="/nfts/143.svg" alt="Quantum Arbitrage" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
                   <span style={{
                     position: 'absolute',
                     top: '6px',
                     left: '6px',
-                    fontSize: '10px',
+                    fontSize: '9.5px',
                     fontWeight: 700,
                     background: 'rgba(0, 0, 0, 0.65)',
                     padding: '2px 6px',
-                    borderRadius: '4px'
-                  }}>Active</span>
+                    borderRadius: '4px',
+                    fontFamily: 'var(--font-jetbrains), monospace'
+                  }}>
+                    Active · Jupiter
+                  </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 700 }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
-                    <rect x="7" y="7" width="10" height="10" fill="currentColor"/>
-                  </svg>
-                  <span>Swarm Agents</span>
+                <div style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff' }}>Quantum Arbitrage</div>
+                <div style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.8)', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                  Cross-DEX Spreads
                 </div>
-              </div>
+              </Link>
 
-              {/* Dock Item 2: TwelveFold / Quantum Arb */}
-              <div
+              {/* Archetype 2: Sentinel Guards */}
+              <Link
+                href="/roster"
                 className="gamma-dock-item"
                 style={{
                   background: '#ffffff',
-                  border: '1px solid rgba(15, 23, 42, 0.08)',
-                  color: '#0f172a'
+                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                  color: '#0f172a',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
               >
                 <div style={{
                   width: '100%',
                   aspectRatio: '16/10',
                   borderRadius: '12px',
-                  background: '#f1f5f9',
+                  background: '#ecfdf5',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginBottom: '8px'
+                  position: 'relative',
+                  marginBottom: '10px'
                 }}>
-                  <img src="/nfts/140.svg" alt="TwelveFold" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
-                </div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>TwelveFold PDA</div>
-              </div>
-
-              {/* Dock Item 3: Squared / Liquidity */}
-              <div
-                className="gamma-dock-item"
-                style={{
-                  background: '#0c0d14',
-                  color: '#ffffff'
-                }}
-              >
-                <div style={{
-                  width: '100%',
-                  aspectRatio: '16/10',
-                  borderRadius: '12px',
-                  background: '#161922',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '8px'
-                }}>
+                  <img src="/nfts/140.svg" alt="Sentinel Guards" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
                   <span style={{
-                    fontFamily: 'var(--font-jetbrains), monospace',
-                    fontSize: '14px',
-                    fontWeight: 800,
-                    background: 'linear-gradient(90deg, #c084fc, #f472b6)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent'
+                    position: 'absolute',
+                    top: '6px',
+                    left: '6px',
+                    fontSize: '9.5px',
+                    fontWeight: 700,
+                    background: '#dcfce7',
+                    color: '#15803d',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontFamily: 'var(--font-jetbrains), monospace'
                   }}>
-                    squared
+                    Pyth Oracle
                   </span>
                 </div>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: '#e2e8f0' }}>Squared Core</div>
-              </div>
+                <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a' }}>Sentinel Guards</div>
+                <div style={{ fontSize: '10.5px', color: '#047857', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                  -15% Stop-Loss Shield
+                </div>
+              </Link>
 
-              {/* Dock Item 4: Uncommon Patterns */}
-              <div
+              {/* Archetype 3: Grid Execution */}
+              <Link
+                href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#181216',
-                  color: '#ffffff'
+                  background: '#0f172a',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
               >
                 <div style={{
                   width: '100%',
                   aspectRatio: '16/10',
                   borderRadius: '12px',
-                  background: 'rgba(255, 255, 255, 0.05)',
+                  background: '#1e293b',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginBottom: '8px'
+                  position: 'relative',
+                  marginBottom: '10px'
                 }}>
-                  <img src="/nfts/141.svg" alt="Uncommon Patterns" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+                  <img src="/nfts/141.svg" alt="Grid Execution" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
+                  <span style={{
+                    position: 'absolute',
+                    top: '6px',
+                    left: '6px',
+                    fontSize: '9.5px',
+                    fontWeight: 700,
+                    background: 'rgba(0, 0, 0, 0.65)',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontFamily: 'var(--font-jetbrains), monospace'
+                  }}>
+                    Raydium CLMM
+                  </span>
                 </div>
-                <div style={{ fontSize: '11px', fontWeight: 500, color: '#94a3b8' }}>10-Tier Bonding Ladder</div>
-              </div>
+                <div style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff' }}>Grid Execution</div>
+                <div style={{ fontSize: '10.5px', color: '#94a3b8', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                  High-Frequency Ranges
+                </div>
+              </Link>
 
-              {/* Dock Item 5: Megapunks */}
-              <div
+              {/* Archetype 4: Momentum Hunters */}
+              <Link
+                href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#988a6d',
-                  color: '#ffffff'
+                  background: '#ffffff',
+                  border: '1px solid rgba(147, 51, 234, 0.2)',
+                  color: '#0f172a',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
               >
                 <div style={{
                   width: '100%',
                   aspectRatio: '16/10',
                   borderRadius: '12px',
-                  background: 'rgba(0, 0, 0, 0.2)',
+                  background: '#faf5ff',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginBottom: '8px'
+                  position: 'relative',
+                  marginBottom: '10px'
                 }}>
-                  <img src="/nfts/142.svg" alt="Megapunks" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+                  <img src="/nfts/144.svg" alt="Momentum Hunters" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
+                  <span style={{
+                    position: 'absolute',
+                    top: '6px',
+                    left: '6px',
+                    fontSize: '9.5px',
+                    fontWeight: 700,
+                    background: '#f3e8ff',
+                    color: '#7e22ce',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontFamily: 'var(--font-jetbrains), monospace'
+                  }}>
+                    Trend Signal
+                  </span>
                 </div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: '#ffffff' }}>Megapunks Swarm</div>
-              </div>
+                <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a' }}>Momentum Hunters</div>
+                <div style={{ fontSize: '10.5px', color: '#7c3aed', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                  Volume Breakouts
+                </div>
+              </Link>
+
+              {/* Archetype 5: Vault Rebalancers */}
+              <Link
+                href="/roster"
+                className="gamma-dock-item"
+                style={{
+                  background: 'linear-gradient(135deg, #854d0e 0%, #a16207 100%)',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div style={{
+                  width: '100%',
+                  aspectRatio: '16/10',
+                  borderRadius: '12px',
+                  background: 'rgba(0, 0, 0, 0.25)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  marginBottom: '10px'
+                }}>
+                  <img src="/nfts/142.svg" alt="Vault Rebalancers" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
+                  <span style={{
+                    position: 'absolute',
+                    top: '6px',
+                    left: '6px',
+                    fontSize: '9.5px',
+                    fontWeight: 700,
+                    background: 'rgba(0, 0, 0, 0.65)',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontFamily: 'var(--font-jetbrains), monospace'
+                  }}>
+                    90% PDA Vault
+                  </span>
+                </div>
+                <div style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff' }}>Vault Rebalancers</div>
+                <div style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.85)', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                  Auto +35% Take Profit
+                </div>
+              </Link>
             </div>
           </div>
         </section>
