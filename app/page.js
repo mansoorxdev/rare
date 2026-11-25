@@ -345,7 +345,7 @@ export default function HomePage() {
         {/* =========================================================================
             HERO SECTION: Haute-Couture GSAP Stagger Entrance & 3D Interactive Showcase
             ========================================================================= */}
-        <section className="relative isolate overflow-hidden bg-black min-h-[max(680px,100dvh)] pt-16" style={{ position: 'relative', overflow: 'hidden' }}>
+        <section className="relative isolate overflow-hidden bg-black min-h-[max(640px,100dvh)] flex items-center" style={{ position: 'relative', overflow: 'hidden' }}>
           {/* Subtle ambient glow in background (non-blocking) */}
           <div
             aria-hidden="true"

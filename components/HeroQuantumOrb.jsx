@@ -7,87 +7,36 @@ import { useGSAP } from '@gsap/react';
 export default function HeroQuantumOrb() {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
-  const coreRef = useRef(null);
-  const outerRingRef = useRef(null);
-  const midRingRef = useRef(null);
-  const innerRingRef = useRef(null);
-  const glowRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
   useGSAP(
     () => {
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReduced) return;
 
-      // 1. Continuous Rotation Timelines for Orbital Rings
-      gsap.to(outerRingRef.current, {
-        rotation: 360,
-        duration: 40,
-        repeat: -1,
-        ease: 'none',
-        transformOrigin: '50% 50%'
-      });
-
-      gsap.to(midRingRef.current, {
-        rotation: -360,
-        duration: 25,
-        repeat: -1,
-        ease: 'none',
-        transformOrigin: '50% 50%'
-      });
-
-      gsap.to(innerRingRef.current, {
-        rotation: 360,
-        duration: 16,
-        repeat: -1,
-        ease: 'none',
-        transformOrigin: '50% 50%'
-      });
-
-      // 2. Breathing Emerald Core Ambient Motion
-      gsap.to(coreRef.current, {
-        scale: 1.06,
-        y: -6,
-        duration: 2.8,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-        transformOrigin: '50% 50%'
-      });
-
-      gsap.to(glowRef.current, {
-        scale: 1.2,
-        opacity: 0.55,
-        duration: 2.8,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-
-      // 3. Interactive 3D Perspective Tilt on Pointer Move
       const container = containerRef.current;
       if (!container) return;
 
       const handlePointerMove = (e) => {
         const rect = container.getBoundingClientRect();
-        if (rect.width === 0 || rect.height === 0) return;
-        const normX = (e.clientX - rect.left) / rect.width - 0.5;
-        const normY = (e.clientY - rect.top) / rect.height - 0.5;
+        const normX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+        const normY = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
 
-        gsap.to(container, {
-          rotationY: normX * 24,
-          rotationX: -normY * 24,
-          transformPerspective: 1000,
-          ease: 'power2.out',
-          duration: 0.4
+        // Smooth GSAP tween of mouse target
+        gsap.to(mouseRef.current, {
+          targetX: normX * 0.45,
+          targetY: -normY * 0.35,
+          duration: 0.6,
+          ease: 'power2.out'
         });
       };
 
       const handlePointerLeave = () => {
-        gsap.to(container, {
-          rotationY: 0,
-          rotationX: 0,
-          ease: 'power3.out',
-          duration: 0.8
+        gsap.to(mouseRef.current, {
+          targetX: 0,
+          targetY: 0,
+          duration: 1.0,
+          ease: 'power3.out'
         });
       };
 
@@ -102,47 +51,103 @@ export default function HeroQuantumOrb() {
     { scope: containerRef }
   );
 
-  // 4. GSAP Ticker Constellation Particle Canvas
+  // 3D Canvas Raytraced Emerald Octahedron + Gyroscope + Particle Field
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let width = (canvas.width = canvas.parentElement?.offsetWidth || 480);
-    let height = (canvas.height = canvas.parentElement?.offsetHeight || 480);
+    let animId;
+    let width = 420;
+    let height = 420;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    const handleResize = () => {
-      if (!canvas || !canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.offsetWidth || 480;
-      height = canvas.height = canvas.parentElement.offsetHeight || 480;
+    const updateCanvasSize = () => {
+      const parent = canvas.parentElement;
+      const displayWidth = parent ? Math.min(parent.offsetWidth || 420, 440) : 420;
+      width = displayWidth;
+      height = displayWidth; // square
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
     };
-    window.addEventListener('resize', handleResize);
 
-    const PARTICLE_COUNT = 36;
+    updateCanvasSize();
+    window.addEventListener('resize', updateCanvasSize);
+
+    // Particles for constellation field
+    const PARTICLE_COUNT = 32;
     const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      size: Math.random() * 2 + 0.8,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      size: Math.random() * 1.8 + 0.8,
       alpha: Math.random() * 0.6 + 0.25,
-      color: Math.random() > 0.4 ? '#00E599' : '#f6efe2'
+      color: Math.random() > 0.35 ? '#00E599' : '#fac88f'
     }));
 
-    const updateParticles = () => {
+    // 3D Octahedron Geometry Definition
+    const V_TOP = [0, -88, 0];
+    const V_BOT = [0, 88, 0];
+    const V_RIGHT = [62, 0, 0];
+    const V_FRONT = [0, 0, 62];
+    const V_LEFT = [-62, 0, 0];
+    const V_BACK = [0, 0, -62];
+
+    const FACETS = [
+      // Top 4 facets
+      [V_TOP, V_RIGHT, V_FRONT],
+      [V_TOP, V_FRONT, V_LEFT],
+      [V_TOP, V_LEFT, V_BACK],
+      [V_TOP, V_BACK, V_RIGHT],
+      // Bottom 4 facets
+      [V_BOT, V_FRONT, V_RIGHT],
+      [V_BOT, V_LEFT, V_FRONT],
+      [V_BOT, V_BACK, V_LEFT],
+      [V_BOT, V_RIGHT, V_BACK]
+    ];
+
+    let startTime = performance.now();
+
+    const render = (now) => {
+      const elapsed = (now - startTime) * 0.001;
+
+      // Mouse smoothing
+      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.08;
+      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.08;
+
+      ctx.save();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
 
-      // Connect nearby particles with subtle mint laser threads
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // 1. Ambient Background Emerald Radial Nebula
+      const auraGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, width * 0.45);
+      const pulse = 0.22 + Math.sin(elapsed * 2.2) * 0.06;
+      auraGrad.addColorStop(0, `rgba(0, 229, 153, ${pulse})`);
+      auraGrad.addColorStop(0.35, 'rgba(0, 229, 153, 0.08)');
+      auraGrad.addColorStop(0.7, 'rgba(250, 200, 143, 0.03)');
+      auraGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      ctx.fillStyle = auraGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. Constellation Particles & Connecting Laser Threads
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 70) {
+          if (dist < 65) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 229, 153, ${(1 - dist / 70) * 0.18})`;
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = `rgba(0, 229, 153, ${(1 - dist / 65) * 0.16})`;
+            ctx.lineWidth = 0.75;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
@@ -150,11 +155,9 @@ export default function HeroQuantumOrb() {
         }
       }
 
-      // Move & draw particles
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
@@ -164,199 +167,242 @@ export default function HeroQuantumOrb() {
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.globalAlpha = p.alpha;
-        ctx.shadowBlur = 6;
         ctx.shadowColor = p.color;
+        ctx.shadowBlur = 6;
         ctx.fill();
         ctx.globalAlpha = 1.0;
         ctx.shadowBlur = 0;
       });
+
+      // 3. Gyroscope Ring 1 (Outer Telemetry Dial)
+      ctx.save();
+      ctx.translate(cx, cy);
+      const outerAngle = elapsed * 0.18;
+      ctx.rotate(outerAngle);
+
+      ctx.beginPath();
+      ctx.arc(0, 0, 168, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(246, 239, 226, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, 168, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(0, 229, 153, 0.38)';
+      ctx.lineWidth = 1.4;
+      ctx.setLineDash([4, 16, 24, 16, 8, 20]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Cardinal Coordinate Markers & Ticks
+      [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2].forEach((ang) => {
+        const px = Math.cos(ang) * 168;
+        const py = Math.sin(ang) * 168;
+        ctx.beginPath();
+        ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fillStyle = '#00E599';
+        ctx.shadowColor = '#00E599';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+      ctx.restore();
+
+      // 4. Gyroscope Ring 2 (Middle Inclined Orbit with Satellites)
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(-0.4); // tilt
+      const midAngle = -elapsed * 0.32;
+
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 138, 72, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(0, 229, 153, 0.45)';
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([8, 12, 28, 12]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Orbiting Satellite Beads
+      const sat1X = Math.cos(midAngle) * 138;
+      const sat1Y = Math.sin(midAngle) * 72;
+      ctx.beginPath();
+      ctx.arc(sat1X, sat1Y, 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#00E599';
+      ctx.shadowColor = '#00E599';
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      const sat2X = Math.cos(midAngle + Math.PI) * 138;
+      const sat2Y = Math.sin(midAngle + Math.PI) * 72;
+      ctx.beginPath();
+      ctx.arc(sat2X, sat2Y, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#fac88f';
+      ctx.shadowColor = '#fac88f';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.restore();
+
+      // 5. Gyroscope Ring 3 (Inner Fast Orbit)
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(0.7);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 105, 52, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(250, 200, 143, 0.35)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([12, 10, 4, 10]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      // 6. 3D Raytraced Faceted Emerald Octahedron Crystal
+      const rotY = elapsed * 0.55 + mouseRef.current.x * 1.5;
+      const rotX = 0.28 + mouseRef.current.y * 1.2;
+
+      const cosY = Math.cos(rotY);
+      const sinY = Math.sin(rotY);
+      const cosX = Math.cos(rotX);
+      const sinX = Math.sin(rotX);
+
+      const project = (pt) => {
+        // Rotate around Y
+        const x1 = pt[0] * cosY - pt[2] * sinY;
+        const z1 = pt[0] * sinY + pt[2] * cosY;
+        const y1 = pt[1];
+
+        // Rotate around X
+        const y2 = y1 * cosX - z1 * sinX;
+        const z2 = y1 * sinX + z1 * cosX;
+        const x2 = x1;
+
+        // Perspective projection
+        const fov = 340;
+        const scale = fov / (fov + z2);
+        return {
+          x: cx + x2 * scale,
+          y: cy + y2 * scale,
+          z: z2
+        };
+      };
+
+      // Project facets and compute depth
+      const projectedFacets = FACETS.map((facet) => {
+        const p0 = project(facet[0]);
+        const p1 = project(facet[1]);
+        const p2 = project(facet[2]);
+        const avgZ = (p0.z + p1.z + p2.z) / 3;
+
+        // Compute 2D surface normal winding
+        const area = (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
+
+        return { p0, p1, p2, avgZ, isFront: area > 0 };
+      });
+
+      // Painter's algorithm: draw from back to front
+      projectedFacets.sort((a, b) => b.avgZ - a.avgZ);
+
+      projectedFacets.forEach(({ p0, p1, p2, isFront }) => {
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.closePath();
+
+        if (isFront) {
+          // Front facing facet - bright glowing mint/emerald
+          const grad = ctx.createLinearGradient(p0.x, p0.y, p1.x, p2.y);
+          grad.addColorStop(0, 'rgba(128, 255, 208, 0.7)');
+          grad.addColorStop(0.5, 'rgba(0, 229, 153, 0.55)');
+          grad.addColorStop(1, 'rgba(0, 143, 93, 0.35)');
+
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          ctx.strokeStyle = '#00E599';
+          ctx.lineWidth = 1.4;
+          ctx.shadowColor = '#00E599';
+          ctx.shadowBlur = 8;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+        } else {
+          // Back facing facet - dark translucent emerald
+          ctx.fillStyle = 'rgba(0, 75, 48, 0.25)';
+          ctx.fill();
+
+          ctx.strokeStyle = 'rgba(0, 229, 153, 0.2)';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      });
+
+      // 7. Core Specular Flare
+      const flare = ctx.createRadialGradient(cx, cy, 0, cx, cy, 18);
+      flare.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+      flare.addColorStop(0.35, 'rgba(128, 255, 208, 0.6)');
+      flare.addColorStop(1, 'rgba(0, 229, 153, 0)');
+
+      ctx.fillStyle = flare;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      animId = requestAnimationFrame(render);
     };
 
-    gsap.ticker.add(updateParticles);
+    animId = requestAnimationFrame(render);
 
     return () => {
-      gsap.ticker.remove(updateParticles);
-      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', updateCanvasSize);
     };
   }, []);
 
   return (
     <div
+      ref={containerRef}
       className="hero-quantum-orb-container select-none"
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '480px',
-        height: '480px',
-        minHeight: '480px',
+        maxWidth: '440px',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center'
       }}
     >
-      {/* Background Radial Glow */}
-      <div
-        ref={glowRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute h-[340px] w-[340px] rounded-full blur-[90px] opacity-40"
+      {/* 3D Hardware Accelerated Canvas */}
+      <canvas
+        ref={canvasRef}
+        className="block cursor-grab active:cursor-grabbing"
         style={{
-          background: 'radial-gradient(circle, rgba(0, 229, 153, 0.5) 0%, rgba(250, 200, 143, 0.18) 45%, transparent 70%)',
-          zIndex: 0
+          display: 'block',
+          maxWidth: '100%',
+          filter: 'drop-shadow(0 0 24px rgba(0, 229, 153, 0.35))'
         }}
       />
 
-      {/* Constellation Particle Canvas */}
-      <canvas
-        ref={canvasRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 h-full w-full"
-        style={{ zIndex: 1 }}
-      />
-
-      {/* 3D Perspective Gyroscope Core */}
+      {/* Centered Holographic HUD Telemetry Pill */}
       <div
-        ref={containerRef}
-        className="relative z-10 flex items-center justify-center w-full h-full"
-        style={{ transformStyle: 'preserve-3d' }}
+        className="mt-2 flex items-center justify-center gap-2 rounded-full border border-mint/30 bg-surface-1/90 backdrop-blur-md px-4 py-1.5 font-mono text-[11px] text-muted shadow-2xl"
+        style={{
+          whiteSpace: 'nowrap',
+          zIndex: 20
+        }}
       >
-        <svg
-          viewBox="0 0 500 500"
-          className="w-full h-full max-w-[460px] max-h-[460px] pointer-events-none"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ overflow: 'visible' }}
-        >
-          <defs>
-            {/* Core Glow Gradient */}
-            <radialGradient id="emeraldRadial" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#80FFD0" stopOpacity="0.95" />
-              <stop offset="35%" stopColor="#00E599" stopOpacity="0.8" />
-              <stop offset="70%" stopColor="#008f5d" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
-            </radialGradient>
-
-            {/* Facet Highlights */}
-            <linearGradient id="facetHighlight" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
-              <stop offset="40%" stopColor="#80ffd0" stopOpacity="0.45" />
-              <stop offset="100%" stopColor="#00E599" stopOpacity="0.1" />
-            </linearGradient>
-
-            <filter id="emeraldGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="6" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
-
-          {/* 1. Outer Dial Ring */}
-          <g ref={outerRingRef}>
-            <circle
-              cx="250"
-              cy="250"
-              r="215"
-              stroke="#f6efe2"
-              strokeOpacity="0.08"
-              strokeWidth="1"
-            />
-            <circle
-              cx="250"
-              cy="250"
-              r="215"
-              stroke="#00E599"
-              strokeOpacity="0.38"
-              strokeWidth="1.5"
-              strokeDasharray="4 16 12 16 32 20 8 20"
-            />
-            {/* Cardinal Coordinate Markers */}
-            <circle cx="250" cy="35" r="3.5" fill="#00E599" />
-            <circle cx="465" cy="250" r="3.5" fill="#00E599" />
-            <circle cx="250" cy="465" r="3.5" fill="#00E599" />
-            <circle cx="35" cy="250" r="3.5" fill="#00E599" />
-            {/* Ticks */}
-            <line x1="250" y1="26" x2="250" y2="34" stroke="#00E599" strokeWidth="1.5" />
-            <line x1="466" y1="250" x2="474" y2="250" stroke="#00E599" strokeWidth="1.5" />
-            <line x1="250" y1="466" x2="250" y2="474" stroke="#00E599" strokeWidth="1.5" />
-            <line x1="26" y1="250" x2="34" y2="250" stroke="#00E599" strokeWidth="1.5" />
-          </g>
-
-          {/* 2. Middle Gyroscopic Ring */}
-          <g ref={midRingRef}>
-            <ellipse
-              cx="250"
-              cy="250"
-              rx="175"
-              ry="105"
-              stroke="#00E599"
-              strokeOpacity="0.5"
-              strokeWidth="1.4"
-              strokeDasharray="8 8 32 12"
-              transform="rotate(-25 250 250)"
-            />
-            {/* Satellites */}
-            <circle cx="95" cy="205" r="4.5" fill="#00E599" filter="url(#emeraldGlow)" />
-            <circle cx="405" cy="295" r="4" fill="#fac88f" filter="url(#emeraldGlow)" />
-          </g>
-
-          {/* 3. Inner Orbit Ring */}
-          <g ref={innerRingRef}>
-            <ellipse
-              cx="250"
-              cy="250"
-              rx="130"
-              ry="70"
-              stroke="#fac88f"
-              strokeOpacity="0.45"
-              strokeWidth="1.2"
-              strokeDasharray="16 10 4 10"
-              transform="rotate(45 250 250)"
-            />
-            <circle cx="250" cy="180" r="3" fill="#ffffff" />
-            <circle cx="250" cy="320" r="3" fill="#ffffff" />
-          </g>
-
-          {/* 4. Center Emerald Faceted Crystal Core */}
-          <g ref={coreRef} filter="url(#emeraldGlow)">
-            {/* Core Radial Glow Aura */}
-            <circle cx="250" cy="250" r="80" fill="url(#emeraldRadial)" />
-
-            {/* Geometric Crystal Facets */}
-            <polygon points="250,175 295,230 250,250" fill="url(#facetHighlight)" fillOpacity="0.75" stroke="#00E599" strokeWidth="1" />
-            <polygon points="250,175 205,230 250,250" fill="url(#facetHighlight)" fillOpacity="0.55" stroke="#00E599" strokeWidth="1" />
-            <polygon points="250,175 250,250 295,230" fill="#00E599" fillOpacity="0.3" stroke="#80ffd0" strokeWidth="0.8" />
-            <polygon points="205,230 250,175 250,250" fill="#00b377" fillOpacity="0.35" stroke="#80ffd0" strokeWidth="0.8" />
-
-            <polygon points="250,325 295,270 250,250" fill="url(#facetHighlight)" fillOpacity="0.85" stroke="#00E599" strokeWidth="1" />
-            <polygon points="250,325 205,270 250,250" fill="url(#facetHighlight)" fillOpacity="0.65" stroke="#00E599" strokeWidth="1" />
-            <polygon points="250,325 250,250 295,270" fill="#008f5d" fillOpacity="0.4" stroke="#80ffd0" strokeWidth="0.8" />
-            <polygon points="205,270 250,325 250,250" fill="#006642" fillOpacity="0.45" stroke="#80ffd0" strokeWidth="0.8" />
-
-            <polygon points="205,230 250,250 205,270" fill="#80ffd0" fillOpacity="0.35" stroke="#00E599" strokeWidth="0.8" />
-            <polygon points="295,230 250,250 295,270" fill="#80ffd0" fillOpacity="0.45" stroke="#00E599" strokeWidth="0.8" />
-
-            {/* Specular Center */}
-            <circle cx="250" cy="250" r="12" fill="#ffffff" filter="url(#emeraldGlow)" opacity="0.9" />
-            <circle cx="250" cy="250" r="4" fill="#ffffff" />
-          </g>
-        </svg>
-
-        {/* Centered Holographic HUD Telemetry Pill (Never overflows or clips) */}
-        <div
-          className="absolute bottom-2 flex items-center gap-2 rounded-full border border-mint/30 bg-black/85 backdrop-blur-md px-4 py-1.5 font-mono text-[11px] text-muted shadow-2xl"
-          style={{
-            zIndex: 30,
-            whiteSpace: 'nowrap'
-          }}
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-mint" />
-          </span>
-          <span className="text-mint font-semibold">90% PDA BOND</span>
-          <span className="text-dim">·</span>
-          <span className="text-cream">SOLANA MAINNET</span>
-          <span className="text-dim">·</span>
-          <span className="text-peach">10,078 AGENTS</span>
-        </div>
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-mint" />
+        </span>
+        <span className="text-mint font-semibold">90% PDA BOND</span>
+        <span className="text-dim">·</span>
+        <span className="text-cream font-medium">SOLANA MAINNET</span>
+        <span className="text-dim">·</span>
+        <span className="text-peach">10,078 AGENTS</span>
       </div>
     </div>
   );
