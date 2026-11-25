@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import HeroAgentShowcase from '../components/HeroAgentShowcase';
+import HeroQuantumOrb from '../components/HeroQuantumOrb';
 import { usePrivy } from '../components/PrivyClientProvider';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
@@ -436,13 +436,9 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Right Column: Hero Agent Interactive Showcase */}
-              <div className="hero-anim-showcase flex justify-center lg:justify-end">
-                <HeroAgentShowcase
-                  agentId={nextAgentId}
-                  onMintClick={() => handleMintAction(nextAgent)}
-                  isMinting={isMinting}
-                />
+              {/* Right Column: Hero Quantum Orb & Telemetry Animation */}
+              <div className="hero-anim-showcase flex justify-center lg:justify-end items-center w-full">
+                <HeroQuantumOrb />
               </div>
             </div>
           </div>
