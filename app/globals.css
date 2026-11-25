@@ -361,6 +361,24 @@ body {
   }
 }
 
+.hero-split-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 32px !important;
+  width: 100% !important;
+}
+
+@media (min-width: 900px) {
+  .hero-split-grid {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 40px !important;
+  }
+}
+
 /* Universal Padding Top Utilities */
 .pt-16 { padding-top: 64px !important; }
 .pt-20 { padding-top: 80px !important; }

@@ -357,9 +357,9 @@ export default function HomePage() {
 
           {/* Hero Content Overlay with Guaranteed Safe Spacing Below Fixed Navbar */}
           <div className="hero-content-wrapper" style={{ position: 'relative', zIndex: 10 }}>
-            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-center gap-10 lg:gap-8">
+            <div className="hero-split-grid">
               {/* Left Column: Headline, tabs, CTA */}
-              <div className="max-w-[560px]">
+              <div className="w-full max-w-[540px] shrink-0">
                 {/* Luxury Serif Title with Brand Logo */}
                 <h1 className="hero-anim-title text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
                   <span className="inline-flex items-center gap-[0.35em]">
@@ -437,7 +437,7 @@ export default function HomePage() {
               </div>
 
               {/* Right Column: Hero Quantum Orb & Telemetry Animation */}
-              <div className="hero-anim-showcase flex justify-center lg:justify-end items-center w-full">
+              <div className="hero-anim-showcase w-full max-w-[500px] flex justify-center items-center">
                 <HeroQuantumOrb />
               </div>
             </div>
