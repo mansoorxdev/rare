@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" sizes="64x64" href="/favicon-dark.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       </head>
-      <body className="bg-[#050505] text-[#f6efe2] antialiased selection:bg-[#f6efe2] selection:text-[#050505]">
+      <body className="bg-[#edf3fb] text-neutral-900 antialiased selection:bg-purple-600 selection:text-white">
         <PrivyClientProvider>
           {children}
         </PrivyClientProvider>
