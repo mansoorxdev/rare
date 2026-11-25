@@ -356,7 +356,7 @@ export default function HomePage() {
           />
 
           {/* Hero Content: Clean 2-column grid inside standard max-w-[1280px] */}
-          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-6 pt-24 pb-16 md:pt-28 md:pb-20">
+          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-6 pt-20 pb-12 md:pt-20 md:pb-14">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-12">
               {/* Left Column: Headline, tabs, CTA */}
               <div className="max-w-[520px]">
@@ -376,13 +376,13 @@ export default function HomePage() {
                 </h1>
 
                 {/* Poetic Subheading */}
-                <p className="hero-anim-sub mt-4 text-[21px] leading-snug text-cream md:text-[25px]">
+                <p className="hero-anim-sub mt-3 text-[21px] leading-snug text-cream md:text-[25px]">
                   Trade with agents.<br />
                   <span className="text-muted">Token-bound PDA vaults you review, mint, and own.</span>
                 </p>
 
                 {/* Hero Tabs: Cast, Guard, Target, Ladder */}
-                <div role="tablist" aria-label="Agent mechanics" className="hero-anim-tabs mt-6 flex gap-5 text-[13px]">
+                <div role="tablist" aria-label="Agent mechanics" className="hero-anim-tabs mt-4 flex gap-5 text-[13px]">
                   {(['cast', 'guard', 'target', 'ladder']).map((tab) => {
                     const isActive = heroTab === tab;
                     return (
@@ -400,12 +400,12 @@ export default function HomePage() {
                 </div>
 
                 {/* Dynamic Sentence Line */}
-                <p className="hero-anim-line mt-3 border-t border-line pt-3 font-mono text-[13px] text-cream/90 leading-relaxed min-h-[44px]">
+                <p className="hero-anim-line mt-2.5 border-t border-line pt-2.5 font-mono text-[13px] text-cream/90 leading-relaxed min-h-[44px]">
                   {heroTabLines[heroTab]}
                 </p>
 
                 {/* Primary Action Buttons */}
-                <div className="mt-6 flex flex-wrap items-center gap-3">
+                <div className="mt-4.5 flex flex-wrap items-center gap-3">
                   <button
                     type="button"
                     onClick={() => handleMintAction(nextAgent)}
@@ -424,7 +424,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Telemetry Status Bar */}
-                <div className="hero-anim-telemetry mt-5 flex items-center gap-3 font-mono text-[11px] text-dim">
+                <div className="hero-anim-telemetry mt-3.5 flex items-center gap-3 font-mono text-[11px] text-dim">
                   <span className="flex items-center gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
                     <span className="text-muted">{soldCount} / 10,078 MINTED</span>
