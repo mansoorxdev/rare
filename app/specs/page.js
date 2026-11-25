@@ -33,74 +33,74 @@ export default function SpecsPage() {
 
         {/* 4-Box Summary Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '32px' }}>
-          <div style={{ background: '#ffffff', border: '1px solid rgba(15, 23, 42, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.03)' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>FRAMEWORK</span>
-            <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', marginTop: '4px' }}>Anchor 0.30.1</div>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#7c3aed', fontWeight: 600, marginTop: '4px', display: 'block' }}>Solana Rust Framework</span>
+          <div style={{ background: '#121422', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>FRAMEWORK</span>
+            <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>Anchor 0.30.1</div>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 600, marginTop: '4px', display: 'block' }}>Solana Rust Framework</span>
           </div>
 
-          <div style={{ background: '#ffffff', border: '1px solid rgba(15, 23, 42, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.03)' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>ON-CHAIN SPLIT</span>
-            <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', marginTop: '4px' }}>90% PDA / 10% Protocol</div>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#10b981', fontWeight: 600, marginTop: '4px', display: 'block' }}>Hardcoded Invariant</span>
+          <div style={{ background: '#121422', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>ON-CHAIN SPLIT</span>
+            <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>90% PDA / 10% Protocol</div>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#34d399', fontWeight: 600, marginTop: '4px', display: 'block' }}>Hardcoded Invariant</span>
           </div>
 
-          <div style={{ background: '#ffffff', border: '1px solid rgba(15, 23, 42, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.03)' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>PDA CUSTODY</span>
-            <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', marginTop: '4px' }}>Token-Bound Anchor CPI</div>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#7c3aed', fontWeight: 600, marginTop: '4px', display: 'block' }}>Transfers on Secondary</span>
+          <div style={{ background: '#121422', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>PDA CUSTODY</span>
+            <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>Token-Bound Anchor CPI</div>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 600, marginTop: '4px', display: 'block' }}>Transfers on Secondary</span>
           </div>
 
-          <div style={{ background: '#ffffff', border: '1px solid rgba(15, 23, 42, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.03)' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>TOTAL AGENTS</span>
-            <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', marginTop: '4px' }}>10,078 Genesis Units</div>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#10b981', fontWeight: 600, marginTop: '4px', display: 'block' }}>Immutable Cap</span>
+          <div style={{ background: '#121422', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>TOTAL AGENTS</span>
+            <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>10,078 Genesis Units</div>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#34d399', fontWeight: 600, marginTop: '4px', display: 'block' }}>Immutable Cap</span>
           </div>
         </div>
 
         {/* Detailed Spec Container */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.95)',
-          border: '1px solid rgba(15, 23, 42, 0.08)',
+          background: '#121422',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
           borderRadius: '24px',
           padding: '28px',
           marginBottom: '32px',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)'
         }}>
-          <div style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.08)', paddingBottom: '16px', marginBottom: '24px' }}>
-            <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+          <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '16px', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', margin: 0 }}>
               Anchor Instruction &amp; Seed Definitions
             </h2>
-            <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>Cryptographic parameters governing vault creation and authority.</p>
+            <p style={{ fontSize: '13px', color: '#94a3b8', margin: '4px 0 0 0' }}>Cryptographic parameters governing vault creation and authority.</p>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12.5px' }}>
-            <div style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.06)', paddingBottom: '16px' }}>
-              <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>PROGRAM TREASURY PUBKEY</span>
-              <code style={{ fontSize: '13px', color: '#0f172a', fontWeight: 700, userSelect: 'all' }}>{treasury}</code>
+            <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '16px' }}>
+              <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>PROGRAM TREASURY PUBKEY</span>
+              <code style={{ fontSize: '13px', color: '#ffffff', fontWeight: 700, userSelect: 'all' }}>{treasury}</code>
             </div>
 
-            <div style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.06)', paddingBottom: '16px' }}>
-              <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>PDA VAULT SEED DERIVATION</span>
-              <pre style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid rgba(15, 23, 42, 0.08)', background: '#f8fafc', padding: '14px', fontSize: '12px', color: '#0f172a', lineHeight: 1.6 }}>
+            <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '16px' }}>
+              <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>PDA VAULT SEED DERIVATION</span>
+              <pre style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#181b2e', padding: '14px', fontSize: '12px', color: '#ffffff', lineHeight: 1.6 }}>
                 <code>Pubkey::find_program_address(&amp;[b"agent_vault", mint.key().as_ref(), &amp;agent_id.to_le_bytes()], &amp;program_id)</code>
               </pre>
             </div>
 
-            <div style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.06)', paddingBottom: '16px' }}>
-              <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>CPI CAPITAL ROUTING FLOW</span>
-              <p style={{ fontSize: '13px', color: '#475569', fontFamily: 'var(--font-sans)', lineHeight: 1.6, margin: 0 }}>
-                Upon calling <code style={{ fontFamily: 'var(--font-jetbrains), monospace', color: '#0f172a', fontWeight: 600 }}>mint_agent(ctx, agent_id)</code>, the Anchor program executes two atomic cross-program transfers in the same block:
+            <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '16px' }}>
+              <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>CPI CAPITAL ROUTING FLOW</span>
+              <p style={{ fontSize: '13px', color: '#cbd5e1', fontFamily: 'var(--font-sans)', lineHeight: 1.6, margin: 0 }}>
+                Upon calling <code style={{ fontFamily: 'var(--font-jetbrains), monospace', color: '#ffffff', fontWeight: 600 }}>mint_agent(ctx, agent_id)</code>, the Anchor program executes two atomic cross-program transfers in the same block:
               </p>
-              <ul style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '6px', paddingLeft: '20px', fontSize: '13px', color: '#475569', fontFamily: 'var(--font-sans)' }}>
-                <li><strong style={{ color: '#047857', fontFamily: 'var(--font-jetbrains), monospace' }}>90% (9,000 BPS):</strong> Transferred directly to the newly derived <code style={{ color: '#0f172a', fontWeight: 600 }}>agent_vault</code> PDA.</li>
-                <li><strong style={{ color: '#7c3aed', fontFamily: 'var(--font-jetbrains), monospace' }}>10% (1,000 BPS):</strong> Transferred directly to the protocol operations treasury.</li>
+              <ul style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '6px', paddingLeft: '20px', fontSize: '13px', color: '#cbd5e1', fontFamily: 'var(--font-sans)' }}>
+                <li><strong style={{ color: '#34d399', fontFamily: 'var(--font-jetbrains), monospace' }}>90% (9,000 BPS):</strong> Transferred directly to the newly derived <code style={{ color: '#ffffff', fontWeight: 600 }}>agent_vault</code> PDA.</li>
+                <li><strong style={{ color: '#c084fc', fontFamily: 'var(--font-jetbrains), monospace' }}>10% (1,000 BPS):</strong> Transferred directly to the protocol operations treasury.</li>
               </ul>
             </div>
 
             <div>
-              <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>SECONDARY MARKET RETENTION</span>
-              <p style={{ fontSize: '13px', color: '#475569', fontFamily: 'var(--font-sans)', lineHeight: 1.6, margin: 0 }}>
+              <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>SECONDARY MARKET RETENTION</span>
+              <p style={{ fontSize: '13px', color: '#cbd5e1', fontFamily: 'var(--font-sans)', lineHeight: 1.6, margin: 0 }}>
                 The agent's PDA vault authority is permanently bound to the owner of the NFT. If the NFT is transferred or sold on secondary markets, custody of the PDA vault and its autonomous trading capital transfers seamlessly to the buyer without withdrawing any collateral.
               </p>
             </div>

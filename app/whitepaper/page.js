@@ -45,42 +45,42 @@ export default function WhitepaperPage() {
         <article style={{
           maxWidth: '840px',
           margin: '0 auto 40px auto',
-          background: 'rgba(255, 255, 255, 0.95)',
+          background: '#121422',
           borderRadius: '24px',
-          border: '1px solid rgba(15, 23, 42, 0.08)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
           padding: '40px',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
           lineHeight: 1.7,
-          color: '#475569'
+          color: '#cbd5e1'
         }}>
           {/* Section 1 */}
           <section style={{ marginBottom: '36px' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#7c3aed', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               01 // Executive Summary
             </span>
-            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', margin: '0 0 14px 0' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px 0' }}>
               1. The Autonomous Agent Paradigm
             </h2>
             <p style={{ fontSize: '14.5px', marginBottom: '14px' }}>
               Contemporary AI agents operate as ephemeral software instances disconnected from real financial rails. Traditional crypto asset launches suffer from value extraction where mint capital is siphoned into team multi-sigs, leaving the collection illiquid and unbacked.
             </p>
             <p style={{ fontSize: '14.5px' }}>
-              <strong style={{ color: '#0f172a', fontWeight: 700 }}>RARE Protocol</strong> solves this fundamental bottleneck on the high-throughput Solana blockchain. Every RARE agent is an on-chain non-fungible token (NFT) inextricably bound to its own Program Derived Address (PDA) vault. When an agent is minted, <strong style={{ color: '#047857', fontWeight: 700 }}>90% of the mint capital</strong> is automatically locked into the agent's PDA vault via Solana Anchor CPI. The agent is born pre-funded, possessing its own capital to execute trades, pay compute fees, and participate in prediction markets.
+              <strong style={{ color: '#ffffff', fontWeight: 700 }}>RARE Protocol</strong> solves this fundamental bottleneck on the high-throughput Solana blockchain. Every RARE agent is an on-chain non-fungible token (NFT) inextricably bound to its own Program Derived Address (PDA) vault. When an agent is minted, <strong style={{ color: '#34d399', fontWeight: 700 }}>90% of the mint capital</strong> is automatically locked into the agent's PDA vault via Solana Anchor CPI. The agent is born pre-funded, possessing its own capital to execute trades, pay compute fees, and participate in prediction markets.
             </p>
           </section>
 
           {/* Section 2 */}
-          <section style={{ marginBottom: '36px', borderTop: '1px solid rgba(15, 23, 42, 0.08)', paddingTop: '32px' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#7c3aed', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+          <section style={{ marginBottom: '36px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '32px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               02 // Protocol Architecture
             </span>
-            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', margin: '0 0 14px 0' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px 0' }}>
               2. Token-Bound Account (TBA) Mechanics
             </h2>
             <p style={{ fontSize: '14.5px', marginBottom: '14px' }}>
               Inspired by ERC-6551 but engineered natively for Solana's sub-second finality and low rent costs, RARE leverages Anchor PDAs derived from the agent's token mint address:
             </p>
-            <pre style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid rgba(15, 23, 42, 0.08)', background: '#f8fafc', padding: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', color: '#0f172a', lineHeight: 1.6, marginBottom: '14px' }}>
+            <pre style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#181b2e', padding: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', color: '#ffffff', lineHeight: 1.6, marginBottom: '14px' }}>
               <code>PDA_Vault = Pubkey::find_program_address([b"agent_vault", mint_pubkey, agent_id], program_id)</code>
             </pre>
             <p style={{ fontSize: '14.5px' }}>
@@ -89,49 +89,49 @@ export default function WhitepaperPage() {
           </section>
 
           {/* Section 3 */}
-          <section style={{ marginBottom: '36px', borderTop: '1px solid rgba(15, 23, 42, 0.08)', paddingTop: '32px' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#7c3aed', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+          <section style={{ marginBottom: '36px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '32px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               03 // Bonding Curve Economics
             </span>
-            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', margin: '0 0 14px 0' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px 0' }}>
               3. The 10-Tier Price Ladder
             </h2>
             <p style={{ fontSize: '14.5px', marginBottom: '14px' }}>
-              The collection is strictly capped at <strong style={{ color: '#0f172a', fontWeight: 700 }}>10,078 Genesis Units</strong> distributed across 10 progressive pricing bands. The deterministic bonding curve rewards early network participants:
+              The collection is strictly capped at <strong style={{ color: '#ffffff', fontWeight: 700 }}>10,078 Genesis Units</strong> distributed across 10 progressive pricing bands. The deterministic bonding curve rewards early network participants:
             </p>
-            <div style={{ background: '#f8fafc', borderRadius: '14px', border: '1px solid rgba(15, 23, 42, 0.06)', padding: '16px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
+            <div style={{ background: '#16192a', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)', padding: '16px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Band 1 (#00001 - #01008):</span>
-                <span style={{ color: '#047857', fontWeight: 700 }}>0.020 SOL (90% PDA: 0.0180 SOL)</span>
+                <span style={{ color: '#94a3b8' }}>Band 1 (#00001 - #01008):</span>
+                <span style={{ color: '#34d399', fontWeight: 700 }}>0.020 SOL (90% PDA: 0.0180 SOL)</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Band 2 (#01009 - #02016):</span>
-                <span style={{ color: '#0f172a', fontWeight: 700 }}>0.026 SOL (90% PDA: 0.0234 SOL)</span>
+                <span style={{ color: '#94a3b8' }}>Band 2 (#01009 - #02016):</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>0.026 SOL (90% PDA: 0.0234 SOL)</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Band 3 (#02017 - #03024):</span>
-                <span style={{ color: '#0f172a', fontWeight: 700 }}>0.034 SOL (90% PDA: 0.0306 SOL)</span>
+                <span style={{ color: '#94a3b8' }}>Band 3 (#02017 - #03024):</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>0.034 SOL (90% PDA: 0.0306 SOL)</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Band 5 (#04033 - #05040):</span>
-                <span style={{ color: '#0f172a', fontWeight: 700 }}>0.057 SOL (90% PDA: 0.0513 SOL)</span>
+                <span style={{ color: '#94a3b8' }}>Band 5 (#04033 - #05040):</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>0.057 SOL (90% PDA: 0.0513 SOL)</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Band 10 (#09073 - #10078):</span>
-                <span style={{ color: '#7c3aed', fontWeight: 700 }}>0.212 SOL (90% PDA: 0.1908 SOL)</span>
+                <span style={{ color: '#94a3b8' }}>Band 10 (#09073 - #10078):</span>
+                <span style={{ color: '#c084fc', fontWeight: 700 }}>0.212 SOL (90% PDA: 0.1908 SOL)</span>
               </div>
             </div>
             <p style={{ fontSize: '14.5px' }}>
-              At collection sellout, over <strong style={{ color: '#047857', fontWeight: 700 }}>650+ SOL</strong> will be held directly across agent PDA vaults on Solana Mainnet, establishing RARE as one of the most capitalized autonomous agent swarms in Web3.
+              At collection sellout, over <strong style={{ color: '#34d399', fontWeight: 700 }}>650+ SOL</strong> will be held directly across agent PDA vaults on Solana Mainnet, establishing RARE as one of the most capitalized autonomous agent swarms in Web3.
             </p>
           </section>
 
           {/* Section 4 */}
-          <section style={{ borderTop: '1px solid rgba(15, 23, 42, 0.08)', paddingTop: '32px' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#7c3aed', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+          <section style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '32px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               04 // Anchor CPI Routing &amp; Safety Invariants
             </span>
-            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', margin: '0 0 14px 0' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px 0' }}>
               4. Cryptographic Security &amp; Safety Guards
             </h2>
             <p style={{ fontSize: '14.5px', marginBottom: '14px' }}>

@@ -8,7 +8,6 @@ import { usePrivy } from './PrivyClientProvider';
 export default function Navbar() {
   const pathname = usePathname();
   const { authenticated, user, login, logout } = usePrivy();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchVal, setSearchVal] = useState('');
 
   // Find active wallet address
@@ -29,9 +28,9 @@ export default function Navbar() {
   return (
     <header className="gamma-navbar">
       <div className="gamma-navbar-inner">
-        {/* Brand Logo & Wordmark (Gamma exact position) */}
+        {/* Brand Logo & Wordmark */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          <Link aria-label="RARE Protocol home" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: '#0f172a' }} href="/">
+          <Link aria-label="RARE Protocol home" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: '#ffffff' }} href="/">
             <img
               src="/rare-logo-icon.png"
               alt="RARE Protocol Logo"
@@ -39,14 +38,14 @@ export default function Navbar() {
               width={26}
               height={26}
             />
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '20px', fontWeight: 800, letterSpacing: '-0.03em', color: '#0f172a' }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '20px', fontWeight: 800, letterSpacing: '-0.03em', color: '#ffffff' }}>
               RARE
             </span>
           </Link>
 
-          {/* Gamma-style Pill Search Bar */}
+          {/* Gamma-style Pill Search Bar (Dark Glass) */}
           <div className="gamma-search-pill" style={{ display: 'none' }} id="gamma-desktop-search">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#94a3b8', flexShrink: 0 }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#64748b', flexShrink: 0 }}>
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -60,7 +59,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Right Section: Nav links, Twitter, Privy Wallet Pill, Hamburger */}
+        {/* Right Section: Nav links, Twitter, Privy Wallet Pill */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
           {/* Navigation Links */}
           <nav aria-label="Main" className="hidden lg:flex" style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
@@ -73,7 +72,7 @@ export default function Navbar() {
                   style={{
                     fontSize: '13.5px',
                     fontWeight: isActive ? 600 : 500,
-                    color: isActive ? '#0f172a' : '#475569',
+                    color: isActive ? '#ffffff' : '#94a3b8',
                     textDecoration: 'none',
                     transition: 'color 0.15s ease'
                   }}
@@ -96,10 +95,11 @@ export default function Navbar() {
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '9999px',
-              background: 'rgba(255, 255, 255, 0.75)',
-              border: '1px solid rgba(15, 23, 42, 0.1)',
-              color: '#0f172a',
-              textDecoration: 'none'
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              color: '#f8fafc',
+              textDecoration: 'none',
+              transition: 'all 0.15s ease'
             }}
             title="Follow RARE Protocol on X"
           >
@@ -108,7 +108,7 @@ export default function Navbar() {
             </svg>
           </a>
 
-          {/* Gamma-style Solid Black Pill Privy Wallet Button */}
+          {/* Solid White Pill Privy Wallet Button (High Contrast in Dark Theme) */}
           <button
             type="button"
             onClick={() => (authenticated ? logout() : login())}
@@ -120,6 +120,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
+
       <style jsx>{`
         @media (min-width: 768px) {
           #gamma-desktop-search {

@@ -50,29 +50,29 @@ export default function LadderPage() {
 
         {/* Interactive Capital Routing Calculator */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: 'rgba(255, 255, 255, 0.04)',
           backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(15, 23, 42, 0.08)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
           borderRadius: '24px',
           padding: '28px',
           marginBottom: '36px',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)'
         }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(15, 23, 42, 0.08)', paddingBottom: '16px', marginBottom: '24px', gap: '12px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '16px', marginBottom: '24px', gap: '12px' }}>
             <div>
-              <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', margin: 0 }}>
                 Capital Routing Calculator
               </h2>
-              <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>Estimate atomic PDA allocation across mint batches.</p>
+              <p style={{ fontSize: '13px', color: '#94a3b8', margin: '4px 0 0 0' }}>Estimate atomic PDA allocation across mint batches.</p>
             </div>
             <span style={{
               display: 'inline-flex',
               alignItems: 'center',
               fontFamily: 'var(--font-jetbrains), monospace',
               fontSize: '11px',
-              color: '#047857',
-              border: '1px solid #a7f3d0',
-              background: '#ecfdf5',
+              color: '#34d399',
+              border: '1px solid rgba(52, 211, 153, 0.3)',
+              background: 'rgba(16, 185, 129, 0.12)',
               borderRadius: '9999px',
               padding: '6px 14px',
               fontWeight: 700
@@ -83,8 +83,8 @@ export default function LadderPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px', alignItems: 'center' }}>
             <div>
-              <label style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', color: '#64748b', display: 'block', marginBottom: '8px', textTransform: 'uppercase' }}>
-                Select Mint Quantity: <strong style={{ color: '#0f172a' }}>{calcQty} AGENTS</strong>
+              <label style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', color: '#94a3b8', display: 'block', marginBottom: '8px', textTransform: 'uppercase' }}>
+                Select Mint Quantity: <strong style={{ color: '#ffffff' }}>{calcQty} AGENTS</strong>
               </label>
               <input
                 type="range"
@@ -92,7 +92,7 @@ export default function LadderPage() {
                 max="50"
                 value={calcQty}
                 onChange={(e) => setCalcQty(parseInt(e.target.value, 10))}
-                style={{ width: '100%', accentColor: '#7c3aed', cursor: 'pointer', marginBottom: '16px' }}
+                style={{ width: '100%', accentColor: '#a855f7', cursor: 'pointer', marginBottom: '16px' }}
               />
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 {[1, 5, 10, 20, 50].map((num) => (
@@ -105,10 +105,10 @@ export default function LadderPage() {
                       padding: '5px 14px',
                       fontSize: '12px',
                       fontFamily: 'var(--font-jetbrains), monospace',
-                      border: calcQty === num ? 'none' : '1px solid rgba(15, 23, 42, 0.1)',
-                      background: calcQty === num ? '#111827' : '#ffffff',
-                      color: calcQty === num ? '#ffffff' : '#475569',
-                      fontWeight: calcQty === num ? 600 : 500,
+                      border: calcQty === num ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+                      background: calcQty === num ? '#ffffff' : 'rgba(255, 255, 255, 0.06)',
+                      color: calcQty === num ? '#000000' : '#94a3b8',
+                      fontWeight: calcQty === num ? 700 : 500,
                       cursor: 'pointer',
                       transition: 'all 0.15s ease'
                     }}
@@ -120,17 +120,17 @@ export default function LadderPage() {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px', fontFamily: 'var(--font-jetbrains), monospace' }}>
-              <div style={{ background: '#f8fafc', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '16px' }}>
-                <span style={{ fontSize: '10px', color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Total Capital</span>
-                <span style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a' }}>{totalCost} SOL</span>
+              <div style={{ background: '#16192a', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '16px' }}>
+                <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Total Capital</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>{totalCost} SOL</span>
               </div>
-              <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '16px', padding: '16px' }}>
-                <span style={{ fontSize: '10px', color: '#047857', display: 'block', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 700 }}>90% Agent PDA</span>
-                <span style={{ fontSize: '20px', fontWeight: 800, color: '#047857' }}>{pdaDeposit} SOL</span>
+              <div style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(52, 211, 153, 0.25)', borderRadius: '16px', padding: '16px' }}>
+                <span style={{ fontSize: '10px', color: '#34d399', display: 'block', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 700 }}>90% Agent PDA</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#34d399' }}>{pdaDeposit} SOL</span>
               </div>
-              <div style={{ background: '#f8fafc', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '16px' }}>
-                <span style={{ fontSize: '10px', color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>10% Protocol</span>
-                <span style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a' }}>{treasurySplit} SOL</span>
+              <div style={{ background: '#16192a', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '16px' }}>
+                <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>10% Protocol</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>{treasurySplit} SOL</span>
               </div>
             </div>
           </div>
@@ -138,18 +138,18 @@ export default function LadderPage() {
 
         {/* 10-Tier Ladder Table */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.95)',
+          background: '#121422',
           borderRadius: '24px',
-          border: '1px solid rgba(15, 23, 42, 0.08)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
           overflow: 'hidden',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
           marginBottom: '40px'
         }}>
-          <div style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.08)', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+          <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff', margin: 0 }}>
               10 Bonding Curve Tiers (10,078 Total Agents)
             </h2>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#64748b' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#94a3b8' }}>
               ANCHOR CPI v1.2
             </span>
           </div>
@@ -157,7 +157,7 @@ export default function LadderPage() {
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px' }}>
               <thead>
-                <tr style={{ background: '#f8fafc', borderBottom: '1px solid rgba(15, 23, 42, 0.06)', color: '#64748b', fontSize: '11px', textTransform: 'uppercase' }}>
+                <tr style={{ background: '#181b2e', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: '#94a3b8', fontSize: '11px', textTransform: 'uppercase' }}>
                   <th style={{ padding: '12px 24px' }}>Tier</th>
                   <th style={{ padding: '12px 24px' }}>Agent Range</th>
                   <th style={{ padding: '12px 24px' }}>Mint Price</th>
@@ -173,35 +173,36 @@ export default function LadderPage() {
                     <tr
                       key={item.band}
                       style={{
-                        borderBottom: '1px solid rgba(15, 23, 42, 0.04)',
-                        background: isCurrent ? 'rgba(16, 185, 129, 0.04)' : 'transparent'
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                        background: isCurrent ? 'rgba(16, 185, 129, 0.08)' : 'transparent'
                       }}
                     >
-                      <td style={{ padding: '14px 24px', fontWeight: 700, color: isCurrent ? '#047857' : '#0f172a' }}>
+                      <td style={{ padding: '14px 24px', fontWeight: 700, color: isCurrent ? '#34d399' : '#ffffff' }}>
                         Band {item.band}
                       </td>
-                      <td style={{ padding: '14px 24px', color: '#64748b' }}>{item.range}</td>
-                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#0f172a' }}>{item.price.toFixed(3)} SOL</td>
-                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#047857' }}>{item.pdaCapital.toFixed(4)} SOL</td>
-                      <td style={{ padding: '14px 24px', color: '#64748b' }}>{item.treasury.toFixed(4)} SOL</td>
+                      <td style={{ padding: '14px 24px', color: '#94a3b8' }}>{item.range}</td>
+                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#ffffff' }}>{item.price.toFixed(3)} SOL</td>
+                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#34d399' }}>{item.pdaCapital.toFixed(4)} SOL</td>
+                      <td style={{ padding: '14px 24px', color: '#94a3b8' }}>{item.treasury.toFixed(4)} SOL</td>
                       <td style={{ padding: '14px 24px', textAlign: 'right' }}>
                         {isCurrent ? (
                           <span style={{
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '6px',
-                            background: '#dcfce7',
-                            color: '#15803d',
+                            background: 'rgba(16, 185, 129, 0.2)',
+                            color: '#34d399',
                             padding: '3px 10px',
                             borderRadius: '9999px',
                             fontSize: '11px',
-                            fontWeight: 700
+                            fontWeight: 700,
+                            border: '1px solid rgba(52, 211, 153, 0.3)'
                           }}>
-                            <span style={{ width: '6px', height: '6px', borderRadius: '9999px', background: '#16a34a', display: 'inline-block' }} />
+                            <span style={{ width: '6px', height: '6px', borderRadius: '9999px', background: '#34d399', display: 'inline-block' }} />
                             Active Now
                           </span>
                         ) : (
-                          <span style={{ color: '#94a3b8', fontSize: '11px' }}>Upcoming</span>
+                          <span style={{ color: '#64748b', fontSize: '11px' }}>Upcoming</span>
                         )}
                       </td>
                     </tr>

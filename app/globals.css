@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   RARE PROTOCOL — GAMMA.IO MOBBIN-GRADE LIGHT EDITORIAL DESIGN SYSTEM
-   Soft periwinkle/powder-blue gradient, DM Sans, JetBrains Mono,
-   Vibrant violet/purple showcase cards, elevated shadows, pill buttons.
+   RARE PROTOCOL — SLEEK INSTITUTIONAL DARK DESIGN SYSTEM
+   Deep obsidian space gradient (#181a27 -> #0d0f17 -> #07080d),
+   Vibrant violet/purple showcase glow, DM Sans, JetBrains Mono,
+   Solid white pill buttons, translucent dark glass cards.
    ========================================================================== */
 
 :root {
@@ -14,24 +15,24 @@
   --font-jetbrains: 'JetBrains Mono', monospace;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Gamma Light Palette */
-  --gamma-bg: #edf3fb;
-  --gamma-bg-subtle: #f4f8fc;
-  --gamma-text-primary: #0f172a;
-  --gamma-text-secondary: #475569;
+  /* Institutional Dark Theme Palette */
+  --gamma-bg: #0d0f17;
+  --gamma-bg-subtle: #141724;
+  --gamma-text-primary: #f8fafc;
+  --gamma-text-secondary: #94a3b8;
   --gamma-text-muted: #64748b;
   --gamma-purple-from: #9333ea;
   --gamma-purple-to: #6366f1;
 
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html,
 body {
   font-family: var(--font-sans);
-  background: radial-gradient(circle at 78% 20%, #d4e3f7 0%, #e6effa 42%, #f2f6fc 100%) !important;
-  background-color: #e6effa !important;
-  color: #0f172a !important;
+  background: radial-gradient(circle at 75% 15%, #181a27 0%, #0d0f17 45%, #07080d 100%) !important;
+  background-color: #0d0f17 !important;
+  color: #f8fafc !important;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -39,18 +40,18 @@ body {
 }
 
 /* ==========================================================================
-   FAIL-PROOF GAMMA.IO COMPONENT CLASSES (1:1 MOBBIN REPLICA)
+   FAIL-PROOF DARK COMPONENT CLASSES
    ========================================================================== */
 
 .gamma-page-container {
   min-height: 100vh;
-  background: radial-gradient(circle at 78% 20%, #d4e3f7 0%, #e6effa 42%, #f2f6fc 100%);
-  background-color: #e6effa;
-  color: #0f172a;
+  background: radial-gradient(circle at 75% 15%, #181a27 0%, #0d0f17 45%, #07080d 100%) !important;
+  background-color: #0d0f17 !important;
+  color: #f8fafc !important;
   font-family: var(--font-sans);
 }
 
-/* Gamma Navigation Bar */
+/* Gamma Navigation Bar (Dark Glass) */
 .gamma-navbar {
   position: fixed;
   top: 0;
@@ -58,10 +59,10 @@ body {
   right: 0;
   height: 68px;
   z-index: 50;
-  background: rgba(235, 243, 252, 0.85);
+  background: rgba(13, 15, 23, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
 }
@@ -81,20 +82,20 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
   padding: 8px 18px;
   width: 100%;
   max-width: 380px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
 }
 
 .gamma-search-pill:focus-within {
-  background: #ffffff;
-  border-color: rgba(15, 23, 42, 0.3);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .gamma-search-input {
@@ -102,7 +103,7 @@ body {
   border: none;
   outline: none;
   font-size: 13px;
-  color: #0f172a;
+  color: #f8fafc;
   width: 100%;
   font-family: inherit;
 }
@@ -111,55 +112,57 @@ body {
   color: #64748b;
 }
 
+/* Primary High-Contrast White Pill CTA */
 .gamma-btn-black {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #111827;
-  color: #ffffff !important;
-  font-weight: 600;
+  background: #ffffff;
+  color: #000000 !important;
+  font-weight: 700;
   font-size: 13.5px;
   border-radius: 9999px;
   padding: 10px 24px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   transition: all 0.18s ease;
   white-space: nowrap;
   text-decoration: none;
 }
 
 .gamma-btn-black:hover {
-  background: #000000;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  background: #e2e8f0;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
 
+/* Secondary Translucent Glass Pill CTA */
 .gamma-btn-white {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.9);
-  color: #0f172a !important;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc !important;
   font-weight: 500;
   font-size: 13.5px;
   border-radius: 9999px;
   padding: 10px 22px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: all 0.18s ease;
   white-space: nowrap;
   text-decoration: none;
 }
 
 .gamma-btn-white:hover {
-  background: #ffffff;
-  border-color: rgba(15, 23, 42, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-1px);
 }
 
-/* Gamma Hero 2-Column Layout */
+/* Hero Section */
 .gamma-hero-section {
   padding-top: 108px;
   padding-bottom: 48px;
@@ -183,22 +186,22 @@ body {
   }
 }
 
-/* Left Hero Typography */
+/* Hero Typography */
 .gamma-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #1e293b;
+  color: #cbd5e1;
   margin-bottom: 16px;
 }
 
 .gamma-badge-icon {
   width: 22px;
   height: 22px;
-  background: #111827;
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  color: #38bdf8;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -210,13 +213,13 @@ body {
   font-weight: 700;
   line-height: 1.04;
   letter-spacing: -0.035em;
-  color: #0f172a;
+  color: #ffffff;
   margin: 0 0 18px 0;
 }
 
 .gamma-hero-subtitle {
   font-size: clamp(15px, 1.3vw, 18px);
-  color: #475569;
+  color: #94a3b8;
   line-height: 1.6;
   max-width: 500px;
   margin: 0 0 28px 0;
@@ -236,19 +239,19 @@ body {
   gap: 10px;
   font-family: var(--font-jetbrains), monospace;
   font-size: 11.5px;
-  color: #64748b;
+  color: #94a3b8;
   flex-wrap: wrap;
 }
 
-/* Gamma Right Elevated Showcase Box */
+/* Hero Right Showcase Container (Vibrant Glow in Dark Mode) */
 .gamma-showcase-box {
   width: 100%;
   max-width: 540px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #9333ea 0%, #7e22ce 55%, #6366f1 100%);
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 55%, #4f46e5 100%);
   border-radius: 32px;
   padding: 24px;
-  box-shadow: 0 35px 80px -15px rgba(126, 34, 206, 0.45);
+  box-shadow: 0 35px 90px -15px rgba(124, 58, 237, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.15);
   position: relative;
   overflow: hidden;
 }
@@ -271,13 +274,12 @@ body {
   transform: translateY(-5px);
 }
 
-/* Stacked shadow back-layer to emulate Gamma Mobbin multi-prints stack */
 .gamma-agent-card::after {
   content: '';
   position: absolute;
   inset: 0;
   transform: translate(3px, 5px);
-  background: rgba(0, 0, 0, 0.28);
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 16px;
   z-index: 0;
   filter: blur(2px);
@@ -291,18 +293,18 @@ body {
 .gamma-agent-card-inner {
   position: relative;
   z-index: 1;
-  background: #ffffff;
+  background: #10121d;
   border-radius: 16px;
   padding: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .gamma-card-img-wrap {
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 12px;
-  background: #f1f5f9;
+  background: #171a2b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -328,14 +330,15 @@ body {
   position: absolute;
   top: 6px;
   left: 6px;
-  background: rgba(15, 23, 42, 0.85);
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.85);
+  color: #38bdf8;
   font-family: var(--font-jetbrains), monospace;
   font-size: 8.5px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 2px 5px;
   border-radius: 9999px;
   line-height: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .gamma-card-info {
@@ -346,7 +349,7 @@ body {
 .gamma-card-title {
   font-size: 11px;
   font-weight: 700;
-  color: #0f172a;
+  color: #f8fafc;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -358,13 +361,13 @@ body {
   align-items: center;
   justify-content: space-between;
   font-size: 9.5px;
-  color: #64748b;
+  color: #94a3b8;
   font-family: var(--font-jetbrains), monospace;
   margin-top: 2px;
 }
 
 .gamma-card-price {
-  color: #7c3aed;
+  color: #a855f7;
   font-weight: 700;
 }
 
@@ -372,7 +375,7 @@ body {
 .gamma-dock {
   margin-top: 56px;
   padding-top: 24px;
-  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .gamma-dock-grid {
@@ -396,74 +399,27 @@ body {
 
 .gamma-dock-item {
   border-radius: 20px;
-  padding: 12px;
+  padding: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
 .gamma-dock-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
 }
 
-/* Modern clean styling for Roster Grid cards in Section 4 */
-.home-swarm-grid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 16px;
-}
-
-@media (min-width: 640px) {
-  .home-swarm-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .home-swarm-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.roster-card-box {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  padding: 16px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-}
-
-.roster-card-box img {
-  width: 100%;
-  height: 100%;
-  max-height: 180px;
-  object-fit: contain;
-  image-rendering: pixelated;
-  transition: transform 0.2s ease;
-}
-
-.agent-card-anim:hover .roster-card-box img {
-  transform: scale(1.05);
-}
-
-/* ==========================================================================
-   GAMMA.IO SHARED PAGE & ROSTER STYLES (1:1 MOBBIN GRADE)
-   ========================================================================== */
-
+/* Page Header */
 .gamma-page-header {
   max-width: 840px;
   margin: 0 auto 40px auto;
   text-align: center;
 }
 
+/* Roster 40-Card Small Grid */
 .gamma-roster-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -499,11 +455,11 @@ body {
 }
 
 .gamma-small-card {
-  background: #ffffff;
+  background: #11131f;
   border-radius: 16px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: all 0.18s ease;
   position: relative;
@@ -514,15 +470,15 @@ body {
 
 .gamma-small-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-  border-color: rgba(147, 51, 234, 0.3);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  border-color: rgba(147, 51, 234, 0.45);
 }
 
 .gamma-small-avatar-box {
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 12px;
-  background: #f8fafc;
+  background: #171a29;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -545,14 +501,14 @@ body {
   transform: scale(1.08);
 }
 
-/* Gamma Modal Styles */
+/* Modals */
 .gamma-modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: rgba(15, 23, 42, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -563,11 +519,57 @@ body {
   position: relative;
   width: 100%;
   max-width: 520px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #111422;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 24px;
   padding: 24px;
-  box-shadow: 0 30px 80px -15px rgba(15, 23, 42, 0.25);
+  box-shadow: 0 35px 90px -15px rgba(0, 0, 0, 0.85);
   max-height: 90vh;
   overflow-y: auto;
+  color: #f8fafc;
+}
+
+/* Homepage Swarm Grid */
+.home-swarm-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .home-swarm-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-swarm-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.roster-card-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #141726;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.roster-card-box img {
+  width: 100%;
+  height: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  transition: transform 0.2s ease;
+}
+
+.agent-card-anim:hover .roster-card-box img {
+  transform: scale(1.05);
 }

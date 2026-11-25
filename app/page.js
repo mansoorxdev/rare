@@ -392,14 +392,14 @@ export default function HomePage() {
 
               {/* Telemetry Status Bar */}
               <div className="gamma-telemetry">
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#0f172a' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#ffffff' }}>
                   <span style={{ width: '8px', height: '8px', borderRadius: '9999px', background: '#10b981', display: 'inline-block' }} />
                   <span>{soldCount} / 10,078 MINTED</span>
                 </span>
                 <span>·</span>
                 <span>GENESIS TIER 1</span>
                 <span>·</span>
-                <span style={{ color: '#7c3aed', fontWeight: 700 }}>90% PDA BONDED</span>
+                <span style={{ color: '#a855f7', fontWeight: 700 }}>90% PDA BONDED</span>
               </div>
             </div>
 
@@ -413,12 +413,12 @@ export default function HomePage() {
           <div className="gamma-dock">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '9999px', background: '#7c3aed' }} />
-                <span style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '9999px', background: '#a855f7' }} />
+                <span style={{ fontSize: '13px', fontWeight: 700, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'var(--font-jetbrains), monospace' }}>
                   Core Agent Archetypes
                 </span>
               </div>
-              <Link href="/roster" style={{ fontSize: '12px', fontWeight: 600, color: '#7c3aed', textDecoration: 'none' }}>
+              <Link href="/roster" style={{ fontSize: '12px', fontWeight: 600, color: '#a855f7', textDecoration: 'none' }}>
                 Explore Swarm Roster →
               </Link>
             </div>
@@ -429,22 +429,22 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid rgba(147, 51, 234, 0.25)',
-                  color: '#0f172a',
+                  background: '#121422',
+                  border: '1px solid rgba(168, 85, 247, 0.35)',
+                  color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 2px 8px rgba(147, 51, 234, 0.06)'
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
                 }}
               >
                 <div style={{
                   width: '100%',
                   aspectRatio: '16/11',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%)',
-                  border: '1px solid rgba(147, 51, 234, 0.15)',
+                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
+                  border: '1px solid rgba(168, 85, 247, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -469,13 +469,13 @@ export default function HomePage() {
                     padding: '3px 8px',
                     borderRadius: '9999px',
                     fontFamily: 'var(--font-jetbrains), monospace',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
                   }}>
                     Active · Jupiter
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Quantum Arbitrage</div>
-                <div style={{ fontSize: '11px', color: '#7c3aed', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Quantum Arbitrage</div>
+                <div style={{ fontSize: '11px', color: '#c084fc', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Cross-DEX Spreads
                 </div>
               </Link>
@@ -485,22 +485,22 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid rgba(16, 185, 129, 0.25)',
-                  color: '#0f172a',
+                  background: '#121422',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 2px 8px rgba(16, 185, 129, 0.06)'
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
                 }}
               >
                 <div style={{
                   width: '100%',
                   aspectRatio: '16/11',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%)',
-                  border: '1px solid rgba(16, 185, 129, 0.15)',
+                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
+                  border: '1px solid rgba(16, 185, 129, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -525,13 +525,13 @@ export default function HomePage() {
                     padding: '3px 8px',
                     borderRadius: '9999px',
                     fontFamily: 'var(--font-jetbrains), monospace',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
                   }}>
                     Pyth Oracle
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Sentinel Guards</div>
-                <div style={{ fontSize: '11px', color: '#059669', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Sentinel Guards</div>
+                <div style={{ fontSize: '11px', color: '#34d399', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   -15% Stop-Loss Shield
                 </div>
               </Link>
@@ -541,22 +541,22 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid rgba(15, 23, 42, 0.15)',
-                  color: '#0f172a',
+                  background: '#121422',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)'
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
                 }}
               >
                 <div style={{
                   width: '100%',
                   aspectRatio: '16/11',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)',
-                  border: '1px solid rgba(15, 23, 42, 0.1)',
+                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -576,18 +576,18 @@ export default function HomePage() {
                     left: '8px',
                     fontSize: '9.5px',
                     fontWeight: 700,
-                    background: '#0f172a',
+                    background: '#1e293b',
                     color: '#ffffff',
                     padding: '3px 8px',
                     borderRadius: '9999px',
                     fontFamily: 'var(--font-jetbrains), monospace',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
                   }}>
                     Raydium CLMM
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Grid Execution</div>
-                <div style={{ fontSize: '11px', color: '#475569', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Grid Execution</div>
+                <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   High-Frequency Ranges
                 </div>
               </Link>
@@ -597,22 +597,22 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid rgba(236, 72, 153, 0.25)',
-                  color: '#0f172a',
+                  background: '#121422',
+                  border: '1px solid rgba(236, 72, 153, 0.35)',
+                  color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 2px 8px rgba(236, 72, 153, 0.06)'
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
                 }}
               >
                 <div style={{
                   width: '100%',
                   aspectRatio: '16/11',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #fdf2f8 0%, #fce7f3 100%)',
-                  border: '1px solid rgba(236, 72, 153, 0.15)',
+                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
+                  border: '1px solid rgba(236, 72, 153, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -637,13 +637,13 @@ export default function HomePage() {
                     padding: '3px 8px',
                     borderRadius: '9999px',
                     fontFamily: 'var(--font-jetbrains), monospace',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
                   }}>
                     Trend Signal
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Momentum Hunters</div>
-                <div style={{ fontSize: '11px', color: '#db2777', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Momentum Hunters</div>
+                <div style={{ fontSize: '11px', color: '#f472b6', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Volume Breakouts
                 </div>
               </Link>
@@ -653,22 +653,22 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid rgba(217, 119, 6, 0.25)',
-                  color: '#0f172a',
+                  background: '#121422',
+                  border: '1px solid rgba(217, 119, 6, 0.35)',
+                  color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 2px 8px rgba(217, 119, 6, 0.06)'
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
                 }}
               >
                 <div style={{
                   width: '100%',
                   aspectRatio: '16/11',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%)',
-                  border: '1px solid rgba(217, 119, 6, 0.15)',
+                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
+                  border: '1px solid rgba(217, 119, 6, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -693,13 +693,13 @@ export default function HomePage() {
                     padding: '3px 8px',
                     borderRadius: '9999px',
                     fontFamily: 'var(--font-jetbrains), monospace',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
                   }}>
                     90% PDA Vault
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Vault Rebalancers</div>
-                <div style={{ fontSize: '11px', color: '#b45309', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Vault Rebalancers</div>
+                <div style={{ fontSize: '11px', color: '#fbbf24', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Auto +35% Take Profit
                 </div>
               </Link>
@@ -710,19 +710,19 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 1: "One agent. Every order."
             ========================================================================= */}
-        <section id="one-agent" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-28 border-t border-black/[0.06]">
+        <section id="one-agent" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-28 border-t border-white/[0.08]">
           <div className="sec1-anim-header mx-auto max-w-[640px] text-center">
-            <h2 className="font-sans text-[32px] sm:text-[44px] text-neutral-900 font-bold tracking-tight leading-tight">
+            <h2 className="font-sans text-[32px] sm:text-[44px] text-white font-bold tracking-tight leading-tight">
               One agent. Every order.
             </h2>
-            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-neutral-600">
+            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-slate-400">
               Inscribe the strategy once to an on-chain PDA. RARE turns it into an autonomous execution agent with 90% capital bonded to token-bound vaults on Solana, showing every CPI step before you sign.
             </p>
           </div>
 
           <div className="mx-auto mt-12 max-w-[1056px]">
             {/* Elegant JSON Code Card */}
-            <div className="sec1-anim-card mx-auto max-w-[540px] overflow-hidden rounded-2xl border border-black/[0.08] bg-[#0c0d14] shadow-2xl">
+            <div className="sec1-anim-card mx-auto max-w-[540px] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0d14] shadow-2xl">
               <div className="flex items-center justify-between border-b border-zinc-800/90 px-4 py-3 font-mono text-[11px] text-zinc-400 bg-zinc-900/60">
                 <span>rare-agent-pda.json</span>
                 <span className="text-emerald-400 flex items-center gap-1.5 font-semibold">
@@ -753,34 +753,34 @@ export default function HomePage() {
 
             {/* 4 Feature Cards */}
             <div className="sec1-feature-grid mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="sec1-anim-feature rounded-2xl border border-black/[0.06] bg-white p-6 shadow-sm hover:shadow-md transition-all">
-                <span className="font-mono text-[11px] text-purple-700 font-semibold tracking-wide uppercase">01 // Cast</span>
-                <h3 className="mt-2 text-[16px] font-bold text-neutral-900">Instant On-Chain Mint</h3>
-                <p className="mt-1.5 text-[13px] text-neutral-600 leading-relaxed">
+              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all">
+                <span className="font-mono text-[11px] text-purple-400 font-semibold tracking-wide uppercase">01 // Cast</span>
+                <h3 className="mt-2 text-[16px] font-bold text-white">Instant On-Chain Mint</h3>
+                <p className="mt-1.5 text-[13px] text-slate-400 leading-relaxed">
                   Single-slot Ed25519 signature mints your NFT and instantiates its token-bound account.
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-2xl border border-black/[0.06] bg-white p-6 shadow-sm hover:shadow-md transition-all">
-                <span className="font-mono text-[11px] text-emerald-600 font-semibold tracking-wide uppercase">02 // Custody</span>
-                <h3 className="mt-2 text-[16px] font-bold text-neutral-900">90% PDA Vault</h3>
-                <p className="mt-1.5 text-[13px] text-neutral-600 leading-relaxed">
+              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-emerald-500/40 transition-all">
+                <span className="font-mono text-[11px] text-emerald-400 font-semibold tracking-wide uppercase">02 // Custody</span>
+                <h3 className="mt-2 text-[16px] font-bold text-white">90% PDA Vault</h3>
+                <p className="mt-1.5 text-[13px] text-slate-400 leading-relaxed">
                   90% of mint capital stays locked inside the agent’s own PDA on Solana. Never touch creator wallets.
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-2xl border border-black/[0.06] bg-white p-6 shadow-sm hover:shadow-md transition-all">
-                <span className="font-mono text-[11px] text-purple-700 font-semibold tracking-wide uppercase">03 // Guard</span>
-                <h3 className="mt-2 text-[16px] font-bold text-neutral-900">Autonomous Stop-Loss</h3>
-                <p className="mt-1.5 text-[13px] text-neutral-600 leading-relaxed">
+              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all">
+                <span className="font-mono text-[11px] text-purple-400 font-semibold tracking-wide uppercase">03 // Guard</span>
+                <h3 className="mt-2 text-[16px] font-bold text-white">Autonomous Stop-Loss</h3>
+                <p className="mt-1.5 text-[13px] text-slate-400 leading-relaxed">
                   Pyth oracle guards trigger automated risk unwinds when market drawdowns exceed programmed bounds.
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-2xl border border-black/[0.06] bg-white p-6 shadow-sm hover:shadow-md transition-all">
-                <span className="font-mono text-[11px] text-emerald-600 font-semibold tracking-wide uppercase">04 // Ladder</span>
-                <h3 className="mt-2 text-[16px] font-bold text-neutral-900">10 Bonding Tiers</h3>
-                <p className="mt-1.5 text-[13px] text-neutral-600 leading-relaxed">
+              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-emerald-500/40 transition-all">
+                <span className="font-mono text-[11px] text-emerald-400 font-semibold tracking-wide uppercase">04 // Ladder</span>
+                <h3 className="mt-2 text-[16px] font-bold text-white">10 Bonding Tiers</h3>
+                <p className="mt-1.5 text-[13px] text-slate-400 leading-relaxed">
                   10,078 total agents across 10 deterministic bonding bands from 0.02 SOL to 10.24 SOL.
                 </p>
               </div>
@@ -791,18 +791,18 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 2: "Agents that read like sentences"
             ========================================================================= */}
-        <section id="sentences" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-28 border-t border-black/[0.06]">
+        <section id="sentences" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-28 border-t border-white/[0.08]">
           <div className="sec2-anim-header mx-auto max-w-[640px] text-center">
-            <h2 className="font-sans text-[32px] sm:text-[44px] text-neutral-900 font-bold tracking-tight leading-tight">
+            <h2 className="font-sans text-[32px] sm:text-[44px] text-white font-bold tracking-tight leading-tight">
               Agents that read like sentences
             </h2>
-            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-neutral-600">
+            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-slate-400">
               An agent is a verifiable on-chain manifest. The same agent reads as plain English instructions, as Rust Anchor code, and as the exact list of CPI transactions it executes.
             </p>
           </div>
 
           <div className="mx-auto mt-12 max-w-[1056px]">
-            <div className="sec2-anim-ide overflow-hidden rounded-2xl border border-black/[0.08] bg-[#0c0d14] shadow-2xl">
+            <div className="sec2-anim-ide overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0d14] shadow-2xl">
               <div className="grid lg:grid-cols-[1.15fr_1fr]">
                 {/* Left Side: Code Viewer Tabs */}
                 <div className="min-w-0 border-zinc-800 lg:border-r">
@@ -970,30 +970,30 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 3: "The review guides you"
             ========================================================================= */}
-        <section id="review" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-28 border-t border-black/[0.06]">
+        <section id="review" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-28 border-t border-white/[0.08]">
           <div className="sec3-anim-header mx-auto max-w-[640px] text-center">
-            <h2 className="font-sans text-[32px] sm:text-[44px] text-neutral-900 font-bold tracking-tight leading-tight">
+            <h2 className="font-sans text-[32px] sm:text-[44px] text-white font-bold tracking-tight leading-tight">
               The review guides you
             </h2>
-            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-neutral-600">
+            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-slate-400">
               Quote, review, sign, anchor. Every step shows what will happen and asks your wallet only for what it needs.
             </p>
           </div>
 
           <div className="mx-auto mt-12 max-w-[1056px]">
             {/* Header with transcript label and pause toggle */}
-            <div className="mb-3 flex items-center justify-between font-mono text-[11px] tracking-wide text-neutral-500 uppercase">
+            <div className="mb-3 flex items-center justify-between font-mono text-[11px] tracking-wide text-slate-400 uppercase">
               <span>On-Chain Instruction Pipeline · Solana Anchor Execution</span>
               <button
                 type="button"
                 onClick={() => setTranscriptPaused(!transcriptPaused)}
-                className="rounded-full px-3 py-1 normal-case border border-black/[0.08] bg-white text-neutral-700 hover:text-black transition-colors cursor-pointer text-[11px] shadow-sm"
+                className="rounded-full px-3 py-1 normal-case border border-white/[0.12] bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer text-[11px] shadow-sm"
               >
                 {transcriptPaused ? 'Resume' : 'Pause'}
               </button>
             </div>
 
-            <div className="sec3-anim-transcript overflow-hidden rounded-2xl border border-black/[0.08] bg-[#0c0d14] shadow-2xl">
+            <div className="sec3-anim-transcript overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0d14] shadow-2xl">
               {/* Stepper Tabs */}
               <div role="tablist" aria-label="Execution steps" className="grid grid-cols-2 border-b border-zinc-800 sm:grid-cols-4">
                 {[
@@ -1059,17 +1059,17 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 4: "Browse agent swarm"
             ========================================================================= */}
-        <section id="browse-agents" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-28 border-t border-black/[0.06]">
+        <section id="browse-agents" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-28 border-t border-white/[0.08]">
           <div className="sec4-anim-header flex items-end justify-between">
             <div>
-              <h2 className="font-sans text-[30px] sm:text-[38px] text-neutral-900 font-bold tracking-tight">
+              <h2 className="font-sans text-[30px] sm:text-[38px] text-white font-bold tracking-tight">
                 Browse agent swarm
               </h2>
-              <p className="mt-1.5 text-[14px] text-neutral-600">
+              <p className="mt-1.5 text-[14px] text-slate-400">
                 10,078 unique AI agents inscribed with token-bound wallets.
               </p>
             </div>
-            <Link className="text-[13px] font-semibold text-neutral-800 hover:text-black transition-colors" href="/roster">
+            <Link className="text-[13px] font-semibold text-slate-300 hover:text-white transition-colors" href="/roster">
               View all 10,078 →
             </Link>
           </div>
@@ -1080,7 +1080,7 @@ export default function HomePage() {
               <div
                 key={agent.id}
                 onClick={() => setInspectedAgent(agent)}
-                className="agent-card-anim group cursor-pointer overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-sm hover:shadow-md transition-all duration-150 hover:-translate-y-1"
+                className="agent-card-anim group cursor-pointer overflow-hidden rounded-2xl border border-white/[0.08] bg-[#121422] shadow-lg hover:border-purple-500/40 transition-all duration-150 hover:-translate-y-1"
               >
                 {/* Visual Avatar Container */}
                 <div className="roster-card-box">
@@ -1100,10 +1100,10 @@ export default function HomePage() {
                       loading="lazy"
                     />
                   </div>
-                  <span className="absolute top-2.5 left-2.5 z-20 rounded-md bg-white/90 px-2 py-0.5 font-mono text-[9.5px] text-neutral-800 border border-black/[0.08] shadow-sm">
+                  <span className="absolute top-2.5 left-2.5 z-20 rounded-md bg-[#181a29]/90 px-2 py-0.5 font-mono text-[9.5px] text-white border border-white/[0.1] shadow-sm">
                     #{String(agent.id).padStart(5, '0')}
                   </span>
-                  <span className="absolute top-2.5 right-2.5 z-20 rounded-md bg-purple-100 px-2 py-0.5 font-mono text-[9.5px] text-purple-700 font-semibold border border-purple-200">
+                  <span className="absolute top-2.5 right-2.5 z-20 rounded-md bg-purple-900/40 px-2 py-0.5 font-mono text-[9.5px] text-purple-300 font-semibold border border-purple-500/30">
                     {agent.rarityTier}
                   </span>
                 </div>
@@ -1111,21 +1111,21 @@ export default function HomePage() {
                 {/* Card Meta Content */}
                 <div className="p-4">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="font-sans text-[15px] text-neutral-900 font-semibold truncate group-hover:text-purple-700 transition-colors">
+                    <span className="font-sans text-[15px] text-white font-semibold truncate group-hover:text-purple-400 transition-colors">
                       {agent.name}
                     </span>
-                    <span className="font-mono text-[12px] text-purple-700 font-bold shrink-0">
+                    <span className="font-mono text-[12px] text-purple-400 font-bold shrink-0">
                       {agent.priceSol} SOL
                     </span>
                   </div>
 
-                  <p className="mt-1 text-[12px] text-neutral-500 truncate">
+                  <p className="mt-1 text-[12px] text-slate-400 truncate">
                     {agent.role} · {agent.archetype}
                   </p>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-black/[0.06] pt-2.5 font-mono text-[10.5px] text-neutral-500">
+                  <div className="mt-3 flex items-center justify-between border-t border-white/[0.08] pt-2.5 font-mono text-[10.5px] text-slate-400">
                     <span>90% PDA: {agent.pdaFunding}</span>
-                    <span className="text-neutral-700 group-hover:text-purple-700 transition-colors font-medium">Inspect →</span>
+                    <span className="text-white group-hover:text-purple-400 transition-colors font-medium">Inspect →</span>
                   </div>
                 </div>
               </div>
@@ -1136,60 +1136,60 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 5: "Explore the protocol"
             ========================================================================= */}
-        <section aria-labelledby="docs-title" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-24 border-t border-black/[0.06]">
-          <h2 id="docs-title" className="font-sans text-[30px] sm:text-[38px] text-neutral-900 font-bold tracking-tight">
+        <section aria-labelledby="docs-title" className="mx-auto max-w-[1360px] px-5 py-20 md:px-8 md:py-24 border-t border-white/[0.08]">
+          <h2 id="docs-title" className="font-sans text-[30px] sm:text-[38px] text-white font-bold tracking-tight">
             Explore the protocol
           </h2>
 
           <div className="mt-6 grid gap-3.5 md:grid-cols-2">
             <Link
-              className="sec5-anim-card group block rounded-2xl border border-black/[0.06] bg-white p-6 shadow-sm hover:shadow-md transition-all duration-150"
+              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all duration-150"
               href="/specs"
             >
-              <span className="flex items-center gap-1.5 text-[15.5px] text-neutral-900 font-semibold">
+              <span className="flex items-center gap-1.5 text-[15.5px] text-white font-semibold">
                 Token-bound PDA Vaults
                 <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
               </span>
-              <span className="mt-1.5 block text-[13px] text-neutral-600 leading-relaxed">
+              <span className="mt-1.5 block text-[13px] text-slate-400 leading-relaxed">
                 Non-custodial account derivation and 90% mint capital deposit architecture on Solana.
               </span>
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-2xl border border-black/[0.06] bg-white p-6 shadow-sm hover:shadow-md transition-all duration-150"
+              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all duration-150"
               href="/specs#cpi"
             >
-              <span className="flex items-center gap-1.5 text-[15.5px] text-neutral-900 font-semibold">
+              <span className="flex items-center gap-1.5 text-[15.5px] text-white font-semibold">
                 Anchor CPI Execution
                 <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
               </span>
-              <span className="mt-1.5 block text-[13px] text-neutral-600 leading-relaxed">
+              <span className="mt-1.5 block text-[13px] text-slate-400 leading-relaxed">
                 Cross-program invocation rules, Pyth oracle safety guards, and atomic order settlement.
               </span>
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-2xl border border-black/[0.06] bg-white p-6 shadow-sm hover:shadow-md transition-all duration-150"
+              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all duration-150"
               href="/ladder"
             >
-              <span className="flex items-center gap-1.5 text-[15.5px] text-neutral-900 font-semibold">
+              <span className="flex items-center gap-1.5 text-[15.5px] text-white font-semibold">
                 10-Tier Price Ladder
                 <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
               </span>
-              <span className="mt-1.5 block text-[13px] text-neutral-600 leading-relaxed">
+              <span className="mt-1.5 block text-[13px] text-slate-400 leading-relaxed">
                 Bonding curve mathematics governing the exact supply distribution of all 10,078 agents.
               </span>
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-2xl border border-black/[0.06] bg-white p-6 shadow-sm hover:shadow-md transition-all duration-150"
+              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all duration-150"
               href="/whitepaper"
             >
-              <span className="flex items-center gap-1.5 text-[15.5px] text-neutral-900 font-semibold">
+              <span className="flex items-center gap-1.5 text-[15.5px] text-white font-semibold">
                 Whitepaper PDF
                 <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
               </span>
-              <span className="mt-1.5 block text-[13px] text-neutral-600 leading-relaxed">
+              <span className="mt-1.5 block text-[13px] text-slate-400 leading-relaxed">
                 Read the formal mathematical and cryptographic specifications for RARE Protocol.
               </span>
             </Link>

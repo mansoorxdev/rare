@@ -148,9 +148,9 @@ export default function RosterPage() {
 
         {/* Filter & Search Bar */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.85)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(15, 23, 42, 0.08)',
+          background: 'rgba(255, 255, 255, 0.04)',
+          backdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
           borderRadius: '20px',
           padding: '12px 18px',
           marginBottom: '28px',
@@ -159,11 +159,11 @@ export default function RosterPage() {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '14px',
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)'
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
         }}>
           {/* Rarity Filter Pills */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#64748b', textTransform: 'uppercase', marginRight: '4px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', marginRight: '4px' }}>
               Rarity:
             </span>
             {['all', 'legendary', 'epic', 'rare', 'common'].map((tier) => {
@@ -178,11 +178,11 @@ export default function RosterPage() {
                     padding: '5px 14px',
                     fontSize: '12px',
                     fontFamily: 'var(--font-jetbrains), monospace',
-                    fontWeight: isActive ? 600 : 500,
+                    fontWeight: isActive ? 700 : 500,
                     textTransform: 'capitalize',
-                    border: isActive ? 'none' : '1px solid rgba(15, 23, 42, 0.1)',
-                    background: isActive ? '#111827' : 'rgba(255, 255, 255, 0.8)',
-                    color: isActive ? '#ffffff' : '#475569',
+                    border: isActive ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
+                    background: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.06)',
+                    color: isActive ? '#000000' : '#94a3b8',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease'
                   }}
@@ -203,14 +203,14 @@ export default function RosterPage() {
               style={{
                 width: '100%',
                 borderRadius: '9999px',
-                border: '1px solid rgba(15, 23, 42, 0.12)',
-                background: '#ffffff',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                background: 'rgba(255, 255, 255, 0.06)',
                 padding: '7px 16px',
                 fontSize: '12.5px',
-                color: '#0f172a',
+                color: '#ffffff',
                 outline: 'none',
                 fontFamily: 'var(--font-sans)',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
+                boxShadow: '0 1px 2px rgba(0,0,0,0.2)'
               }}
             />
           </div>
@@ -238,7 +238,7 @@ export default function RosterPage() {
                   position: 'absolute',
                   top: '6px',
                   left: '6px',
-                  background: 'rgba(15, 23, 42, 0.85)',
+                  background: 'rgba(0, 0, 0, 0.85)',
                   color: '#ffffff',
                   fontSize: '8px',
                   fontFamily: 'var(--font-jetbrains), monospace',
@@ -254,8 +254,8 @@ export default function RosterPage() {
                   position: 'absolute',
                   top: '6px',
                   right: '6px',
-                  background: 'rgba(147, 51, 234, 0.12)',
-                  color: '#7e22ce',
+                  background: 'rgba(147, 51, 234, 0.25)',
+                  color: '#c084fc',
                   fontSize: '8px',
                   fontFamily: 'var(--font-jetbrains), monospace',
                   fontWeight: 700,
@@ -269,18 +269,18 @@ export default function RosterPage() {
 
               {/* Card Meta Content */}
               <div style={{ padding: '2px' }}>
-                <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {agent.name}
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '9.5px', color: '#64748b', fontFamily: 'var(--font-jetbrains), monospace', marginTop: '3px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '9.5px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', marginTop: '3px' }}>
                   <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{agent.role}</span>
-                  <span style={{ color: '#7c3aed', fontWeight: 700, flexShrink: 0 }}>{agent.priceSol} SOL</span>
+                  <span style={{ color: '#c084fc', fontWeight: 700, flexShrink: 0 }}>{agent.priceSol} SOL</span>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(15, 23, 42, 0.06)', marginTop: '8px', paddingTop: '6px', fontSize: '9px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '8px', paddingTop: '6px', fontSize: '9px', color: '#64748b', fontFamily: 'var(--font-jetbrains), monospace' }}>
                   <span>90% PDA</span>
-                  <span style={{ color: '#0f172a', fontWeight: 600 }}>Inspect →</span>
+                  <span style={{ color: '#ffffff', fontWeight: 600 }}>Inspect →</span>
                 </div>
               </div>
             </div>
@@ -299,8 +299,8 @@ export default function RosterPage() {
             ← Previous
           </button>
 
-          <span style={{ color: '#64748b' }}>
-            Page <strong style={{ color: '#0f172a' }}>{page}</strong> of <strong style={{ color: '#0f172a' }}>{totalPages}</strong>
+          <span style={{ color: '#94a3b8' }}>
+            Page <strong style={{ color: '#ffffff' }}>{page}</strong> of <strong style={{ color: '#ffffff' }}>{totalPages}</strong>
           </span>
 
           <button
@@ -317,7 +317,7 @@ export default function RosterPage() {
 
       <Footer />
 
-      {/* Inspected Agent Modal (Gamma Light Editorial Style) */}
+      {/* Inspected Agent Modal (Gamma Dark Institutional Style) */}
       {inspectedAgent && (
         <div
           className="gamma-modal-backdrop"
@@ -335,11 +335,11 @@ export default function RosterPage() {
                 top: '16px',
                 right: '16px',
                 borderRadius: '9999px',
-                border: '1px solid rgba(15, 23, 42, 0.1)',
-                background: '#f8fafc',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                background: 'rgba(255, 255, 255, 0.08)',
                 padding: '6px',
                 cursor: 'pointer',
-                color: '#64748b'
+                color: '#f8fafc'
               }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -354,8 +354,8 @@ export default function RosterPage() {
                   width: '90px',
                   height: '90px',
                   borderRadius: '16px',
-                  background: '#f1f5f9',
-                  border: '1px solid rgba(15, 23, 42, 0.08)',
+                  background: '#181b2e',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -371,17 +371,17 @@ export default function RosterPage() {
 
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#64748b' }}>
+                    <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8' }}>
                       #{String(inspectedAgent.id).padStart(5, '0')}
                     </span>
-                    <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#7c3aed', fontWeight: 700 }}>
+                    <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#c084fc', fontWeight: 700 }}>
                       {inspectedAgent.band}
                     </span>
                   </div>
-                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: '2px 0 0 0' }}>
+                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', margin: '2px 0 0 0' }}>
                     {inspectedAgent.name}
                   </h3>
-                  <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
+                  <p style={{ fontSize: '12px', color: '#94a3b8', margin: '2px 0 0 0' }}>
                     {inspectedAgent.role} · {inspectedAgent.archetype}
                   </p>
                 </div>
@@ -389,9 +389,9 @@ export default function RosterPage() {
 
               {/* Stats Block */}
               <div style={{
-                background: '#f8fafc',
+                background: '#16192a',
                 borderRadius: '14px',
-                border: '1px solid rgba(15, 23, 42, 0.06)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
                 padding: '12px 16px',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 fontSize: '11px',
@@ -400,22 +400,22 @@ export default function RosterPage() {
                 gap: '8px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: '#64748b' }}>Mint Price:</span>
-                  <span style={{ color: '#0f172a', fontWeight: 700 }}>{inspectedAgent.priceSol} SOL</span>
+                  <span style={{ color: '#94a3b8' }}>Mint Price:</span>
+                  <span style={{ color: '#ffffff', fontWeight: 700 }}>{inspectedAgent.priceSol} SOL</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: '#64748b' }}>90% Vault Deposit:</span>
-                  <span style={{ color: '#10b981', fontWeight: 700 }}>{(inspectedAgent.priceSol * 0.9).toFixed(3)} SOL</span>
+                  <span style={{ color: '#94a3b8' }}>90% Vault Deposit:</span>
+                  <span style={{ color: '#34d399', fontWeight: 700 }}>{(inspectedAgent.priceSol * 0.9).toFixed(3)} SOL</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: '#64748b' }}>PDA Vault:</span>
-                  <span style={{ color: '#0f172a', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <span style={{ color: '#94a3b8' }}>PDA Vault:</span>
+                  <span style={{ color: '#ffffff', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {inspectedAgent.pdaVault}
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: '#64748b' }}>Rarity:</span>
-                  <span style={{ color: '#7c3aed', fontWeight: 700 }}>{inspectedAgent.rarityScore} ({inspectedAgent.rarityTier})</span>
+                  <span style={{ color: '#94a3b8' }}>Rarity:</span>
+                  <span style={{ color: '#c084fc', fontWeight: 700 }}>{inspectedAgent.rarityScore} ({inspectedAgent.rarityTier})</span>
                 </div>
               </div>
 
@@ -459,29 +459,30 @@ export default function RosterPage() {
               width: '56px',
               height: '56px',
               borderRadius: '9999px',
-              background: '#dcfce7',
-              color: '#15803d',
+              background: 'rgba(16, 185, 129, 0.15)',
+              color: '#34d399',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 14px auto'
+              margin: '0 auto 14px auto',
+              border: '1px solid rgba(16, 185, 129, 0.3)'
             }}>
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
             </div>
 
-            <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#0f172a', margin: '0 0 6px 0' }}>
+            <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#ffffff', margin: '0 0 6px 0' }}>
               Agent Activated
             </h3>
-            <p style={{ fontSize: '13.5px', color: '#64748b', margin: '0 0 18px 0' }}>
+            <p style={{ fontSize: '13.5px', color: '#94a3b8', margin: '0 0 18px 0' }}>
               {mintCelebration.name} is now live on Solana with 90% capital bonded.
             </p>
 
             <div style={{
-              background: '#f8fafc',
+              background: '#16192a',
               borderRadius: '14px',
-              border: '1px solid rgba(15, 23, 42, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
               padding: '14px',
               textAlign: 'left',
               fontFamily: 'var(--font-jetbrains), monospace',
@@ -492,12 +493,12 @@ export default function RosterPage() {
               marginBottom: '20px'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Token PDA:</span>
-                <span style={{ color: '#10b981', fontWeight: 700 }}>{mintCelebration.pdaVault}</span>
+                <span style={{ color: '#94a3b8' }}>Token PDA:</span>
+                <span style={{ color: '#34d399', fontWeight: 700 }}>{mintCelebration.pdaVault}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748b' }}>Deposited (90%):</span>
-                <span style={{ color: '#0f172a', fontWeight: 700 }}>{mintCelebration.funding}</span>
+                <span style={{ color: '#94a3b8' }}>Deposited (90%):</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>{mintCelebration.funding}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#64748b' }}>Tx Signature:</span>
