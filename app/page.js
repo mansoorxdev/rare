@@ -349,19 +349,19 @@ export default function HomePage() {
           <div className="gamma-hero-grid">
             {/* Left Column: Category, Big Display Headline, Subtitle, Pill Buttons */}
             <div>
-              {/* Category Header with Icon */}
+              {/* Category Header with Icon: Autonomous Agents */}
               <div className="gamma-badge">
                 <span className="gamma-badge-icon">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
                   </svg>
                 </span>
-                <span>RARE Protocol</span>
+                <span>Autonomous Agents</span>
               </div>
 
-              {/* Display Title: Autonomous Agents */}
+              {/* Display Title: RARE Protocol */}
               <h1 className="hero-anim-title gamma-hero-title">
-                Autonomous Agents
+                RARE Protocol
               </h1>
 
               {/* Subtitle */}
