@@ -1,14 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import ZauberHeroCanvas from '../components/ZauberHeroCanvas';
+import HeroAgentShowcase from '../components/HeroAgentShowcase';
 import { usePrivy } from '../components/PrivyClientProvider';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
 export default function HomePage() {
+  const pageContainerRef = useRef(null);
   const { ready, authenticated, user, login, logout } = usePrivy();
 
   // Minting & Stats State
@@ -118,95 +126,323 @@ export default function HomePage() {
     URL.revokeObjectURL(url);
   };
 
+  // GSAP & Animaxxing Animation Orchestration
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+
+      // 1. Hero Stagger Entrance Timeline
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      tl.from('.hero-anim-title', {
+        y: 40,
+        opacity: 0,
+        duration: 1.0,
+        clearProps: 'transform,opacity'
+      })
+        .from(
+          '.hero-anim-sub',
+          {
+            y: 22,
+            opacity: 0,
+            duration: 0.8,
+            clearProps: 'transform,opacity'
+          },
+          '-=0.7'
+        )
+        .from(
+          '.hero-anim-tabs',
+          {
+            y: 16,
+            opacity: 0,
+            duration: 0.7,
+            clearProps: 'transform,opacity'
+          },
+          '-=0.6'
+        )
+        .from(
+          '.hero-anim-line',
+          {
+            opacity: 0,
+            duration: 0.5,
+            clearProps: 'opacity'
+          },
+          '-=0.4'
+        )
+        .from(
+          '.hero-anim-btn',
+          {
+            scale: 0.94,
+            opacity: 0,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: 'back.out(1.4)',
+            clearProps: 'transform,opacity'
+          },
+          '-=0.3'
+        )
+        .from(
+          '.hero-anim-telemetry',
+          {
+            y: 10,
+            opacity: 0,
+            duration: 0.6,
+            clearProps: 'transform,opacity'
+          },
+          '-=0.3'
+        )
+        .from(
+          '.hero-anim-showcase',
+          {
+            x: 45,
+            opacity: 0,
+            duration: 1.1,
+            ease: 'power3.out',
+            clearProps: 'transform,opacity'
+          },
+          '-=0.9'
+        );
+
+      // 2. Section 1 ScrollTrigger
+      gsap.from('.sec1-anim-header', {
+        scrollTrigger: {
+          trigger: '#one-agent',
+          start: 'top 85%'
+        },
+        y: 35,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity'
+      });
+
+      gsap.from('.sec1-anim-card', {
+        scrollTrigger: {
+          trigger: '.sec1-anim-card',
+          start: 'top 85%'
+        },
+        y: 40,
+        scale: 0.97,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity'
+      });
+
+      gsap.from('.sec1-anim-feature', {
+        scrollTrigger: {
+          trigger: '.sec1-feature-grid',
+          start: 'top 85%'
+        },
+        y: 30,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity'
+      });
+
+      // 3. Section 2 ScrollTrigger
+      gsap.from('.sec2-anim-header', {
+        scrollTrigger: {
+          trigger: '#sentences',
+          start: 'top 85%'
+        },
+        y: 35,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity'
+      });
+
+      gsap.from('.sec2-anim-ide', {
+        scrollTrigger: {
+          trigger: '.sec2-anim-ide',
+          start: 'top 85%'
+        },
+        y: 40,
+        opacity: 0,
+        duration: 1.0,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity'
+      });
+
+      // 4. Section 3 ScrollTrigger
+      gsap.from('.sec3-anim-header', {
+        scrollTrigger: {
+          trigger: '#review',
+          start: 'top 85%'
+        },
+        y: 35,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity'
+      });
+
+      gsap.from('.sec3-anim-transcript', {
+        scrollTrigger: {
+          trigger: '.sec3-anim-transcript',
+          start: 'top 85%'
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity'
+      });
+
+      // 5. Section 4 ScrollTrigger: Agent Swarm Cards
+      gsap.from('.sec4-anim-header', {
+        scrollTrigger: {
+          trigger: '#browse-agents',
+          start: 'top 85%'
+        },
+        y: 35,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity'
+      });
+
+      gsap.from('.agent-card-anim', {
+        scrollTrigger: {
+          trigger: '.home-swarm-grid',
+          start: 'top 85%'
+        },
+        y: 40,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.8,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity'
+      });
+
+      // 6. Section 5 ScrollTrigger: Docs
+      gsap.from('.sec5-anim-card', {
+        scrollTrigger: {
+          trigger: '#docs-title',
+          start: 'top 85%'
+        },
+        y: 30,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.8,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity'
+      });
+    },
+    { scope: pageContainerRef }
+  );
+
   return (
-    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
+    <div ref={pageContainerRef} className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
       {/* Global Navbar */}
       <Navbar />
 
       <main>
         {/* =========================================================================
-            HERO SECTION: WebGL2 Glass Octahedron, Dynamic Laser Beam, & Ticker
+            HERO SECTION: Haute-Couture GSAP Stagger Entrance & 3D Interactive Showcase
             ========================================================================= */}
-        <section className="relative isolate overflow-hidden bg-black min-h-[max(680px,100dvh)]" style={{ position: 'relative', overflow: 'hidden', minHeight: 'max(680px, 100vh)' }}>
-          {/* Real-time WebGL2 3D Raytraced Prism & Laser Canvas */}
-          <ZauberHeroCanvas tickerValue={`${activePrice.toFixed(3)} SOL`} />
+        <section className="relative isolate overflow-hidden bg-black min-h-[max(680px,100dvh)] pt-16" style={{ position: 'relative', overflow: 'hidden' }}>
+          {/* Subtle ambient glow in background (non-blocking) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-40 right-0 h-[600px] w-[600px] rounded-full blur-[140px] opacity-25"
+            style={{
+              background: 'radial-gradient(circle, #00E599 0%, #fac88f 35%, transparent 70%)'
+            }}
+          />
 
           {/* Hero Content Overlay with Guaranteed Safe Spacing Below Fixed Navbar */}
           <div className="hero-content-wrapper" style={{ position: 'relative', zIndex: 10 }}>
-            <div className="max-w-[500px]">
-              {/* Luxury Serif Title with Brand Logo */}
-              <h1 className="text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
-                <span className="inline-flex items-center gap-[0.35em]">
-                  <img
-                    src="/rare-logo-icon.png"
-                    alt="RARE Protocol"
-                    className="object-contain drop-shadow-[0_0_20px_rgba(0,229,153,0.35)] inline-block align-middle"
-                    style={{ height: '44px', width: 'auto', maxHeight: '44px', maxWidth: '44px', objectFit: 'contain', verticalAlign: 'middle', display: 'inline-block', flexShrink: 0 }}
-                    width={44}
-                    height={44}
-                  />
-                  <span className="font-serif leading-none tracking-[0.04em] font-medium">RARE</span>
-                </span>
-              </h1>
+            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-center gap-10 lg:gap-8">
+              {/* Left Column: Headline, tabs, CTA */}
+              <div className="max-w-[560px]">
+                {/* Luxury Serif Title with Brand Logo */}
+                <h1 className="hero-anim-title text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
+                  <span className="inline-flex items-center gap-[0.35em]">
+                    <img
+                      src="/rare-logo-icon.png"
+                      alt="RARE Protocol"
+                      className="object-contain drop-shadow-[0_0_20px_rgba(0,229,153,0.35)] inline-block align-middle"
+                      style={{ height: '44px', width: 'auto', maxHeight: '44px', maxWidth: '44px', objectFit: 'contain', verticalAlign: 'middle', display: 'inline-block', flexShrink: 0 }}
+                      width={44}
+                      height={44}
+                    />
+                    <span className="font-serif leading-none tracking-[0.04em] font-medium">RARE</span>
+                  </span>
+                </h1>
 
-              {/* Poetic Subheading */}
-              <p className="mt-4 text-[21px] leading-snug text-cream md:text-[25px]">
-                Trade with agents.<br />
-                <span className="text-muted">Token-bound PDA vaults you review, mint, and own.</span>
-              </p>
+                {/* Poetic Subheading */}
+                <p className="hero-anim-sub mt-4 text-[21px] leading-snug text-cream md:text-[25px]">
+                  Trade with agents.<br />
+                  <span className="text-muted">Token-bound PDA vaults you review, mint, and own.</span>
+                </p>
 
-              {/* Hero Tabs: Cast, Guard, Target, Ladder */}
-              <div role="tablist" aria-label="Agent mechanics" className="mt-6 flex gap-5 text-[13px]">
-                {(['cast', 'guard', 'target', 'ladder']).map((tab) => {
-                  const isActive = heroTab === tab;
-                  return (
-                    <button
-                      key={tab}
-                      type="button"
-                      onClick={() => setHeroTab(tab)}
-                      className={`border-b pb-1 font-medium capitalize transition-colors ${isActive ? 'border-cream text-cream' : 'border-transparent text-dim hover:text-muted'
-                        }`}
-                    >
-                      {tab}
-                    </button>
-                  );
-                })}
+                {/* Hero Tabs: Cast, Guard, Target, Ladder */}
+                <div role="tablist" aria-label="Agent mechanics" className="hero-anim-tabs mt-6 flex gap-5 text-[13px]">
+                  {(['cast', 'guard', 'target', 'ladder']).map((tab) => {
+                    const isActive = heroTab === tab;
+                    return (
+                      <button
+                        key={tab}
+                        type="button"
+                        onClick={() => setHeroTab(tab)}
+                        className={`border-b pb-1 font-medium capitalize transition-colors cursor-pointer ${isActive ? 'border-cream text-cream' : 'border-transparent text-dim hover:text-muted'
+                          }`}
+                      >
+                        {tab}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Dynamic Sentence Line */}
+                <p className="hero-anim-line mt-3 border-t border-line pt-3 font-mono text-[13px] text-cream/90 leading-relaxed min-h-[44px]">
+                  {heroTabLines[heroTab]}
+                </p>
+
+                {/* Primary Action Buttons */}
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => handleMintAction(nextAgent)}
+                    disabled={isMinting}
+                    className="hero-anim-btn inline-flex h-9 items-center justify-center rounded-full bg-cream px-5 text-[13px] font-medium text-black transition-all hover:bg-cream/90 hover:shadow-[0_0_20px_rgba(246,239,226,0.3)] shadow-sm cursor-pointer disabled:opacity-50"
+                  >
+                    {isMinting ? 'Minting via Anchor CPI...' : `Mint Agent #${String(nextAgentId).padStart(5, '0')} (${activePrice.toFixed(3)} SOL)`}
+                  </button>
+
+                  <a
+                    href="#browse-agents"
+                    className="hero-anim-btn inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-1 px-4 text-[13px] font-medium text-cream hover:border-line-strong hover:bg-surface-2 transition-colors"
+                  >
+                    Browse Swarm →
+                  </a>
+                </div>
+
+                {/* Telemetry Status Bar */}
+                <div className="hero-anim-telemetry mt-5 flex items-center gap-3 font-mono text-[11px] text-dim">
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
+                    <span className="text-muted">{soldCount} / 10,078 MINTED</span>
+                  </span>
+                  <span>·</span>
+                  <span>GENESIS TIER 1</span>
+                  <span>·</span>
+                  <span className="text-mint">90% PDA BONDED</span>
+                </div>
               </div>
 
-              {/* Dynamic Sentence Line */}
-              <p className="mt-3 border-t border-line pt-3 font-mono text-[13px] text-cream/90 leading-relaxed min-h-[44px]">
-                {heroTabLines[heroTab]}
-              </p>
-
-              {/* Primary Action Buttons */}
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => handleMintAction(nextAgent)}
-                  disabled={isMinting}
-                  className="inline-flex h-9 items-center justify-center rounded-full bg-cream px-5 text-[13px] font-medium text-black transition-colors hover:bg-cream/90 shadow-sm cursor-pointer disabled:opacity-50"
-                >
-                  {isMinting ? 'Minting via Anchor CPI...' : `Mint Agent #${String(nextAgentId).padStart(5, '0')} (${activePrice.toFixed(3)} SOL)`}
-                </button>
-
-                <a
-                  href="#browse-agents"
-                  className="inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-1 px-4 text-[13px] font-medium text-cream hover:border-line-strong hover:bg-surface-2 transition-colors"
-                >
-                  Browse Swarm →
-                </a>
-              </div>
-
-              {/* Telemetry Status Bar */}
-              <div className="mt-5 flex items-center gap-3 font-mono text-[11px] text-dim">
-                <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
-                  <span className="text-muted">{soldCount} / 10,078 MINTED</span>
-                </span>
-                <span>·</span>
-                <span>GENESIS TIER 1</span>
-                <span>·</span>
-                <span className="text-mint">90% PDA BONDED</span>
+              {/* Right Column: Hero Agent Interactive Showcase */}
+              <div className="hero-anim-showcase flex justify-center lg:justify-end">
+                <HeroAgentShowcase
+                  agentId={nextAgentId}
+                  onMintClick={() => handleMintAction(nextAgent)}
+                  isMinting={isMinting}
+                />
               </div>
             </div>
           </div>
@@ -216,7 +452,7 @@ export default function HomePage() {
             SECTION 1: "One agent. Every order."
             ========================================================================= */}
         <section id="one-agent" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32">
-          <div className="mx-auto max-w-[640px] text-center">
+          <div className="sec1-anim-header mx-auto max-w-[640px] text-center">
             <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
               One agent. Every order.
             </h2>
@@ -227,7 +463,7 @@ export default function HomePage() {
 
           <div className="mx-auto mt-14 max-w-[1056px]">
             {/* Elegant JSON Code Card */}
-            <div className="mx-auto max-w-[520px] overflow-hidden rounded-lg border border-line bg-surface-1 shadow-2xl">
+            <div className="sec1-anim-card mx-auto max-w-[520px] overflow-hidden rounded-lg border border-line bg-surface-1 shadow-2xl">
               <div className="flex items-center justify-between border-b border-line px-3.5 py-2 font-mono text-[11px] text-dim bg-surface-2/40">
                 <span>rare-agent-pda.json</span>
                 <span className="text-mint flex items-center gap-1">
@@ -257,8 +493,8 @@ export default function HomePage() {
             </div>
 
             {/* 4 Feature Pill Cards */}
-            <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+            <div className="sec1-feature-grid mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="sec1-anim-feature rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
                 <span className="font-mono text-[11px] text-peach tracking-wide uppercase">01 // Cast</span>
                 <h3 className="mt-2 text-[16px] font-medium text-cream">Instant On-Chain Mint</h3>
                 <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
@@ -266,7 +502,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+              <div className="sec1-anim-feature rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
                 <span className="font-mono text-[11px] text-mint tracking-wide uppercase">02 // Custody</span>
                 <h3 className="mt-2 text-[16px] font-medium text-cream">90% PDA Vault</h3>
                 <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
@@ -274,7 +510,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+              <div className="sec1-anim-feature rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
                 <span className="font-mono text-[11px] text-rose tracking-wide uppercase">03 // Guard</span>
                 <h3 className="mt-2 text-[16px] font-medium text-cream">Autonomous Stop-Loss</h3>
                 <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
@@ -282,7 +518,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+              <div className="sec1-anim-feature rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
                 <span className="font-mono text-[11px] text-violet tracking-wide uppercase">04 // Ladder</span>
                 <h3 className="mt-2 text-[16px] font-medium text-cream">10 Bonding Tiers</h3>
                 <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
@@ -297,7 +533,7 @@ export default function HomePage() {
             SECTION 2: "Agents that read like sentences"
             ========================================================================= */}
         <section id="sentences" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
-          <div className="mx-auto max-w-[640px] text-center">
+          <div className="sec2-anim-header mx-auto max-w-[640px] text-center">
             <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
               Agents that read like sentences
             </h2>
@@ -307,7 +543,7 @@ export default function HomePage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-[1056px]">
-            <div className="overflow-hidden rounded-lg border border-line bg-black shadow-2xl">
+            <div className="sec2-anim-ide overflow-hidden rounded-lg border border-line bg-black shadow-2xl">
               <div className="grid lg:grid-cols-[1.15fr_1fr]">
                 {/* Left Side: Code Viewer Tabs */}
                 <div className="min-w-0 border-line lg:border-r">
@@ -476,7 +712,7 @@ export default function HomePage() {
             SECTION 3: "The review guides you"
             ========================================================================= */}
         <section id="review" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
-          <div className="mx-auto max-w-[640px] text-center">
+          <div className="sec3-anim-header mx-auto max-w-[640px] text-center">
             <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
               The review guides you
             </h2>
@@ -498,7 +734,7 @@ export default function HomePage() {
               </button>
             </div>
 
-            <div className="overflow-hidden rounded-lg border border-line bg-black shadow-2xl">
+            <div className="sec3-anim-transcript overflow-hidden rounded-lg border border-line bg-black shadow-2xl">
               {/* Stepper Tabs */}
               <div role="tablist" aria-label="Execution steps" className="grid grid-cols-2 border-b border-line sm:grid-cols-4">
                 {[
@@ -565,7 +801,7 @@ export default function HomePage() {
             SECTION 4: "Browse agent swarm"
             ========================================================================= */}
         <section id="browse-agents" className="mx-auto max-w-[1104px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
-          <div className="flex items-end justify-between">
+          <div className="sec4-anim-header flex items-end justify-between">
             <div>
               <h2 className="font-serif text-[32px] text-cream md:text-[42px] font-medium">Browse agent swarm</h2>
               <p className="mt-1 text-[14px] text-muted">10,078 unique AI agents inscribed with token-bound wallets.</p>
@@ -581,7 +817,7 @@ export default function HomePage() {
               <div
                 key={agent.id}
                 onClick={() => setInspectedAgent(agent)}
-                className="group cursor-pointer overflow-hidden rounded-lg border border-line bg-surface-1 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2"
+                className="agent-card-anim group cursor-pointer overflow-hidden rounded-lg border border-line bg-surface-1 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2"
               >
                 {/* Visual Avatar Container */}
                 <div className="roster-card-box">
@@ -644,7 +880,7 @@ export default function HomePage() {
 
           <div className="mt-6 grid gap-3 md:grid-cols-2">
             <Link
-              className="group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
+              className="sec5-anim-card group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
               href="/specs"
             >
               <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
@@ -657,7 +893,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-              className="group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
+              className="sec5-anim-card group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
               href="/specs#cpi"
             >
               <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
@@ -670,7 +906,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-              className="group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
+              className="sec5-anim-card group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
               href="/ladder"
             >
               <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
@@ -683,7 +919,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-              className="group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
+              className="sec5-anim-card group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
               href="/whitepaper"
             >
               <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
