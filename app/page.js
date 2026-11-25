@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import HeroTerminalSimulator from '../components/HeroTerminalSimulator';
+import HeroQuantumOrb from '../components/HeroQuantumOrb';
 import { usePrivy } from '../components/PrivyClientProvider';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
@@ -343,43 +343,46 @@ export default function HomePage() {
 
       <main>
         {/* =========================================================================
-            HERO SECTION: High-Conviction Institutional Web3 Protocol Interface
+            HERO SECTION: Haute-Couture GSAP Stagger Entrance & 3D Interactive Showcase
             ========================================================================= */}
-        <section className="relative isolate overflow-hidden bg-[#07080c] min-h-[calc(100vh-64px)] flex flex-col justify-start border-b border-zinc-800/80">
-          {/* Subtle architectural radial lighting */}
+        <section className="relative isolate overflow-hidden bg-black min-h-[calc(100vh-64px)] flex flex-col justify-start">
+          {/* Subtle ambient glow in background (non-blocking) */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -top-40 right-10 h-[550px] w-[550px] rounded-full blur-[140px] opacity-20"
+            className="pointer-events-none absolute -top-40 right-0 h-[600px] w-[600px] rounded-full blur-[140px] opacity-25"
             style={{
-              background: 'radial-gradient(circle, #10b981 0%, #06b6d4 40%, transparent 70%)'
+              background: 'radial-gradient(circle, #00E599 0%, #fac88f 35%, transparent 70%)'
             }}
           />
 
           {/* Hero Content: Clean 2-column grid inside standard max-w-[1280px] */}
-          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-8 pt-20 pb-16 md:pt-24 md:pb-20">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] items-center gap-10 lg:gap-14">
+          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-6 pt-24 pb-12 md:pt-28 md:pb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-12">
               {/* Left Column: Headline, tabs, CTA */}
-              <div className="max-w-[560px]">
-                {/* Protocol Eyebrow Badge */}
-                <div className="hero-anim-title inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-950/20 text-emerald-400 font-mono text-[11px] font-semibold mb-5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>SOLANA MAINNET v2.4</span>
-                  <span className="text-emerald-700">/</span>
-                  <span className="text-zinc-300">10,078 AUTONOMOUS AGENTS</span>
-                </div>
-
-                {/* Modern Sans Display Title */}
-                <h1 className="hero-anim-title text-[38px] leading-[1.08] text-white font-sans font-bold tracking-tight sm:text-[50px] md:text-[60px]">
-                  Autonomous PDA Vaults for Solana Agents.
+              <div className="max-w-[520px]">
+                {/* Luxury Serif Title with Brand Logo */}
+                <h1 className="hero-anim-title text-[44px] leading-none text-cream sm:text-[64px] md:text-[84px]">
+                  <span className="inline-flex items-center gap-[0.35em]">
+                    <img
+                      src="/rare-logo-icon.png"
+                      alt="RARE Protocol"
+                      className="object-contain drop-shadow-[0_0_20px_rgba(0,229,153,0.35)] inline-block align-middle"
+                      style={{ height: '44px', width: 'auto', maxHeight: '44px', maxWidth: '44px', objectFit: 'contain', verticalAlign: 'middle', display: 'inline-block', flexShrink: 0 }}
+                      width={44}
+                      height={44}
+                    />
+                    <span className="font-serif leading-none tracking-[0.04em] font-medium">RARE</span>
+                  </span>
                 </h1>
 
-                {/* Value Proposition */}
-                <p className="hero-anim-sub mt-4 text-[16px] sm:text-[18px] leading-relaxed text-zinc-400">
-                  Inscribe algorithmic execution strategies to token-bound accounts on Solana. 90% of mint capital is permanently bonded to the agent’s dedicated PDA vault.
+                {/* Poetic Subheading */}
+                <p className="hero-anim-sub mt-5 md:mt-6 text-[21px] leading-[1.35] text-cream md:text-[25px]">
+                  Trade with agents.<br />
+                  <span className="text-muted block mt-1.5">Token-bound PDA vaults you review, mint, and own.</span>
                 </p>
 
-                {/* Strategy Execution Pills */}
-                <div role="tablist" aria-label="Agent mechanics" className="hero-anim-tabs mt-6 flex flex-wrap gap-2 text-[12.5px]">
+                {/* Hero Tabs: Cast, Guard, Target, Ladder */}
+                <div role="tablist" aria-label="Agent mechanics" className="hero-anim-tabs mt-8 flex gap-6 text-[13px]" style={{ marginTop: '28px' }}>
                   {(['cast', 'guard', 'target', 'ladder']).map((tab) => {
                     const isActive = heroTab === tab;
                     return (
@@ -387,11 +390,8 @@ export default function HomePage() {
                         key={tab}
                         type="button"
                         onClick={() => setHeroTab(tab)}
-                        className={`px-3 py-1.5 rounded-lg font-medium capitalize transition-all cursor-pointer border ${
-                          isActive
-                            ? 'bg-zinc-800 text-white border-zinc-700 shadow-sm'
-                            : 'bg-zinc-900/40 text-zinc-400 border-zinc-800/80 hover:text-zinc-200 hover:border-zinc-700'
-                        }`}
+                        className={`border-b-2 pb-1.5 font-medium capitalize transition-colors cursor-pointer ${isActive ? 'border-cream text-cream' : 'border-transparent text-dim hover:text-muted'
+                          }`}
                       >
                         {tab}
                       </button>
@@ -400,46 +400,47 @@ export default function HomePage() {
                 </div>
 
                 {/* Dynamic Sentence Line */}
-                <div className="hero-anim-line mt-3.5 rounded-xl border border-zinc-800/90 bg-[#0c0d14]/80 p-3 font-mono text-[12.5px] text-zinc-300 leading-relaxed min-h-[48px] flex items-center">
-                  <span className="text-emerald-400 mr-2 shrink-0">&gt;</span>
-                  <span>{heroTabLines[heroTab]}</span>
-                </div>
+                <p className="hero-anim-line border-t border-line/80 font-mono text-[13px] text-cream/90 leading-relaxed" style={{ marginTop: '18px', paddingTop: '16px' }}>
+                  {heroTabLines[heroTab]}
+                </p>
 
                 {/* Primary Action Buttons */}
-                <div className="mt-6 flex flex-wrap items-center gap-3.5">
+                <div className="flex flex-wrap items-center gap-4" style={{ marginTop: '24px' }}>
                   <button
                     type="button"
                     onClick={() => handleMintAction(nextAgent)}
                     disabled={isMinting}
-                    className="hero-anim-btn inline-flex h-11 items-center justify-center rounded-xl bg-white px-6 text-[13.5px] font-semibold text-zinc-950 transition-all hover:bg-zinc-100 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] shadow-md cursor-pointer disabled:opacity-50"
+                    className="hero-anim-btn inline-flex h-10 items-center justify-center rounded-full bg-cream px-5 text-[13px] font-medium text-black transition-all hover:bg-cream/90 hover:shadow-[0_0_20px_rgba(246,239,226,0.3)] shadow-sm cursor-pointer disabled:opacity-50"
+                    style={{ height: '40px', paddingLeft: '22px', paddingRight: '22px' }}
                   >
-                    {isMinting ? 'Minting via Anchor CPI...' : `Deploy Agent #${String(nextAgentId).padStart(5, '0')} (${activePrice.toFixed(3)} SOL)`}
+                    {isMinting ? 'Minting via Anchor CPI...' : `Mint Agent #${String(nextAgentId).padStart(5, '0')} (${activePrice.toFixed(3)} SOL)`}
                   </button>
 
                   <a
                     href="#browse-agents"
-                    className="hero-anim-btn inline-flex h-11 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/60 px-5 text-[13.5px] font-medium text-zinc-300 hover:border-zinc-700 hover:text-white transition-colors"
+                    className="hero-anim-btn inline-flex h-10 items-center justify-center rounded-full border border-cream/20 bg-surface-2 px-5 text-[13px] font-medium text-cream hover:border-cream/40 hover:bg-surface-3 transition-colors"
+                    style={{ height: '40px', paddingLeft: '22px', paddingRight: '22px', backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(246, 239, 226, 0.2)' }}
                   >
-                    View Swarm Ladder →
+                    Browse Swarm →
                   </a>
                 </div>
 
                 {/* Telemetry Status Bar */}
-                <div className="hero-anim-telemetry mt-5 flex items-center gap-3 font-mono text-[11px] text-zinc-400">
+                <div className="hero-anim-telemetry flex items-center gap-3 font-mono text-[11px] text-dim" style={{ marginTop: '22px' }}>
                   <span className="flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-zinc-300 font-semibold">{soldCount} / 10,078 BONDED</span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
+                    <span className="text-muted">{soldCount} / 10,078 MINTED</span>
                   </span>
-                  <span className="text-zinc-600">·</span>
+                  <span>·</span>
                   <span>GENESIS TIER 1</span>
-                  <span className="text-zinc-600">·</span>
-                  <span className="text-emerald-400 font-semibold">90% PDA BONDED</span>
+                  <span>·</span>
+                  <span className="text-mint">90% PDA BONDED</span>
                 </div>
               </div>
 
-              {/* Right Column: High-Density Interactive Agent Terminal Simulator */}
-              <div className="hero-anim-showcase flex justify-center lg:justify-end items-center">
-                <HeroTerminalSimulator nextAgentId={nextAgentId} activePrice={activePrice} />
+              {/* Right Column: Hero Quantum Orb & Telemetry Animation */}
+              <div className="hero-anim-showcase flex justify-center items-center">
+                <HeroQuantumOrb />
               </div>
             </div>
           </div>
@@ -448,77 +449,77 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 1: "One agent. Every order."
             ========================================================================= */}
-        <section id="one-agent" className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28">
+        <section id="one-agent" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32">
           <div className="sec1-anim-header mx-auto max-w-[640px] text-center">
-            <h2 className="font-sans font-bold text-[32px] sm:text-[42px] md:text-[48px] text-white tracking-tight leading-tight">
+            <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
               One agent. Every order.
             </h2>
-            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-zinc-400">
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
               Inscribe the strategy once to an on-chain PDA. RARE turns it into an autonomous execution agent with 90% capital bonded to token-bound vaults on Solana, showing every CPI step before you sign.
             </p>
           </div>
 
-          <div className="mx-auto mt-12 max-w-[1056px]">
+          <div className="mx-auto mt-14 max-w-[1056px]">
             {/* Elegant JSON Code Card */}
-            <div className="sec1-anim-card mx-auto max-w-[540px] overflow-hidden rounded-xl border border-zinc-800 bg-[#090a0f] shadow-2xl">
-              <div className="flex items-center justify-between border-b border-zinc-800/90 px-4 py-2.5 font-mono text-[11px] text-zinc-400 bg-zinc-900/40">
+            <div className="sec1-anim-card mx-auto max-w-[520px] overflow-hidden rounded-lg border border-line bg-surface-1 shadow-2xl">
+              <div className="flex items-center justify-between border-b border-line px-3.5 py-2 font-mono text-[11px] text-dim bg-surface-2/40">
                 <span>rare-agent-pda.json</span>
-                <span className="text-emerald-400 flex items-center gap-1.5 font-semibold">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  ANCHOR CPI v0.30
+                <span className="text-mint flex items-center gap-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-mint" />
+                  ANCHOR CPI v1.2
                 </span>
               </div>
-              <pre tabIndex={0} className="overflow-x-auto p-4 font-mono text-[12px] leading-[1.7] text-zinc-300">
+              <pre tabIndex={0} className="overflow-x-auto p-4 font-mono text-[12.5px] leading-[1.7] text-cream/90">
                 <code>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">&#123;</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  </span><span className="text-zinc-400">"agent_id"</span><span className="text-zinc-600">: </span><span className="text-emerald-400 font-semibold">143</span><span className="text-zinc-600">,</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  </span><span className="text-zinc-400">"archetype"</span><span className="text-zinc-600">: </span><span className="text-white">"Quantum Arbitrageur"</span><span className="text-zinc-600">,</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  </span><span className="text-zinc-400">"tier"</span><span className="text-zinc-600">: </span><span className="text-zinc-300">"Genesis Tier 1"</span><span className="text-zinc-600">,</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  </span><span className="text-zinc-400">"mint_price"</span><span className="text-zinc-600">: </span><span className="text-emerald-400 font-semibold">"0.020 SOL"</span><span className="text-zinc-600">,</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  </span><span className="text-zinc-400">"token_bound_pda"</span><span className="text-zinc-600">: </span><span className="text-cyan-400">"PDA256v3779B100Vault"</span><span className="text-zinc-600">,</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  </span><span className="text-zinc-400">"anchor_cpi_split"</span><span className="text-zinc-600">: &#123;</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">    </span><span className="text-zinc-400">"agent_vault"</span><span className="text-zinc-600">: </span><span className="text-emerald-400 font-semibold">"90%"</span><span className="text-zinc-600">,</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">    </span><span className="text-zinc-400">"protocol_ops"</span><span className="text-zinc-600">: </span><span className="text-zinc-400">"10%"</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  &#125;,</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  </span><span className="text-zinc-400">"guard_rules"</span><span className="text-zinc-600">: [</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">    &#123; </span><span className="text-zinc-400">"type"</span><span className="text-zinc-600">: </span><span className="text-cyan-400">"stop_loss"</span><span className="text-zinc-600">, </span><span className="text-zinc-400">"threshold"</span><span className="text-zinc-600">: </span><span className="text-rose-400">"-15%"</span><span className="text-zinc-600"> &#125;,</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">    &#123; </span><span className="text-zinc-400">"type"</span><span className="text-zinc-600">: </span><span className="text-cyan-400">"take_profit"</span><span className="text-zinc-600">, </span><span className="text-zinc-400">"target"</span><span className="text-zinc-600">: </span><span className="text-emerald-400 font-semibold">"+35%"</span><span className="text-zinc-600"> &#125;</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">  ]</span></span>
-                  <span className="block whitespace-pre"><span className="text-zinc-600">&#125;</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">&#123;</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"agent_id"</span><span className="text-dim">: </span><span className="text-rose">143</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"archetype"</span><span className="text-dim">: </span><span className="text-rose">"Quantum Arbitrageur"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"tier"</span><span className="text-dim">: </span><span className="text-rose">"Genesis Tier 1"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"mint_price"</span><span className="text-dim">: </span><span className="text-rose">"0.020 SOL"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"token_bound_pda"</span><span className="text-dim">: </span><span className="text-mint">"PDA256v3779B100Vault"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"anchor_cpi_split"</span><span className="text-dim">: &#123;</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">    </span><span className="text-peach">"agent_vault"</span><span className="text-dim">: </span><span className="text-mint">"90%"</span><span className="text-dim">,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">    </span><span className="text-peach">"protocol_ops"</span><span className="text-dim">: </span><span className="text-rose">"10%"</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  &#125;,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  </span><span className="text-peach">"guard_rules"</span><span className="text-dim">: [</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">    &#123; </span><span className="text-peach">"type"</span><span className="text-dim">: </span><span className="text-rose">"stop_loss"</span><span className="text-dim">, </span><span className="text-peach">"threshold"</span><span className="text-dim">: </span><span className="text-rose">"-15%"</span><span className="text-dim"> &#125;,</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">    &#123; </span><span className="text-peach">"type"</span><span className="text-dim">: </span><span className="text-rose">"take_profit"</span><span className="text-dim">, </span><span className="text-peach">"target"</span><span className="text-dim">: </span><span className="text-rose">"+35%"</span><span className="text-dim"> &#125;</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">  ]</span></span>
+                  <span className="block whitespace-pre"><span className="text-dim">&#125;</span></span>
                 </code>
               </pre>
             </div>
 
             {/* 4 Feature Pill Cards */}
-            <div className="sec1-feature-grid mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="sec1-anim-feature rounded-xl border border-zinc-800 bg-[#090a0f] p-5 transition-all hover:border-zinc-700 hover:bg-zinc-900/40">
-                <span className="font-mono text-[11px] text-emerald-400 font-semibold tracking-wide uppercase">01 // Cast</span>
-                <h3 className="mt-2 text-[15px] font-semibold text-white">Instant On-Chain Mint</h3>
-                <p className="mt-1.5 text-[12.5px] text-zinc-400 leading-relaxed">
+            <div className="sec1-feature-grid mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="sec1-anim-feature rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+                <span className="font-mono text-[11px] text-peach tracking-wide uppercase">01 // Cast</span>
+                <h3 className="mt-2 text-[16px] font-medium text-cream">Instant On-Chain Mint</h3>
+                <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
                   Single-slot Ed25519 signature mints your NFT and instantiates its token-bound account.
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-xl border border-zinc-800 bg-[#090a0f] p-5 transition-all hover:border-zinc-700 hover:bg-zinc-900/40">
-                <span className="font-mono text-[11px] text-cyan-400 font-semibold tracking-wide uppercase">02 // Custody</span>
-                <h3 className="mt-2 text-[15px] font-semibold text-white">90% PDA Vault</h3>
-                <p className="mt-1.5 text-[12.5px] text-zinc-400 leading-relaxed">
+              <div className="sec1-anim-feature rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+                <span className="font-mono text-[11px] text-mint tracking-wide uppercase">02 // Custody</span>
+                <h3 className="mt-2 text-[16px] font-medium text-cream">90% PDA Vault</h3>
+                <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
                   90% of mint capital stays locked inside the agent’s own PDA on Solana. Never touch creator wallets.
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-xl border border-zinc-800 bg-[#090a0f] p-5 transition-all hover:border-zinc-700 hover:bg-zinc-900/40">
-                <span className="font-mono text-[11px] text-emerald-400 font-semibold tracking-wide uppercase">03 // Guard</span>
-                <h3 className="mt-2 text-[15px] font-semibold text-white">Autonomous Stop-Loss</h3>
-                <p className="mt-1.5 text-[12.5px] text-zinc-400 leading-relaxed">
+              <div className="sec1-anim-feature rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+                <span className="font-mono text-[11px] text-rose tracking-wide uppercase">03 // Guard</span>
+                <h3 className="mt-2 text-[16px] font-medium text-cream">Autonomous Stop-Loss</h3>
+                <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
                   Pyth oracle guards trigger automated risk unwinds when market drawdowns exceed programmed bounds.
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-xl border border-zinc-800 bg-[#090a0f] p-5 transition-all hover:border-zinc-700 hover:bg-zinc-900/40">
-                <span className="font-mono text-[11px] text-cyan-400 font-semibold tracking-wide uppercase">04 // Ladder</span>
-                <h3 className="mt-2 text-[15px] font-semibold text-white">10 Bonding Tiers</h3>
-                <p className="mt-1.5 text-[12.5px] text-zinc-400 leading-relaxed">
+              <div className="sec1-anim-feature rounded-lg border border-line bg-surface-1 p-5 transition-colors hover:border-line-strong hover:bg-surface-2">
+                <span className="font-mono text-[11px] text-violet tracking-wide uppercase">04 // Ladder</span>
+                <h3 className="mt-2 text-[16px] font-medium text-cream">10 Bonding Tiers</h3>
+                <p className="mt-1.5 text-[13px] text-muted leading-relaxed">
                   10,078 total agents across 10 deterministic bonding bands from 0.02 SOL to 10.24 SOL.
                 </p>
               </div>
@@ -529,26 +530,26 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 2: "Agents that read like sentences"
             ========================================================================= */}
-        <section id="sentences" className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28 border-t border-zinc-800/80">
+        <section id="sentences" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
           <div className="sec2-anim-header mx-auto max-w-[640px] text-center">
-            <h2 className="font-sans font-bold text-[32px] sm:text-[42px] md:text-[48px] text-white tracking-tight leading-tight">
+            <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
               Agents that read like sentences
             </h2>
-            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-zinc-400">
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
               An agent is a verifiable on-chain manifest. The same agent reads as plain English instructions, as Rust Anchor code, and as the exact list of CPI transactions it executes.
             </p>
           </div>
 
-          <div className="mx-auto mt-12 max-w-[1056px]">
-            <div className="sec2-anim-ide overflow-hidden rounded-xl border border-zinc-800 bg-[#090a0f] shadow-2xl">
+          <div className="mx-auto mt-14 max-w-[1056px]">
+            <div className="sec2-anim-ide overflow-hidden rounded-lg border border-line bg-black shadow-2xl">
               <div className="grid lg:grid-cols-[1.15fr_1fr]">
                 {/* Left Side: Code Viewer Tabs */}
-                <div className="min-w-0 border-zinc-800 lg:border-r">
-                  <div role="tablist" aria-label="Code views" className="flex border-b border-zinc-800 bg-zinc-900/40">
+                <div className="min-w-0 border-line lg:border-r">
+                  <div role="tablist" aria-label="Code views" className="flex border-b border-line bg-surface-1/40">
                     <button
                       type="button"
                       onClick={() => setCodeTab('json')}
-                      className={`px-4 py-2.5 font-mono text-[12px] border-r border-zinc-800 transition-colors cursor-pointer ${codeTab === 'json' ? 'bg-zinc-800/90 text-white font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${codeTab === 'json' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
                         }`}
                     >
                       agent_143.json
@@ -556,7 +557,7 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setCodeTab('rust')}
-                      className={`px-4 py-2.5 font-mono text-[12px] border-r border-zinc-800 transition-colors cursor-pointer ${codeTab === 'rust' ? 'bg-zinc-800/90 text-white font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${codeTab === 'rust' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
                         }`}
                     >
                       pda_vault.rs
@@ -564,77 +565,77 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => setCodeTab('ts')}
-                      className={`px-4 py-2.5 font-mono text-[12px] border-r border-zinc-800 transition-colors cursor-pointer ${codeTab === 'ts' ? 'bg-zinc-800/90 text-white font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+                      className={`px-4 py-2 font-mono text-[12px] border-r border-line transition-colors ${codeTab === 'ts' ? 'bg-surface-2 text-cream font-medium' : 'text-dim hover:text-muted'
                         }`}
                     >
                       cpi_route.ts
                     </button>
                   </div>
 
-                  <pre className="max-h-[440px] overflow-auto p-4 font-mono text-[12px] leading-[1.7] text-zinc-300 bg-black/60">
+                  <pre className="max-h-[440px] overflow-auto p-4 font-mono text-[12.5px] leading-[1.7] text-cream/90">
                     {codeTab === 'json' && (
                       <code>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">01</span><span className="text-zinc-600">&#123;</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">02</span><span className="text-zinc-600">  </span><span className="text-zinc-400">"name"</span><span className="text-zinc-600">: </span><span className="text-white">"Rare #00143"</span><span className="text-zinc-600">,</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">03</span><span className="text-zinc-600">  </span><span className="text-zinc-400">"pda_seed"</span><span className="text-zinc-600">: </span><span className="text-cyan-400">"b'rare_agent_143'"</span><span className="text-zinc-600">,</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">04</span><span className="text-zinc-600">  </span><span className="text-zinc-400">"capital_split"</span><span className="text-zinc-600">: &#123;</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">05</span><span className="text-zinc-600">    </span><span className="text-zinc-400">"agent_pda_deposit_bps"</span><span className="text-zinc-600">: </span><span className="text-emerald-400 font-semibold">9000</span><span className="text-zinc-600">,</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">06</span><span className="text-zinc-600">    </span><span className="text-zinc-400">"treasury_bps"</span><span className="text-zinc-600">: </span><span className="text-zinc-400">1000</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">07</span><span className="text-zinc-600">  &#125;,</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">08</span><span className="text-zinc-600">  </span><span className="text-zinc-400">"execution_policy"</span><span className="text-zinc-600">: &#123;</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">09</span><span className="text-zinc-600">    </span><span className="text-zinc-400">"max_slippage_bps"</span><span className="text-zinc-600">: </span><span className="text-white">50</span><span className="text-zinc-600">,</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">10</span><span className="text-zinc-600">    </span><span className="text-zinc-400">"rebalance_trigger"</span><span className="text-zinc-600">: </span><span className="text-emerald-400">"price_delta &gt; 0.005"</span><span className="text-zinc-600">,</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">11</span><span className="text-zinc-600">    </span><span className="text-zinc-400">"settlement_asset"</span><span className="text-zinc-600">: </span><span className="text-cyan-400 font-semibold">"SOL"</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">12</span><span className="text-zinc-600">  &#125;</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">13</span><span className="text-zinc-600">&#125;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">01</span><span className="text-dim">&#123;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">02</span><span className="text-dim">  </span><span className="text-peach">"name"</span><span className="text-dim">: </span><span className="text-rose">"Rare #00143"</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">03</span><span className="text-dim">  </span><span className="text-peach">"pda_seed"</span><span className="text-dim">: </span><span className="text-rose">"b'rare_agent_143'"</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">04</span><span className="text-dim">  </span><span className="text-peach">"capital_split"</span><span className="text-dim">: &#123;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">05</span><span className="text-dim">    </span><span className="text-peach">"agent_pda_deposit_bps"</span><span className="text-dim">: </span><span className="text-mint">9000</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">06</span><span className="text-dim">    </span><span className="text-peach">"treasury_bps"</span><span className="text-dim">: </span><span className="text-rose">1000</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">07</span><span className="text-dim">  &#125;,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">08</span><span className="text-dim">  </span><span className="text-peach">"execution_policy"</span><span className="text-dim">: &#123;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">09</span><span className="text-dim">    </span><span className="text-peach">"max_slippage_bps"</span><span className="text-dim">: </span><span className="text-rose">50</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">10</span><span className="text-dim">    </span><span className="text-peach">"rebalance_trigger"</span><span className="text-dim">: </span><span className="text-rose">"price_delta &gt; 0.005"</span><span className="text-dim">,</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">11</span><span className="text-dim">    </span><span className="text-peach">"settlement_asset"</span><span className="text-dim">: </span><span className="text-mint">"SOL"</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">12</span><span className="text-dim">  &#125;</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">13</span><span className="text-dim">&#125;</span></span>
                       </code>
                     )}
                     {codeTab === 'rust' && (
                       <code>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">01</span><span className="text-cyan-400">pub fn</span> <span className="text-white">deposit_to_agent_pda</span>(ctx: Context&lt;MintAgent&gt;) -&gt; Result&lt;()&gt; &#123;</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">02</span>    <span className="text-cyan-400">let</span> mint_amount = ctx.accounts.mint.price;</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">03</span>    <span className="text-cyan-400">let</span> pda_deposit = mint_amount * <span className="text-emerald-400">90</span> / <span className="text-emerald-400">100</span>;</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">04</span>    <span className="text-zinc-500">// Cross-Program Invocation to Agent PDA Vault</span></span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">05</span>    anchor_lang::solana_program::program::invoke(</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">06</span>        &amp;system_instruction::transfer(</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">07</span>            &amp;ctx.accounts.payer.key(),</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">08</span>            &amp;ctx.accounts.agent_pda_vault.key(),</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">09</span>            pda_deposit,</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">10</span>        ),</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">11</span>        &amp;[ctx.accounts.payer.to_account_info(), ctx.accounts.agent_pda_vault.to_account_info()],</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">12</span>    )?;</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">13</span>    Ok(())</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">14</span>&#125;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">01</span><span className="text-violet">pub fn</span> <span className="text-cream">deposit_to_agent_pda</span>(ctx: Context&lt;MintAgent&gt;) -&gt; Result&lt;()&gt; &#123;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">02</span>    <span className="text-violet">let</span> mint_amount = ctx.accounts.mint.price;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">03</span>    <span className="text-violet">let</span> pda_deposit = mint_amount * <span className="text-mint">90</span> / <span className="text-mint">100</span>;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">04</span>    <span className="text-dim">// Cross-Program Invocation to Agent PDA Vault</span></span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">05</span>    anchor_lang::solana_program::program::invoke(</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">06</span>        &amp;system_instruction::transfer(</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">07</span>            &amp;ctx.accounts.payer.key(),</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">08</span>            &amp;ctx.accounts.agent_pda_vault.key(),</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">09</span>            pda_deposit,</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">10</span>        ),</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">11</span>        &amp;[ctx.accounts.payer.to_account_info(), ctx.accounts.agent_pda_vault.to_account_info()],</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">12</span>    )?;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">13</span>    Ok(())</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">14</span>&#125;</span>
                       </code>
                     )}
                     {codeTab === 'ts' && (
                       <code>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">01</span><span className="text-cyan-400">import</span> &#123; AnchorProvider, Program &#125; <span className="text-cyan-400">from</span> <span className="text-emerald-400">"@coral-xyz/anchor"</span>;</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">02</span><span className="text-cyan-400">const</span> tx = <span className="text-cyan-400">await</span> program.methods</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">03</span>  .mintAndBindPda(agentId)</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">04</span>  .accounts(&#123;</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">05</span>    payer: wallet.publicKey,</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">06</span>    agentPdaVault: pdaPublicKey,</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">07</span>    systemProgram: SystemProgram.programId</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">08</span>  &#125;)</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">09</span>  .rpc();</span>
-                        <span className="block whitespace-pre"><span className="text-zinc-600 select-none mr-3">10</span>console.log(`Agent #${nextAgentId} activated`);</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">01</span><span className="text-violet">import</span> &#123; AnchorProvider, Program &#125; <span className="text-violet">from</span> <span className="text-rose">"@coral-xyz/anchor"</span>;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">02</span><span className="text-violet">const</span> tx = <span className="text-violet">await</span> program.methods</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">03</span>  .mintAndBindPda(agentId)</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">04</span>  .accounts(&#123;</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">05</span>    payer: wallet.publicKey,</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">06</span>    agentPdaVault: pdaPublicKey,</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">07</span>    systemProgram: SystemProgram.programId</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">08</span>  &#125;)</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">09</span>  .rpc();</span>
+                        <span className="block whitespace-pre"><span className="text-dim select-none mr-3">10</span>console.log(`Agent #${nextAgentId} activated`);</span>
                       </code>
                     )}
                   </pre>
                 </div>
 
                 {/* Right Side: Human vs Machine Sentence Breakdown */}
-                <div className="flex flex-col justify-between p-5 bg-zinc-900/30">
+                <div className="flex flex-col justify-between p-5 bg-surface-1/20">
                   <div>
                     {/* View Switcher Toggle */}
-                    <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
-                      <span className="font-mono text-[11px] text-zinc-400 uppercase tracking-wider">Interpreter</span>
-                      <div className="flex items-center rounded-lg border border-zinc-800 bg-zinc-900/80 p-0.5 text-[11px]">
+                    <div className="flex items-center justify-between border-b border-line pb-3">
+                      <span className="font-mono text-[11px] text-dim uppercase tracking-wider">Interpreter</span>
+                      <div className="flex items-center rounded-md border border-line bg-surface-2 p-0.5 text-[11px]">
                         <button
                           type="button"
                           onClick={() => setHumanView(true)}
-                          className={`rounded-md px-2.5 py-1 font-medium transition-colors cursor-pointer ${humanView ? 'bg-zinc-800 text-white font-semibold' : 'text-zinc-400 hover:text-white'
+                          className={`rounded px-2.5 py-1 font-medium transition-colors cursor-pointer ${humanView ? 'bg-cream text-black' : 'text-dim hover:text-cream'
                             }`}
                         >
                           Human
@@ -642,7 +643,7 @@ export default function HomePage() {
                         <button
                           type="button"
                           onClick={() => setHumanView(false)}
-                          className={`rounded-md px-2.5 py-1 font-medium transition-colors cursor-pointer ${!humanView ? 'bg-zinc-800 text-white font-semibold' : 'text-zinc-400 hover:text-white'
+                          className={`rounded px-2.5 py-1 font-medium transition-colors cursor-pointer ${!humanView ? 'bg-cream text-black' : 'text-dim hover:text-cream'
                             }`}
                         >
                           Machine
@@ -653,9 +654,9 @@ export default function HomePage() {
                     {/* Content Display */}
                     <div className="mt-4">
                       {humanView ? (
-                        <div className="space-y-3 text-[13px] leading-relaxed text-zinc-400">
+                        <div className="space-y-3 text-[13px] leading-relaxed text-muted">
                           <p>
-                            <span className="text-white font-medium">When you mint Agent #00143</span>, 90% of your 0.020 SOL is permanently credited to its autonomous token-bound PDA vault.
+                            <span className="text-cream font-medium">When you mint Agent #00143</span>, 90% of your 0.020 SOL is permanently credited to its autonomous token-bound PDA vault.
                           </p>
                           <p>
                             The agent continuously evaluates Pyth price feeds and rebalances liquidity when cross-market spreads exceed 0.5%.
@@ -665,15 +666,15 @@ export default function HomePage() {
                           </p>
                         </div>
                       ) : (
-                        <div className="space-y-2 font-mono text-[11px] text-zinc-400">
-                          <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-2.5">
-                            <span className="text-zinc-300 font-semibold">INSTRUCTION:</span> MintAndBindPda<br />
-                            <span className="text-zinc-300 font-semibold">PROGRAM_ID:</span> RAREv3779...Vault<br />
-                            <span className="text-emerald-400 font-semibold">SPLIT:</span> 90% PDA / 10% Protocol Ops
+                        <div className="space-y-2 font-mono text-[11px] text-dim">
+                          <div className="rounded border border-line bg-surface-2 p-2">
+                            <span className="text-peach">INSTRUCTION:</span> MintAndBindPda<br />
+                            <span className="text-peach">PROGRAM_ID:</span> RAREv3779...Vault<br />
+                            <span className="text-peach">SPLIT:</span> 90% PDA / 10% Protocol Ops
                           </div>
-                          <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-2.5">
-                            <span className="text-cyan-400">GAS:</span> 0.000005 SOL (5,000 lamports)<br />
-                            <span className="text-cyan-400">PDA SEED:</span> [rare_agent, 143]
+                          <div className="rounded border border-line bg-surface-2 p-2">
+                            <span className="text-mint">GAS:</span> 0.000005 SOL (5,000 lamports)<br />
+                            <span className="text-mint">PDA SEED:</span> [rare_agent, 143]
                           </div>
                         </div>
                       )}
@@ -681,20 +682,20 @@ export default function HomePage() {
                   </div>
 
                   {/* Bonding Curve Progress Curve SVG */}
-                  <div className="mt-6 border-t border-zinc-800 pt-4">
-                    <div className="flex items-center justify-between font-mono text-[10.5px] text-zinc-400 mb-1">
+                  <div className="mt-6 border-t border-line pt-4">
+                    <div className="flex items-center justify-between font-mono text-[10px] text-dim mb-1">
                       <span>PRICE LADDER (TIER 1 → 10)</span>
-                      <span className="text-emerald-400 font-semibold">0.02 SOL → 10.24 SOL</span>
+                      <span className="text-cream">0.02 SOL → 10.24 SOL</span>
                     </div>
-                    <svg viewBox="0 0 300 48" className="w-full h-12 text-emerald-400 stroke-current fill-none" preserveAspectRatio="none">
+                    <svg viewBox="0 0 300 48" className="w-full h-12 text-mint stroke-current fill-none" preserveAspectRatio="none">
                       <path
                         d="M 0 44 Q 150 42 220 28 T 300 4"
                         strokeWidth="1.5"
                         strokeLinecap="round"
                       />
-                      <circle cx="20" cy="44" r="3.5" className="fill-emerald-400" />
+                      <circle cx="20" cy="44" r="3.5" className="fill-mint" />
                     </svg>
-                    <div className="flex items-center justify-between text-[11px] text-zinc-500 font-mono mt-1">
+                    <div className="flex items-center justify-between text-[11px] text-dim font-mono mt-1">
                       <span>Tier 1 (Current)</span>
                       <span>Tier 10 (10,078)</span>
                     </div>
@@ -708,32 +709,32 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 3: "The review guides you"
             ========================================================================= */}
-        <section id="review" className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28 border-t border-zinc-800/80">
+        <section id="review" className="mx-auto max-w-[1280px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
           <div className="sec3-anim-header mx-auto max-w-[640px] text-center">
-            <h2 className="font-sans font-bold text-[32px] sm:text-[42px] md:text-[48px] text-white tracking-tight leading-tight">
+            <h2 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
               The review guides you
             </h2>
-            <p className="mt-3.5 text-[15px] sm:text-[16px] leading-relaxed text-zinc-400">
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
               Quote, review, sign, anchor. Every step shows what will happen and asks your wallet only for what it needs.
             </p>
           </div>
 
-          <div className="mx-auto mt-12 max-w-[1056px]">
+          <div className="mx-auto mt-14 max-w-[1056px]">
             {/* Header with transcript label and pause toggle */}
-            <div className="mb-3 flex items-center justify-between font-mono text-[11px] tracking-wide text-zinc-400 uppercase">
-              <span>On-Chain Instruction Pipeline · Solana Anchor Execution</span>
+            <div className="mb-2 flex items-center justify-between font-mono text-[11px] tracking-wide text-dim uppercase">
+              <span>Sample transcript · the steps the app runs for you, not a command line</span>
               <button
                 type="button"
                 onClick={() => setTranscriptPaused(!transcriptPaused)}
-                className="rounded-md px-2.5 py-0.5 normal-case border border-zinc-800 bg-zinc-900/60 hover:text-white transition-colors cursor-pointer text-[11px]"
+                className="rounded px-2 py-0.5 normal-case border border-line bg-surface-1 hover:text-cream transition-colors cursor-pointer"
               >
                 {transcriptPaused ? 'Resume' : 'Pause'}
               </button>
             </div>
 
-            <div className="sec3-anim-transcript overflow-hidden rounded-xl border border-zinc-800 bg-[#090a0f] shadow-2xl">
+            <div className="sec3-anim-transcript overflow-hidden rounded-lg border border-line bg-black shadow-2xl">
               {/* Stepper Tabs */}
-              <div role="tablist" aria-label="Execution steps" className="grid grid-cols-2 border-b border-zinc-800 sm:grid-cols-4">
+              <div role="tablist" aria-label="Execution steps" className="grid grid-cols-2 border-b border-line sm:grid-cols-4">
                 {[
                   { title: '01 quote', subtitle: 'find a route' },
                   { title: '02 review', subtitle: 'verify pda' },
@@ -746,53 +747,8 @@ export default function HomePage() {
                       key={step.title}
                       type="button"
                       onClick={() => setTranscriptTab(idx)}
-                      className={`relative border-zinc-800 px-4 py-3 text-left font-mono text-[12px] transition-colors border-r last:border-r-0 cursor-pointer ${isActive ? 'bg-zinc-800/80 text-white font-semibold' : 'text-zinc-400 hover:bg-zinc-900 hover:text-white'
+                      className={`relative border-line px-4 py-3 text-left font-mono text-[12px] transition-colors border-r last:border-r-0 cursor-pointer ${isActive ? 'bg-surface-2 text-cream font-medium' : 'text-muted hover:bg-surface-1 hover:text-cream'
                         }`}
-                    >
-                      <span className="block">{step.title}</span>
-                      <span className="block text-[11px] text-zinc-500">{step.subtitle}</span>
-                      {isActive && (
-                        <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-emerald-400" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Transcript Display Window */}
-              <div className="p-5 font-mono text-[12px] leading-[1.8] bg-black/60">
-                {transcriptTab === 0 && (
-                  <div>
-                    <div className="text-zinc-500">&gt; Fetching route quote across Solana AMM graphs...</div>
-                    <div className="text-zinc-200">&gt; Best execution via Jupiter V6: 0.020 SOL mint pricing derived.</div>
-                    <div className="text-zinc-500">&gt; Route latency: 42ms · Slippage budget: 0.5% max</div>
-                  </div>
-                )}
-                {transcriptTab === 1 && (
-                  <div>
-                    <div className="text-zinc-500">&gt; Validating token-bound PDA seeds against Anchor IDL:</div>
-                    <div className="text-cyan-400">&gt; Seed: [b"rare_agent", id=143, authority=user_pubkey]</div>
-                    <div className="text-emerald-400 font-semibold">&gt; Target Vault: PDA256v3779B100Vault · Verified 90% deposit rule intact.</div>
-                  </div>
-                )}
-                {transcriptTab === 2 && (
-                  <div>
-                    <div className="text-zinc-500">&gt; Requesting single Ed25519 signature from active Solana wallet...</div>
-                    <div className="text-zinc-200">&gt; Payload: 1 instruction (Anchor MintAndBindPda) · Zero blind signing.</div>
-                    <div className="text-zinc-500">&gt; Authorization confirmed via Privy Web3 Provider.</div>
-                  </div>
-                )}
-                {transcriptTab === 3 && (
-                  <div>
-                    <div className="text-zinc-500">&gt; Broadcasting transaction to Solana Mainnet-Beta...</div>
-                    <div className="text-cyan-400">&gt; Blockhash confirmed at slot #31094892 · 5,000 lamports fee</div>
-                    <div className="text-emerald-400 font-semibold">&gt; Agent #00143 PDA Vault funded with 0.018 SOL. Autonomous execution active.</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
                     >
                       <span className="block">{step.title}</span>
                       <span className="block text-[11px] text-dim">{step.subtitle}</span>
@@ -842,28 +798,24 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 4: "Browse agent swarm"
             ========================================================================= */}
-        <section id="browse-agents" className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-28 border-t border-zinc-800/80">
+        <section id="browse-agents" className="mx-auto max-w-[1104px] px-5 py-24 md:px-6 md:py-32 border-t border-line">
           <div className="sec4-anim-header flex items-end justify-between">
             <div>
-              <h2 className="font-sans font-bold text-[28px] sm:text-[36px] text-white tracking-tight">
-                Browse agent swarm
-              </h2>
-              <p className="mt-1.5 text-[14px] text-zinc-400">
-                10,078 unique AI agents inscribed with token-bound wallets.
-              </p>
+              <h2 className="font-serif text-[32px] text-cream md:text-[42px] font-medium">Browse agent swarm</h2>
+              <p className="mt-1 text-[14px] text-muted">10,078 unique AI agents inscribed with token-bound wallets.</p>
             </div>
-            <Link className="text-[13px] font-medium text-zinc-400 hover:text-white transition-colors" href="/roster">
+            <Link className="text-[13px] text-muted hover:text-cream transition-colors" href="/roster">
               View all 10,078 →
             </Link>
           </div>
 
-          {/* 4 Compact, High-Density Agent Cards */}
+          {/* 4 Compact, Elegant Agent Cards */}
           <div className="mt-8 home-swarm-grid">
             {featuredAgents.map((agent) => (
               <div
                 key={agent.id}
                 onClick={() => setInspectedAgent(agent)}
-                className="agent-card-anim group cursor-pointer overflow-hidden rounded-xl border border-zinc-800 bg-[#090a0f] transition-all duration-150 hover:-translate-y-1 hover:border-zinc-700 hover:bg-zinc-900/50"
+                className="agent-card-anim group cursor-pointer overflow-hidden rounded-lg border border-line bg-surface-1 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2"
               >
                 {/* Visual Avatar Container */}
                 <div className="roster-card-box">
@@ -871,7 +823,7 @@ export default function HomePage() {
                   <div
                     className="absolute inset-0 opacity-20 group-hover:opacity-35 transition-opacity"
                     style={{
-                      background: `radial-gradient(circle at 50% 50%, ${agent.color || '#10b981'} 0%, transparent 70%)`
+                      background: `radial-gradient(circle at 50% 50%, ${agent.color || '#00E599'} 0%, transparent 70%)`
                     }}
                   />
                   {/* Agent NFT SVG Avatar */}
@@ -883,32 +835,32 @@ export default function HomePage() {
                       loading="lazy"
                     />
                   </div>
-                  <span className="absolute top-2.5 left-2.5 z-20 rounded-md bg-black/80 px-2 py-0.5 font-mono text-[9.5px] text-zinc-400 border border-zinc-800">
+                  <span className="absolute top-2 left-2 z-20 rounded bg-black/75 px-1.5 py-0.5 font-mono text-[9px] text-dim border border-line">
                     #{String(agent.id).padStart(5, '0')}
                   </span>
-                  <span className="absolute top-2.5 right-2.5 z-20 rounded-md bg-black/80 px-2 py-0.5 font-mono text-[9.5px] text-emerald-400 font-semibold border border-zinc-800">
+                  <span className="absolute top-2 right-2 z-20 rounded bg-black/75 px-1.5 py-0.5 font-mono text-[9px] text-mint border border-line">
                     {agent.rarityTier}
                   </span>
                 </div>
 
                 {/* Card Meta Content */}
-                <div className="p-4">
+                <div className="p-3.5">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="font-sans text-[15px] text-white font-semibold truncate group-hover:text-emerald-400 transition-colors">
+                    <span className="font-serif text-[15px] text-cream font-medium truncate group-hover:text-mint transition-colors">
                       {agent.name}
                     </span>
-                    <span className="font-mono text-[12px] text-emerald-400 font-bold shrink-0">
+                    <span className="font-mono text-[11px] text-mint font-medium shrink-0">
                       {agent.priceSol} SOL
                     </span>
                   </div>
 
-                  <p className="mt-1 text-[12px] text-zinc-400 truncate">
+                  <p className="mt-0.5 text-[11px] text-muted truncate">
                     {agent.role} · {agent.archetype}
                   </p>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-zinc-800/80 pt-2.5 font-mono text-[10.5px] text-zinc-500">
+                  <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 font-mono text-[10px] text-dim">
                     <span>90% PDA: {agent.pdaFunding}</span>
-                    <span className="text-zinc-400 group-hover:text-emerald-400 transition-colors">Inspect →</span>
+                    <span className="text-cream/80 group-hover:text-mint transition-colors">Inspect →</span>
                   </div>
                 </div>
               </div>
@@ -919,60 +871,60 @@ export default function HomePage() {
         {/* =========================================================================
             SECTION 5: "Explore the protocol"
             ========================================================================= */}
-        <section aria-labelledby="docs-title" className="mx-auto max-w-[1280px] px-5 py-20 md:px-8 md:py-24 border-t border-zinc-800/80">
-          <h2 id="docs-title" className="font-sans font-bold text-[28px] sm:text-[36px] text-white tracking-tight">
+        <section aria-labelledby="docs-title" className="mx-auto max-w-[1104px] px-5 pt-8 pb-24 md:px-6 border-t border-line">
+          <h2 id="docs-title" className="font-serif text-[32px] text-cream md:text-[42px] font-medium">
             Explore the protocol
           </h2>
 
-          <div className="mt-6 grid gap-3.5 md:grid-cols-2">
+          <div className="mt-6 grid gap-3 md:grid-cols-2">
             <Link
-              className="sec5-anim-card group block rounded-xl border border-zinc-800 bg-[#090a0f] p-5 transition-all duration-150 hover:border-zinc-700 hover:bg-zinc-900/40"
+              className="sec5-anim-card group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
               href="/specs"
             >
-              <span className="flex items-center gap-1.5 text-[15px] text-white font-semibold">
+              <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
                 Token-bound PDA Vaults
                 <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
               </span>
-              <span className="mt-1.5 block text-[13px] text-zinc-400 leading-relaxed">
+              <span className="mt-1 block text-[13px] text-muted">
                 Non-custodial account derivation and 90% mint capital deposit architecture on Solana.
               </span>
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-xl border border-zinc-800 bg-[#090a0f] p-5 transition-all duration-150 hover:border-zinc-700 hover:bg-zinc-900/40"
+              className="sec5-anim-card group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
               href="/specs#cpi"
             >
-              <span className="flex items-center gap-1.5 text-[15px] text-white font-semibold">
+              <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
                 Anchor CPI Execution
                 <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
               </span>
-              <span className="mt-1.5 block text-[13px] text-zinc-400 leading-relaxed">
+              <span className="mt-1 block text-[13px] text-muted">
                 Cross-program invocation rules, Pyth oracle safety guards, and atomic order settlement.
               </span>
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-xl border border-zinc-800 bg-[#090a0f] p-5 transition-all duration-150 hover:border-zinc-700 hover:bg-zinc-900/40"
+              className="sec5-anim-card group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
               href="/ladder"
             >
-              <span className="flex items-center gap-1.5 text-[15px] text-white font-semibold">
+              <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
                 10-Tier Price Ladder
                 <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
               </span>
-              <span className="mt-1.5 block text-[13px] text-zinc-400 leading-relaxed">
+              <span className="mt-1 block text-[13px] text-muted">
                 Bonding curve mathematics governing the exact supply distribution of all 10,078 agents.
               </span>
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-xl border border-zinc-800 bg-[#090a0f] p-5 transition-all duration-150 hover:border-zinc-700 hover:bg-zinc-900/40"
+              className="sec5-anim-card group block rounded-lg border border-line bg-surface-1 p-5 transition-[background-color,border-color] duration-150 hover:border-line-strong hover:bg-surface-2"
               href="/whitepaper"
             >
-              <span className="flex items-center gap-1.5 text-[15px] text-white font-semibold">
+              <span className="flex items-center gap-1.5 text-[15px] text-cream font-medium">
                 Whitepaper PDF
                 <span aria-hidden="true" className="transition-transform duration-150 group-hover:translate-x-1">→</span>
               </span>
-              <span className="mt-1.5 block text-[13px] text-zinc-400 leading-relaxed">
+              <span className="mt-1 block text-[13px] text-muted">
                 Read the formal mathematical and cryptographic specifications for RARE Protocol.
               </span>
             </Link>
