@@ -28,7 +28,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" sizes="64x64" href="/favicon-dark.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       </head>
-      <body className="bg-[#edf3fb] text-neutral-900 antialiased selection:bg-purple-600 selection:text-white">
+      <body className="bg-[#0d0f17] text-slate-100 antialiased selection:bg-purple-600 selection:text-white">
         <PrivyClientProvider>
           {children}
         </PrivyClientProvider>
