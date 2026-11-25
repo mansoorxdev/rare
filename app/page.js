@@ -429,41 +429,53 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: 'linear-gradient(135deg, #7e22ce 0%, #4f46e5 100%)',
-                  color: '#ffffff',
+                  background: '#ffffff',
+                  border: '1px solid rgba(147, 51, 234, 0.25)',
+                  color: '#0f172a',
                   textDecoration: 'none',
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  padding: '14px',
+                  boxShadow: '0 2px 8px rgba(147, 51, 234, 0.06)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/10',
-                  borderRadius: '12px',
-                  background: 'rgba(0, 0, 0, 0.25)',
+                  aspectRatio: '16/11',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%)',
+                  border: '1px solid rgba(147, 51, 234, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
-                  marginBottom: '10px'
+                  overflow: 'hidden',
+                  padding: '10px',
+                  marginBottom: '12px'
                 }}>
-                  <img src="/nfts/143.svg" alt="Quantum Arbitrage" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
+                  <img
+                    src="/nfts/143.svg"
+                    alt="Quantum Arbitrage"
+                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                  />
                   <span style={{
                     position: 'absolute',
-                    top: '6px',
-                    left: '6px',
+                    top: '8px',
+                    left: '8px',
                     fontSize: '9.5px',
                     fontWeight: 700,
-                    background: 'rgba(0, 0, 0, 0.65)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    fontFamily: 'var(--font-jetbrains), monospace'
+                    background: '#9333ea',
+                    color: '#ffffff',
+                    padding: '3px 8px',
+                    borderRadius: '9999px',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                   }}>
                     Active · Jupiter
                   </span>
                 </div>
-                <div style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff' }}>Quantum Arbitrage</div>
-                <div style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.8)', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Quantum Arbitrage</div>
+                <div style={{ fontSize: '11px', color: '#7c3aed', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Cross-DEX Spreads
                 </div>
               </Link>
@@ -478,38 +490,48 @@ export default function HomePage() {
                   color: '#0f172a',
                   textDecoration: 'none',
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  padding: '14px',
+                  boxShadow: '0 2px 8px rgba(16, 185, 129, 0.06)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/10',
-                  borderRadius: '12px',
-                  background: '#ecfdf5',
+                  aspectRatio: '16/11',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%)',
+                  border: '1px solid rgba(16, 185, 129, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
-                  marginBottom: '10px'
+                  overflow: 'hidden',
+                  padding: '10px',
+                  marginBottom: '12px'
                 }}>
-                  <img src="/nfts/140.svg" alt="Sentinel Guards" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
+                  <img
+                    src="/nfts/140.svg"
+                    alt="Sentinel Guards"
+                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                  />
                   <span style={{
                     position: 'absolute',
-                    top: '6px',
-                    left: '6px',
+                    top: '8px',
+                    left: '8px',
                     fontSize: '9.5px',
                     fontWeight: 700,
-                    background: '#dcfce7',
-                    color: '#15803d',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    fontFamily: 'var(--font-jetbrains), monospace'
+                    background: '#059669',
+                    color: '#ffffff',
+                    padding: '3px 8px',
+                    borderRadius: '9999px',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                   }}>
                     Pyth Oracle
                   </span>
                 </div>
-                <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a' }}>Sentinel Guards</div>
-                <div style={{ fontSize: '10.5px', color: '#047857', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Sentinel Guards</div>
+                <div style={{ fontSize: '11px', color: '#059669', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   -15% Stop-Loss Shield
                 </div>
               </Link>
@@ -519,41 +541,53 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#0f172a',
-                  color: '#ffffff',
+                  background: '#ffffff',
+                  border: '1px solid rgba(15, 23, 42, 0.15)',
+                  color: '#0f172a',
                   textDecoration: 'none',
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  padding: '14px',
+                  boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/10',
-                  borderRadius: '12px',
-                  background: '#1e293b',
+                  aspectRatio: '16/11',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)',
+                  border: '1px solid rgba(15, 23, 42, 0.1)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
-                  marginBottom: '10px'
+                  overflow: 'hidden',
+                  padding: '10px',
+                  marginBottom: '12px'
                 }}>
-                  <img src="/nfts/141.svg" alt="Grid Execution" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
+                  <img
+                    src="/nfts/141.svg"
+                    alt="Grid Execution"
+                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                  />
                   <span style={{
                     position: 'absolute',
-                    top: '6px',
-                    left: '6px',
+                    top: '8px',
+                    left: '8px',
                     fontSize: '9.5px',
                     fontWeight: 700,
-                    background: 'rgba(0, 0, 0, 0.65)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    fontFamily: 'var(--font-jetbrains), monospace'
+                    background: '#0f172a',
+                    color: '#ffffff',
+                    padding: '3px 8px',
+                    borderRadius: '9999px',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                   }}>
                     Raydium CLMM
                   </span>
                 </div>
-                <div style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff' }}>Grid Execution</div>
-                <div style={{ fontSize: '10.5px', color: '#94a3b8', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Grid Execution</div>
+                <div style={{ fontSize: '11px', color: '#475569', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   High-Frequency Ranges
                 </div>
               </Link>
@@ -564,42 +598,52 @@ export default function HomePage() {
                 className="gamma-dock-item"
                 style={{
                   background: '#ffffff',
-                  border: '1px solid rgba(147, 51, 234, 0.2)',
+                  border: '1px solid rgba(236, 72, 153, 0.25)',
                   color: '#0f172a',
                   textDecoration: 'none',
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  padding: '14px',
+                  boxShadow: '0 2px 8px rgba(236, 72, 153, 0.06)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/10',
-                  borderRadius: '12px',
-                  background: '#faf5ff',
+                  aspectRatio: '16/11',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(180deg, #fdf2f8 0%, #fce7f3 100%)',
+                  border: '1px solid rgba(236, 72, 153, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
-                  marginBottom: '10px'
+                  overflow: 'hidden',
+                  padding: '10px',
+                  marginBottom: '12px'
                 }}>
-                  <img src="/nfts/144.svg" alt="Momentum Hunters" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
+                  <img
+                    src="/nfts/144.svg"
+                    alt="Momentum Hunters"
+                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                  />
                   <span style={{
                     position: 'absolute',
-                    top: '6px',
-                    left: '6px',
+                    top: '8px',
+                    left: '8px',
                     fontSize: '9.5px',
                     fontWeight: 700,
-                    background: '#f3e8ff',
-                    color: '#7e22ce',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    fontFamily: 'var(--font-jetbrains), monospace'
+                    background: '#db2777',
+                    color: '#ffffff',
+                    padding: '3px 8px',
+                    borderRadius: '9999px',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                   }}>
                     Trend Signal
                   </span>
                 </div>
-                <div style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a' }}>Momentum Hunters</div>
-                <div style={{ fontSize: '10.5px', color: '#7c3aed', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Momentum Hunters</div>
+                <div style={{ fontSize: '11px', color: '#db2777', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Volume Breakouts
                 </div>
               </Link>
@@ -609,41 +653,53 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: 'linear-gradient(135deg, #854d0e 0%, #a16207 100%)',
-                  color: '#ffffff',
+                  background: '#ffffff',
+                  border: '1px solid rgba(217, 119, 6, 0.25)',
+                  color: '#0f172a',
                   textDecoration: 'none',
                   display: 'flex',
-                  flexDirection: 'column'
+                  flexDirection: 'column',
+                  padding: '14px',
+                  boxShadow: '0 2px 8px rgba(217, 119, 6, 0.06)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/10',
-                  borderRadius: '12px',
-                  background: 'rgba(0, 0, 0, 0.25)',
+                  aspectRatio: '16/11',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%)',
+                  border: '1px solid rgba(217, 119, 6, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
-                  marginBottom: '10px'
+                  overflow: 'hidden',
+                  padding: '10px',
+                  marginBottom: '12px'
                 }}>
-                  <img src="/nfts/142.svg" alt="Vault Rebalancers" style={{ width: '56px', height: '56px', objectFit: 'contain', imageRendering: 'pixelated' }} />
+                  <img
+                    src="/nfts/142.svg"
+                    alt="Vault Rebalancers"
+                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                  />
                   <span style={{
                     position: 'absolute',
-                    top: '6px',
-                    left: '6px',
+                    top: '8px',
+                    left: '8px',
                     fontSize: '9.5px',
                     fontWeight: 700,
-                    background: 'rgba(0, 0, 0, 0.65)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    fontFamily: 'var(--font-jetbrains), monospace'
+                    background: '#d97706',
+                    color: '#ffffff',
+                    padding: '3px 8px',
+                    borderRadius: '9999px',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                   }}>
                     90% PDA Vault
                   </span>
                 </div>
-                <div style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff' }}>Vault Rebalancers</div>
-                <div style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.85)', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0f172a' }}>Vault Rebalancers</div>
+                <div style={{ fontSize: '11px', color: '#b45309', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Auto +35% Take Profit
                 </div>
               </Link>
