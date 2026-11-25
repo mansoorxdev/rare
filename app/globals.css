@@ -343,21 +343,21 @@ body {
   position: relative !important;
   z-index: 10 !important;
   width: 100% !important;
-  max-width: 1280px !important;
+  max-width: 1140px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   padding-left: 20px !important;
   padding-right: 20px !important;
-  padding-top: 96px !important;
-  padding-bottom: 48px !important;
+  padding-top: 90px !important;
+  padding-bottom: 40px !important;
 }
 
 @media (min-width: 768px) {
   .hero-content-wrapper {
     padding-left: 24px !important;
     padding-right: 24px !important;
-    padding-top: 110px !important;
-    padding-bottom: 64px !important;
+    padding-top: 100px !important;
+    padding-bottom: 50px !important;
   }
 }
 
@@ -365,8 +365,8 @@ body {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  justify-content: space-between !important;
-  gap: 24px !important;
+  justify-content: center !important;
+  gap: 32px !important;
   width: 100% !important;
 }
 
@@ -374,21 +374,19 @@ body {
   .hero-split-grid {
     flex-direction: row !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    gap: 36px !important;
+    justify-content: center !important;
+    gap: 48px !important;
   }
 }
 
 .hero-quantum-orb-container {
   position: relative !important;
   width: 100% !important;
-  max-width: 440px !important;
+  max-width: 400px !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
 /* Universal Padding Top Utilities */

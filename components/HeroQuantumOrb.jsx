@@ -59,13 +59,13 @@ export default function HeroQuantumOrb() {
     if (!ctx) return;
 
     let animId;
-    let width = 420;
-    let height = 420;
+    let width = 380;
+    let height = 380;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     const updateCanvasSize = () => {
       const parent = canvas.parentElement;
-      const displayWidth = parent ? Math.min(parent.offsetWidth || 420, 440) : 420;
+      const displayWidth = parent ? Math.min(parent.offsetWidth || 380, 380) : 380;
       width = displayWidth;
       height = displayWidth; // square
 
@@ -79,7 +79,7 @@ export default function HeroQuantumOrb() {
     window.addEventListener('resize', updateCanvasSize);
 
     // Particles for constellation field
-    const PARTICLE_COUNT = 32;
+    const PARTICLE_COUNT = 30;
     const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -91,12 +91,12 @@ export default function HeroQuantumOrb() {
     }));
 
     // 3D Octahedron Geometry Definition
-    const V_TOP = [0, -88, 0];
-    const V_BOT = [0, 88, 0];
-    const V_RIGHT = [62, 0, 0];
-    const V_FRONT = [0, 0, 62];
-    const V_LEFT = [-62, 0, 0];
-    const V_BACK = [0, 0, -62];
+    const V_TOP = [0, -78, 0];
+    const V_BOT = [0, 78, 0];
+    const V_RIGHT = [54, 0, 0];
+    const V_FRONT = [0, 0, 54];
+    const V_LEFT = [-54, 0, 0];
+    const V_BACK = [0, 0, -54];
 
     const FACETS = [
       // Top 4 facets
@@ -181,13 +181,13 @@ export default function HeroQuantumOrb() {
       ctx.rotate(outerAngle);
 
       ctx.beginPath();
-      ctx.arc(0, 0, 168, 0, Math.PI * 2);
+      ctx.arc(0, 0, 150, 0, Math.PI * 2);
       ctx.strokeStyle = 'rgba(246, 239, 226, 0.08)';
       ctx.lineWidth = 1;
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.arc(0, 0, 168, 0, Math.PI * 2);
+      ctx.arc(0, 0, 150, 0, Math.PI * 2);
       ctx.strokeStyle = 'rgba(0, 229, 153, 0.38)';
       ctx.lineWidth = 1.4;
       ctx.setLineDash([4, 16, 24, 16, 8, 20]);
@@ -196,8 +196,8 @@ export default function HeroQuantumOrb() {
 
       // Cardinal Coordinate Markers & Ticks
       [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2].forEach((ang) => {
-        const px = Math.cos(ang) * 168;
-        const py = Math.sin(ang) * 168;
+        const px = Math.cos(ang) * 150;
+        const py = Math.sin(ang) * 150;
         ctx.beginPath();
         ctx.arc(px, py, 3, 0, Math.PI * 2);
         ctx.fillStyle = '#00E599';
@@ -215,7 +215,7 @@ export default function HeroQuantumOrb() {
       const midAngle = -elapsed * 0.32;
 
       ctx.beginPath();
-      ctx.ellipse(0, 0, 138, 72, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 0, 122, 64, 0, 0, Math.PI * 2);
       ctx.strokeStyle = 'rgba(0, 229, 153, 0.45)';
       ctx.lineWidth = 1.2;
       ctx.setLineDash([8, 12, 28, 12]);
@@ -223,20 +223,20 @@ export default function HeroQuantumOrb() {
       ctx.setLineDash([]);
 
       // Orbiting Satellite Beads
-      const sat1X = Math.cos(midAngle) * 138;
-      const sat1Y = Math.sin(midAngle) * 72;
+      const sat1X = Math.cos(midAngle) * 122;
+      const sat1Y = Math.sin(midAngle) * 64;
       ctx.beginPath();
-      ctx.arc(sat1X, sat1Y, 4.5, 0, Math.PI * 2);
+      ctx.arc(sat1X, sat1Y, 4, 0, Math.PI * 2);
       ctx.fillStyle = '#00E599';
       ctx.shadowColor = '#00E599';
       ctx.shadowBlur = 10;
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      const sat2X = Math.cos(midAngle + Math.PI) * 138;
-      const sat2Y = Math.sin(midAngle + Math.PI) * 72;
+      const sat2X = Math.cos(midAngle + Math.PI) * 122;
+      const sat2Y = Math.sin(midAngle + Math.PI) * 64;
       ctx.beginPath();
-      ctx.arc(sat2X, sat2Y, 3.5, 0, Math.PI * 2);
+      ctx.arc(sat2X, sat2Y, 3, 0, Math.PI * 2);
       ctx.fillStyle = '#fac88f';
       ctx.shadowColor = '#fac88f';
       ctx.shadowBlur = 8;
@@ -249,7 +249,7 @@ export default function HeroQuantumOrb() {
       ctx.translate(cx, cy);
       ctx.rotate(0.7);
       ctx.beginPath();
-      ctx.ellipse(0, 0, 105, 52, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 0, 92, 46, 0, 0, Math.PI * 2);
       ctx.strokeStyle = 'rgba(250, 200, 143, 0.35)';
       ctx.lineWidth = 1;
       ctx.setLineDash([12, 10, 4, 10]);

@@ -437,7 +437,7 @@ export default function HomePage() {
               </div>
 
               {/* Right Column: Hero Quantum Orb & Telemetry Animation */}
-              <div className="hero-anim-showcase w-full max-w-[500px] flex justify-center items-center">
+              <div className="hero-anim-showcase w-full max-w-[420px] flex justify-center items-center shrink-0">
                 <HeroQuantumOrb />
               </div>
             </div>
