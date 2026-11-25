@@ -56,7 +56,7 @@ export default function Footer() {
           <div>
             <h3 className="text-[13px] font-medium text-cream tracking-wide">Community</h3>
             <ul className="mt-3 space-y-2 text-[13px]">
-              <li><a className="text-dim hover:text-cream transition-colors" href="https://x.com" target="_blank" rel="noreferrer">X (Twitter)</a></li>
+              <li><a className="text-dim hover:text-cream transition-colors" href="https://x.com/rare_agent?s=11" target="_blank" rel="noreferrer">X (Twitter)</a></li>
               <li><a className="text-dim hover:text-cream transition-colors" href="https://discord.com" target="_blank" rel="noreferrer">Discord Community</a></li>
               <li><a className="text-dim hover:text-cream transition-colors" href="https://t.me" target="_blank" rel="noreferrer">Telegram Channel</a></li>
             </ul>

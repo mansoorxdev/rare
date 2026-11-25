@@ -70,7 +70,7 @@ export default function Navbar() {
         <div className="flex items-center gap-3 shrink-0" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           {/* Twitter / X Link */}
           <a
-            href="https://x.com"
+            href="https://x.com/rare_agent?s=11"
             target="_blank"
             rel="noreferrer"
             className="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-md border border-line bg-surface-1 text-muted hover:border-line-strong hover:text-cream transition-colors"

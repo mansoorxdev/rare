@@ -21,6 +21,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'RARE PROTOCOL // 10,078 Autonomous Solana Agents',
     description: '10,078 autonomous agents on Solana. 90% Anchor CPI split into agent token-bound PDA vaults.',
+    creator: '@rare_agent',
     images: ['/RARE X BANNER.jpg']
   }
 };
