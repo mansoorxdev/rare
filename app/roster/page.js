@@ -14,7 +14,9 @@ export default function RosterPage() {
   const [inspectedAgent, setInspectedAgent] = useState(null);
   const [isMinting, setIsMinting] = useState(false);
   const [mintCelebration, setMintCelebration] = useState(null);
-  const pageSize = 16;
+  
+  // User requested max 40 NFTs per page in a small grid
+  const pageSize = 40;
   const totalAgents = 10078;
 
   const handleMintAgent = (agent) => {
@@ -40,7 +42,6 @@ export default function RosterPage() {
     }, 1800);
   };
 
-  // Download Manifest ONLY AFTER successful mint
   const handleDownloadManifest = (agent) => {
     if (!agent) return;
     const data = {
@@ -122,29 +123,49 @@ export default function RosterPage() {
   }, [search, rarityFilter, page]);
 
   return (
-    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
+    <div className="gamma-page-container">
       <Navbar />
 
-      <main className="page-container">
+      <main style={{ maxWidth: '1360px', margin: '0 auto', padding: '108px 24px 64px 24px' }}>
         {/* Page Header */}
-        <div className="mx-auto max-w-[800px] text-center mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
-            <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
-            <span>SOLANA TOKEN-BOUND ROSTER // 10,078 TOTAL UNITS</span>
+        <div className="gamma-page-header">
+          <div className="gamma-badge" style={{ marginBottom: '12px' }}>
+            <span className="gamma-badge-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+              </svg>
+            </span>
+            <span>SOLANA TOKEN-BOUND ROSTER · 10,078 UNITS</span>
           </div>
 
-          <h1 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+          <h1 className="gamma-hero-title" style={{ fontSize: 'clamp(32px, 4vw, 52px)', marginBottom: '12px' }}>
             Autonomous Agent Directory
           </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted">
-            Explore the complete 10,078 genesis roster. Every agent is an on-chain token-bound entity on Solana, possessing its own autonomous PDA execution vault funded by 90% of mint capital.
+          <p className="gamma-hero-subtitle" style={{ maxWidth: '680px', margin: '0 auto' }}>
+            Explore the complete 10,078 genesis roster. Every agent is an on-chain token-bound entity on Solana with an autonomous PDA execution vault funded by 90% of mint capital.
           </p>
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="rounded-xl border border-line bg-surface-1 p-4 mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-mono text-[11px] text-dim mr-2 uppercase">Rarity:</span>
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.85)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(15, 23, 42, 0.08)',
+          borderRadius: '20px',
+          padding: '12px 18px',
+          marginBottom: '28px',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '14px',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)'
+        }}>
+          {/* Rarity Filter Pills */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#64748b', textTransform: 'uppercase', marginRight: '4px' }}>
+              Rarity:
+            </span>
             {['all', 'legendary', 'epic', 'rare', 'common'].map((tier) => {
               const isActive = rarityFilter === tier;
               return (
@@ -152,10 +173,19 @@ export default function RosterPage() {
                   key={tier}
                   type="button"
                   onClick={() => { setRarityFilter(tier); setPage(1); }}
-                  className={`rounded-full px-3.5 py-1 text-[12px] font-mono capitalize transition-colors cursor-pointer ${isActive
-                      ? 'bg-cream text-black font-medium'
-                      : 'border border-line bg-surface-2 text-dim hover:text-cream hover:border-line-strong'
-                    }`}
+                  style={{
+                    borderRadius: '9999px',
+                    padding: '5px 14px',
+                    fontSize: '12px',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    fontWeight: isActive ? 600 : 500,
+                    textTransform: 'capitalize',
+                    border: isActive ? 'none' : '1px solid rgba(15, 23, 42, 0.1)',
+                    background: isActive ? '#111827' : 'rgba(255, 255, 255, 0.8)',
+                    color: isActive ? '#ffffff' : '#475569',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease'
+                  }}
                 >
                   {tier}
                 </button>
@@ -163,70 +193,94 @@ export default function RosterPage() {
             })}
           </div>
 
-          <div className="w-full md:w-auto">
+          {/* Search Box */}
+          <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
             <input
               type="text"
               placeholder="Search by ID (#143) or role..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              className="w-full md:w-[260px] rounded-lg border border-line bg-surface-2 px-3.5 py-1.5 font-mono text-[12px] text-cream placeholder:text-dim focus:border-cream focus:outline-none transition-colors"
+              style={{
+                width: '100%',
+                borderRadius: '9999px',
+                border: '1px solid rgba(15, 23, 42, 0.12)',
+                background: '#ffffff',
+                padding: '7px 16px',
+                fontSize: '12.5px',
+                color: '#0f172a',
+                outline: 'none',
+                fontFamily: 'var(--font-sans)',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
+              }}
             />
           </div>
         </div>
 
-        {/* Compact, Haute-Couture Agent Grid */}
-        <div className="roster-grid mb-14">
+        {/* Small Size 40-NFT Responsive Grid (Grid of small cards) */}
+        <div className="gamma-roster-grid" style={{ marginBottom: '40px' }}>
           {agents.map((agent) => (
             <div
               key={agent.id}
               onClick={() => setInspectedAgent(agent)}
-              className="group cursor-pointer overflow-hidden rounded-lg border border-line bg-surface-1 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2"
+              className="gamma-small-card"
+              title={`View ${agent.name}`}
             >
-              {/* Avatar Box (Square framed token preview) */}
-              <div className="roster-card-box">
-                <div
-                  className="absolute inset-0 opacity-20 group-hover:opacity-35 transition-opacity"
-                  style={{
-                    background: `radial-gradient(circle at 50% 50%, ${agent.color || '#00E599'} 0%, transparent 70%)`
-                  }}
+              {/* Compact Avatar Frame */}
+              <div className="gamma-small-avatar-box">
+                <img
+                  src={`/nfts/${agent.id}.svg`}
+                  alt={agent.name}
+                  loading="lazy"
                 />
 
-                <div className="roster-card-frame">
-                  <img
-                    src={`/nfts/${agent.id}.svg`}
-                    alt={agent.name}
-                    className="pixel-avatar"
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Badges */}
-                <span className="absolute top-2 left-2 z-20 rounded bg-black/75 px-1.5 py-0.5 font-mono text-[9px] text-dim border border-line">
+                {/* ID Badge */}
+                <span style={{
+                  position: 'absolute',
+                  top: '6px',
+                  left: '6px',
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  color: '#ffffff',
+                  fontSize: '8px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  padding: '2px 5px',
+                  borderRadius: '9999px',
+                  lineHeight: 1
+                }}>
                   #{String(agent.id).padStart(5, '0')}
                 </span>
-                <span className="absolute top-2 right-2 z-20 rounded bg-black/75 px-1.5 py-0.5 font-mono text-[9px] text-mint border border-line">
+
+                {/* Rarity Badge */}
+                <span style={{
+                  position: 'absolute',
+                  top: '6px',
+                  right: '6px',
+                  background: 'rgba(147, 51, 234, 0.12)',
+                  color: '#7e22ce',
+                  fontSize: '8px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  fontWeight: 700,
+                  padding: '2px 5px',
+                  borderRadius: '9999px',
+                  lineHeight: 1
+                }}>
                   {agent.rarityTier}
                 </span>
               </div>
 
-              {/* Card Meta */}
-              <div className="p-3.5">
-                <div className="flex items-baseline justify-between gap-2">
-                  <span className="font-serif text-[15px] text-cream font-medium truncate group-hover:text-mint transition-colors">
-                    {agent.role}
-                  </span>
-                  <span className="font-mono text-[11px] text-mint font-medium shrink-0">
-                    {agent.priceSol} SOL
-                  </span>
+              {/* Card Meta Content */}
+              <div style={{ padding: '2px' }}>
+                <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {agent.name}
                 </div>
 
-                <p className="mt-0.5 text-[11px] text-muted truncate">
-                  {agent.archetype}
-                </p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '9.5px', color: '#64748b', fontFamily: 'var(--font-jetbrains), monospace', marginTop: '3px' }}>
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{agent.role}</span>
+                  <span style={{ color: '#7c3aed', fontWeight: 700, flexShrink: 0 }}>{agent.priceSol} SOL</span>
+                </div>
 
-                <div className="mt-2.5 flex items-center justify-between border-t border-line/60 pt-2 font-mono text-[10px] text-dim">
-                  <span>90% PDA: {agent.pdaFunding}</span>
-                  <span className="text-cream/80 group-hover:text-mint transition-colors">Inspect →</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(15, 23, 42, 0.06)', marginTop: '8px', paddingTop: '6px', fontSize: '9px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                  <span>90% PDA</span>
+                  <span style={{ color: '#0f172a', fontWeight: 600 }}>Inspect →</span>
                 </div>
               </div>
             </div>
@@ -234,111 +288,156 @@ export default function RosterPage() {
         </div>
 
         {/* Pagination Bar */}
-        <div className="flex items-center justify-center gap-4 font-mono text-[12px]">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px' }}>
           <button
             type="button"
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             disabled={page === 1}
-            className="rounded-full border border-line bg-surface-1 px-4 py-1.5 text-muted hover:text-cream hover:border-line-strong transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            className="gamma-btn-white"
+            style={{ padding: '6px 18px', fontSize: '12.5px', opacity: page === 1 ? 0.4 : 1 }}
           >
             ← Previous
           </button>
 
-          <span className="text-dim">
-            Page <span className="text-cream font-medium">{page}</span> of <span className="text-cream">{totalPages}</span>
+          <span style={{ color: '#64748b' }}>
+            Page <strong style={{ color: '#0f172a' }}>{page}</strong> of <strong style={{ color: '#0f172a' }}>{totalPages}</strong>
           </span>
 
           <button
             type="button"
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             disabled={page === totalPages}
-            className="rounded-full border border-line bg-surface-1 px-4 py-1.5 text-muted hover:text-cream hover:border-line-strong transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            className="gamma-btn-white"
+            style={{ padding: '6px 18px', fontSize: '12.5px', opacity: page === totalPages ? 0.4 : 1 }}
           >
             Next →
           </button>
         </div>
       </main>
 
-      {/* Global Footer */}
       <Footer />
 
-      {/* Inspected Agent Modal (Zero emojis, haute-couture) */}
+      {/* Inspected Agent Modal (Gamma Light Editorial Style) */}
       {inspectedAgent && (
         <div
-          className="agent-modal-backdrop"
+          className="gamma-modal-backdrop"
           onClick={() => setInspectedAgent(null)}
         >
           <div
-            className="agent-modal-card"
+            className="gamma-modal-card"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setInspectedAgent(null)}
-              className="absolute top-4 right-4 rounded-md border border-line bg-surface-2 p-1.5 text-dim hover:text-cream transition-colors cursor-pointer"
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                borderRadius: '9999px',
+                border: '1px solid rgba(15, 23, 42, 0.1)',
+                background: '#f8fafc',
+                padding: '6px',
+                cursor: 'pointer',
+                color: '#64748b'
+              }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
 
-            <div className="agent-modal-layout">
-              <div className="agent-modal-avatar-box">
-                <img
-                  src={`/nfts/${inspectedAgent.id}.svg`}
-                  alt={inspectedAgent.name}
-                  className="pixel-avatar"
-                />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{
+                  width: '90px',
+                  height: '90px',
+                  borderRadius: '16px',
+                  background: '#f1f5f9',
+                  border: '1px solid rgba(15, 23, 42, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '8px',
+                  flexShrink: 0
+                }}>
+                  <img
+                    src={`/nfts/${inspectedAgent.id}.svg`}
+                    alt={inspectedAgent.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }}
+                  />
+                </div>
+
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#64748b' }}>
+                      #{String(inspectedAgent.id).padStart(5, '0')}
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#7c3aed', fontWeight: 700 }}>
+                      {inspectedAgent.band}
+                    </span>
+                  </div>
+                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: '2px 0 0 0' }}>
+                    {inspectedAgent.name}
+                  </h3>
+                  <p style={{ fontSize: '12px', color: '#64748b', margin: '2px 0 0 0' }}>
+                    {inspectedAgent.role} · {inspectedAgent.archetype}
+                  </p>
+                </div>
               </div>
 
-              <div className="agent-modal-info">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] text-dim border border-line px-1.5 rounded">
-                    #{String(inspectedAgent.id).padStart(5, '0')}
+              {/* Stats Block */}
+              <div style={{
+                background: '#f8fafc',
+                borderRadius: '14px',
+                border: '1px solid rgba(15, 23, 42, 0.06)',
+                padding: '12px 16px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontSize: '11px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#64748b' }}>Mint Price:</span>
+                  <span style={{ color: '#0f172a', fontWeight: 700 }}>{inspectedAgent.priceSol} SOL</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#64748b' }}>90% Vault Deposit:</span>
+                  <span style={{ color: '#10b981', fontWeight: 700 }}>{(inspectedAgent.priceSol * 0.9).toFixed(3)} SOL</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#64748b' }}>PDA Vault:</span>
+                  <span style={{ color: '#0f172a', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {inspectedAgent.pdaVault}
                   </span>
-                  <span className="font-mono text-[11px] text-mint">{inspectedAgent.band}</span>
                 </div>
-
-                <h3 className="font-serif text-[24px] text-cream mt-1 font-medium">{inspectedAgent.name}</h3>
-                <p className="text-[13px] text-muted">{inspectedAgent.role}</p>
-
-                <div className="mt-4 space-y-1.5 font-mono text-[11px] border-t border-line pt-3">
-                  <div className="flex justify-between">
-                    <span className="text-dim">Mint Price:</span>
-                    <span className="text-cream font-medium">{inspectedAgent.priceSol} SOL</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-dim">90% Vault Deposit:</span>
-                    <span className="text-mint font-medium">{(inspectedAgent.priceSol * 0.9).toFixed(3)} SOL</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-dim">PDA Vault:</span>
-                    <span className="text-cream truncate max-w-[180px]">{inspectedAgent.pdaVault}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-dim">Rarity Score:</span>
-                    <span className="text-cream">{inspectedAgent.rarityScore} ({inspectedAgent.rarityTier})</span>
-                  </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#64748b' }}>Rarity:</span>
+                  <span style={{ color: '#7c3aed', fontWeight: 700 }}>{inspectedAgent.rarityScore} ({inspectedAgent.rarityTier})</span>
                 </div>
+              </div>
 
-                <div className="mt-6 flex items-center gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => handleMintAgent(inspectedAgent)}
-                    disabled={isMinting}
-                    className="flex-1 inline-flex h-9 items-center justify-center rounded-full bg-cream text-[13px] font-medium text-black hover:bg-cream/90 transition-colors cursor-pointer disabled:opacity-50"
-                  >
-                    {isMinting ? 'Minting via Anchor...' : `Mint for ${inspectedAgent.priceSol} SOL`}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setInspectedAgent(null)}
-                    className="inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-2 px-4 text-[12px] font-medium text-cream hover:bg-surface-3 transition-colors cursor-pointer"
-                  >
-                    Close
-                  </button>
-                </div>
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => handleMintAgent(inspectedAgent)}
+                  disabled={isMinting}
+                  className="gamma-btn-black"
+                  style={{ flex: 1, padding: '10px 20px', fontSize: '13.5px' }}
+                >
+                  {isMinting ? 'Minting via Anchor...' : `Mint for ${inspectedAgent.priceSol} SOL`}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setInspectedAgent(null)}
+                  className="gamma-btn-white"
+                  style={{ padding: '10px 20px', fontSize: '13.5px' }}
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
@@ -348,43 +447,80 @@ export default function RosterPage() {
       {/* Mint Celebration Modal */}
       {mintCelebration && (
         <div
-          className="agent-modal-backdrop"
+          className="gamma-modal-backdrop"
           onClick={() => setMintCelebration(null)}
         >
           <div
-            className="agent-celebration-card"
+            className="gamma-modal-card"
+            style={{ textAlign: 'center' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="font-serif text-[28px] text-cream font-medium">Agent Activated</h3>
-            <p className="mt-1 text-[14px] text-muted">{mintCelebration.name} is now live on Solana.</p>
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '9999px',
+              background: '#dcfce7',
+              color: '#15803d',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 14px auto'
+            }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
 
-            <div className="my-6 rounded-lg border border-line bg-black/60 p-4 text-left font-mono text-[12px] space-y-2">
-              <div className="flex justify-between">
-                <span className="text-dim">Token PDA:</span>
-                <span className="text-mint font-medium">{mintCelebration.pdaVault}</span>
+            <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#0f172a', margin: '0 0 6px 0' }}>
+              Agent Activated
+            </h3>
+            <p style={{ fontSize: '13.5px', color: '#64748b', margin: '0 0 18px 0' }}>
+              {mintCelebration.name} is now live on Solana with 90% capital bonded.
+            </p>
+
+            <div style={{
+              background: '#f8fafc',
+              borderRadius: '14px',
+              border: '1px solid rgba(15, 23, 42, 0.06)',
+              padding: '14px',
+              textAlign: 'left',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '11px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              marginBottom: '20px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Token PDA:</span>
+                <span style={{ color: '#10b981', fontWeight: 700 }}>{mintCelebration.pdaVault}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-dim">Deposited (90%):</span>
-                <span className="text-cream">{mintCelebration.funding}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Deposited (90%):</span>
+                <span style={{ color: '#0f172a', fontWeight: 700 }}>{mintCelebration.funding}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-dim">Signature:</span>
-                <span className="text-dim truncate max-w-[180px]">{mintCelebration.txHash}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Tx Signature:</span>
+                <span style={{ color: '#64748b', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {mintCelebration.txHash}
+                </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <button
                 type="button"
                 onClick={() => handleDownloadManifest(mintCelebration)}
-                className="flex-1 inline-flex h-9 items-center justify-center rounded-full border border-line bg-surface-2 text-[13px] font-medium text-cream hover:bg-surface-3 transition-colors cursor-pointer"
+                className="gamma-btn-white"
+                style={{ flex: 1, padding: '10px 16px' }}
               >
                 Download Manifest (.json)
               </button>
               <button
                 type="button"
                 onClick={() => setMintCelebration(null)}
-                className="flex-1 inline-flex h-9 items-center justify-center rounded-full bg-cream text-[13px] font-medium text-black hover:bg-cream/90 transition-colors cursor-pointer"
+                className="gamma-btn-black"
+                style={{ flex: 1, padding: '10px 16px' }}
               >
                 Close
               </button>

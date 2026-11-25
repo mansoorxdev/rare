@@ -138,33 +138,48 @@ export default function TerminalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
+    <div className="gamma-page-container">
       <Navbar />
 
-      <main className="page-container">
+      <main style={{ maxWidth: '1360px', margin: '0 auto', padding: '108px 24px 64px 24px' }}>
         {/* Page Header */}
-        <div className="mx-auto max-w-[800px] text-center mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
-            <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
-            <span>INTERACTIVE ANCHOR CPI CONSOLE // MAINNET-BETA</span>
+        <div className="gamma-page-header">
+          <div className="gamma-badge" style={{ marginBottom: '12px' }}>
+            <span className="gamma-badge-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+              </svg>
+            </span>
+            <span>INTERACTIVE ANCHOR CPI CONSOLE · MAINNET-BETA</span>
           </div>
 
-          <h1 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+          <h1 className="gamma-hero-title" style={{ fontSize: 'clamp(32px, 4vw, 52px)', marginBottom: '12px' }}>
             Protocol Telemetry Console
           </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted">
+          <p className="gamma-hero-subtitle" style={{ maxWidth: '680px', margin: '0 auto' }}>
             Direct real-time terminal interface to the RARE Protocol on Solana. Query agent state, derive PDA vault seeds, and audit the 90/10 Anchor CPI invariant.
           </p>
         </div>
 
         {/* Quick Command Shortcut Pills */}
-        <div className="flex items-center justify-center gap-2 flex-wrap mb-8 font-mono text-[11px]">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '28px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px' }}>
           {['status', 'inspect 143', 'pda 143', 'split', 'ladder', 'treasury', 'clear'].map((c) => (
             <button
               key={c}
               type="button"
               onClick={() => executeCommand(c)}
-              className="rounded-full border border-line bg-surface-1 px-3.5 py-1 text-dim hover:text-cream hover:border-line-strong hover:bg-surface-2 transition-colors cursor-pointer"
+              style={{
+                borderRadius: '9999px',
+                border: '1px solid rgba(15, 23, 42, 0.1)',
+                background: 'rgba(255, 255, 255, 0.85)',
+                padding: '6px 14px',
+                color: '#475569',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#0f172a'; e.currentTarget.style.background = '#ffffff'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = '#475569'; e.currentTarget.style.background = 'rgba(255, 255, 255, 0.85)'; }}
             >
               $ {c}
             </button>
@@ -172,29 +187,37 @@ export default function TerminalPage() {
         </div>
 
         {/* Monolithic Terminal Container */}
-        <div className="mx-auto max-w-[1000px] rounded-xl border border-line bg-surface-1 overflow-hidden shadow-2xl">
+        <div style={{
+          maxWidth: '1000px',
+          margin: '0 auto',
+          borderRadius: '24px',
+          border: '1px solid rgba(15, 23, 42, 0.15)',
+          background: '#0c0d14',
+          overflow: 'hidden',
+          boxShadow: '0 30px 80px -15px rgba(0, 0, 0, 0.3)'
+        }}>
           {/* Header Bar */}
-          <div className="border-b border-line bg-surface-2/60 px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-rose/60" />
-              <span className="h-2.5 w-2.5 rounded-full bg-peach/60" />
-              <span className="h-2.5 w-2.5 rounded-full bg-mint/60" />
-              <span className="font-mono text-[11px] text-dim ml-2">rare-protocol-cli // terminal</span>
+          <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(255, 255, 255, 0.03)', padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ width: '10px', height: '10px', borderRadius: '9999px', background: '#fb7185' }} />
+              <span style={{ width: '10px', height: '10px', borderRadius: '9999px', background: '#fbbf24' }} />
+              <span style={{ width: '10px', height: '10px', borderRadius: '9999px', background: '#34d399' }} />
+              <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#94a3b8', marginLeft: '8px' }}>rare-protocol-cli // terminal</span>
             </div>
-            <span className="font-mono text-[10px] text-mint">SOLANA ACTIVE</span>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10px', color: '#34d399', fontWeight: 700 }}>SOLANA ACTIVE</span>
           </div>
 
           {/* Terminal Output */}
-          <div className="p-6 font-mono text-[12.5px] leading-[1.8] min-h-[420px] max-h-[560px] overflow-y-auto bg-black/80 space-y-1">
+          <div style={{ padding: '24px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12.5px', lineHeight: 1.8, minHeight: '420px', maxHeight: '560px', overflowY: 'auto', background: '#07080c' }}>
             {lines.map((l, idx) => {
-              let colorClass = 'text-cream/90';
-              if (l.type === 'mint') colorClass = 'text-mint font-medium';
-              if (l.type === 'cmd') colorClass = 'text-peach font-medium';
-              if (l.type === 'dim') colorClass = 'text-dim';
-              if (l.type === 'rose') colorClass = 'text-rose';
+              let color = '#f1f5f9';
+              if (l.type === 'mint') color = '#34d399';
+              if (l.type === 'cmd') color = '#c084fc';
+              if (l.type === 'dim') color = '#64748b';
+              if (l.type === 'rose') color = '#fb7185';
 
               return (
-                <div key={idx} className={`${colorClass} whitespace-pre-wrap break-all`}>
+                <div key={idx} style={{ color, whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
                   {l.text}
                 </div>
               );
@@ -203,21 +226,22 @@ export default function TerminalPage() {
           </div>
 
           {/* Input Prompt */}
-          <div className="border-t border-line bg-surface-1 px-4 py-3 flex items-center gap-3">
-            <span className="font-mono text-[12px] text-mint font-medium shrink-0">rare@sol:~$</span>
+          <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', background: '#0c0d14', padding: '12px 18px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12.5px', color: '#34d399', fontWeight: 700, flexShrink: 0 }}>rare@sol:~$</span>
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type command (e.g. status, inspect 143, split) and press Enter..."
-              className="w-full bg-transparent font-mono text-[12.5px] text-cream placeholder:text-dim/60 focus:outline-none"
+              style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12.5px', color: '#ffffff' }}
               autoFocus
             />
             <button
               type="button"
               onClick={() => executeCommand(input)}
-              className="rounded-md border border-line bg-surface-2 px-3 py-1 font-mono text-[11px] text-dim hover:text-cream hover:border-line-strong transition-colors cursor-pointer shrink-0"
+              className="gamma-btn-white"
+              style={{ padding: '4px 14px', fontSize: '11px', flexShrink: 0 }}
             >
               Run
             </button>

@@ -25,43 +25,66 @@ export default function LadderPage() {
   const treasurySplit = +(totalCost * 0.1).toFixed(4);
 
   return (
-    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
+    <div className="gamma-page-container">
       <Navbar />
 
-      <main className="page-container">
+      <main style={{ maxWidth: '1360px', margin: '0 auto', padding: '108px 24px 64px 24px' }}>
         {/* Page Header */}
-        <div className="mx-auto max-w-[800px] text-center mb-14">
-          <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
-            <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
-            <span>SOLANA BONDING CURVE // 10 DETERMINISTIC BANDS</span>
+        <div className="gamma-page-header">
+          <div className="gamma-badge" style={{ marginBottom: '12px' }}>
+            <span className="gamma-badge-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+              </svg>
+            </span>
+            <span>SOLANA BONDING CURVE · 10 DETERMINISTIC BANDS</span>
           </div>
 
-          <h1 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+          <h1 className="gamma-hero-title" style={{ fontSize: 'clamp(32px, 4vw, 52px)', marginBottom: '12px' }}>
             Protocol Price Ladder
           </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted">
+          <p className="gamma-hero-subtitle" style={{ maxWidth: '680px', margin: '0 auto' }}>
             The RARE Protocol employs a deterministic 10-tier bonding curve. Exactly 90% of all SOL minted is locked directly into the corresponding token-bound PDA vault via Anchor Cross-Program Invocation (CPI).
           </p>
         </div>
 
         {/* Interactive Capital Routing Calculator */}
-        <div className="rounded-xl border border-line bg-surface-1 p-6 md:p-8 mb-14 shadow-2xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-line pb-4 mb-6 gap-3">
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(16px)',
+          border: '1px solid rgba(15, 23, 42, 0.08)',
+          borderRadius: '24px',
+          padding: '28px',
+          marginBottom: '36px',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+        }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(15, 23, 42, 0.08)', paddingBottom: '16px', marginBottom: '24px', gap: '12px' }}>
             <div>
-              <h2 className="font-serif text-[22px] text-cream font-medium">
+              <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
                 Capital Routing Calculator
               </h2>
-              <p className="text-[13px] text-muted">Estimate atomic PDA allocation across mint batches.</p>
+              <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0 0' }}>Estimate atomic PDA allocation across mint batches.</p>
             </div>
-            <span className="inline-flex items-center justify-center self-start sm:self-center font-mono text-[11px] leading-none text-mint border border-mint/30 bg-mint/10 rounded-full px-3.5 py-1.5 text-center shrink-0">
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '11px',
+              color: '#047857',
+              border: '1px solid #a7f3d0',
+              background: '#ecfdf5',
+              borderRadius: '9999px',
+              padding: '6px 14px',
+              fontWeight: 700
+            }}>
               BAND 1 RATE: 0.020 SOL / AGENT
             </span>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-8 items-center">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '32px', alignItems: 'center' }}>
             <div>
-              <label className="font-mono text-[12px] text-dim block mb-2 uppercase">
-                Select Mint Quantity: <span className="text-mint font-medium">{calcQty} AGENTS</span>
+              <label style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', color: '#64748b', display: 'block', marginBottom: '8px', textTransform: 'uppercase' }}>
+                Select Mint Quantity: <strong style={{ color: '#0f172a' }}>{calcQty} AGENTS</strong>
               </label>
               <input
                 type="range"
@@ -69,18 +92,26 @@ export default function LadderPage() {
                 max="50"
                 value={calcQty}
                 onChange={(e) => setCalcQty(parseInt(e.target.value, 10))}
-                className="w-full accent-mint cursor-pointer mb-4"
+                style={{ width: '100%', accentColor: '#7c3aed', cursor: 'pointer', marginBottom: '16px' }}
               />
-              <div className="flex gap-2 flex-wrap">
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 {[1, 5, 10, 20, 50].map((num) => (
                   <button
                     key={num}
                     type="button"
                     onClick={() => setCalcQty(num)}
-                    className={`rounded-full px-3.5 py-1 text-[12px] font-mono transition-colors cursor-pointer ${calcQty === num
-                        ? 'bg-cream text-black font-medium'
-                        : 'border border-line bg-surface-2 text-dim hover:text-cream hover:border-line-strong'
-                      }`}
+                    style={{
+                      borderRadius: '9999px',
+                      padding: '5px 14px',
+                      fontSize: '12px',
+                      fontFamily: 'var(--font-jetbrains), monospace',
+                      border: calcQty === num ? 'none' : '1px solid rgba(15, 23, 42, 0.1)',
+                      background: calcQty === num ? '#111827' : '#ffffff',
+                      color: calcQty === num ? '#ffffff' : '#475569',
+                      fontWeight: calcQty === num ? 600 : 500,
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease'
+                    }}
                   >
                     {num}
                   </button>
@@ -88,68 +119,89 @@ export default function LadderPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono">
-              <div className="rounded-lg border border-line bg-surface-2 p-4">
-                <span className="text-[10px] text-dim block mb-1 uppercase tracking-wider">Total Capital</span>
-                <span className="text-[20px] font-medium text-cream">{totalCost} SOL</span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px', fontFamily: 'var(--font-jetbrains), monospace' }}>
+              <div style={{ background: '#f8fafc', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '16px' }}>
+                <span style={{ fontSize: '10px', color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Total Capital</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a' }}>{totalCost} SOL</span>
               </div>
-              <div className="rounded-lg border border-mint/40 bg-mint/5 p-4">
-                <span className="text-[10px] text-mint block mb-1 uppercase tracking-wider font-semibold">90% Agent PDA</span>
-                <span className="text-[20px] font-medium text-mint">{pdaDeposit} SOL</span>
+              <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '16px', padding: '16px' }}>
+                <span style={{ fontSize: '10px', color: '#047857', display: 'block', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 700 }}>90% Agent PDA</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#047857' }}>{pdaDeposit} SOL</span>
               </div>
-              <div className="rounded-lg border border-line bg-surface-2 p-4">
-                <span className="text-[10px] text-dim block mb-1 uppercase tracking-wider">10% Protocol</span>
-                <span className="text-[20px] font-medium text-peach">{treasurySplit} SOL</span>
+              <div style={{ background: '#f8fafc', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '16px' }}>
+                <span style={{ fontSize: '10px', color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>10% Protocol</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a' }}>{treasurySplit} SOL</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* 10-Tier Ladder Table */}
-        <div className="rounded-xl border border-line bg-surface-1 overflow-hidden shadow-2xl mb-14">
-          <div className="border-b border-line px-6 py-4 flex items-center justify-between">
-            <h2 className="font-serif text-[20px] text-cream font-medium">10 Bonding Curve Tiers (10,078 Total Agents)</h2>
-            <span className="font-mono text-[11px] text-dim">ANCHOR CPI v1.2</span>
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: '24px',
+          border: '1px solid rgba(15, 23, 42, 0.08)',
+          overflow: 'hidden',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+          marginBottom: '40px'
+        }}>
+          <div style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.08)', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+              10 Bonding Curve Tiers (10,078 Total Agents)
+            </h2>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#64748b' }}>
+              ANCHOR CPI v1.2
+            </span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left font-mono text-[12px]">
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px' }}>
               <thead>
-                <tr className="border-b border-line bg-surface-2/60 text-dim text-[11px] uppercase tracking-wider">
-                  <th className="px-6 py-3">Tier</th>
-                  <th className="px-6 py-3">Agent Range</th>
-                  <th className="px-6 py-3">Mint Price</th>
-                  <th className="px-6 py-3">90% PDA Vault</th>
-                  <th className="px-6 py-3">10% Treasury</th>
-                  <th className="px-6 py-3 text-right">Status</th>
+                <tr style={{ background: '#f8fafc', borderBottom: '1px solid rgba(15, 23, 42, 0.06)', color: '#64748b', fontSize: '11px', textTransform: 'uppercase' }}>
+                  <th style={{ padding: '12px 24px' }}>Tier</th>
+                  <th style={{ padding: '12px 24px' }}>Agent Range</th>
+                  <th style={{ padding: '12px 24px' }}>Mint Price</th>
+                  <th style={{ padding: '12px 24px' }}>90% PDA Vault</th>
+                  <th style={{ padding: '12px 24px' }}>10% Treasury</th>
+                  <th style={{ padding: '12px 24px', textAlign: 'right' }}>Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line/60">
+              <tbody>
                 {LADDER_BANDS.map((item) => {
                   const isCurrent = item.band === 1;
                   return (
                     <tr
                       key={item.band}
-                      className={`transition-colors ${isCurrent ? 'bg-mint/5 hover:bg-mint/10' : 'hover:bg-surface-2'
-                        }`}
+                      style={{
+                        borderBottom: '1px solid rgba(15, 23, 42, 0.04)',
+                        background: isCurrent ? 'rgba(16, 185, 129, 0.04)' : 'transparent'
+                      }}
                     >
-                      <td className="px-6 py-3.5">
-                        <span className={`font-medium ${isCurrent ? 'text-mint' : 'text-cream'}`}>
-                          Band {item.band}
-                        </span>
+                      <td style={{ padding: '14px 24px', fontWeight: 700, color: isCurrent ? '#047857' : '#0f172a' }}>
+                        Band {item.band}
                       </td>
-                      <td className="px-6 py-3.5 text-muted">{item.range}</td>
-                      <td className="px-6 py-3.5 text-cream font-medium">{item.price.toFixed(3)} SOL</td>
-                      <td className="px-6 py-3.5 text-mint font-medium">{item.pdaCapital.toFixed(4)} SOL</td>
-                      <td className="px-6 py-3.5 text-dim">{item.treasury.toFixed(4)} SOL</td>
-                      <td className="px-6 py-3.5 text-right">
+                      <td style={{ padding: '14px 24px', color: '#64748b' }}>{item.range}</td>
+                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#0f172a' }}>{item.price.toFixed(3)} SOL</td>
+                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#047857' }}>{item.pdaCapital.toFixed(4)} SOL</td>
+                      <td style={{ padding: '14px 24px', color: '#64748b' }}>{item.treasury.toFixed(4)} SOL</td>
+                      <td style={{ padding: '14px 24px', textAlign: 'right' }}>
                         {isCurrent ? (
-                          <span className="inline-flex items-center gap-1.5 rounded-full border border-mint/40 bg-mint/10 px-2.5 py-0.5 text-[11px] text-mint">
-                            <span className="h-1 w-1 rounded-full bg-mint animate-pulse" />
+                          <span style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            background: '#dcfce7',
+                            color: '#15803d',
+                            padding: '3px 10px',
+                            borderRadius: '9999px',
+                            fontSize: '11px',
+                            fontWeight: 700
+                          }}>
+                            <span style={{ width: '6px', height: '6px', borderRadius: '9999px', background: '#16a34a', display: 'inline-block' }} />
                             Active Now
                           </span>
                         ) : (
-                          <span className="text-dim text-[11px]">Upcoming</span>
+                          <span style={{ color: '#94a3b8', fontSize: '11px' }}>Upcoming</span>
                         )}
                       </td>
                     </tr>

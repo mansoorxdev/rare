@@ -7,7 +7,7 @@ import Footer from '../../components/Footer';
 export default function PreviewPage() {
   const [searchId, setSearchId] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 24;
+  const pageSize = 40; // 40 items per page
 
   const totalNFTs = 10078;
   const totalPages = Math.ceil(totalNFTs / pageSize);
@@ -19,26 +19,30 @@ export default function PreviewPage() {
   const isValidSearch = searchedIdNum >= 1 && searchedIdNum <= totalNFTs;
 
   return (
-    <div className="min-h-screen bg-black text-cream selection:bg-cream selection:text-black font-sans antialiased">
+    <div className="gamma-page-container">
       <Navbar />
 
-      <main className="page-container">
+      <main style={{ maxWidth: '1360px', margin: '0 auto', padding: '108px 24px 64px 24px' }}>
         {/* Header */}
-        <div className="mx-auto max-w-[800px] text-center mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-1 px-3 py-1 font-mono text-[11px] text-dim mb-4">
-            <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse" />
-            <span>10,078 UNIQUE ON-CHAIN VECTORS // 24x24 ASSETS</span>
+        <div className="gamma-page-header">
+          <div className="gamma-badge" style={{ marginBottom: '12px' }}>
+            <span className="gamma-badge-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+              </svg>
+            </span>
+            <span>10,078 UNIQUE ON-CHAIN VECTORS · 24x24 ASSETS</span>
           </div>
 
-          <h1 className="font-serif text-[40px] leading-[1.05] text-cream md:text-[56px] font-medium">
+          <h1 className="gamma-hero-title" style={{ fontSize: 'clamp(32px, 4vw, 52px)', marginBottom: '12px' }}>
             Pixel NFT Explorer
           </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted">
+          <p className="gamma-hero-subtitle" style={{ maxWidth: '680px', margin: '0 auto' }}>
             All 10,078 unique vector pixel art NFTs inscribed on Solana. Every asset is paired with its autonomous token-bound PDA vault.
           </p>
 
           {/* Search bar */}
-          <div className="mt-8 flex items-center justify-center gap-2 max-w-[360px] mx-auto">
+          <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', maxWidth: '360px', margin: '24px auto 0 auto' }}>
             <input
               type="number"
               min="1"
@@ -46,13 +50,25 @@ export default function PreviewPage() {
               placeholder="Jump to ID (1 - 10078)..."
               value={searchId}
               onChange={(e) => setSearchId(e.target.value)}
-              className="w-full rounded-lg border border-line bg-surface-1 px-3.5 py-2 font-mono text-[12px] text-cream placeholder:text-dim focus:border-cream focus:outline-none transition-colors"
+              style={{
+                width: '100%',
+                borderRadius: '9999px',
+                border: '1px solid rgba(15, 23, 42, 0.12)',
+                background: '#ffffff',
+                padding: '8px 18px',
+                fontSize: '12.5px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                color: '#0f172a',
+                outline: 'none',
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03)'
+              }}
             />
             {isValidSearch && (
               <button
                 type="button"
                 onClick={() => setCurrentPage(Math.ceil(searchedIdNum / pageSize))}
-                className="rounded-lg bg-cream px-4 py-2 font-mono text-[12px] font-medium text-black hover:bg-cream/90 transition-colors shrink-0 cursor-pointer"
+                className="gamma-btn-black"
+                style={{ padding: '8px 16px', fontSize: '12px', flexShrink: 0 }}
               >
                 Go #{searchedIdNum}
               </button>
@@ -62,36 +78,56 @@ export default function PreviewPage() {
 
         {/* Featured Search Result if active */}
         {isValidSearch && (
-          <div className="max-w-[320px] mx-auto mb-12 rounded-xl border border-mint/40 bg-surface-1 p-5 text-center shadow-2xl">
-            <span className="font-mono text-[12px] text-mint font-medium">
+          <div style={{
+            maxWidth: '320px',
+            margin: '0 auto 32px auto',
+            borderRadius: '20px',
+            border: '1px solid rgba(147, 51, 234, 0.3)',
+            background: '#ffffff',
+            padding: '20px',
+            textAlign: 'center',
+            boxShadow: '0 10px 30px -10px rgba(147, 51, 234, 0.2)'
+          }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '13px', fontWeight: 800, color: '#7c3aed' }}>
               Rare #{String(searchedIdNum).padStart(5, '0')}
             </span>
-            <div className="aspect-square w-full rounded-lg bg-black border border-line p-4 my-3 flex items-center justify-center">
+            <div style={{
+              width: '120px',
+              height: '120px',
+              borderRadius: '16px',
+              background: '#f8fafc',
+              border: '1px solid rgba(15, 23, 42, 0.08)',
+              padding: '12px',
+              margin: '12px auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
               <img
                 src={`/nfts/${searchedIdNum}.svg`}
                 alt={`NFT #${searchedIdNum}`}
-                className="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+                style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }}
               />
             </div>
           </div>
         )}
 
-        {/* 24-Card Gallery Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-14">
+        {/* 40-Card Gallery Grid (Small compact cards) */}
+        <div className="gamma-roster-grid" style={{ marginBottom: '40px' }}>
           {currentNFTs.map((id) => (
             <div
               key={id}
-              className="group overflow-hidden rounded-lg border border-line bg-surface-1 p-3 transition-[transform,background-color,border-color] duration-150 hover:-translate-y-1 hover:border-line-strong hover:bg-surface-2 text-center"
+              className="gamma-small-card"
+              style={{ textAlign: 'center', alignItems: 'center' }}
             >
-              <div className="aspect-square w-full rounded-md bg-black/60 border border-line/40 p-2 flex items-center justify-center mb-2">
+              <div className="gamma-small-avatar-box">
                 <img
                   src={`/nfts/${id}.svg`}
                   alt={`Rare #${id}`}
-                  className="w-full h-full object-contain pixel-avatar filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform"
                   loading="lazy"
                 />
               </div>
-              <span className="font-mono text-[11px] text-dim group-hover:text-cream transition-colors">
+              <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', fontWeight: 700, color: '#0f172a' }}>
                 #{String(id).padStart(5, '0')}
               </span>
             </div>
@@ -99,25 +135,27 @@ export default function PreviewPage() {
         </div>
 
         {/* Pagination Bar */}
-        <div className="flex items-center justify-center gap-4 font-mono text-[12px]">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px' }}>
           <button
             type="button"
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            onClick={() => { setCurrentPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             disabled={currentPage === 1}
-            className="rounded-full border border-line bg-surface-1 px-4 py-1.5 text-muted hover:text-cream hover:border-line-strong transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            className="gamma-btn-white"
+            style={{ padding: '6px 18px', fontSize: '12.5px', opacity: currentPage === 1 ? 0.4 : 1 }}
           >
             ← Previous
           </button>
 
-          <span className="text-dim">
-            Page <span className="text-cream font-medium">{currentPage}</span> of <span className="text-cream">{totalPages}</span>
+          <span style={{ color: '#64748b' }}>
+            Page <strong style={{ color: '#0f172a' }}>{currentPage}</strong> of <strong style={{ color: '#0f172a' }}>{totalPages}</strong>
           </span>
 
           <button
             type="button"
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            onClick={() => { setCurrentPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             disabled={currentPage === totalPages}
-            className="rounded-full border border-line bg-surface-1 px-4 py-1.5 text-muted hover:text-cream hover:border-line-strong transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            className="gamma-btn-white"
+            style={{ padding: '6px 18px', fontSize: '12.5px', opacity: currentPage === totalPages ? 0.4 : 1 }}
           >
             Next →
           </button>
