@@ -345,7 +345,7 @@ export default function HomePage() {
         {/* =========================================================================
             HERO SECTION: Haute-Couture GSAP Stagger Entrance & 3D Interactive Showcase
             ========================================================================= */}
-        <section className="relative isolate overflow-hidden bg-black min-h-[max(640px,100dvh)] flex items-center">
+        <section className="relative isolate overflow-hidden bg-black min-h-[calc(100vh-64px)] flex flex-col justify-start">
           {/* Subtle ambient glow in background (non-blocking) */}
           <div
             aria-hidden="true"
@@ -356,7 +356,7 @@ export default function HomePage() {
           />
 
           {/* Hero Content: Clean 2-column grid inside standard max-w-[1280px] */}
-          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-6 pt-20 pb-12 md:pt-20 md:pb-14">
+          <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-6 pt-24 pb-12 md:pt-28 md:pb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-12">
               {/* Left Column: Headline, tabs, CTA */}
               <div className="max-w-[520px]">
