@@ -118,68 +118,8 @@ export default function Navbar() {
               ? `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
               : 'Connect wallet'}
           </button>
-
-          {/* Hamburger Menu Toggle (Mobile / Tablet) */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden"
-            style={{
-              display: 'inline-flex',
-              height: '36px',
-              width: '36px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '9999px',
-              background: 'rgba(255, 255, 255, 0.75)',
-              border: '1px solid rgba(15, 23, 42, 0.1)',
-              color: '#0f172a',
-              cursor: 'pointer'
-            }}
-            aria-label="Toggle navigation menu"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
         </div>
       </div>
-
-      {/* Mobile Menu Dropdown */}
-      {mobileMenuOpen && (
-        <div style={{
-          position: 'absolute',
-          top: '68px',
-          left: 0,
-          right: 0,
-          background: 'rgba(240, 246, 254, 0.98)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(15, 23, 42, 0.08)',
-          padding: '16px 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '12px'
-        }}>
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              style={{
-                fontSize: '14.5px',
-                fontWeight: 600,
-                color: '#0f172a',
-                textDecoration: 'none',
-                padding: '4px 0'
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      )}
       <style jsx>{`
         @media (min-width: 768px) {
           #gamma-desktop-search {
