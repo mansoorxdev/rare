@@ -793,51 +793,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-                    >
-                      <span className="block">{step.title}</span>
-                      <span className="block text-[11px] text-dim">{step.subtitle}</span>
-                      {isActive && (
-                        <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-mint" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Transcript Display Window */}
-              <div className="p-5 font-mono text-[12.5px] leading-[1.8] bg-surface-1/30">
-                {transcriptTab === 0 && (
-                  <div>
-                    <div className="text-dim">&gt; Fetching route quote across Solana AMM graphs...</div>
-                    <div className="text-cream/90">&gt; Best execution via Jupiter V6: 0.020 SOL mint pricing derived.</div>
-                    <div className="text-dim">&gt; Route latency: 42ms · Slippage budget: 0.5% max</div>
-                  </div>
-                )}
-                {transcriptTab === 1 && (
-                  <div>
-                    <div className="text-dim">&gt; Validating token-bound PDA seeds against Anchor IDL:</div>
-                    <div className="text-peach">&gt; Seed: [b"rare_agent", id=143, authority=user_pubkey]</div>
-                    <div className="text-mint">&gt; Target Vault: PDA256v3779B100Vault · Verified 90% deposit rule intact.</div>
-                  </div>
-                )}
-                {transcriptTab === 2 && (
-                  <div>
-                    <div className="text-dim">&gt; Requesting single Ed25519 signature from active Solana wallet...</div>
-                    <div className="text-cream/90">&gt; Payload: 1 instruction (Anchor MintAndBindPda) · Zero blind signing.</div>
-                    <div className="text-dim">&gt; Authorization confirmed via Privy Web3 Provider.</div>
-                  </div>
-                )}
-                {transcriptTab === 3 && (
-                  <div>
-                    <div className="text-dim">&gt; Broadcasting transaction to Solana Mainnet-Beta...</div>
-                    <div className="text-mint">&gt; Blockhash confirmed at slot #31094892 · 5,000 lamports fee</div>
-                    <div className="text-cream/90">&gt; Agent #00143 PDA Vault funded with 0.018 SOL. Autonomous execution active.</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* =========================================================================
             SECTION 4: "Browse agent swarm"
