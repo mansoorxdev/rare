@@ -52,6 +52,31 @@ export default function HomePage() {
   const featuredAgentIds = [42, 128, 1420, 3391];
   const featuredAgents = featuredAgentIds.map((id) => getAgentMetadata(id));
 
+  // Rarible Swarm Category Filter State
+  const [swarmFilter, setSwarmFilter] = useState('all');
+  const SWARM_FILTERS = [
+    { id: 'all', label: 'All Agents' },
+    { id: 'trending', label: 'Trending' },
+    { id: 'top-tier', label: 'Top Tier' },
+    { id: 'arbitrage', label: 'Quantum Arbitrage' },
+    { id: 'sentinel', label: 'Sentinel Guards' },
+    { id: 'grid', label: 'Grid Execution' },
+    { id: 'momentum', label: 'Momentum Hunters' },
+    { id: 'rebalance', label: 'Vault Rebalancers' }
+  ];
+
+  const displayedSwarmAgents = React.useMemo(() => {
+    if (swarmFilter === 'all') return featuredAgents;
+    if (swarmFilter === 'trending') return [getAgentMetadata(143), getAgentMetadata(42), getAgentMetadata(100), getAgentMetadata(777)];
+    if (swarmFilter === 'top-tier') return [getAgentMetadata(1), getAgentMetadata(10), getAgentMetadata(100), getAgentMetadata(500)];
+    if (swarmFilter === 'arbitrage') return [getAgentMetadata(143), getAgentMetadata(243), getAgentMetadata(343), getAgentMetadata(443)];
+    if (swarmFilter === 'sentinel') return [getAgentMetadata(140), getAgentMetadata(240), getAgentMetadata(340), getAgentMetadata(440)];
+    if (swarmFilter === 'grid') return [getAgentMetadata(141), getAgentMetadata(241), getAgentMetadata(341), getAgentMetadata(441)];
+    if (swarmFilter === 'momentum') return [getAgentMetadata(144), getAgentMetadata(244), getAgentMetadata(344), getAgentMetadata(444)];
+    if (swarmFilter === 'rebalance') return [getAgentMetadata(142), getAgentMetadata(242), getAgentMetadata(342), getAgentMetadata(442)];
+    return featuredAgents;
+  }, [swarmFilter]);
+
   // Transcript timer cycle
   useEffect(() => {
     if (transcriptPaused) return;
@@ -429,34 +454,34 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#121422',
-                  border: '1px solid rgba(168, 85, 247, 0.35)',
+                  background: '#18191b',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/11',
+                  aspectRatio: '1/1',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
-                  border: '1px solid rgba(168, 85, 247, 0.25)',
+                  background: '#111214',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
                   overflow: 'hidden',
-                  padding: '10px',
+                  padding: '12px',
                   marginBottom: '12px'
                 }}>
                   <img
                     src="/nfts/143.svg"
                     alt="Quantum Arbitrage"
-                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                    style={{ width: '90%', height: '90%', maxHeight: '135px', objectFit: 'contain', imageRendering: 'pixelated' }}
                   />
                   <span style={{
                     position: 'absolute',
@@ -474,7 +499,12 @@ export default function HomePage() {
                     Active · Jupiter
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Quantum Arbitrage</div>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span>Quantum Arbitrage</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#facc15" style={{ flexShrink: 0 }}>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                  </svg>
+                </div>
                 <div style={{ fontSize: '11px', color: '#c084fc', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Cross-DEX Spreads
                 </div>
@@ -485,34 +515,34 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#121422',
-                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  background: '#18191b',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/11',
+                  aspectRatio: '1/1',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
-                  border: '1px solid rgba(16, 185, 129, 0.25)',
+                  background: '#111214',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
                   overflow: 'hidden',
-                  padding: '10px',
+                  padding: '12px',
                   marginBottom: '12px'
                 }}>
                   <img
                     src="/nfts/140.svg"
                     alt="Sentinel Guards"
-                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                    style={{ width: '90%', height: '90%', maxHeight: '135px', objectFit: 'contain', imageRendering: 'pixelated' }}
                   />
                   <span style={{
                     position: 'absolute',
@@ -530,7 +560,12 @@ export default function HomePage() {
                     Pyth Oracle
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Sentinel Guards</div>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span>Sentinel Guards</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#facc15" style={{ flexShrink: 0 }}>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                  </svg>
+                </div>
                 <div style={{ fontSize: '11px', color: '#34d399', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   -15% Stop-Loss Shield
                 </div>
@@ -541,34 +576,34 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#121422',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  background: '#18191b',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/11',
+                  aspectRatio: '1/1',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: '#111214',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
                   overflow: 'hidden',
-                  padding: '10px',
+                  padding: '12px',
                   marginBottom: '12px'
                 }}>
                   <img
                     src="/nfts/141.svg"
                     alt="Grid Execution"
-                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                    style={{ width: '90%', height: '90%', maxHeight: '135px', objectFit: 'contain', imageRendering: 'pixelated' }}
                   />
                   <span style={{
                     position: 'absolute',
@@ -586,7 +621,12 @@ export default function HomePage() {
                     Raydium CLMM
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Grid Execution</div>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span>Grid Execution</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#facc15" style={{ flexShrink: 0 }}>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                  </svg>
+                </div>
                 <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   High-Frequency Ranges
                 </div>
@@ -597,34 +637,34 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#121422',
-                  border: '1px solid rgba(236, 72, 153, 0.35)',
+                  background: '#18191b',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/11',
+                  aspectRatio: '1/1',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
-                  border: '1px solid rgba(236, 72, 153, 0.25)',
+                  background: '#111214',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
                   overflow: 'hidden',
-                  padding: '10px',
+                  padding: '12px',
                   marginBottom: '12px'
                 }}>
                   <img
                     src="/nfts/144.svg"
                     alt="Momentum Hunters"
-                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                    style={{ width: '90%', height: '90%', maxHeight: '135px', objectFit: 'contain', imageRendering: 'pixelated' }}
                   />
                   <span style={{
                     position: 'absolute',
@@ -642,7 +682,12 @@ export default function HomePage() {
                     Trend Signal
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Momentum Hunters</div>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span>Momentum Hunters</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#facc15" style={{ flexShrink: 0 }}>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                  </svg>
+                </div>
                 <div style={{ fontSize: '11px', color: '#f472b6', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Volume Breakouts
                 </div>
@@ -653,34 +698,34 @@ export default function HomePage() {
                 href="/roster"
                 className="gamma-dock-item"
                 style={{
-                  background: '#121422',
-                  border: '1px solid rgba(217, 119, 6, 0.35)',
+                  background: '#18191b',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   color: '#ffffff',
                   textDecoration: 'none',
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '14px',
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)'
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)'
                 }}
               >
                 <div style={{
                   width: '100%',
-                  aspectRatio: '16/11',
+                  aspectRatio: '1/1',
                   borderRadius: '14px',
-                  background: 'linear-gradient(180deg, #181b2e 0%, #131525 100%)',
-                  border: '1px solid rgba(217, 119, 6, 0.25)',
+                  background: '#111214',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   position: 'relative',
                   overflow: 'hidden',
-                  padding: '10px',
+                  padding: '12px',
                   marginBottom: '12px'
                 }}>
                   <img
                     src="/nfts/142.svg"
                     alt="Vault Rebalancers"
-                    style={{ width: '100%', height: '100%', maxHeight: '115px', objectFit: 'contain', imageRendering: 'pixelated' }}
+                    style={{ width: '90%', height: '90%', maxHeight: '135px', objectFit: 'contain', imageRendering: 'pixelated' }}
                   />
                   <span style={{
                     position: 'absolute',
@@ -698,7 +743,12 @@ export default function HomePage() {
                     90% PDA Vault
                   </span>
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff' }}>Vault Rebalancers</div>
+                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span>Vault Rebalancers</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#facc15" style={{ flexShrink: 0 }}>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                  </svg>
+                </div>
                 <div style={{ fontSize: '11px', color: '#fbbf24', marginTop: '2px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 600 }}>
                   Auto +35% Take Profit
                 </div>
@@ -753,7 +803,7 @@ export default function HomePage() {
 
             {/* 4 Feature Cards */}
             <div className="sec1-feature-grid mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all">
+              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#18191b] p-6 shadow-lg hover:border-white/20 transition-all">
                 <span className="font-mono text-[11px] text-purple-400 font-semibold tracking-wide uppercase">01 // Cast</span>
                 <h3 className="mt-2 text-[16px] font-bold text-white">Instant On-Chain Mint</h3>
                 <p className="mt-1.5 text-[13px] text-slate-400 leading-relaxed">
@@ -761,7 +811,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-emerald-500/40 transition-all">
+              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#18191b] p-6 shadow-lg hover:border-white/20 transition-all">
                 <span className="font-mono text-[11px] text-emerald-400 font-semibold tracking-wide uppercase">02 // Custody</span>
                 <h3 className="mt-2 text-[16px] font-bold text-white">90% PDA Vault</h3>
                 <p className="mt-1.5 text-[13px] text-slate-400 leading-relaxed">
@@ -769,7 +819,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all">
+              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#18191b] p-6 shadow-lg hover:border-white/20 transition-all">
                 <span className="font-mono text-[11px] text-purple-400 font-semibold tracking-wide uppercase">03 // Guard</span>
                 <h3 className="mt-2 text-[16px] font-bold text-white">Autonomous Stop-Loss</h3>
                 <p className="mt-1.5 text-[13px] text-slate-400 leading-relaxed">
@@ -777,7 +827,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-emerald-500/40 transition-all">
+              <div className="sec1-anim-feature rounded-2xl border border-white/[0.08] bg-[#18191b] p-6 shadow-lg hover:border-white/20 transition-all">
                 <span className="font-mono text-[11px] text-emerald-400 font-semibold tracking-wide uppercase">04 // Ladder</span>
                 <h3 className="mt-2 text-[16px] font-bold text-white">10 Bonding Tiers</h3>
                 <p className="mt-1.5 text-[13px] text-slate-400 leading-relaxed">
@@ -1074,58 +1124,69 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* 4 Compact, High-Density Agent Cards */}
-          <div className="mt-8 home-swarm-grid">
-            {featuredAgents.map((agent) => (
+          {/* Rarible Category Filter Pills */}
+          <div className="rarible-filter-bar mt-6">
+            {SWARM_FILTERS.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setSwarmFilter(item.id)}
+                className={`rarible-filter-pill ${swarmFilter === item.id ? 'active' : ''}`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Rarible Web Agent Cards */}
+          <div className="mt-6 home-swarm-grid">
+            {displayedSwarmAgents.map((agent) => (
               <div
                 key={agent.id}
                 onClick={() => setInspectedAgent(agent)}
-                className="agent-card-anim group cursor-pointer overflow-hidden rounded-2xl border border-white/[0.08] bg-[#121422] shadow-lg hover:border-purple-500/40 transition-all duration-150 hover:-translate-y-1"
+                className="agent-card-anim group cursor-pointer overflow-hidden rounded-2xl border border-white/[0.08] bg-[#18191b] shadow-lg hover:border-white/20 transition-all duration-200 hover:-translate-y-1.5"
               >
                 {/* Visual Avatar Container */}
-                <div className="roster-card-box">
-                  {/* Subtle Gradient Halo */}
-                  <div
-                    className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity"
-                    style={{
-                      background: `radial-gradient(circle at 50% 50%, ${agent.color || '#9333ea'} 0%, transparent 70%)`
-                    }}
+                <div className="relative w-full aspect-square bg-[#111214] flex items-center justify-center p-3 overflow-hidden">
+                  <img
+                    src={`/nfts/${agent.id}.svg`}
+                    alt={agent.name}
+                    className="w-[88%] h-[88%] object-contain transition-transform duration-300 group-hover:scale-105"
+                    style={{ imageRendering: 'pixelated' }}
+                    loading="lazy"
                   />
-                  {/* Agent NFT SVG Avatar */}
-                  <div className="roster-card-frame">
-                    <img
-                      src={`/nfts/${agent.id}.svg`}
-                      alt={agent.name}
-                      className="pixel-avatar"
-                      loading="lazy"
-                    />
-                  </div>
-                  <span className="absolute top-2.5 left-2.5 z-20 rounded-md bg-[#181a29]/90 px-2 py-0.5 font-mono text-[9.5px] text-white border border-white/[0.1] shadow-sm">
+                  <span className="absolute top-3 left-3 z-20 rounded-full bg-black/80 px-2.5 py-0.5 font-mono text-[9.5px] text-white border border-white/10 shadow-sm">
                     #{String(agent.id).padStart(5, '0')}
                   </span>
-                  <span className="absolute top-2.5 right-2.5 z-20 rounded-md bg-purple-900/40 px-2 py-0.5 font-mono text-[9.5px] text-purple-300 font-semibold border border-purple-500/30">
+                  <span className="absolute top-3 right-3 z-20 rounded-full bg-purple-950/60 px-2.5 py-0.5 font-mono text-[9.5px] text-purple-300 font-semibold border border-purple-500/30">
                     {agent.rarityTier}
                   </span>
                 </div>
 
                 {/* Card Meta Content */}
                 <div className="p-4">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="font-sans text-[15px] text-white font-semibold truncate group-hover:text-purple-400 transition-colors">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-sans text-[15px] text-white font-bold truncate group-hover:text-purple-300 transition-colors">
                       {agent.name}
                     </span>
-                    <span className="font-mono text-[12px] text-purple-400 font-bold shrink-0">
-                      {agent.priceSol} SOL
-                    </span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="#facc15" className="shrink-0">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
                   </div>
 
                   <p className="mt-1 text-[12px] text-slate-400 truncate">
                     {agent.role} · {agent.archetype}
                   </p>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-white/[0.08] pt-2.5 font-mono text-[10.5px] text-slate-400">
-                    <span>90% PDA: {agent.pdaFunding}</span>
-                    <span className="text-white group-hover:text-purple-400 transition-colors font-medium">Inspect →</span>
+                  <div className="mt-3 flex items-center justify-between border-t border-white/[0.08] pt-2.5">
+                    <div>
+                      <div className="text-[10px] text-slate-500 font-mono uppercase">Floor</div>
+                      <div className="font-mono text-[13px] text-white font-bold">{agent.priceSol} SOL</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[10px] text-emerald-400 font-mono font-semibold">90% PDA</div>
+                      <div className="text-[11px] text-slate-300 font-medium group-hover:text-white transition-colors">Inspect →</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1143,7 +1204,7 @@ export default function HomePage() {
 
           <div className="mt-6 grid gap-3.5 md:grid-cols-2">
             <Link
-              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all duration-150"
+              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#18191b] p-6 shadow-lg hover:border-white/20 transition-all duration-150"
               href="/specs"
             >
               <span className="flex items-center gap-1.5 text-[15.5px] text-white font-semibold">
@@ -1156,7 +1217,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all duration-150"
+              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#18191b] p-6 shadow-lg hover:border-white/20 transition-all duration-150"
               href="/specs#cpi"
             >
               <span className="flex items-center gap-1.5 text-[15.5px] text-white font-semibold">
@@ -1169,7 +1230,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all duration-150"
+              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#18191b] p-6 shadow-lg hover:border-white/20 transition-all duration-150"
               href="/ladder"
             >
               <span className="flex items-center gap-1.5 text-[15.5px] text-white font-semibold">
@@ -1182,7 +1243,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#121422] p-6 shadow-lg hover:border-purple-500/40 transition-all duration-150"
+              className="sec5-anim-card group block rounded-2xl border border-white/[0.08] bg-[#18191b] p-6 shadow-lg hover:border-white/20 transition-all duration-150"
               href="/whitepaper"
             >
               <span className="flex items-center gap-1.5 text-[15.5px] text-white font-semibold">

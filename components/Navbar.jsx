@@ -18,7 +18,7 @@ export default function Navbar() {
   const walletAddress = activeWallet?.address;
 
   const navLinks = [
-    { label: 'Swarm Roster', href: '/roster' },
+    { label: 'Explore', href: '/roster' },
     { label: 'Price Ladder', href: '/ladder' },
     { label: 'PDA Specs', href: '/specs' },
     { label: 'Terminal', href: '/terminal' },
@@ -28,9 +28,9 @@ export default function Navbar() {
   return (
     <header className="gamma-navbar">
       <div className="gamma-navbar-inner">
-        {/* Brand Logo & Wordmark */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          <Link aria-label="RARE Protocol home" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: '#ffffff' }} href="/">
+        {/* Left Zone: Brand Logo, Solana Network Pill, and Search */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: 1, maxWidth: '680px' }}>
+          <Link aria-label="RARE Protocol home" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: '#ffffff', flexShrink: 0 }} href="/">
             <img
               src="/rare-logo-icon.png"
               alt="RARE Protocol Logo"
@@ -43,23 +43,54 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Gamma-style Pill Search Bar (Dark Glass) */}
+          {/* Rarible Solana Network Pill */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 10px',
+            borderRadius: '9999px',
+            background: '#18191b',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            fontSize: '11.5px',
+            fontFamily: 'var(--font-jetbrains), monospace',
+            color: '#ffffff',
+            fontWeight: 600,
+            flexShrink: 0
+          }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '9999px', background: '#10b981', display: 'inline-block' }} />
+            <span>Solana</span>
+          </div>
+
+          {/* Rarible Global Search Pill */}
           <div className="gamma-search-pill" style={{ display: 'none' }} id="gamma-desktop-search">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#64748b', flexShrink: 0 }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#6b7280', flexShrink: 0 }}>
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <input
               type="text"
-              placeholder="Search for agents, collections or traits"
+              placeholder="Search agents, collections or traits..."
               value={searchVal}
               onChange={(e) => setSearchVal(e.target.value)}
               className="gamma-search-input"
             />
+            <span style={{
+              fontSize: '10.5px',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              color: '#6b7280',
+              background: '#222326',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              flexShrink: 0
+            }}>
+              ⌘K
+            </span>
           </div>
         </div>
 
-        {/* Right Section: Nav links, Twitter, Privy Wallet Pill */}
+        {/* Right Zone: Nav links, Twitter, Connect Wallet Pill */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
           {/* Navigation Links */}
           <nav aria-label="Main" className="hidden lg:flex" style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
@@ -71,8 +102,8 @@ export default function Navbar() {
                   href={link.href}
                   style={{
                     fontSize: '13.5px',
-                    fontWeight: isActive ? 600 : 500,
-                    color: isActive ? '#ffffff' : '#94a3b8',
+                    fontWeight: isActive ? 700 : 500,
+                    color: isActive ? '#ffffff' : '#9ca3af',
                     textDecoration: 'none',
                     transition: 'color 0.15s ease'
                   }}
@@ -95,9 +126,9 @@ export default function Navbar() {
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: '9999px',
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              color: '#f8fafc',
+              background: '#18191b',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              color: '#ffffff',
               textDecoration: 'none',
               transition: 'all 0.15s ease'
             }}
@@ -108,7 +139,7 @@ export default function Navbar() {
             </svg>
           </a>
 
-          {/* Solid White Pill Privy Wallet Button (High Contrast in Dark Theme) */}
+          {/* Solid White Pill Privy Wallet Button */}
           <button
             type="button"
             onClick={() => (authenticated ? logout() : login())}

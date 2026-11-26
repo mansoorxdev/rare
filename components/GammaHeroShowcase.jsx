@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-// Curated 6 agents matching the 3x2 grid of prints in the Mobbin Gamma showcase
+// Curated showcase agents matching Rarible Web's featured marketplace spotlight
 const SHOWCASE_AGENTS = [
-  { id: 143, name: 'Rare #00143', role: 'Arbitrage', price: '0.020 SOL' },
-  { id: 140, name: 'Rare #00140', role: 'Liquidity', price: '0.020 SOL' },
-  { id: 141, name: 'Rare #00141', role: 'Momentum', price: '0.020 SOL' },
-  { id: 142, name: 'Rare #00142', role: 'Sentinel', price: '0.020 SOL' },
-  { id: 144, name: 'Rare #00144', role: 'Rebalance', price: '0.020 SOL' },
-  { id: 145, name: 'Rare #00145', role: 'Execution', price: '0.020 SOL' },
+  { id: 143, name: 'Rare #00143', role: 'Arbitrage', price: '0.020 SOL', tier: 'Legendary' },
+  { id: 140, name: 'Rare #00140', role: 'Sentinel', price: '0.020 SOL', tier: 'Epic' },
+  { id: 141, name: 'Rare #00141', role: 'Execution', price: '0.020 SOL', tier: 'Rare' },
+  { id: 142, name: 'Rare #00142', role: 'Rebalance', price: '0.020 SOL', tier: 'Common' },
+  { id: 144, name: 'Rare #00144', role: 'Momentum', price: '0.020 SOL', tier: 'Rare' },
+  { id: 145, name: 'Rare #00145', role: 'Liquidity', price: '0.020 SOL', tier: 'Epic' },
 ];
 
 export default function GammaHeroShowcase({ onSelectAgent }) {
@@ -17,15 +17,15 @@ export default function GammaHeroShowcase({ onSelectAgent }) {
     <div className="gamma-showcase-box">
       {/* Decorative ambient glass light reflection */}
       <div
-        className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-white/25 blur-3xl"
+        className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-purple-500/15 blur-3xl"
         style={{ zIndex: 0 }}
       />
       <div
-        className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-indigo-400/30 blur-3xl"
+        className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl"
         style={{ zIndex: 0 }}
       />
 
-      {/* Grid of stacked cards matching the Gamma Mobbin composition */}
+      {/* Grid of stacked cards matching the Rarible Web composition */}
       <div className="gamma-showcase-grid">
         {SHOWCASE_AGENTS.map((agent) => (
           <div
@@ -35,22 +35,32 @@ export default function GammaHeroShowcase({ onSelectAgent }) {
             title={`View ${agent.name}`}
           >
             <div className="gamma-agent-card-inner">
-              {/* NFT Image Frame with fixed max-height and aspect ratio */}
+              {/* NFT Image Frame with high visibility and sharp pixel rendering */}
               <div className="gamma-card-img-wrap">
                 <img
                   src={`/nfts/${agent.id}.svg`}
                   alt={agent.name}
                   loading="eager"
+                  style={{
+                    width: '88%',
+                    height: '88%',
+                    maxHeight: '115px',
+                    objectFit: 'contain',
+                    imageRendering: 'pixelated'
+                  }}
                 />
                 <span className="gamma-card-badge">
                   #{agent.id}
                 </span>
               </div>
 
-              {/* Card Label info */}
+              {/* Card Label info with Rarible Verified Yellow Check Badge */}
               <div className="gamma-card-info">
-                <div className="gamma-card-title">
-                  {agent.name}
+                <div className="gamma-card-title" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span>{agent.name}</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#facc15" style={{ flexShrink: 0 }}>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                  </svg>
                 </div>
                 <div className="gamma-card-meta">
                   <span>{agent.role}</span>

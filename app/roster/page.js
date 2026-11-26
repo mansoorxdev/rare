@@ -148,8 +148,7 @@ export default function RosterPage() {
 
         {/* Filter & Search Bar */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.04)',
-          backdropFilter: 'blur(16px)',
+          background: '#18191b',
           border: '1px solid rgba(255, 255, 255, 0.08)',
           borderRadius: '20px',
           padding: '12px 18px',
@@ -159,11 +158,11 @@ export default function RosterPage() {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '14px',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
         }}>
           {/* Rarity Filter Pills */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', marginRight: '4px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', marginRight: '4px' }}>
               Rarity:
             </span>
             {['all', 'legendary', 'epic', 'rare', 'common'].map((tier) => {
@@ -173,21 +172,14 @@ export default function RosterPage() {
                   key={tier}
                   type="button"
                   onClick={() => { setRarityFilter(tier); setPage(1); }}
+                  className={`rarible-filter-pill ${isActive ? 'active' : ''}`}
                   style={{
-                    borderRadius: '9999px',
-                    padding: '5px 14px',
+                    padding: '6px 16px',
                     fontSize: '12px',
-                    fontFamily: 'var(--font-jetbrains), monospace',
-                    fontWeight: isActive ? 700 : 500,
-                    textTransform: 'capitalize',
-                    border: isActive ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
-                    background: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.06)',
-                    color: isActive ? '#000000' : '#94a3b8',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease'
+                    textTransform: 'capitalize'
                   }}
                 >
-                  {tier}
+                  {tier === 'all' ? 'All Tiers' : tier}
                 </button>
               );
             })}
@@ -204,13 +196,13 @@ export default function RosterPage() {
                 width: '100%',
                 borderRadius: '9999px',
                 border: '1px solid rgba(255, 255, 255, 0.12)',
-                background: 'rgba(255, 255, 255, 0.06)',
+                background: '#111214',
                 padding: '7px 16px',
                 fontSize: '12.5px',
                 color: '#ffffff',
                 outline: 'none',
                 fontFamily: 'var(--font-sans)',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.2)'
+                boxShadow: '0 1px 2px rgba(0,0,0,0.3)'
               }}
             />
           </div>
@@ -231,6 +223,13 @@ export default function RosterPage() {
                   src={`/nfts/${agent.id}.svg`}
                   alt={agent.name}
                   loading="lazy"
+                  style={{
+                    width: '85%',
+                    height: '85%',
+                    maxHeight: '100px',
+                    objectFit: 'contain',
+                    imageRendering: 'pixelated'
+                  }}
                 />
 
                 {/* ID Badge */}
@@ -267,19 +266,22 @@ export default function RosterPage() {
                 </span>
               </div>
 
-              {/* Card Meta Content */}
+              {/* Card Meta Content with Rarible Gold Verified Badge */}
               <div style={{ padding: '2px' }}>
-                <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {agent.name}
+                <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span>{agent.name}</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="#facc15" style={{ flexShrink: 0 }}>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                  </svg>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '9.5px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', marginTop: '3px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '9.5px', color: '#9ca3af', fontFamily: 'var(--font-jetbrains), monospace', marginTop: '3px' }}>
                   <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{agent.role}</span>
-                  <span style={{ color: '#c084fc', fontWeight: 700, flexShrink: 0 }}>{agent.priceSol} SOL</span>
+                  <span style={{ color: '#ffffff', fontWeight: 700, flexShrink: 0 }}>{agent.priceSol} SOL</span>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '8px', paddingTop: '6px', fontSize: '9px', color: '#64748b', fontFamily: 'var(--font-jetbrains), monospace' }}>
-                  <span>90% PDA</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '8px', paddingTop: '6px', fontSize: '9px', color: '#6b7280', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                  <span style={{ color: '#10b981', fontWeight: 600 }}>90% PDA</span>
                   <span style={{ color: '#ffffff', fontWeight: 600 }}>Inspect →</span>
                 </div>
               </div>
