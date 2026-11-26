@@ -1040,7 +1040,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 marginTop: '18px'
               }}
             >
-              [ > MINT AGENT #{nextAgent.id} (0.020 SOL) < ]
+              {`[ > MINT AGENT #${nextAgent.id} (0.020 SOL) < ]`}
             </button>
           </div>
         </div>

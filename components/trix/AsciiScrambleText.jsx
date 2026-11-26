@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?/~0123456789#_~^}[\*/+~|0*[<]-+>!>*- [*1**+{';
+const CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?/~0123456789#_~^}[/*/+~|0*[<]-+>!>*- [*1**+{';
 
 export default function AsciiScrambleText({
   text,
@@ -80,7 +80,7 @@ export function AsciiCipherTape({ length = 32, speed = 120, style = {} }) {
   const [cipher, setCipher] = useState('');
 
   useEffect(() => {
-    const chars = '#_~^}[\*/+~|0*[<]-+>!>*- [*1**+{}{}/_{#<}*>{_<<?_?{[]o[/=>>1';
+    const chars = '#_~^}[/*/+~|0*[<]-+>!>*- [*1**+{}{}/_{#<}*>{_<<?_?{[]o[/=>>1';
     const gen = () => {
       let res = '';
       for (let i = 0; i < length; i++) {
