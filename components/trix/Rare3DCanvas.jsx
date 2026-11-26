@@ -122,10 +122,10 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     mount.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
-    // 2. 3D Crystal Mesh
+    // 2. 3D Crystal Mesh (Scaled up for prominent 3D ASCII terminal presence)
     const crystalGeo = createPure3DCrystalGeometry();
     const crystalGroup = new THREE.Group();
-    crystalGroup.scale.set(0.95, 0.95, 0.95);
+    crystalGroup.scale.set(1.15, 1.15, 1.15);
     scene.add(crystalGroup);
 
     const outerCrystalMat = new THREE.MeshStandardMaterial({
@@ -256,6 +256,13 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
 
         const imgData = asciiSampleCtx.getImageData(0, 0, cols, rows).data;
 
+        // Draw subtle 3D hologram wireframe underneath the ASCII matrix
+        ctx.save();
+        ctx.globalAlpha = 0.22;
+        ctx.drawImage(glRenderer.domElement, 0, 0);
+        ctx.restore();
+
+        // Draw ASCII Matrix on top with glowing phosphor characters
         ctx.font = 'bold 11px monospace';
         ctx.textBaseline = 'top';
 
