@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePrivy } from '../PrivyClientProvider';
 
@@ -14,11 +14,13 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
   const walletAddress = activeWallet?.address;
 
   const navLinks = [
-    { label: 'AGENTS', href: '#agents' },
-    { label: 'PIPELINE', href: '#pipeline' },
-    { label: 'PROOF', href: '#evidence' },
-    { label: 'DEX', href: '#dex' },
-    { label: 'MCP', href: '#builders' }
+    { label: 'OVERVIEW', href: '#overview' },
+    { label: 'SWARM ROSTER', href: '#roster' },
+    { label: 'BONDING LADDER', href: '#ladder' },
+    { label: 'PROCESS', href: '#process' },
+    { label: 'EVIDENCE', href: '#evidence' },
+    { label: 'DEX // $RARE', href: '#dex' },
+    { label: 'FOR BUILDERS', href: '#builders' }
   ];
 
   return (
@@ -28,14 +30,15 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
         top: 0,
         left: 0,
         right: 0,
-        height: '60px',
+        height: '68px',
         zIndex: 50,
-        background: 'rgba(5, 7, 6, 0.85)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+        background: isLightMode ? 'rgba(245, 245, 247, 0.88)' : 'rgba(4, 18, 8, 0.82)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: isLightMode ? '1px solid rgba(0, 0, 0, 0.08)' : '1px solid rgba(34, 197, 94, 0.2)',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        transition: 'background 0.5s ease, border-color 0.5s ease'
       }}
     >
       <div
@@ -43,14 +46,14 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
           maxWidth: '1440px',
           width: '100%',
           margin: '0 auto',
-          padding: '0 32px',
+          padding: '0 28px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '24px'
         }}
       >
-        {/* Left: Minimalist Brand (XIVO style) */}
+        {/* Left: Brand Icon + Wordmark */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <Link
             href="/trix"
@@ -59,81 +62,91 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               alignItems: 'center',
               gap: '10px',
               textDecoration: 'none',
-              color: '#ffffff'
+              color: isLightMode ? '#0f172a' : '#f8fafc'
             }}
           >
             <img
               src="/rare-logo-icon.png"
               alt="RARE Protocol"
               style={{
-                width: '22px',
-                height: '22px',
-                objectFit: 'contain'
+                width: '28px',
+                height: '28px',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.8))'
               }}
             />
             <span
               style={{
                 fontFamily: 'var(--font-jetbrains), monospace',
                 fontWeight: 900,
-                fontSize: '17px',
-                letterSpacing: '0.08em',
-                color: '#ffffff'
+                fontSize: '20px',
+                letterSpacing: '0.06em',
+                color: isLightMode ? '#0f172a' : '#ffffff'
               }}
             >
               RARE
             </span>
           </Link>
 
+          {/* Tactical Switch to Heurix UI */}
           <Link
             href="/"
             style={{
-              padding: '2px 8px',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderRadius: '2px',
-              background: 'transparent',
-              fontSize: '10px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '3px 10px',
+              borderRadius: '6px',
+              background: isLightMode ? 'rgba(0, 0, 0, 0.05)' : 'rgba(34, 197, 94, 0.08)',
+              border: isLightMode ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(34, 197, 94, 0.25)',
+              fontSize: '10.5px',
               fontFamily: 'var(--font-jetbrains), monospace',
-              color: '#71717a',
+              color: isLightMode ? '#047857' : '#4ade80',
               textDecoration: 'none',
-              letterSpacing: '0.04em'
+              letterSpacing: '0.06em'
             }}
             title="Switch to Heurix UI"
           >
-            [← HEURIX]
+            <span>← HEURIX UI</span>
           </Link>
         </div>
 
-        {/* Center: Clean Monospace Nav */}
+        {/* Center: Slash Navigation */}
         <nav
-          className="hidden md:flex"
+          className="hidden xl:flex"
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '24px',
+            gap: '12px',
             fontFamily: 'var(--font-jetbrains), monospace',
             fontSize: '11px',
             letterSpacing: '0.08em',
-            fontWeight: 600
+            fontWeight: 700
           }}
         >
-          {navLinks.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              style={{
-                color: '#71717a',
-                textDecoration: 'none',
-                transition: 'color 0.15s ease'
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#71717a')}
-            >
-              {item.label}
-            </a>
+          {navLinks.map((item, idx) => (
+            <React.Fragment key={item.label}>
+              <a
+                href={item.href}
+                style={{
+                  color: isLightMode ? '#475569' : '#86efac',
+                  textDecoration: 'none',
+                  opacity: 0.85,
+                  transition: 'opacity 0.15s ease'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.85')}
+              >
+                {item.label}
+              </a>
+              {idx < navLinks.length - 1 && (
+                <span style={{ color: isLightMode ? '#cbd5e1' : 'rgba(34, 197, 94, 0.35)' }}>/</span>
+              )}
+            </React.Fragment>
           ))}
         </nav>
 
-        {/* Right: Minimalist XIVO Wallet Pill */}
+        {/* Right: Mint & Connect Wallet CTA */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           {onMintClick && (
             <button
@@ -142,18 +155,19 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                background: 'transparent',
+                gap: '6px',
+                background: 'rgba(34, 197, 94, 0.15)',
                 border: '1px solid rgba(34, 197, 94, 0.4)',
-                borderRadius: '2px',
-                color: '#4ade80',
-                padding: '5px 12px',
-                fontSize: '11px',
+                borderRadius: '6px',
+                color: isLightMode ? '#047857' : '#4ade80',
+                padding: '8px 14px',
+                fontSize: '11.5px',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 fontWeight: 700,
                 cursor: 'pointer'
               }}
             >
-              <span>{'> MINT (0.020 SOL)'}</span>
+              <span>MINT AGENT (0.020 SOL)</span>
             </button>
           )}
 
@@ -169,27 +183,30 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px',
-              background: 'transparent',
-              color: authenticated ? '#4ade80' : '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '2px',
-              padding: '5px 14px',
-              fontSize: '11.5px',
+              gap: '8px',
+              background: authenticated ? '#15803d' : '#22c55e',
+              color: '#000000',
+              fontWeight: 800,
+              fontSize: '12px',
               fontFamily: 'var(--font-jetbrains), monospace',
-              fontWeight: 700,
-              cursor: 'pointer'
+              letterSpacing: '0.08em',
+              padding: '10px 18px',
+              border: 'none',
+              clipPath: 'polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px)',
+              cursor: 'pointer',
+              boxShadow: '0 0 16px rgba(34, 197, 94, 0.45)',
+              transition: 'all 0.15s ease'
             }}
           >
             {authenticated && walletAddress ? (
               <>
-                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#22c55e' }} />
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ffffff' }} />
                 <span>{walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}</span>
               </>
             ) : authenticated ? (
-              <span>0xCONNECTED</span>
+              <span>CONNECTED</span>
             ) : (
-              <span>0xCONNECT_WALLET</span>
+              <span>CONNECT WALLET</span>
             )}
           </button>
         </div>
