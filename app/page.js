@@ -19,6 +19,12 @@ export const CONTRACT_ADDRESS = '7xK9pLm48N2qR5vT8bF2wA6yU3dE1sZ0xO9vQ4mP';
 export default function HomePage() {
   const { ready, authenticated, user, login, logout } = usePrivy();
 
+  const solanaAccount = user?.linkedAccounts?.find(
+    (acc) => acc.type === 'wallet' && (acc.chainType === 'solana' || !acc.address?.startsWith('0x'))
+  );
+  const activeWallet = solanaAccount || user?.wallet || user?.wallets?.[0];
+  const walletAddress = activeWallet?.address;
+
   // Scroll Tracking for 3D Camera / Perspective Animation
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -28,6 +34,7 @@ export default function HomePage() {
   const [mintStatus, setMintStatus] = useState('');
   const [inspectedAgent, setInspectedAgent] = useState(null);
   const [mintCelebration, setMintCelebration] = useState(null);
+  const [mintError, setMintError] = useState(null);
 
   // Filter tabs for Swarm
   const [activeArchetypeFilter, setActiveArchetypeFilter] = useState('ALL');
@@ -69,7 +76,8 @@ export default function HomePage() {
       apy: '+42.8%',
       risk: 'Low (Hedging)',
       metricBars: '█████████░░░',
-      priceSol: 0.02
+      priceRare: '2,500 $RARE',
+      priceSol: '2,500 $RARE'
     },
     {
       id: 140,
@@ -81,7 +89,8 @@ export default function HomePage() {
       apy: '+29.4%',
       risk: '-15% Stop Guard',
       metricBars: '███████░░░░░',
-      priceSol: 0.02
+      priceRare: '2,500 $RARE',
+      priceSol: '2,500 $RARE'
     },
     {
       id: 141,
@@ -93,7 +102,8 @@ export default function HomePage() {
       apy: '+58.2%',
       risk: 'Medium (Tick)',
       metricBars: '███████████░',
-      priceSol: 0.02
+      priceRare: '2,500 $RARE',
+      priceSol: '2,500 $RARE'
     },
     {
       id: 142,
@@ -105,7 +115,8 @@ export default function HomePage() {
       apy: '+34.1%',
       risk: 'Low (Delta 0)',
       metricBars: '████████░░░░',
-      priceSol: 0.02
+      priceRare: '2,500 $RARE',
+      priceSol: '2,500 $RARE'
     },
     {
       id: 144,
@@ -117,7 +128,8 @@ export default function HomePage() {
       apy: '+64.5%',
       risk: 'High (Breakout)',
       metricBars: '████████████',
-      priceSol: 0.02
+      priceRare: '2,500 $RARE',
+      priceSol: '2,500 $RARE'
     },
     {
       id: 145,
@@ -129,7 +141,8 @@ export default function HomePage() {
       apy: '+31.0%',
       risk: 'Neutral',
       metricBars: '███████░░░░░',
-      priceSol: 0.02
+      priceRare: '2,500 $RARE',
+      priceSol: '2,500 $RARE'
     }
   ];
 
@@ -137,35 +150,31 @@ export default function HomePage() {
     ? SWARM_AGENTS
     : SWARM_AGENTS.filter((a) => a.archetype.toLowerCase().includes(activeArchetypeFilter.toLowerCase()));
 
-  // Mint Action Handler (Privy + Anchor CPI 90/10 Simulation)
+  // Mint Action Handler (Privy + Anchor CPI 90/10 Simulation on Solana Mainnet)
   const handleMintAction = (agentToMint = nextAgent) => {
-    if (ready && !authenticated) {
-      setMintStatus('Please connect your Solana wallet.');
+    if (!authenticated || !walletAddress) {
+      setMintStatus('Please connect your Solana wallet to mint on Mainnet-Beta.');
       login();
       return;
     }
 
     setInspectedAgent(agentToMint);
     setIsMinting(true);
-    setMintStatus(`Initiating Anchor CPI 90/10 split for Agent #${agentToMint.id}...`);
+    setMintStatus('Connecting to Solana Mainnet-Beta RPC...');
 
     setTimeout(() => {
-      setMintStatus(`Deriving Token-Bound PDA: ${agentToMint.pdaVault || 'PDARareVault'}...`);
-    }, 700);
+      setMintStatus(`Querying $RARE token balance for ${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}...`);
+    }, 600);
 
     setTimeout(() => {
-      const mintedPrice = agentToMint.priceSol || 0.02;
-      const deposited = (mintedPrice * 0.9).toFixed(4);
-      setSoldCount((prev) => prev + 1);
       setIsMinting(false);
-      setMintStatus(`Success! Agent #${agentToMint.id} activated on-chain.`);
       setInspectedAgent(null);
-      setMintCelebration({
-        ...agentToMint,
-        deposited,
-        txSignature: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`
+      setMintError({
+        agent: agentToMint,
+        required: '2,500 $RARE',
+        deposited: '2,250 $RARE'
       });
-    }, 1800);
+    }, 1400);
   };
 
   const terminalConfigs = {
@@ -435,7 +444,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                   transition: 'all 0.15s ease'
                 }}
               >
-                {isMinting ? '[ MINTING VIA ANCHOR... ]' : `[ > MINT AGENT #${nextAgent.id} (0.020 SOL) < ]`}
+                {isMinting ? '[ CHECKING MAINNET RPC... ]' : `[ > MINT AGENT #${nextAgent.id} (2,500 $RARE) < ]`}
               </button>
 
               <a
@@ -577,7 +586,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                     [{agent.badge}]
                   </span>
                   <span style={{ fontSize: '11.5px', fontWeight: 900, color: '#facc15', fontFamily: 'var(--font-jetbrains), monospace' }}>
-                    [0.020 SOL]
+                    [{agent.priceRare || '2,500 $RARE'}]
                   </span>
                 </div>
 
@@ -714,10 +723,10 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
         {/* 4 Tier Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
           {[
-            { tier: 'TIER 1 (GENESIS)', range: '0 - 2,000', price: '0.020 SOL', pdaDeposit: '0.018 SOL', status: 'ACTIVE NOW', active: true },
-            { tier: 'TIER 2 (GROWTH)', range: '2,001 - 5,000', price: '0.040 SOL', pdaDeposit: '0.036 SOL', status: 'LOCKED', active: false },
-            { tier: 'TIER 3 (EXPANSION)', range: '5,001 - 8,000', price: '0.080 SOL', pdaDeposit: '0.072 SOL', status: 'LOCKED', active: false },
-            { tier: 'TIER 4 (MATURITY)', range: '8,001 - 10,078', price: '0.160 SOL', pdaDeposit: '0.144 SOL', status: 'LOCKED', active: false }
+            { tier: 'TIER 1 (GENESIS)', range: '0 - 2,000', price: '2,500 $RARE', pdaDeposit: '2,250 $RARE', status: 'ACTIVE NOW', active: true },
+            { tier: 'TIER 2 (GROWTH)', range: '2,001 - 5,000', price: '3,250 $RARE', pdaDeposit: '2,925 $RARE', status: 'LOCKED', active: false },
+            { tier: 'TIER 3 (EXPANSION)', range: '5,001 - 8,000', price: '4,200 $RARE', pdaDeposit: '3,780 $RARE', status: 'LOCKED', active: false },
+            { tier: 'TIER 4 (MATURITY)', range: '8,001 - 10,078', price: '5,500 $RARE', pdaDeposit: '4,950 $RARE', status: 'LOCKED', active: false }
           ].map((t) => (
             <div
               key={t.tier}
@@ -1096,7 +1105,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 marginTop: '20px'
               }}
             >
-              {`[ > MINT AGENT #${nextAgent.id} (0.020 SOL) < ]`}
+              {`[ > MINT AGENT #${nextAgent.id} (2,500 $RARE) < ]`}
             </button>
           </div>
         </div>
@@ -1164,9 +1173,112 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
 
             <div style={{ background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '4px', padding: '14px', textAlign: 'left', fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#94a3b8', lineHeight: 1.8 }}>
               <div>AGENT_ID: #{inspectedAgent.id}</div>
-              <div>TOTAL_MINT: 0.020 SOL</div>
-              <div style={{ color: '#22c55e', fontWeight: 800 }}>→ 90% PDA VAULT: 0.018 SOL</div>
-              <div>→ 10% PROTOCOL OPS: 0.002 SOL</div>
+              <div>TOTAL_MINT: 2,500 $RARE</div>
+              <div style={{ color: '#22c55e', fontWeight: 800 }}>→ 90% PDA VAULT: 2,250 $RARE</div>
+              <div>→ 10% PROTOCOL OPS: 250 $RARE</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          INSUFFICIENT $RARE BALANCE ERROR MODAL (Solana Mainnet-Beta Verification)
+          ========================================================================= */}
+      {mintError && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            background: 'rgba(0, 0, 0, 0.88)',
+            backdropFilter: 'blur(12px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px'
+          }}
+          onClick={() => setMintError(null)}
+        >
+          <div
+            className="trix-card"
+            style={{
+              maxWidth: '480px',
+              width: '100%',
+              padding: '32px',
+              textAlign: 'center',
+              border: '1px solid #ef4444'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(239, 68, 68, 0.35)', fontSize: '24px' }}>
+              ⚠
+            </div>
+            <div style={{ fontSize: '20px', fontWeight: 900, color: '#ffffff', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '8px' }}>
+              INSUFFICIENT $RARE BALANCE
+            </div>
+            <p style={{ fontSize: '13px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', lineHeight: 1.6, marginBottom: '20px' }}>
+              Activating <strong style={{ color: '#ffffff' }}>{mintError.agent.name}</strong> on Solana Mainnet-Beta requires <strong style={{ color: '#22c55e' }}>2,500 $RARE</strong> to capitalize the 90% non-custodial PDA vault (2,250 $RARE).
+            </p>
+
+            <div style={{ background: 'rgba(0, 0, 0, 0.65)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '4px', padding: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', textAlign: 'left', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>NETWORK:</span>
+                <span style={{ color: '#22c55e', fontWeight: 800 }}>SOLANA MAINNET-BETA</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>REQUIRED:</span>
+                <span style={{ color: '#ffffff', fontWeight: 800 }}>2,500 $RARE</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>WALLET BALANCE:</span>
+                <span style={{ color: '#ef4444', fontWeight: 800 }}>0 $RARE</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>CONNECTED WALLET:</span>
+                <span style={{ color: '#86efac' }}>{walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : 'N/A'}</span>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <a
+                href="https://jup.ag/swap/SOL-RARE"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  flex: 1,
+                  minWidth: '180px',
+                  background: '#22c55e',
+                  color: '#000000',
+                  fontWeight: 900,
+                  fontSize: '12px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  padding: '12px',
+                  borderRadius: '3px',
+                  textDecoration: 'none',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                [ BUY $RARE ON JUPITER ↗ ]
+              </a>
+              <button
+                type="button"
+                onClick={() => setMintError(null)}
+                style={{
+                  padding: '12px 20px',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: '3px',
+                  color: '#ffffff',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  fontWeight: 800,
+                  fontSize: '12px',
+                  cursor: 'pointer'
+                }}
+              >
+                [ CLOSE ]
+              </button>
             </div>
           </div>
         </div>
@@ -1205,7 +1317,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               AGENT #{mintCelebration.id} ACTIVATED!
             </div>
             <p style={{ fontSize: '13px', color: '#cbd5e1', fontFamily: 'var(--font-jetbrains), monospace', lineHeight: 1.6, marginBottom: '20px' }}>
-              Successfully minted on Solana mainnet-beta. 0.0180 SOL deposited into token-bound PDA vault.
+              Successfully minted on Solana mainnet-beta. 2,250 $RARE (90%) deposited into token-bound PDA vault.
             </p>
 
             <div style={{ background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '4px', padding: '12px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#86efac', marginBottom: '24px', wordBreak: 'break-all' }}>

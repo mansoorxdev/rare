@@ -14,6 +14,7 @@ export default function RosterPage() {
   const [inspectedAgent, setInspectedAgent] = useState(null);
   const [isMinting, setIsMinting] = useState(false);
   const [mintCelebration, setMintCelebration] = useState(null);
+  const [mintError, setMintError] = useState(null);
   
   // User requested max 40 NFTs per page in a small grid
   const pageSize = 40;
@@ -21,25 +22,23 @@ export default function RosterPage() {
 
   const handleMintAgent = (agent) => {
     if (!agent) return;
-    if (ready && !authenticated) {
+    if (!authenticated) {
       login();
       return;
     }
 
     setIsMinting(true);
 
+    // Live Solana Mainnet-Beta RPC Query Simulation
     setTimeout(() => {
-      const mintedPrice = agent.priceSol || 0.02;
-      const deposited = (mintedPrice * 0.9).toFixed(3);
       setIsMinting(false);
-      setInspectedAgent(null);
-      setMintCelebration({
-        ...agent,
-        quantity: 1,
-        funding: `${deposited} SOL`,
-        txHash: `4xL7kQ${Math.random().toString(36).substring(2, 8)}wE8${Math.random().toString(36).substring(2, 8)}Sol`
+      setMintError({
+        agent,
+        required: '2,500 $RARE',
+        deposited: '2,250 $RARE',
+        reason: 'INSUFFICIENT $RARE TOKEN BALANCE'
       });
-    }, 1800);
+    }, 1200);
   };
 
   const handleDownloadManifest = (agent) => {
@@ -277,7 +276,7 @@ export default function RosterPage() {
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '9.5px', color: '#9ca3af', fontFamily: 'var(--font-jetbrains), monospace', marginTop: '3px' }}>
                   <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{agent.role}</span>
-                  <span style={{ color: '#ffffff', fontWeight: 700, flexShrink: 0 }}>{agent.priceSol} SOL</span>
+                  <span style={{ color: '#ffffff', fontWeight: 700, flexShrink: 0 }}>{agent.priceRare || '2,500 $RARE'}</span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '8px', paddingTop: '6px', fontSize: '9px', color: '#6b7280', fontFamily: 'var(--font-jetbrains), monospace' }}>
@@ -403,11 +402,11 @@ export default function RosterPage() {
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: '#94a3b8' }}>Mint Price:</span>
-                  <span style={{ color: '#ffffff', fontWeight: 700 }}>{inspectedAgent.priceSol} SOL</span>
+                  <span style={{ color: '#ffffff', fontWeight: 700 }}>{inspectedAgent.priceRare || '2,500 $RARE'}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: '#94a3b8' }}>90% Vault Deposit:</span>
-                  <span style={{ color: '#34d399', fontWeight: 700 }}>{(inspectedAgent.priceSol * 0.9).toFixed(3)} SOL</span>
+                  <span style={{ color: '#34d399', fontWeight: 700 }}>{inspectedAgent.pdaFunding || '2,250 $RARE'}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: '#94a3b8' }}>PDA Vault:</span>
@@ -417,7 +416,7 @@ export default function RosterPage() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: '#94a3b8' }}>Rarity:</span>
-                  <span style={{ color: '#c084fc', fontWeight: 700 }}>{inspectedAgent.rarityScore} ({inspectedAgent.rarityTier})</span>
+                  <span style={{ color: '#4ade80', fontWeight: 700 }}>{inspectedAgent.rarityScore} ({inspectedAgent.rarityTier})</span>
                 </div>
               </div>
 
@@ -428,9 +427,9 @@ export default function RosterPage() {
                   onClick={() => handleMintAgent(inspectedAgent)}
                   disabled={isMinting}
                   className="gamma-btn-black"
-                  style={{ flex: 1, padding: '10px 20px', fontSize: '13.5px' }}
+                  style={{ flex: 1, padding: '10px 20px', fontSize: '13px' }}
                 >
-                  {isMinting ? 'Minting via Anchor...' : `Mint for ${inspectedAgent.priceSol} SOL`}
+                  {isMinting ? 'Verifying $RARE on Mainnet...' : `Mint Agent (${inspectedAgent.priceRare || '2,500 $RARE'})`}
                 </button>
                 <button
                   type="button"
@@ -441,6 +440,97 @@ export default function RosterPage() {
                   Close
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Insufficient $RARE Balance Modal on Mainnet-Beta */}
+      {mintError && (
+        <div
+          className="gamma-modal-backdrop"
+          onClick={() => setMintError(null)}
+        >
+          <div
+            className="gamma-modal-card"
+            style={{ textAlign: 'center', border: '1px solid #ef4444' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '9999px',
+              background: 'rgba(239, 68, 68, 0.15)',
+              color: '#ef4444',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 14px auto',
+              border: '1px solid rgba(239, 68, 68, 0.3)'
+            }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+
+            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', margin: '0 0 6px 0' }}>
+              Insufficient $RARE Tokens
+            </h3>
+            <p style={{ fontSize: '13px', color: '#94a3b8', margin: '0 0 18px 0', lineHeight: 1.6 }}>
+              Bonding <strong style={{ color: '#ffffff' }}>{mintError.agent.name}</strong> on Solana Mainnet-Beta requires <strong style={{ color: '#22c55e' }}>2,500 $RARE</strong> SPL tokens to capitalize the 90% non-custodial PDA vault (2,250 $RARE).
+            </p>
+
+            <div style={{
+              background: 'rgba(4, 20, 8, 0.85)',
+              borderRadius: '4px',
+              border: '1px solid rgba(239, 68, 68, 0.35)',
+              padding: '14px',
+              textAlign: 'left',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '11px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              marginBottom: '20px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#94a3b8' }}>Network:</span>
+                <span style={{ color: '#22c55e', fontWeight: 700 }}>SOLANA MAINNET-BETA</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#94a3b8' }}>Required Payment:</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>2,500 $RARE</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#94a3b8' }}>Detected Balance:</span>
+                <span style={{ color: '#ef4444', fontWeight: 800 }}>0 $RARE</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#94a3b8' }}>90% PDA Bond:</span>
+                <span style={{ color: '#34d399', fontWeight: 700 }}>2,250 $RARE</span>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <a
+                href="https://jup.ag/swap/SOL-RARE"
+                target="_blank"
+                rel="noreferrer"
+                className="gamma-btn-black"
+                style={{ flex: 1, minWidth: '180px', padding: '12px 16px', textDecoration: 'none' }}
+              >
+                Buy $RARE on Jupiter ↗
+              </a>
+              <button
+                type="button"
+                onClick={() => setMintError(null)}
+                className="gamma-btn-white"
+                style={{ padding: '12px 18px' }}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

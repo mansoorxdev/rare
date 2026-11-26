@@ -201,7 +201,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
                 e.currentTarget.style.borderColor = 'rgba(34, 197, 94, 0.45)';
               }}
             >
-              <span>{"[\u00A0>\u00A0MINT\u00A00.020\u00A0SOL\u00A0<\u00A0]"}</span>
+              <span>{"[\u00A0>\u00A0MINT\u00A02,500\u00A0$RARE\u00A0<\u00A0]"}</span>
             </button>
           )}
 

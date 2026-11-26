@@ -5,24 +5,24 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
 const LADDER_BANDS = [
-  { band: 1, range: '#00001 - #01008', price: 0.02, pdaCapital: 0.018, treasury: 0.002, status: 'Active (Now Minting)' },
-  { band: 2, range: '#01009 - #02016', price: 0.026, pdaCapital: 0.0234, treasury: 0.0026, status: 'Upcoming' },
-  { band: 3, range: '#02017 - #03024', price: 0.034, pdaCapital: 0.0306, treasury: 0.0034, status: 'Upcoming' },
-  { band: 4, range: '#03025 - #04032', price: 0.044, pdaCapital: 0.0396, treasury: 0.0044, status: 'Upcoming' },
-  { band: 5, range: '#04033 - #05040', price: 0.057, pdaCapital: 0.0513, treasury: 0.0057, status: 'Upcoming' },
-  { band: 6, range: '#05041 - #06048', price: 0.074, pdaCapital: 0.0666, treasury: 0.0074, status: 'Upcoming' },
-  { band: 7, range: '#06049 - #07056', price: 0.096, pdaCapital: 0.0864, treasury: 0.0096, status: 'Upcoming' },
-  { band: 8, range: '#07057 - #08064', price: 0.125, pdaCapital: 0.1125, treasury: 0.0125, status: 'Upcoming' },
-  { band: 9, range: '#08065 - #09072', price: 0.163, pdaCapital: 0.1467, treasury: 0.0163, status: 'Upcoming' },
-  { band: 10, range: '#09073 - #10078', price: 0.212, pdaCapital: 0.1908, treasury: 0.0212, status: 'Upcoming' },
+  { band: 1, range: '#00001 - #01008', price: 2500, pdaCapital: 2250, treasury: 250, status: 'Active (Now Minting)' },
+  { band: 2, range: '#01009 - #02016', price: 3250, pdaCapital: 2925, treasury: 325, status: 'Upcoming' },
+  { band: 3, range: '#02017 - #03024', price: 4200, pdaCapital: 3780, treasury: 420, status: 'Upcoming' },
+  { band: 4, range: '#03025 - #04032', price: 5500, pdaCapital: 4950, treasury: 550, status: 'Upcoming' },
+  { band: 5, range: '#04033 - #05040', price: 7150, pdaCapital: 6435, treasury: 715, status: 'Upcoming' },
+  { band: 6, range: '#05041 - #06048', price: 9300, pdaCapital: 8370, treasury: 930, status: 'Upcoming' },
+  { band: 7, range: '#06049 - #07056', price: 12000, pdaCapital: 10800, treasury: 1200, status: 'Upcoming' },
+  { band: 8, range: '#07057 - #08064', price: 15600, pdaCapital: 14040, treasury: 1560, status: 'Upcoming' },
+  { band: 9, range: '#08065 - #09072', price: 20300, pdaCapital: 18270, treasury: 2030, status: 'Upcoming' },
+  { band: 10, range: '#09073 - #10078', price: 26400, pdaCapital: 23760, treasury: 2640, status: 'Upcoming' },
 ];
 
 export default function LadderPage() {
   const [calcQty, setCalcQty] = useState(5);
-  const currentPrice = 0.02;
-  const totalCost = +(calcQty * currentPrice).toFixed(3);
-  const pdaDeposit = +(totalCost * 0.9).toFixed(4);
-  const treasurySplit = +(totalCost * 0.1).toFixed(4);
+  const currentPrice = 2500;
+  const totalCost = calcQty * currentPrice;
+  const pdaDeposit = Math.round(totalCost * 0.9);
+  const treasurySplit = totalCost - pdaDeposit;
 
   return (
     <div className="gamma-page-container">
@@ -44,7 +44,7 @@ export default function LadderPage() {
             Protocol Price Ladder
           </h1>
           <p className="gamma-hero-subtitle" style={{ maxWidth: '680px', margin: '0 auto' }}>
-            The RARE Protocol employs a deterministic 10-tier bonding curve. Exactly 90% of all SOL minted is locked directly into the corresponding token-bound PDA vault via Anchor Cross-Program Invocation (CPI).
+            The RARE Protocol employs a deterministic 10-tier bonding curve. Exactly 90% of all $RARE tokens bonded is locked directly into the corresponding token-bound PDA vault via Anchor Cross-Program Invocation (CPI).
           </p>
         </div>
 
@@ -77,7 +77,7 @@ export default function LadderPage() {
               padding: '6px 14px',
               fontWeight: 700
             }}>
-              BAND 1 RATE: 0.020 SOL / AGENT
+              BAND 1 RATE: 2,500 $RARE / AGENT
             </span>
           </div>
 
@@ -122,15 +122,15 @@ export default function LadderPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px', fontFamily: 'var(--font-jetbrains), monospace' }}>
               <div style={{ background: 'rgba(3, 16, 7, 0.95)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '16px' }}>
                 <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Total Capital</span>
-                <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>{totalCost} SOL</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>{totalCost.toLocaleString()} $RARE</span>
               </div>
               <div style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(52, 211, 153, 0.25)', borderRadius: '4px', padding: '16px' }}>
                 <span style={{ fontSize: '10px', color: '#34d399', display: 'block', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 700 }}>90% Agent PDA</span>
-                <span style={{ fontSize: '20px', fontWeight: 800, color: '#34d399' }}>{pdaDeposit} SOL</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#34d399' }}>{pdaDeposit.toLocaleString()} $RARE</span>
               </div>
               <div style={{ background: 'rgba(3, 16, 7, 0.95)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '16px' }}>
                 <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>10% Protocol</span>
-                <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>{treasurySplit} SOL</span>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>{treasurySplit.toLocaleString()} $RARE</span>
               </div>
             </div>
           </div>
@@ -181,9 +181,9 @@ export default function LadderPage() {
                         Band {item.band}
                       </td>
                       <td style={{ padding: '14px 24px', color: '#94a3b8' }}>{item.range}</td>
-                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#ffffff' }}>{item.price.toFixed(3)} SOL</td>
-                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#34d399' }}>{item.pdaCapital.toFixed(4)} SOL</td>
-                      <td style={{ padding: '14px 24px', color: '#94a3b8' }}>{item.treasury.toFixed(4)} SOL</td>
+                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#ffffff' }}>{item.price.toLocaleString()} $RARE</td>
+                      <td style={{ padding: '14px 24px', fontWeight: 700, color: '#34d399' }}>{item.pdaCapital.toLocaleString()} $RARE</td>
+                      <td style={{ padding: '14px 24px', color: '#94a3b8' }}>{item.treasury.toLocaleString()} $RARE</td>
                       <td style={{ padding: '14px 24px', textAlign: 'right' }}>
                         {isCurrent ? (
                           <span style={{
