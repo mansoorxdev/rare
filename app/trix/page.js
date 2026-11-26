@@ -103,47 +103,90 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '120px 32px 48px 32px',
+          justifyContent: 'flex-end',
+          padding: '100px 36px 44px 36px',
           maxWidth: '1440px',
           margin: '0 auto',
           position: 'relative',
           zIndex: 15
         }}
       >
-        {/* Top HUD Status Row */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
-          <div>
+        {/* Top-Right Minimal Telemetry Pill (Clean & Unobtrusive) */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '84px',
+            right: '36px',
+            fontFamily: 'var(--font-jetbrains), monospace',
+            fontSize: '10px',
+            color: '#86efac',
+            background: 'rgba(5, 24, 10, 0.65)',
+            border: '1px solid rgba(34, 197, 94, 0.25)',
+            borderRadius: '6px',
+            padding: '6px 14px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            backdropFilter: 'blur(8px)',
+            pointerEvents: 'none'
+          }}
+        >
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
+          <span>SOLANA // MAINNET-BETA</span>
+          <span style={{ opacity: 0.4 }}>|</span>
+          <span>90% PDA CAPITAL</span>
+        </div>
+
+        {/* Ambient Crosshairs at Radar Intersections */}
+        <div style={{ position: 'absolute', top: '25%', left: '18%', color: 'rgba(34, 197, 94, 0.25)', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '14px', pointerEvents: 'none' }}>+</div>
+        <div style={{ position: 'absolute', top: '25%', right: '18%', color: 'rgba(34, 197, 94, 0.25)', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '14px', pointerEvents: 'none' }}>+</div>
+        <div style={{ position: 'absolute', bottom: '30%', left: '22%', color: 'rgba(34, 197, 94, 0.25)', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '14px', pointerEvents: 'none' }}>+</div>
+        <div style={{ position: 'absolute', bottom: '30%', right: '22%', color: 'rgba(34, 197, 94, 0.25)', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '14px', pointerEvents: 'none' }}>+</div>
+
+        {/* Bottom Hero Dual-Quadrant Layout (Exact Trix Composition) */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+            gap: '32px',
+            width: '100%'
+          }}
+        >
+          {/* Bottom-Left: Independent Benchmarks + Headline */}
+          <div style={{ maxWidth: '580px' }}>
             <div
               className="trix-hud-badge"
               style={{
                 color: '#4ade80',
                 background: 'rgba(34, 197, 94, 0.12)',
                 borderColor: 'rgba(34, 197, 94, 0.35)',
-                marginBottom: '16px'
+                marginBottom: '14px'
               }}
             >
               <span>INDEPENDENT BENCHMARKS</span>
               <span style={{ opacity: 0.6 }}>||</span>
             </div>
+
             <h1
               style={{
-                fontSize: 'clamp(36px, 4.8vw, 68px)',
+                fontSize: 'clamp(28px, 3.4vw, 48px)',
                 fontWeight: 900,
-                lineHeight: 1.05,
-                letterSpacing: '-0.03em',
+                lineHeight: 1.1,
+                letterSpacing: '-0.025em',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 textTransform: 'uppercase',
                 margin: 0
               }}
             >
               AI TRADING AGENTS.<br />
-              <span style={{ color: '#22c55e', display: 'inline-flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ color: '#22c55e', display: 'inline-flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
                 <span
                   style={{
                     display: 'inline-block',
-                    width: 'clamp(40px, 6vw, 90px)',
-                    height: '4px',
+                    width: 'clamp(36px, 4vw, 68px)',
+                    height: '3.5px',
                     background: '#22c55e',
                     boxShadow: '0 0 12px #22c55e'
                   }}
@@ -153,41 +196,21 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             </h1>
           </div>
 
-          {/* Right Top Live Radar Stats */}
-          <div
-            style={{
-              fontFamily: 'var(--font-jetbrains), monospace',
-              fontSize: '11px',
-              color: '#86efac',
-              background: 'rgba(5, 24, 10, 0.7)',
-              border: '1px solid rgba(34, 197, 94, 0.25)',
-              borderRadius: '8px',
-              padding: '12px 18px',
-              lineHeight: 1.8,
-              backdropFilter: 'blur(8px)'
-            }}
-          >
-            <div>SOLANA_NET: <span style={{ color: '#ffffff', fontWeight: 700 }}>MAINNET-BETA</span></div>
-            <div>ANCHOR_CPI: <span style={{ color: '#22c55e', fontWeight: 700 }}>90% PDA LOCKED</span></div>
-            <div>ORACLE_PING: <span style={{ color: '#ffffff', fontWeight: 700 }}>18ms // PYTH</span></div>
-            <div>VERIFIED_AGENTS: <span style={{ color: '#22c55e', fontWeight: 700 }}>10,078 ACTIVE</span></div>
-          </div>
-        </div>
-
-        {/* Bottom Hero Description & Preview Disclaimer */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '24px' }}>
-          {/* Scroll Down Indicator */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#4ade80' }}>
-            <span style={{ width: '8px', height: '8px', borderRight: '2px solid #22c55e', borderBottom: '2px solid #22c55e', transform: 'rotate(45deg)', display: 'inline-block', animation: 'trixLaserPulse 1.5s infinite' }} />
-            <span>SCROLL TO ENGAGE RADAR PERSPECTIVE ↓</span>
-          </div>
-
-          <div style={{ maxWidth: '440px', textAlign: 'right' }}>
-            <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '8px' }}>
-              Compare returns, risk, and on-chain execution with Anchor CPI proof. Every metric requires an on-chain transaction hash and dedicated PDA vault.
+          {/* Bottom-Right: Description & Disclaimer */}
+          <div style={{ maxWidth: '440px', textAlign: 'left' }}>
+            <p
+              style={{
+                fontSize: '12.5px',
+                lineHeight: 1.65,
+                color: '#94a3b8',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                marginBottom: '8px'
+              }}
+            >
+              Compare returns, risk, and on-chain execution with transparent methods. Every metric needs a verified source, a window, and an on-chain transaction label.
             </p>
-            <div style={{ fontSize: '10.5px', color: '#64748b', fontFamily: 'var(--font-jetbrains), monospace' }}>
-              Product preview. Live benchmark engine connected.
+            <div style={{ fontSize: '10px', color: '#64748b', fontFamily: 'var(--font-jetbrains), monospace' }}>
+              Product preview. Live benchmark data is connected.
             </div>
           </div>
         </div>

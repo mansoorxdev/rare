@@ -817,21 +817,23 @@ body {
 }
 
 .trix-grid-dark {
-  background-color: #031407 !important;
+  background-color: #020c04 !important;
   background-image: 
-    radial-gradient(ellipse at 50% 30%, #0c3314 0%, #031407 70%),
-    linear-gradient(rgba(34, 197, 94, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 197, 94, 0.08) 1px, transparent 1px) !important;
-  background-size: 100% 100%, 40px 40px, 40px 40px !important;
+    radial-gradient(ellipse at 50% 40%, #0d3b17 0%, #041909 55%, #010a03 100%),
+    linear-gradient(rgba(34, 197, 94, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.09) 1px, transparent 1px) !important;
+  background-size: 100% 100%, 48px 48px, 48px 48px !important;
+  background-attachment: fixed;
 }
 
 .trix-grid-light {
-  background-color: #f1f3f2 !important;
+  background-color: #f3f5f4 !important;
   background-image: 
-    radial-gradient(ellipse at 50% 30%, #ffffff 0%, #e5e8e6 80%),
+    radial-gradient(ellipse at 50% 40%, #ffffff 0%, #e2e6e3 70%, #d8deda 100%),
     linear-gradient(rgba(16, 185, 129, 0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(16, 185, 129, 0.12) 1px, transparent 1px) !important;
-  background-size: 100% 100%, 36px 36px, 36px 36px !important;
+  background-size: 100% 100%, 44px 44px, 44px 44px !important;
+  background-attachment: fixed;
 }
 
 /* Tactical CRT Scanlines Overlay */
