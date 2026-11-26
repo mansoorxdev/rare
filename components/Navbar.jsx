@@ -113,13 +113,11 @@ export default function Navbar({ onMintClick }) {
             </svg>
           </a>
 
-          {/* Golden Amber Mint / Connect Wallet CTA */}
+          {/* Golden Amber Connect Wallet CTA */}
           <button
             type="button"
             onClick={() => {
-              if (authenticated && onMintClick) {
-                onMintClick();
-              } else if (!authenticated) {
+              if (!authenticated) {
                 login();
               } else {
                 logout();
@@ -130,8 +128,10 @@ export default function Navbar({ onMintClick }) {
           >
             {authenticated && walletAddress ? (
               <span>{walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}</span>
+            ) : authenticated ? (
+              <span>Connected</span>
             ) : (
-              <span>Launch app ↗</span>
+              <span>Connect wallet</span>
             )}
           </button>
         </div>
