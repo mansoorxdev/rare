@@ -3,49 +3,75 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-// Exact 2D Profile Points Traced from the User's Crystal Image
-const CRYSTAL_SHAPE_POINTS = [
-  [0.064, 2.0],
-  [0.199, 1.886],
-  [0.419, 1.552],
-  [0.682, 1.126],
-  [0.98, 0.7],
-  [1.073, 0.558],
-  [1.151, 0.487],
-  [1.037, 0.202],
-  [0.931, -0.082],
-  [0.824, -0.366],
-  [0.739, -0.65],
-  [0.796, -0.934],
-  [0.881, -1.29],
-  [0.888, -1.361],
-  [0.682, -1.503],
-  [0.526, -1.645],
-  [0.306, -1.787],
-  [0.135, -1.929],
-  [-0.121, -2.0],
-  [-0.327, -1.929],
-  [-0.526, -1.787],
-  [-0.696, -1.574],
-  [-0.81, -1.503],
-  [-0.86, -1.361],
-  [-0.902, -0.934],
-  [-0.966, -0.579],
-  [-1.044, -0.082],
-  [-1.123, 0.345],
-  [-1.151, 0.558],
-  [-1.023, 0.771],
-  [-0.824, 0.984],
-  [-0.583, 1.268],
-  [-0.334, 1.552],
-  [-0.128, 1.837],
-  [0.036, 1.979]
-];
+/**
+ * Creates an authentic 3D faceted mineral crystal geometry
+ * with 36 precise triangular facets, natural facet height variations,
+ * and outward-facing normals.
+ */
+function createPure3DCrystalGeometry() {
+  const geo = new THREE.BufferGeometry();
+  const yTop = 2.45;
+  const yBot = -2.45;
+
+  // Asymmetric crystal facet rings (natural mineral crystal shape)
+  const ring1Y = [1.4, 1.15, 1.5, 1.2, 1.45, 1.1];
+  const ring1R = [1.05, 1.2, 1.1, 1.25, 1.05, 1.15];
+
+  const ring2Y = [0.05, -0.15, 0.1, -0.1, 0.05, -0.2];
+  const ring2R = [1.15, 1.25, 1.2, 1.3, 1.1, 1.2];
+
+  const ring3Y = [-1.3, -1.5, -1.25, -1.45, -1.35, -1.5];
+  const ring3R = [0.95, 1.05, 0.9, 1.1, 0.95, 1.0];
+
+  const positions = [];
+  const addTri = (p1, p2, p3) => positions.push(...p1, ...p2, ...p3);
+
+  const top = [0, yTop, 0];
+  const bot = [0, yBot, 0];
+  const r1 = [], r2 = [], r3 = [];
+
+  for (let i = 0; i < 6; i++) {
+    const a = (i * Math.PI * 2) / 6;
+    r1.push([ring1R[i] * Math.cos(a), ring1Y[i], ring1R[i] * Math.sin(a)]);
+    r2.push([ring2R[i] * Math.cos(a), ring2Y[i], ring2R[i] * Math.sin(a)]);
+    r3.push([ring3R[i] * Math.cos(a), ring3Y[i], ring3R[i] * Math.sin(a)]);
+  }
+
+  // 1. Top cone pyramid cap (6 triangles)
+  for (let i = 0; i < 6; i++) {
+    const next = (i + 1) % 6;
+    addTri(top, r1[i], r1[next]);
+  }
+
+  // 2. Upper facet belt (12 triangles)
+  for (let i = 0; i < 6; i++) {
+    const next = (i + 1) % 6;
+    addTri(r1[i], r2[i], r1[next]);
+    addTri(r1[next], r2[i], r2[next]);
+  }
+
+  // 3. Lower facet belt (12 triangles)
+  for (let i = 0; i < 6; i++) {
+    const next = (i + 1) % 6;
+    addTri(r2[i], r3[i], r2[next]);
+    addTri(r2[next], r3[i], r3[next]);
+  }
+
+  // 4. Bottom chisel pyramid cap (6 triangles)
+  for (let i = 0; i < 6; i++) {
+    const next = (i + 1) % 6;
+    addTri(bot, r3[next], r3[i]);
+  }
+
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.computeVertexNormals();
+  return geo;
+}
 
 export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }) {
   const mountRef = useRef(null);
 
-  // Live references to props so the Three.js loop never tears down or re-creates
+  // Live references so Three.js renders in a smooth 60fps loop without canvas resets
   const scrollRef = useRef(scrollProgress);
   const lightModeRef = useRef(isLightMode);
 
@@ -61,103 +87,83 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const mount = mountRef.current;
     if (!mount) return;
 
-    // 1. Scene, Camera & Full-Viewport Renderer
+    // 1. Scene, Camera & WebGL Renderer
     const scene = new THREE.Scene();
     const width = window.innerWidth;
     const height = window.innerHeight;
 
     const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 9.4);
+    camera.position.set(0, 0, 9.2);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.3;
     mount.appendChild(renderer.domElement);
 
-    // 2. Load the Exact Crystal Artwork Texture (Aligned to UV Bounds)
-    const textureLoader = new THREE.TextureLoader();
-    const crystalTexture = textureLoader.load('/rare-crystal-pure.png');
-    crystalTexture.colorSpace = THREE.SRGBColorSpace;
-    crystalTexture.generateMipmaps = true;
-    crystalTexture.minFilter = THREE.LinearMipmapLinearFilter;
-    crystalTexture.magFilter = THREE.LinearFilter;
-
-    // 3. Construct TRUE 3D Solid Watertight Volumetric Crystal Mesh
-    // (Single solid object with real mineral thickness, NOT 3 flat slices!)
-    const crystalShape = new THREE.Shape();
-    crystalShape.moveTo(CRYSTAL_SHAPE_POINTS[0][0], CRYSTAL_SHAPE_POINTS[0][1]);
-    for (let i = 1; i < CRYSTAL_SHAPE_POINTS.length; i++) {
-      crystalShape.lineTo(CRYSTAL_SHAPE_POINTS[i][0], CRYSTAL_SHAPE_POINTS[i][1]);
-    }
-    crystalShape.closePath();
-
-    // 3D Extrusion with faceted chamfer bevels (creates volumetric mineral crystal body)
-    const extrudeSettings = {
-      depth: 0.52,
-      bevelEnabled: true,
-      bevelSegments: 2, // Rounded volumetric bevels matching mineral crystal profile
-      bevelSize: 0.24,
-      bevelThickness: 0.36
-    };
-
-    const crystalGeo = new THREE.ExtrudeGeometry(crystalShape, extrudeSettings);
-    crystalGeo.center();
-
-    // Recompute and align UV coordinates for front and back cap faces to match texture
-    crystalGeo.computeBoundingBox();
-    const bbox = crystalGeo.boundingBox;
-    const dx = bbox.max.x - bbox.min.x;
-    const dy = bbox.max.y - bbox.min.y;
-    const pos = crystalGeo.attributes.position;
-    const uvs = crystalGeo.attributes.uv;
-    for (let i = 0; i < pos.count; i++) {
-      const x = pos.getX(i);
-      const y = pos.getY(i);
-      uvs.setXY(i, (x - bbox.min.x) / dx, (y - bbox.min.y) / dy);
-    }
-    uvs.needsUpdate = true;
-    crystalGeo.computeVertexNormals();
+    // 2. Construct Genuine 3D Faceted Crystal Polyhedron
+    const crystalGeo = createPure3DCrystalGeometry();
 
     const crystalGroup = new THREE.Group();
-    crystalGroup.scale.set(0.88, 0.88, 0.88);
+    crystalGroup.scale.set(0.95, 0.95, 0.95);
     scene.add(crystalGroup);
 
-    // Material 0: Front & Back Cap Faces (Shows the Exact High-Res Crystal Artwork)
-    const capMat = new THREE.MeshStandardMaterial({
-      map: crystalTexture,
-      roughness: 0.12,
-      metalness: 0.15,
-      emissive: new THREE.Color(0x059669),
-      emissiveIntensity: 0.35,
-      side: THREE.DoubleSide
-    });
-
-    // Material 1: Solid 3D Sides & Bevels (Physical Emerald Mineral Glass with Chiseled Facets)
-    const sideMat = new THREE.MeshPhysicalMaterial({
+    // Outer Faceted Crystal Glass Material (Physical Emerald Transmission Glass)
+    const outerCrystalMat = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x10b981),
-      emissive: new THREE.Color(0x047857),
-      emissiveIntensity: 0.45,
-      roughness: 0.08,
-      metalness: 0.12,
-      transmission: 0.72,
+      emissive: new THREE.Color(0x064e3b),
+      emissiveIntensity: 0.35,
+      roughness: 0.05,
+      metalness: 0.08,
+      transmission: 0.78,
       ior: 1.62,
-      thickness: 2.2,
-      specularIntensity: 2.0,
+      thickness: 1.8,
+      specularIntensity: 2.2,
       specularColor: new THREE.Color(0xd1fae5),
-      flatShading: true // Gives rugged mineral facet reflections when viewed from the side!
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+      flatShading: true // Every facet catches the light independently like a cut gemstone!
     });
 
-    const solidCrystalMesh = new THREE.Mesh(crystalGeo, [capMat, sideMat]);
-    crystalGroup.add(solidCrystalMesh);
+    const outerCrystalMesh = new THREE.Mesh(crystalGeo, outerCrystalMat);
+    crystalGroup.add(outerCrystalMesh);
 
-    // 4. Cinematic 3D Lighting Setup (Creates dynamic glints as the crystal rotates)
+    // Sharp Facet Edge Accents (Delicate glowing hairline borders)
+    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 10);
+    const edgesMat = new THREE.LineBasicMaterial({
+      color: 0x86efac,
+      transparent: true,
+      opacity: 0.45
+    });
+    const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
+    crystalGroup.add(edgesMesh);
+
+    // Inner Luminous Core Gem (Nested inside the crystal, glows and radiates light)
+    const innerGeo = crystalGeo.clone();
+    innerGeo.scale(0.56, 0.56, 0.56);
+    const innerMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x34d399),
+      emissive: new THREE.Color(0x10b981),
+      emissiveIntensity: 1.3,
+      roughness: 0.15,
+      metalness: 0.1,
+      flatShading: true
+    });
+    const innerCrystalMesh = new THREE.Mesh(innerGeo, innerMat);
+    crystalGroup.add(innerCrystalMesh);
+
+    // Internal Pulsing Light at the crystal core
+    const coreLight = new THREE.PointLight(0x6ee7b7, 3.0, 9);
+    coreLight.position.set(0, 0, 0);
+    crystalGroup.add(coreLight);
+
+    // 3. Cinematic 3D Studio Lighting
     const ambientLight = new THREE.AmbientLight(0x064e3b, 1.8);
     scene.add(ambientLight);
 
-    // Key Light (Top-Left Warm Lime)
-    const keyLight = new THREE.DirectionalLight(0xbbf7d0, 3.2);
+    // Key Light (Top-Left Lime)
+    const keyLight = new THREE.DirectionalLight(0xdcfce7, 3.5);
     keyLight.position.set(-6, 7, 5);
     scene.add(keyLight);
 
@@ -166,17 +172,12 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     fillLight.position.set(6, -5, 4);
     scene.add(fillLight);
 
-    // Rim Back Light (for silhouette separation)
-    const rimLight = new THREE.DirectionalLight(0x22c55e, 1.8);
+    // Rim Back Light (Silhouette separation)
+    const rimLight = new THREE.DirectionalLight(0x34d399, 2.4);
     rimLight.position.set(0, -6, -4);
     scene.add(rimLight);
 
-    // Internal Point Light (Pulsating core)
-    const pointLight = new THREE.PointLight(0x4ade80, 2.5, 8);
-    pointLight.position.set(0, 0, 0);
-    scene.add(pointLight);
-
-    // Subtle 3D Ambient Dust Particles (Floating tactical radar particles)
+    // 4. Subtle Tactical Dust Particles
     const particleCount = 45;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
@@ -188,14 +189,14 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
       color: new THREE.Color(0x4ade80),
-      size: 0.045,
+      size: 0.04,
       transparent: true,
-      opacity: 0.5
+      opacity: 0.4
     });
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // 5. Mouse Tracking & Continuous 3D Loop
+    // 5. Mouse Tracking & Continuous 60FPS Animation Loop
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
@@ -218,30 +219,30 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
-      // Gentle floating bob on Y axis
-      const idleY = Math.sin(time * 1.4) * 0.06;
+      // Gentle floating bob
+      const idleY = Math.sin(time * 1.5) * 0.08;
 
       // Ambient particle drift
       particleSystem.rotation.y = time * 0.03;
       particleSystem.rotation.x = Math.sin(time * 0.4) * 0.02;
 
-      // Read current scroll progress from ref (continuous and jitter-free!)
+      // Internal light subtle pulse
+      coreLight.intensity = 2.8 + Math.sin(time * 3.0) * 0.5;
+
+      // Current scroll progress
       const p = scrollRef.current;
 
-      // BUTTERY SMOOTH CONTINUOUS ROTATION ON Y AND Z AXIS:
-      // - Continuous smooth spin on Y-axis (scroll turns it smoothly like a 3D turntable)
-      // - Gentle aerodynamic banking roll on Z-axis
-      // - Subtle perspective pitch on X-axis without any clipping
-      const targetRotY = time * 0.35 + mouseX * 0.4 + p * Math.PI * 2.2;
-      const targetRotZ = Math.sin(p * Math.PI) * 0.28 - mouseX * 0.12;
-      const targetRotX = 0.12 + Math.sin(p * Math.PI) * 0.2 - mouseY * 0.18;
+      // Smooth continuous turntable rotation & banking
+      const targetRotY = time * 0.4 + mouseX * 0.4 + p * Math.PI * 2.2;
+      const targetRotZ = Math.sin(p * Math.PI) * 0.25 - mouseX * 0.12;
+      const targetRotX = 0.15 + Math.sin(p * Math.PI) * 0.2 - mouseY * 0.15;
 
-      // Smooth trajectory translation across scroll stages
-      const targetPosX = -Math.sin(p * Math.PI) * 1.5;
+      // Trajectory translation across scroll sections
+      const targetPosX = -Math.sin(p * Math.PI) * 1.4;
       const targetPosY = 0.06 + idleY;
       const targetPosZ = -Math.sin(p * Math.PI) * 0.4;
 
-      // 60FPS Exponential Smoothing (Lerp) - Eliminates all shivering / stuttering!
+      // 60FPS Exponential Smoothing (Lerp)
       crystalGroup.rotation.x = THREE.MathUtils.lerp(crystalGroup.rotation.x, targetRotX, 0.06);
       crystalGroup.rotation.y = THREE.MathUtils.lerp(crystalGroup.rotation.y, targetRotY, 0.06);
       crystalGroup.rotation.z = THREE.MathUtils.lerp(crystalGroup.rotation.z, targetRotZ, 0.06);
@@ -273,7 +274,7 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       }
       renderer.dispose();
     };
-  }, []); // Run ONLY once on mount! No context recreating on scroll!
+  }, []); // Run ONLY once on mount
 
   return (
     <div
