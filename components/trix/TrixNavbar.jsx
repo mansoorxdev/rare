@@ -241,12 +241,12 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
             {authenticated && walletAddress ? (
               <>
                 <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
-                <span>{`[\u00A00x${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}\u00A0]`}</span>
+                <span>{`[\u00A0${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}\u00A0]`}</span>
               </>
             ) : authenticated ? (
-              <span>{"[\u00A00xCONNECTED\u00A0]"}</span>
+              <span>{"[\u00A0CONNECTED\u00A0]"}</span>
             ) : (
-              <span>{"[\u00A00xCONNECT_WALLET\u00A0]"}</span>
+              <span>{"[\u00A0CONNECT\u00A0WALLET\u00A0]"}</span>
             )}
           </button>
         </div>
