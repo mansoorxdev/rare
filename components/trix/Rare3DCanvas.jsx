@@ -37,23 +37,23 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     renderer.toneMappingExposure = 1.25;
     mount.appendChild(renderer.domElement);
 
-    // 2. Texture Loading for the Exact Crystal Artwork (Image 2)
+    // 2. Load the Exact Precision Cutout of the Crystal (Image 2 - 100% Zero Black Background)
     const textureLoader = new THREE.TextureLoader();
-    const crystalTexture = textureLoader.load('/rare-crystal-clean.png');
+    const crystalTexture = textureLoader.load('/rare-crystal-pure.png');
     crystalTexture.colorSpace = THREE.SRGBColorSpace;
     crystalTexture.generateMipmaps = true;
     crystalTexture.minFilter = THREE.LinearMipmapLinearFilter;
     crystalTexture.magFilter = THREE.LinearFilter;
 
-    // 3. Volumetric 3D Crystal Assembly (NO CAGE, NO WIREFRAME - 100% PURE ARTWORK)
+    // 3. Volumetric 3D Crystal Assembly (NO CAGE, NO BLACK CIRCLE, PURE CLEAN ARTWORK)
     const crystalGroup = new THREE.Group();
-    crystalGroup.scale.set(1.05, 1.05, 1.05);
+    crystalGroup.scale.set(1.15, 1.15, 1.15);
     scene.add(crystalGroup);
 
-    // High-Res Plane Geometry
-    const crystalPlaneGeo = new THREE.PlaneGeometry(3.6, 3.6);
+    // Plane geometry matching the crystal aspect ratio
+    const crystalGeo = new THREE.PlaneGeometry(3.6, 3.6);
 
-    // Exact Artwork Material with Glass Transmission & Specular Highlight
+    // Exact Crystal Artwork Material
     const crystalMat = new THREE.MeshBasicMaterial({
       map: crystalTexture,
       transparent: true,
@@ -61,71 +61,45 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       side: THREE.DoubleSide
     });
 
-    // Layer 1: Front Primary Crystal Face
-    const frontFace = new THREE.Mesh(crystalPlaneGeo, crystalMat);
-    frontFace.position.z = 0.12;
+    // Front Crystal Face
+    const frontFace = new THREE.Mesh(crystalGeo, crystalMat);
+    frontFace.position.z = 0.14;
     crystalGroup.add(frontFace);
 
-    // Layer 2: Center Volumetric Optical Core (Provides 3D glass refraction depth)
-    const coreMat = new THREE.MeshBasicMaterial({
+    // Mid Refractive Depth Layer (Gives internal optical depth as it turns)
+    const midMat = new THREE.MeshBasicMaterial({
       map: crystalTexture,
       transparent: true,
-      opacity: 0.75,
+      opacity: 0.8,
       depthWrite: false,
       side: THREE.DoubleSide
     });
-    const coreFace = new THREE.Mesh(crystalPlaneGeo, coreMat);
-    coreFace.position.z = 0.0;
-    coreFace.scale.set(0.98, 0.98, 1);
-    crystalGroup.add(coreFace);
+    const midFace = new THREE.Mesh(crystalGeo, midMat);
+    midFace.position.z = 0.0;
+    midFace.scale.set(0.98, 0.98, 1);
+    crystalGroup.add(midFace);
 
-    // Layer 3: Rear Symmetrical Crystal Face (Gives true 3D thickness when rotated)
-    const backFace = new THREE.Mesh(crystalPlaneGeo, crystalMat);
-    backFace.position.z = -0.12;
+    // Rear Crystal Face (Double-sided 3D thickness when rotating)
+    const backFace = new THREE.Mesh(crystalGeo, crystalMat);
+    backFace.position.z = -0.14;
     backFace.rotation.y = Math.PI;
     crystalGroup.add(backFace);
 
-    // Layer 4: Soft Emerald Radial Glow Aura (Matching the glow in Image 2)
-    const glowGeo = new THREE.PlaneGeometry(5.2, 5.2);
-    // Create radial glow texture procedurally
-    const glowCanvas = document.createElement('canvas');
-    glowCanvas.width = 256;
-    glowCanvas.height = 256;
-    const ctx = glowCanvas.getContext('2d');
-    const grad = ctx.createRadialGradient(128, 128, 10, 128, 128, 128);
-    grad.addColorStop(0, 'rgba(34, 197, 94, 0.55)');
-    grad.addColorStop(0.35, 'rgba(16, 185, 129, 0.3)');
-    grad.addColorStop(0.65, 'rgba(5, 150, 105, 0.1)');
-    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 256, 256);
-    const glowTexture = new THREE.CanvasTexture(glowCanvas);
-
-    const glowMat = new THREE.MeshBasicMaterial({
-      map: glowTexture,
-      transparent: true,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    });
-    const glowMesh = new THREE.Mesh(glowGeo, glowMat);
-    glowMesh.position.z = -0.25;
-    crystalGroup.add(glowMesh);
-
-    // Tactical Radar Ambient Dust Particles floating in 3D
-    const particleCount = 60;
+    // Subtle 3D Ambient Dust Particles (Floating tactical radar particles)
+    const particleCount = 50;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
       particlePositions[i * 3] = (Math.random() - 0.5) * 10;
-      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 7;
+      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 8;
       particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 6;
     }
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
       color: new THREE.Color(0x4ade80),
-      size: 0.05,
+      size: 0.045,
       transparent: true,
-      opacity: 0.55
+      opacity: 0.5
     });
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
@@ -155,10 +129,6 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
 
       // Gentle floating bob on Y axis
       const idleY = Math.sin(time * 1.4) * 0.07;
-
-      // Pulse glow subtly
-      const glowScale = 1.0 + Math.sin(time * 2.0) * 0.06;
-      glowMesh.scale.set(glowScale, glowScale, 1);
 
       // Ambient particle drift
       particleSystem.rotation.y = time * 0.03;
