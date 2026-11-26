@@ -122,10 +122,10 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     mount.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
-    // 2. 3D Crystal Mesh (Scaled up for prominent 3D ASCII terminal presence)
+    // 2. 3D Crystal Mesh (Balanced scale and position)
     const crystalGeo = createPure3DCrystalGeometry();
     const crystalGroup = new THREE.Group();
-    crystalGroup.scale.set(1.15, 1.15, 1.15);
+    crystalGroup.scale.set(1.02, 1.02, 1.02);
     scene.add(crystalGroup);
 
     const outerCrystalMat = new THREE.MeshStandardMaterial({
@@ -221,7 +221,7 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       const targetRotX = 0.15 + Math.sin(p * Math.PI) * 0.2 - mouseY * 0.15;
 
       const targetPosX = -Math.sin(p * Math.PI) * 1.4;
-      const targetPosY = 0.06 + idleY;
+      const targetPosY = -0.32 + idleY; // Shifted down for breathing room below the navbar
       const targetPosZ = -Math.sin(p * Math.PI) * 0.4;
 
       crystalGroup.rotation.x = THREE.MathUtils.lerp(crystalGroup.rotation.x, targetRotX, 0.06);
@@ -312,10 +312,10 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
         const cy = Math.floor(canvas.height / 2);
 
         // Top HUD Bracket
-        ctx.fillText('[ RARE_PROTOCOL // 3D_ASCII_TERMINAL ]', cx - 110, cy - 240);
+        ctx.fillText('[ RARE_PROTOCOL // 3D_ASCII_TERMINAL ]', cx - 110, cy - 200);
         // Bottom Telemetry
         const degY = Math.round(((crystalGroup.rotation.y * 180) / Math.PI) % 360);
-        ctx.fillText(`BEARING_Y: ${degY.toString().padStart(3, '0')}° // MATRIX: ACTIVE`, cx - 110, cy + 240);
+        ctx.fillText(`BEARING_Y: ${degY.toString().padStart(3, '0')}° // MATRIX: ACTIVE`, cx - 110, cy + 250);
       }
     };
 
