@@ -4,16 +4,49 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 /**
- * Creates an authentic 3D faceted mineral crystal geometry
- * with 36 precise triangular facets, natural facet height variations,
- * and outward-facing normals.
+ * Assigns exact facet colors matching the official RARE logo (rare-logo-icon.png):
+ * - Top-Right Facet: Warm Golden Lime / Sunlight Glint (RGB: 0.82, 0.96, 0.22)
+ * - Left Side Facets: Deep Obsidian Dark Emerald Shadows (RGB: 0.01, 0.12, 0.05)
+ * - Front Center Facet: Intense Radioactive Neon Emerald (RGB: 0.06, 0.94, 0.40)
+ * - Bottom Chisel Tip: Glowing Pure White / Mint Caustics (RGB: 0.94, 0.99, 0.95)
+ * - Right Side Facets: Deep Rich Cut Emerald (RGB: 0.03, 0.65, 0.28)
+ * - Back Facets: Dark Emerald Glass (RGB: 0.02, 0.22, 0.09)
+ */
+function getLogoFacetColor(cx, cy, cz) {
+  // 1. Bottom tip caustic highlight (Bright glowing white/mint)
+  if (cy < -1.5 && cz > -0.2) {
+    return [0.95, 1.0, 0.96];
+  }
+  // 2. Top-Right facet (Golden lime sunlight highlight)
+  if (cy > 0.6 && cx > 0.05 && cz > -0.3) {
+    return [0.82, 0.96, 0.22];
+  }
+  // 3. Left deep obsidian dark emerald shadow (High contrast darks)
+  if (cx < -0.25) {
+    return [0.01, 0.12, 0.05];
+  }
+  // 4. Center front glowing neon emerald
+  if (cz > 0.35 && cy >= -1.5 && cy <= 0.6) {
+    return [0.06, 0.94, 0.40];
+  }
+  // 5. Right side rich emerald
+  if (cx > 0.3) {
+    return [0.03, 0.65, 0.28];
+  }
+  // 6. Back & side shadows
+  return [0.02, 0.22, 0.09];
+}
+
+/**
+ * Creates authentic 3D faceted mineral crystal geometry
+ * with 36 precise triangular facets and per-facet vertex colors
+ * matching the RARE brand logo palette.
  */
 function createPure3DCrystalGeometry() {
   const geo = new THREE.BufferGeometry();
   const yTop = 2.45;
   const yBot = -2.45;
 
-  // Asymmetric crystal facet rings (natural mineral crystal shape)
   const ring1Y = [1.4, 1.15, 1.5, 1.2, 1.45, 1.1];
   const ring1R = [1.05, 1.2, 1.1, 1.25, 1.05, 1.15];
 
@@ -24,7 +57,16 @@ function createPure3DCrystalGeometry() {
   const ring3R = [0.95, 1.05, 0.9, 1.1, 0.95, 1.0];
 
   const positions = [];
-  const addTri = (p1, p2, p3) => positions.push(...p1, ...p2, ...p3);
+  const colors = [];
+
+  const addTriWithColor = (p1, p2, p3) => {
+    positions.push(...p1, ...p2, ...p3);
+    const cx = (p1[0] + p2[0] + p3[0]) / 3;
+    const cy = (p1[1] + p2[1] + p3[1]) / 3;
+    const cz = (p1[2] + p2[2] + p3[2]) / 3;
+    const c = getLogoFacetColor(cx, cy, cz);
+    colors.push(...c, ...c, ...c);
+  };
 
   const top = [0, yTop, 0];
   const bot = [0, yBot, 0];
@@ -40,30 +82,31 @@ function createPure3DCrystalGeometry() {
   // 1. Top cone pyramid cap (6 triangles)
   for (let i = 0; i < 6; i++) {
     const next = (i + 1) % 6;
-    addTri(top, r1[i], r1[next]);
+    addTriWithColor(top, r1[i], r1[next]);
   }
 
   // 2. Upper facet belt (12 triangles)
   for (let i = 0; i < 6; i++) {
     const next = (i + 1) % 6;
-    addTri(r1[i], r2[i], r1[next]);
-    addTri(r1[next], r2[i], r2[next]);
+    addTriWithColor(r1[i], r2[i], r1[next]);
+    addTriWithColor(r1[next], r2[i], r2[next]);
   }
 
   // 3. Lower facet belt (12 triangles)
   for (let i = 0; i < 6; i++) {
     const next = (i + 1) % 6;
-    addTri(r2[i], r3[i], r2[next]);
-    addTri(r2[next], r3[i], r3[next]);
+    addTriWithColor(r2[i], r3[i], r2[next]);
+    addTriWithColor(r2[next], r3[i], r3[next]);
   }
 
   // 4. Bottom chisel pyramid cap (6 triangles)
   for (let i = 0; i < 6; i++) {
     const next = (i + 1) % 6;
-    addTri(bot, r3[next], r3[i]);
+    addTriWithColor(bot, r3[next], r3[i]);
   }
 
   geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   geo.computeVertexNormals();
   return geo;
 }
@@ -99,83 +142,75 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 1.35;
     mount.appendChild(renderer.domElement);
 
-    // 2. Construct Genuine 3D Faceted Crystal Polyhedron
+    // 2. Construct 3D Faceted Crystal with Exact Logo Vertex Colors
     const crystalGeo = createPure3DCrystalGeometry();
 
     const crystalGroup = new THREE.Group();
     crystalGroup.scale.set(0.95, 0.95, 0.95);
     scene.add(crystalGroup);
 
-    // Outer Faceted Crystal Glass Material (Physical Emerald Transmission Glass)
-    const outerCrystalMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x10b981),
-      emissive: new THREE.Color(0x064e3b),
-      emissiveIntensity: 0.35,
-      roughness: 0.05,
-      metalness: 0.08,
-      transmission: 0.78,
-      ior: 1.62,
-      thickness: 1.8,
-      specularIntensity: 2.2,
-      specularColor: new THREE.Color(0xd1fae5),
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.05,
-      flatShading: true // Every facet catches the light independently like a cut gemstone!
+    // High-Contrast Cut Gem Material using the Logo's exact per-facet colors:
+    // Uses vertexColors so every facet has the exact tone of rare-logo-icon.png
+    const outerCrystalMat = new THREE.MeshStandardMaterial({
+      vertexColors: true,
+      roughness: 0.08,
+      metalness: 0.25,
+      flatShading: true // Every facet is razor sharp
     });
 
     const outerCrystalMesh = new THREE.Mesh(crystalGeo, outerCrystalMat);
     crystalGroup.add(outerCrystalMesh);
 
-    // Sharp Facet Edge Accents (Delicate glowing hairline borders)
-    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 10);
+    // Razor-Sharp Glowing Edge Ridges (Pure White / Cyan glowing hairlines matching the logo)
+    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 8);
     const edgesMat = new THREE.LineBasicMaterial({
-      color: 0x86efac,
+      color: 0xffffff,
       transparent: true,
-      opacity: 0.45
+      opacity: 0.75,
+      blending: THREE.AdditiveBlending
     });
     const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
     crystalGroup.add(edgesMesh);
 
-    // Inner Luminous Core Gem - True Greenish Golden (Peridot / Chartreuse-Gold)
+    // Subtle Internal Luminous Glow
     const innerGeo = crystalGeo.clone();
-    innerGeo.scale(0.56, 0.56, 0.56);
+    innerGeo.scale(0.5, 0.5, 0.5);
     const innerMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0xa3e635), // Vibrant greenish golden (chartreuse gold)
-      emissive: new THREE.Color(0x65a30d), // Deep greenish-golden luminescence
-      emissiveIntensity: 0.85, // Perfectly balanced to preserve the rich greenish-gold hue
-      roughness: 0.15,
-      metalness: 0.45, // Metallic golden luster on green base
+      color: new THREE.Color(0x10b981),
+      emissive: new THREE.Color(0x059669),
+      emissiveIntensity: 0.6,
+      roughness: 0.2,
       flatShading: true
     });
     const innerCrystalMesh = new THREE.Mesh(innerGeo, innerMat);
     crystalGroup.add(innerCrystalMesh);
 
-    // Internal Pulsing Light at the crystal core (Greenish-Golden Light)
-    const coreLight = new THREE.PointLight(0xa3e635, 2.0, 8); // Crisp greenish-golden emission
-    coreLight.position.set(0, 0, 0);
-    crystalGroup.add(coreLight);
-
-    // 3. Cinematic 3D Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0x064e3b, 1.8);
+    // 3. Cinematic 3D Lighting Setup (High Contrast)
+    const ambientLight = new THREE.AmbientLight(0x0a2618, 2.0);
     scene.add(ambientLight);
 
-    // Key Light (Top-Left Greenish-Golden Tint)
-    const keyLight = new THREE.DirectionalLight(0xd9f99d, 3.2);
-    keyLight.position.set(-6, 7, 5);
-    scene.add(keyLight);
+    // Key Light (Sunlight from Top-Right)
+    const goldKeyLight = new THREE.DirectionalLight(0xfef08a, 2.8);
+    goldKeyLight.position.set(4, 7, 5);
+    scene.add(goldKeyLight);
 
-    // Fill Light (Bottom-Right Emerald)
-    const fillLight = new THREE.DirectionalLight(0x10b981, 2.2);
-    fillLight.position.set(6, -5, 4);
-    scene.add(fillLight);
+    // Fill Light (Emerald from Left)
+    const emeraldRimLight = new THREE.DirectionalLight(0x10b981, 2.0);
+    emeraldRimLight.position.set(-6, -2, 4);
+    scene.add(emeraldRimLight);
 
-    // Rim Back Light (Silhouette separation)
-    const rimLight = new THREE.DirectionalLight(0x34d399, 2.4);
-    rimLight.position.set(0, -6, -4);
-    scene.add(rimLight);
+    // Bottom White Caustic Uplight (Accentuates the bottom glowing tip)
+    const bottomWhiteLight = new THREE.PointLight(0xffffff, 2.5, 6);
+    bottomWhiteLight.position.set(0, -2.4, 0.8);
+    crystalGroup.add(bottomWhiteLight);
+
+    // Internal Core Glow Point Light
+    const coreLight = new THREE.PointLight(0x4ade80, 2.0, 7);
+    coreLight.position.set(0, 0, 0);
+    crystalGroup.add(coreLight);
 
     // 4. Subtle Tactical Dust Particles
     const particleCount = 45;
@@ -226,8 +261,9 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       particleSystem.rotation.y = time * 0.03;
       particleSystem.rotation.x = Math.sin(time * 0.4) * 0.02;
 
-      // Internal golden-green light subtle pulse
-      coreLight.intensity = 2.0 + Math.sin(time * 3.0) * 0.4;
+      // Internal light subtle pulse
+      bottomWhiteLight.intensity = 2.4 + Math.sin(time * 2.5) * 0.3;
+      coreLight.intensity = 1.8 + Math.sin(time * 3.0) * 0.3;
 
       // Current scroll progress
       const p = scrollRef.current;
