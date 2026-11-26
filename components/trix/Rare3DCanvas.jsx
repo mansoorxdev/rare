@@ -78,7 +78,7 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
 
     // 2. Load the Exact Crystal Artwork Texture (Aligned to UV Bounds)
     const textureLoader = new THREE.TextureLoader();
-    const crystalTexture = textureLoader.load('/rare-crystal-box.png');
+    const crystalTexture = textureLoader.load('/rare-crystal-pure.png');
     crystalTexture.colorSpace = THREE.SRGBColorSpace;
     crystalTexture.generateMipmaps = true;
     crystalTexture.minFilter = THREE.LinearMipmapLinearFilter;
