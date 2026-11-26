@@ -105,59 +105,90 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const envMap = pmremGenerator.fromScene(envScene).texture;
     scene.environment = envMap;
 
-    // 2. Real 3D Multi-Faceted Crystal Shard Assembly
+    // 2. High-Resolution Texture Loading for the Exact Crystal Artwork
+    const textureLoader = new THREE.TextureLoader();
+    const crystalTexture = textureLoader.load('/rare-crystal-exact.png');
+    crystalTexture.colorSpace = THREE.SRGBColorSpace;
+    const crystalNormal = textureLoader.load('/rare-crystal-normal.png');
+
+    // 3. True 3D Volumetric Crystal Assembly
     const crystalGroup = new THREE.Group();
-    crystalGroup.scale.set(0.85, 0.85, 0.85);
+    crystalGroup.scale.set(0.88, 0.88, 0.88);
     scene.add(crystalGroup);
 
-    // Build the faceted crystal buffer geometry
-    const crystalGeo = new THREE.BufferGeometry();
-    crystalGeo.setAttribute('position', new THREE.BufferAttribute(CRYSTAL_VERTICES, 3));
-    crystalGeo.computeVertexNormals();
+    // Front & Back Crystal Plates (Aspect ratio calibrated to exact crystal dimensions)
+    const planeGeo = new THREE.PlaneGeometry(3.6, 3.6, 32, 32);
 
-    // High-End Faceted Physical Emerald Glass Material
-    const crystalMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x10b981),
-      emissive: new THREE.Color(0x064e3b),
-      emissiveIntensity: 0.5,
-      roughness: 0.04,
-      metalness: 0.1,
-      transmission: 0.8,
-      ior: 1.62, // Raw Emerald Refractive Index
-      thickness: 2.2,
-      specularIntensity: 2.5,
-      specularColor: new THREE.Color(0xd1fae5),
-      flatShading: true, // Forces sharp planar reflection on each of the 52 facets!
+    // Front Master Crystal Facet Material (Exact Artwork + Dynamic Specular Normal Mapping)
+    const frontMat = new THREE.MeshStandardMaterial({
+      map: crystalTexture,
+      normalMap: crystalNormal,
+      normalScale: new THREE.Vector2(1.2, 1.2),
+      roughness: 0.12,
+      metalness: 0.15,
       transparent: true,
-      opacity: 0.95
+      alphaTest: 0.05,
+      emissive: new THREE.Color(0x059669),
+      emissiveIntensity: 0.35,
+      side: THREE.DoubleSide
     });
 
-    const crystalMesh = new THREE.Mesh(crystalGeo, crystalMat);
-    crystalGroup.add(crystalMesh);
+    const frontMesh = new THREE.Mesh(planeGeo, frontMat);
+    frontMesh.position.z = 0.22;
+    crystalGroup.add(frontMesh);
 
-    // Sharp glowing neon facet edges (traced along every crystal face)
-    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 10);
+    // Back Symmetrical Crystal Plate (Gives true double-sided 3D thickness)
+    const backMesh = new THREE.Mesh(planeGeo, frontMat);
+    backMesh.position.z = -0.22;
+    backMesh.rotation.y = Math.PI;
+    crystalGroup.add(backMesh);
+
+    // Mid-Body 3D Volumetric Faceted Core (Connecting prism with neon cybernetic facet lines)
+    const midGeo = new THREE.BufferGeometry();
+    midGeo.setAttribute('position', new THREE.BufferAttribute(CRYSTAL_VERTICES, 3));
+    midGeo.computeVertexNormals();
+
+    const midMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x10b981),
+      emissive: new THREE.Color(0x064e3b),
+      emissiveIntensity: 0.45,
+      roughness: 0.08,
+      metalness: 0.12,
+      transmission: 0.75,
+      ior: 1.62,
+      thickness: 1.8,
+      specularIntensity: 2.0,
+      specularColor: new THREE.Color(0xa7f3d0),
+      flatShading: true,
+      transparent: true,
+      opacity: 0.8
+    });
+
+    const midMesh = new THREE.Mesh(midGeo, midMat);
+    midMesh.scale.set(0.82, 0.82, 0.45);
+    crystalGroup.add(midMesh);
+
+    // Neon Cybernetic Facet Edges
+    const edgesGeo = new THREE.EdgesGeometry(midGeo, 12);
     const edgesMat = new THREE.LineBasicMaterial({
       color: new THREE.Color(0x4ade80),
       linewidth: 2,
       transparent: true,
-      opacity: 0.9
+      opacity: 0.85
     });
     const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
+    edgesMesh.scale.set(0.82, 0.82, 0.45);
     crystalGroup.add(edgesMesh);
 
-    // Internal Luminescent Crystal Core (Nested glowing crystal)
-    const coreGeo = new THREE.BufferGeometry();
-    coreGeo.setAttribute('position', new THREE.BufferAttribute(CRYSTAL_VERTICES, 3));
-    coreGeo.computeVertexNormals();
+    // Internal Bioluminescent Core (Nested glowing crystal that glints through the glass)
     const coreMat = new THREE.MeshBasicMaterial({
       color: new THREE.Color(0x86efac),
       wireframe: true,
       transparent: true,
-      opacity: 0.4
+      opacity: 0.45
     });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    coreMesh.scale.set(0.6, 0.6, 0.6);
+    const coreMesh = new THREE.Mesh(midGeo, coreMat);
+    coreMesh.scale.set(0.55, 0.55, 0.35);
     crystalGroup.add(coreMesh);
 
     // Tactical Radar Ambient Dust Particles floating in 3D
@@ -179,22 +210,22 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // 3. Cinematic 3D Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0x064e3b, 1.5);
+    // 4. Cinematic 3D Lighting Setup (High Specular Glints on Facets)
+    const ambientLight = new THREE.AmbientLight(0x064e3b, 1.6);
     scene.add(ambientLight);
 
     // Key Light (Top-Left Warm Lime)
-    const keyLight = new THREE.DirectionalLight(0xbbf7d0, 2.8);
+    const keyLight = new THREE.DirectionalLight(0xbbf7d0, 3.2);
     keyLight.position.set(-6, 7, 5);
     scene.add(keyLight);
 
     // Fill Light (Bottom-Right Emerald)
-    const fillLight = new THREE.DirectionalLight(0x10b981, 2.0);
+    const fillLight = new THREE.DirectionalLight(0x10b981, 2.2);
     fillLight.position.set(6, -5, 4);
     scene.add(fillLight);
 
     // Rim Back Light (for silhouette separation)
-    const rimLight = new THREE.DirectionalLight(0x22c55e, 1.5);
+    const rimLight = new THREE.DirectionalLight(0x22c55e, 1.8);
     rimLight.position.set(0, -6, -4);
     scene.add(rimLight);
 
@@ -203,7 +234,7 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     pointLight.position.set(0, 0, 0);
     scene.add(pointLight);
 
-    // 4. Mouse Tracking & Continuous 3D Loop
+    // 5. Mouse Tracking & Continuous 3D Loop
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
@@ -229,7 +260,7 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       // Gentle floating bob
       const idleY = Math.sin(time * 1.5) * 0.06;
 
-      // Continuous ambient rotation
+      // Continuous ambient rotation of nested core & particles
       coreMesh.rotation.y = time * 0.8;
       particleSystem.rotation.y = time * 0.04;
       particleSystem.rotation.x = Math.sin(time * 0.5) * 0.03;
@@ -261,12 +292,12 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
 
       // Light mode material adaptation
       if (lightModeRef.current) {
-        crystalMat.color.setHex(0x059669);
-        crystalMat.emissive.setHex(0x047857);
+        frontMat.emissive.setHex(0x047857);
+        midMat.color.setHex(0x059669);
         edgesMat.color.setHex(0x047857);
       } else {
-        crystalMat.color.setHex(0x10b981);
-        crystalMat.emissive.setHex(0x064e3b);
+        frontMat.emissive.setHex(0x059669);
+        midMat.color.setHex(0x10b981);
         edgesMat.color.setHex(0x4ade80);
       }
 
