@@ -9,6 +9,13 @@ import AsciiScrambleText, { AsciiCipherTape } from '../components/trix/AsciiScra
 import { usePrivy } from '../components/PrivyClientProvider';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
+// =========================================================================
+// CA (CONTRACT ADDRESS) LAUNCH TOGGLE
+// Set SHOW_CA_BANNER = true and update CONTRACT_ADDRESS when ready to launch!
+// =========================================================================
+export const SHOW_CA_BANNER = false;
+export const CONTRACT_ADDRESS = '7xK9pLm48N2qR5vT8bF2wA6yU3dE1sZ0xO9vQ4mP';
+
 export default function HomePage() {
   const { ready, authenticated, user, login, logout } = usePrivy();
 
@@ -29,6 +36,7 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState('hermes');
   const [copiedKey, setCopiedKey] = useState(false);
   const [copiedContract, setCopiedContract] = useState(false);
+  const [copiedCa, setCopiedCa] = useState(false);
 
   // Next Agent to Mint
   const nextAgentId = soldCount + 1;
@@ -227,6 +235,65 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
 
       {/* Global Tactical Header */}
       <TrixNavbar isLightMode={isLightMode} onMintClick={() => handleMintAction(nextAgent)} />
+
+      {/* Top CA (Contract Address) Announcement Bar */}
+      {SHOW_CA_BANNER && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '66px',
+            left: 0,
+            right: 0,
+            zIndex: 49,
+            background: 'rgba(4, 20, 8, 0.96)',
+            borderBottom: '1px solid #22c55e',
+            boxShadow: '0 4px 20px rgba(34, 197, 94, 0.35)',
+            padding: '8px 24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '12px',
+            fontFamily: 'var(--font-jetbrains), monospace',
+            fontSize: '11.5px',
+            color: '#86efac',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            flexWrap: 'wrap'
+          }}
+        >
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#22c55e', fontWeight: 900 }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 10px #22c55e' }} />
+            OFFICIAL $RARE CA:
+          </span>
+          <span style={{ color: '#ffffff', fontWeight: 700, letterSpacing: '0.04em', background: 'rgba(0, 0, 0, 0.65)', padding: '3px 12px', borderRadius: '3px', border: '1px solid rgba(34, 197, 94, 0.35)', userSelect: 'all' }}>
+            {CONTRACT_ADDRESS}
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                navigator.clipboard.writeText(CONTRACT_ADDRESS);
+                setCopiedCa(true);
+                setTimeout(() => setCopiedCa(false), 2000);
+              }
+            }}
+            style={{
+              background: copiedCa ? '#22c55e' : 'rgba(34, 197, 94, 0.18)',
+              border: '1px solid #22c55e',
+              color: copiedCa ? '#000000' : '#4ade80',
+              padding: '3px 12px',
+              borderRadius: '3px',
+              fontWeight: 900,
+              fontSize: '10.5px',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              transition: 'all 0.15s ease'
+            }}
+          >
+            {copiedCa ? '[ COPIED! ]' : '[ COPY CA ]'}
+          </button>
+        </div>
+      )}
 
       {/* Real 3D WebGL Emerald Crystal Canvas (Three.js) */}
       <Rare3DCanvas scrollProgress={scrollProgress} isLightMode={isLightMode} />
