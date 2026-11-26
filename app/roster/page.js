@@ -515,7 +515,7 @@ export default function RosterPage() {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <a
-                href="https://pump.fun"
+                href="https://pump.fun/coin/3DTDbbeRAZ84HKop33T14BoEt1mFJySGx2xyftDMpump"
                 target="_blank"
                 rel="noreferrer"
                 className="gamma-btn-black"

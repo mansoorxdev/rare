@@ -18,7 +18,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
     { short: 'LADDER', label: 'BONDING LADDER', href: '/ladder' },
     { short: 'SPECS', label: 'ANCHOR SPECS', href: '/specs' },
     { short: 'DOCS', label: 'DOCS', href: '/whitepaper' },
-    { short: 'BUY $RARE', label: 'BUY $RARE', href: '/#dex' }
+    { short: 'BUY $RARE', label: 'BUY $RARE', href: 'https://pump.fun/coin/3DTDbbeRAZ84HKop33T14BoEt1mFJySGx2xyftDMpump' }
   ];
 
   return (

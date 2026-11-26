@@ -13,8 +13,8 @@ import { getAgentMetadata } from '../lib/agentMetadata';
 // CA (CONTRACT ADDRESS) LAUNCH TOGGLE
 // Set SHOW_CA_BANNER = true and update CONTRACT_ADDRESS when ready to launch!
 // =========================================================================
-export const SHOW_CA_BANNER = false;
-export const CONTRACT_ADDRESS = '7xK9pLm48N2qR5vT8bF2wA6yU3dE1sZ0xO9vQ4mP';
+export const SHOW_CA_BANNER = true;
+export const CONTRACT_ADDRESS = '3DTDbbeRAZ84HKop33T14BoEt1mFJySGx2xyftDMpump';
 
 export default function HomePage() {
   const { ready, authenticated, user, login, logout } = usePrivy();
