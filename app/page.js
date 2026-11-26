@@ -165,24 +165,45 @@ export default function HomePage() {
             {/* Left Column: Big Headline, Pitch, CTAs */}
             <div>
               {/* Amber Tag */}
-              <div className="heurix-step-badge">
+              <div className="heurix-step-badge" style={{ marginBottom: '20px' }}>
                 <span className="heurix-step-badge-dot" />
                 <span>PUBLIC BETA · TOKEN-BOUND AGENTS</span>
               </div>
 
               {/* Massive Editorial Headline */}
-              <h1 className="heurix-hero-title">
+              <h1
+                className="heurix-hero-title"
+                style={{
+                  fontSize: 'clamp(48px, 5.8vw, 84px)',
+                  fontWeight: 800,
+                  lineHeight: 1.02,
+                  letterSpacing: '-0.04em',
+                  color: '#f4f1ea',
+                  marginTop: '16px',
+                  marginBottom: '28px'
+                }}
+              >
                 A mind of its own.<br />
-                A record you can read.
+                <span style={{ color: '#8e949c' }}>A record you can read.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="heurix-hero-sub">
+              <p
+                className="heurix-hero-sub"
+                style={{
+                  fontSize: 'clamp(18px, 1.4vw, 21px)',
+                  color: '#949a9f',
+                  lineHeight: 1.55,
+                  maxWidth: '520px',
+                  marginTop: 0,
+                  marginBottom: '40px'
+                }}
+              >
                 Build a trading agent. Give it a strategy. See how it performs, in public.
               </p>
 
               {/* Action Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '28px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap', marginBottom: '26px' }}>
                 <button
                   type="button"
                   onClick={() => handleMintAction(nextAgent)}
@@ -190,7 +211,7 @@ export default function HomePage() {
                   onMouseLeave={() => setIsHoveringCta(false)}
                   disabled={isMinting}
                   className="heurix-btn-amber"
-                  style={{ padding: '14px 28px', fontSize: '15px' }}
+                  style={{ padding: '16px 32px', fontSize: '16px', borderRadius: '14px', fontWeight: 700 }}
                 >
                   {isMinting ? 'Minting via Anchor...' : `Build an agent ↗`}
                 </button>
@@ -198,14 +219,14 @@ export default function HomePage() {
                 <a
                   href="#the-architecture"
                   className="heurix-btn-ghost"
-                  style={{ padding: '14px 24px', fontSize: '15px' }}
+                  style={{ padding: '16px 28px', fontSize: '16px', borderRadius: '14px', fontWeight: 600 }}
                 >
                   Connect your AI ↓
                 </a>
               </div>
 
               {/* Subtext */}
-              <div style={{ fontSize: '13px', color: '#6b7280', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '32px' }}>
+              <div style={{ fontSize: '13.5px', color: '#6b7280', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '44px' }}>
                 Your strategy. Its decisions. An open track record on Solana.
               </div>
 
@@ -215,8 +236,8 @@ export default function HomePage() {
                 alignItems: 'center',
                 gap: '24px',
                 borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                paddingTop: '20px',
-                fontSize: '11px',
+                paddingTop: '24px',
+                fontSize: '11.5px',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 color: '#9ca3af',
                 textTransform: 'uppercase',

@@ -86,7 +86,7 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
         userSelect: 'none',
         position: 'relative',
         width: '100%',
-        maxWidth: '480px',
+        maxWidth: '560px',
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
@@ -112,13 +112,13 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
         <div
           className="heurix-crt-head"
           style={{
-            width: '280px',
-            height: '250px',
-            background: 'linear-gradient(145deg, #e5e0d4 0%, #d8d2c4 45%, #c4bdad 100%)',
-            borderRadius: '28px',
-            border: '2px solid #b5ae9d',
+            width: '380px',
+            height: '330px',
+            background: 'linear-gradient(145deg, #e7e2d6 0%, #dcd6c8 45%, #c8c1b2 100%)',
+            borderRadius: '36px',
+            border: '2px solid #b8b1a0',
             boxShadow: `
-              ${-headPos.rotY * 0.8}px ${18 + headPos.rotX * 0.5}px 40px rgba(0, 0, 0, 0.65),
+              ${-headPos.rotY * 0.8}px ${20 + headPos.rotX * 0.5}px 48px rgba(0, 0, 0, 0.7),
               inset 0 2px 4px rgba(255, 255, 255, 0.6),
               inset 0 -4px 8px rgba(0, 0, 0, 0.2)
             `,
@@ -127,7 +127,7 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '20px 22px 14px 22px',
+            padding: '24px 26px 16px 26px',
             transform: 'translateZ(30px)'
           }}
         >
@@ -135,17 +135,17 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
           <div
             style={{
               position: 'absolute',
-              top: '8px',
+              top: '10px',
               display: 'flex',
-              gap: '6px',
+              gap: '8px',
               opacity: 0.35
             }}
           >
-            {[...Array(6)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <span
                 key={i}
                 style={{
-                  width: '18px',
+                  width: '20px',
                   height: '2px',
                   background: '#6d6759',
                   borderRadius: '1px'
@@ -159,12 +159,12 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
             className="heurix-crt-screen-bezel"
             style={{
               width: '100%',
-              height: '168px',
+              height: '224px',
               background: '#1a1c1d',
-              borderRadius: '20px',
+              borderRadius: '24px',
               border: '3px solid #7d7768',
               boxShadow: `
-                inset 0 4px 12px rgba(0, 0, 0, 0.9),
+                inset 0 4px 14px rgba(0, 0, 0, 0.95),
                 0 1px 2px rgba(255, 255, 255, 0.3)
               `,
               position: 'relative',
@@ -205,8 +205,8 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
                 right: 0,
                 height: '45%',
                 background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 60%, transparent 100%)',
-                borderTopLeftRadius: '16px',
-                borderTopRightRadius: '16px',
+                borderTopLeftRadius: '20px',
+                borderTopRightRadius: '20px',
                 pointerEvents: 'none',
                 zIndex: 5
               }}
@@ -222,7 +222,7 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
                 zIndex: 3,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '42px',
+                gap: '56px',
                 transform: `translate(${headPos.eyeX}px, ${headPos.eyeY}px)`,
                 transition: 'transform 0.05s ease-out'
               }}
@@ -230,11 +230,11 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
               {/* Left Eye */}
               <div
                 style={{
-                  width: isBlinking ? '28px' : '28px',
-                  height: isBlinking ? '4px' : isHoveringCta ? '20px' : '32px',
+                  width: isBlinking ? '36px' : '36px',
+                  height: isBlinking ? '4px' : isHoveringCta ? '24px' : '44px',
                   background: '#f8fafc',
-                  borderRadius: isBlinking ? '2px' : isHoveringCta ? '14px 14px 4px 4px' : '50%',
-                  boxShadow: '0 0 16px rgba(255, 255, 255, 0.85), 0 0 30px rgba(248, 250, 252, 0.45)',
+                  borderRadius: isBlinking ? '2px' : isHoveringCta ? '18px 18px 6px 6px' : '50%',
+                  boxShadow: '0 0 20px rgba(255, 255, 255, 0.9), 0 0 36px rgba(248, 250, 252, 0.5)',
                   transition: 'height 0.12s ease, border-radius 0.12s ease',
                   position: 'relative'
                 }}
@@ -244,10 +244,10 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
                   <span
                     style={{
                       position: 'absolute',
-                      top: '4px',
-                      left: '6px',
-                      width: '6px',
-                      height: '6px',
+                      top: '6px',
+                      left: '8px',
+                      width: '8px',
+                      height: '8px',
                       borderRadius: '50%',
                       background: '#ffffff',
                       opacity: 0.9
@@ -259,11 +259,11 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
               {/* Right Eye */}
               <div
                 style={{
-                  width: isBlinking ? '28px' : '28px',
-                  height: isBlinking ? '4px' : isHoveringCta ? '20px' : '32px',
+                  width: isBlinking ? '36px' : '36px',
+                  height: isBlinking ? '4px' : isHoveringCta ? '24px' : '44px',
                   background: '#f8fafc',
-                  borderRadius: isBlinking ? '2px' : isHoveringCta ? '14px 14px 4px 4px' : '50%',
-                  boxShadow: '0 0 16px rgba(255, 255, 255, 0.85), 0 0 30px rgba(248, 250, 252, 0.45)',
+                  borderRadius: isBlinking ? '2px' : isHoveringCta ? '18px 18px 6px 6px' : '50%',
+                  boxShadow: '0 0 20px rgba(255, 255, 255, 0.9), 0 0 36px rgba(248, 250, 252, 0.5)',
                   transition: 'height 0.12s ease, border-radius 0.12s ease',
                   position: 'relative'
                 }}
@@ -272,10 +272,10 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
                   <span
                     style={{
                       position: 'absolute',
-                      top: '4px',
-                      left: '6px',
-                      width: '6px',
-                      height: '6px',
+                      top: '6px',
+                      left: '8px',
+                      width: '8px',
+                      height: '8px',
                       borderRadius: '50%',
                       background: '#ffffff',
                       opacity: 0.9
@@ -293,15 +293,15 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginTop: '12px',
-              padding: '0 6px'
+              marginTop: '16px',
+              padding: '0 8px'
             }}
           >
             {/* Floppy Drive Slot */}
             <div
               style={{
-                width: '130px',
-                height: '7px',
+                width: '180px',
+                height: '8px',
                 background: '#454136',
                 borderRadius: '3px',
                 border: '1px solid #756e5d',
@@ -312,7 +312,7 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
             {/* Vintage RARE Badge */}
             <div
               style={{
-                fontSize: '9.5px',
+                fontSize: '11px',
                 fontWeight: 800,
                 letterSpacing: '0.12em',
                 fontFamily: 'var(--font-jetbrains), monospace',
@@ -326,11 +326,11 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
             {/* Amber Status LED */}
             <div
               style={{
-                width: '8px',
-                height: '8px',
+                width: '10px',
+                height: '10px',
                 borderRadius: '50%',
                 background: '#f59e0b',
-                boxShadow: '0 0 8px #f59e0b, 0 0 16px rgba(245, 158, 11, 0.6)',
+                boxShadow: '0 0 10px #f59e0b, 0 0 20px rgba(245, 158, 11, 0.6)',
                 border: '1px solid rgba(0, 0, 0, 0.3)'
               }}
             />
@@ -340,8 +340,8 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
         {/* Neck Swivel Connector */}
         <div
           style={{
-            width: '74px',
-            height: '24px',
+            width: '96px',
+            height: '28px',
             background: 'linear-gradient(180deg, #1f2224 0%, #111213 100%)',
             borderLeft: '2px solid #333',
             borderRight: '2px solid #333',
@@ -357,12 +357,12 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
         <div
           className="heurix-suit-body"
           style={{
-            width: '320px',
-            height: '170px',
+            width: '440px',
+            height: '220px',
             background: 'linear-gradient(180deg, #151719 0%, #0d0e10 100%)',
-            borderRadius: '40px 40px 0 0',
+            borderRadius: '48px 48px 0 0',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)',
+            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.85)',
             position: 'relative',
             marginTop: '-6px',
             zIndex: 6,
@@ -376,8 +376,8 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
             style={{
               position: 'absolute',
               top: 0,
-              width: '90px',
-              height: '80px',
+              width: '120px',
+              height: '100px',
               background: '#f4f1ea',
               clipPath: 'polygon(50% 100%, 0 0, 100% 0)',
               display: 'flex',
@@ -389,8 +389,8 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
             {/* Dark Tie */}
             <div
               style={{
-                width: '18px',
-                height: '70px',
+                width: '24px',
+                height: '90px',
                 background: '#090a0b',
                 clipPath: 'polygon(50% 100%, 0 15%, 20% 0, 80% 0, 100% 15%)',
                 marginTop: '4px'
@@ -403,9 +403,9 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
             style={{
               position: 'absolute',
               top: 0,
-              left: '42px',
-              width: '75px',
-              height: '120px',
+              left: '52px',
+              width: '105px',
+              height: '155px',
               background: 'linear-gradient(135deg, #1e2124 0%, #111315 100%)',
               clipPath: 'polygon(0 0, 100% 100%, 0 100%)',
               borderRight: '1px solid rgba(255, 255, 255, 0.08)'
@@ -417,9 +417,9 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
             style={{
               position: 'absolute',
               top: 0,
-              right: '42px',
-              width: '75px',
-              height: '120px',
+              right: '52px',
+              width: '105px',
+              height: '155px',
               background: 'linear-gradient(225deg, #1e2124 0%, #111315 100%)',
               clipPath: 'polygon(100% 0, 0 100%, 100% 100%)',
               borderLeft: '1px solid rgba(255, 255, 255, 0.08)'
@@ -432,22 +432,22 @@ export default function HeurixOperatorHead({ onInteract, isHoveringCta }) {
       <div
         style={{
           position: 'absolute',
-          bottom: '10px',
-          right: '-10px',
+          bottom: '16px',
+          right: '-16px',
           background: 'rgba(18, 19, 21, 0.92)',
           border: '1px solid rgba(255, 255, 255, 0.1)',
           backdropFilter: 'blur(12px)',
           borderRadius: '12px',
-          padding: '8px 14px',
+          padding: '10px 16px',
           boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6)',
           zIndex: 20,
           pointerEvents: 'none'
         }}
       >
-        <div style={{ fontSize: '10px', fontWeight: 800, color: '#f59e0b', letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'var(--font-jetbrains), monospace' }}>
+        <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#f59e0b', letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'var(--font-jetbrains), monospace' }}>
           MEET THE OPERATOR
         </div>
-        <div style={{ fontSize: '11px', color: '#9ca3af', marginTop: '2px' }}>
+        <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '2px' }}>
           Always on-chain. Funded by 90% PDA capital.
         </div>
       </div>
