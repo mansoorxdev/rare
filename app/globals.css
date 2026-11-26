@@ -616,3 +616,157 @@ body {
 .agent-card-anim:hover .roster-card-box img {
   transform: scale(1.05);
 }
+
+/* ==========================================================================
+   HEURIX DESIGN SYSTEM STYLES (WARM OBSIDIAN, AMBER ACCENTS, EDITORIAL TYPE)
+   ========================================================================== */
+
+.heurix-page-container {
+  min-height: 100vh;
+  background-color: #0c0d0f !important;
+  background: #0c0d0f !important;
+  color: #f4f1ea !important;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Heurix Navbar */
+.heurix-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  z-index: 50;
+  background: rgba(12, 13, 15, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+}
+
+.heurix-navbar-inner {
+  max-width: 1360px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Heurix Buttons */
+.heurix-btn-amber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f59e0b;
+  color: #000000 !important;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 12px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.heurix-btn-amber:hover {
+  background: #fbbf24;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1.5px);
+}
+
+.heurix-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f1ea !important;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 12px;
+  padding: 12px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.heurix-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1.5px);
+}
+
+/* Heurix Step Badges */
+.heurix-step-badge {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.heurix-step-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+/* Heurix Section Titles */
+.heurix-section-title {
+  font-size: clamp(34px, 4.2vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: #f4f1ea;
+  margin-bottom: 16px;
+}
+
+.heurix-section-subtitle {
+  font-size: clamp(15px, 1.25vw, 17px);
+  color: #949a9f;
+  line-height: 1.6;
+  max-width: 640px;
+}
+
+/* Heurix Cards */
+.heurix-card {
+  background: #121417;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 28px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.heurix-card:hover {
+  border-color: rgba(245, 158, 11, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+/* Setup Terminal Box */
+.heurix-terminal-box {
+  background: #0f1012;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
