@@ -102,27 +102,27 @@ export default function WhitepaperPage() {
             <div style={{ background: 'rgba(3, 16, 7, 0.95)', borderRadius: '14px', border: '1px solid rgba(34, 197, 94, 0.35)', padding: '16px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#94a3b8' }}>Band 1 (#00001 - #01008):</span>
-                <span style={{ color: '#34d399', fontWeight: 700 }}>0.020 SOL (90% PDA: 0.0180 SOL)</span>
+                <span style={{ color: '#34d399', fontWeight: 700 }}>2,500 $RARE (90% PDA: 2,250 $RARE)</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#94a3b8' }}>Band 2 (#01009 - #02016):</span>
-                <span style={{ color: '#ffffff', fontWeight: 700 }}>0.026 SOL (90% PDA: 0.0234 SOL)</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>3,250 $RARE (90% PDA: 2,925 $RARE)</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#94a3b8' }}>Band 3 (#02017 - #03024):</span>
-                <span style={{ color: '#ffffff', fontWeight: 700 }}>0.034 SOL (90% PDA: 0.0306 SOL)</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>4,200 $RARE (90% PDA: 3,780 $RARE)</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#94a3b8' }}>Band 5 (#04033 - #05040):</span>
-                <span style={{ color: '#ffffff', fontWeight: 700 }}>0.057 SOL (90% PDA: 0.0513 SOL)</span>
+                <span style={{ color: '#ffffff', fontWeight: 700 }}>7,100 $RARE (90% PDA: 6,390 $RARE)</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#94a3b8' }}>Band 10 (#09073 - #10078):</span>
-                <span style={{ color: '#4ade80', fontWeight: 700 }}>0.212 SOL (90% PDA: 0.1908 SOL)</span>
+                <span style={{ color: '#4ade80', fontWeight: 700 }}>26,400 $RARE (90% PDA: 23,760 $RARE)</span>
               </div>
             </div>
             <p style={{ fontSize: '14.5px' }}>
-              At collection sellout, over <strong style={{ color: '#34d399', fontWeight: 700 }}>650+ SOL</strong> will be held directly across agent PDA vaults on Solana Mainnet, establishing RARE as one of the most capitalized autonomous agent swarms in Web3.
+              At collection sellout, millions of <strong style={{ color: '#34d399', fontWeight: 700 }}>$RARE tokens</strong> will be held directly across agent PDA vaults on Solana Mainnet, establishing RARE as one of the most capitalized autonomous agent swarms in Web3.
             </p>
           </section>
 

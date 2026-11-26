@@ -48,7 +48,7 @@ export default function TerminalPage() {
         newLines.push(
           { type: 'mint', text: '[+] NETWORK: Solana Mainnet-Beta (Anchor CPI v0.30.1)' },
           { type: 'text', text: '[+] TOTAL SUPPLY: 10,078 Autonomous AI Agents' },
-          { type: 'text', text: '[+] MINT STATUS: Active (Band 1 @ 0.020 SOL)' },
+          { type: 'text', text: '[+] MINT STATUS: Active (Band 1 @ 2,500 $RARE)' },
           { type: 'mint', text: '[+] CAPITAL VAULTS: 90% Allocated to Token-Bound PDAs' },
           { type: 'dim', text: '[+] TREASURY: 3ivjUQCmaykSnGeCkuy8yViw82umrfDCmXkxtWSeqyEk' }
         );
@@ -100,11 +100,11 @@ export default function TerminalPage() {
       case 'ladder':
         newLines.push(
           { type: 'mint', text: '[+] PROTOCOL PRICE LADDER (10 BANDS):' },
-          { type: 'text', text: '    Band 1  (#00001 - #01008): 0.020 SOL (90% PDA: 0.0180 SOL) - [ACTIVE]' },
-          { type: 'text', text: '    Band 2  (#01009 - #02016): 0.026 SOL (90% PDA: 0.0234 SOL)' },
-          { type: 'text', text: '    Band 3  (#02017 - #03024): 0.034 SOL (90% PDA: 0.0306 SOL)' },
-          { type: 'text', text: '    Band 5  (#04033 - #05040): 0.057 SOL (90% PDA: 0.0513 SOL)' },
-          { type: 'text', text: '    Band 10 (#09073 - #10078): 0.212 SOL (90% PDA: 0.1908 SOL)' }
+          { type: 'text', text: '    Band 1  (#00001 - #01008): 2,500 $RARE (90% PDA: 2,250 $RARE) - [ACTIVE]' },
+          { type: 'text', text: '    Band 2  (#01009 - #02016): 3,250 $RARE (90% PDA: 2,925 $RARE)' },
+          { type: 'text', text: '    Band 3  (#02017 - #03024): 4,200 $RARE (90% PDA: 3,780 $RARE)' },
+          { type: 'text', text: '    Band 5  (#04033 - #05040): 7,100 $RARE (90% PDA: 6,390 $RARE)' },
+          { type: 'text', text: '    Band 10 (#09073 - #10078): 26,400 $RARE (90% PDA: 23,760 $RARE)' }
         );
         break;
 

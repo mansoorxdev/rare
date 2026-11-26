@@ -637,7 +637,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                   transition: 'all 0.15s ease'
                 }}
               >
-                [ MINT THIS AGENT (0.020 SOL) → ]
+                [ MINT THIS AGENT (2,500 $RARE) → ]
               </button>
             </div>
           ))}
