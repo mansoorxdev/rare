@@ -45,9 +45,9 @@ export default function WhitepaperPage() {
         <article style={{
           maxWidth: '840px',
           margin: '0 auto 40px auto',
-          background: '#121422',
-          borderRadius: '24px',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(4, 20, 8, 0.88)',
+          borderRadius: '4px',
+          border: '1px solid rgba(34, 197, 94, 0.35)',
           padding: '40px',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
           lineHeight: 1.7,
@@ -55,7 +55,7 @@ export default function WhitepaperPage() {
         }}>
           {/* Section 1 */}
           <section style={{ marginBottom: '36px' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#4ade80', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               01 // Executive Summary
             </span>
             <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px 0' }}>
@@ -70,8 +70,8 @@ export default function WhitepaperPage() {
           </section>
 
           {/* Section 2 */}
-          <section style={{ marginBottom: '36px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '32px' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+          <section style={{ marginBottom: '36px', borderTop: '1px solid rgba(34, 197, 94, 0.35)', paddingTop: '32px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#4ade80', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               02 // Protocol Architecture
             </span>
             <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px 0' }}>
@@ -80,7 +80,7 @@ export default function WhitepaperPage() {
             <p style={{ fontSize: '14.5px', marginBottom: '14px' }}>
               Inspired by ERC-6551 but engineered natively for Solana's sub-second finality and low rent costs, RARE leverages Anchor PDAs derived from the agent's token mint address:
             </p>
-            <pre style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#181b2e', padding: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', color: '#ffffff', lineHeight: 1.6, marginBottom: '14px' }}>
+            <pre style={{ overflowX: 'auto', borderRadius: '3px', border: '1px solid rgba(34, 197, 94, 0.35)', background: 'rgba(3, 16, 7, 0.95)', padding: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', color: '#ffffff', lineHeight: 1.6, marginBottom: '14px' }}>
               <code>PDA_Vault = Pubkey::find_program_address([b"agent_vault", mint_pubkey, agent_id], program_id)</code>
             </pre>
             <p style={{ fontSize: '14.5px' }}>
@@ -89,8 +89,8 @@ export default function WhitepaperPage() {
           </section>
 
           {/* Section 3 */}
-          <section style={{ marginBottom: '36px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '32px' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+          <section style={{ marginBottom: '36px', borderTop: '1px solid rgba(34, 197, 94, 0.35)', paddingTop: '32px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#4ade80', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               03 // Bonding Curve Economics
             </span>
             <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px 0' }}>
@@ -99,7 +99,7 @@ export default function WhitepaperPage() {
             <p style={{ fontSize: '14.5px', marginBottom: '14px' }}>
               The collection is strictly capped at <strong style={{ color: '#ffffff', fontWeight: 700 }}>10,078 Genesis Units</strong> distributed across 10 progressive pricing bands. The deterministic bonding curve rewards early network participants:
             </p>
-            <div style={{ background: '#16192a', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)', padding: '16px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
+            <div style={{ background: 'rgba(3, 16, 7, 0.95)', borderRadius: '14px', border: '1px solid rgba(34, 197, 94, 0.35)', padding: '16px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '14px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#94a3b8' }}>Band 1 (#00001 - #01008):</span>
                 <span style={{ color: '#34d399', fontWeight: 700 }}>0.020 SOL (90% PDA: 0.0180 SOL)</span>
@@ -118,7 +118,7 @@ export default function WhitepaperPage() {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#94a3b8' }}>Band 10 (#09073 - #10078):</span>
-                <span style={{ color: '#c084fc', fontWeight: 700 }}>0.212 SOL (90% PDA: 0.1908 SOL)</span>
+                <span style={{ color: '#4ade80', fontWeight: 700 }}>0.212 SOL (90% PDA: 0.1908 SOL)</span>
               </div>
             </div>
             <p style={{ fontSize: '14.5px' }}>
@@ -127,8 +127,8 @@ export default function WhitepaperPage() {
           </section>
 
           {/* Section 4 */}
-          <section style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '32px' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+          <section style={{ borderTop: '1px solid rgba(34, 197, 94, 0.35)', paddingTop: '32px' }}>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#4ade80', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               04 // Anchor CPI Routing &amp; Safety Invariants
             </span>
             <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px 0' }}>

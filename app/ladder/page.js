@@ -50,15 +50,15 @@ export default function LadderPage() {
 
         {/* Interactive Capital Routing Calculator */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.04)',
+          background: 'rgba(34, 197, 94, 0.15)',
           backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '24px',
+          border: '1px solid rgba(34, 197, 94, 0.35)',
+          borderRadius: '4px',
           padding: '28px',
           marginBottom: '36px',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)'
         }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '16px', marginBottom: '24px', gap: '12px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(34, 197, 94, 0.35)', paddingBottom: '16px', marginBottom: '24px', gap: '12px' }}>
             <div>
               <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', margin: 0 }}>
                 Capital Routing Calculator
@@ -92,7 +92,7 @@ export default function LadderPage() {
                 max="50"
                 value={calcQty}
                 onChange={(e) => setCalcQty(parseInt(e.target.value, 10))}
-                style={{ width: '100%', accentColor: '#a855f7', cursor: 'pointer', marginBottom: '16px' }}
+                style={{ width: '100%', accentColor: '#22c55e', cursor: 'pointer', marginBottom: '16px' }}
               />
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 {[1, 5, 10, 20, 50].map((num) => (
@@ -105,8 +105,8 @@ export default function LadderPage() {
                       padding: '5px 14px',
                       fontSize: '12px',
                       fontFamily: 'var(--font-jetbrains), monospace',
-                      border: calcQty === num ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
-                      background: calcQty === num ? '#ffffff' : 'rgba(255, 255, 255, 0.06)',
+                      border: calcQty === num ? 'none' : '1px solid rgba(34, 197, 94, 0.4)',
+                      background: calcQty === num ? '#ffffff' : 'rgba(34, 197, 94, 0.2)',
                       color: calcQty === num ? '#000000' : '#94a3b8',
                       fontWeight: calcQty === num ? 700 : 500,
                       cursor: 'pointer',
@@ -120,15 +120,15 @@ export default function LadderPage() {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px', fontFamily: 'var(--font-jetbrains), monospace' }}>
-              <div style={{ background: '#16192a', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '16px' }}>
+              <div style={{ background: 'rgba(3, 16, 7, 0.95)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '16px' }}>
                 <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Total Capital</span>
                 <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>{totalCost} SOL</span>
               </div>
-              <div style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(52, 211, 153, 0.25)', borderRadius: '16px', padding: '16px' }}>
+              <div style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(52, 211, 153, 0.25)', borderRadius: '4px', padding: '16px' }}>
                 <span style={{ fontSize: '10px', color: '#34d399', display: 'block', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 700 }}>90% Agent PDA</span>
                 <span style={{ fontSize: '20px', fontWeight: 800, color: '#34d399' }}>{pdaDeposit} SOL</span>
               </div>
-              <div style={{ background: '#16192a', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '16px' }}>
+              <div style={{ background: 'rgba(3, 16, 7, 0.95)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '16px' }}>
                 <span style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>10% Protocol</span>
                 <span style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>{treasurySplit} SOL</span>
               </div>
@@ -138,14 +138,14 @@ export default function LadderPage() {
 
         {/* 10-Tier Ladder Table */}
         <div style={{
-          background: '#121422',
-          borderRadius: '24px',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(4, 20, 8, 0.88)',
+          borderRadius: '4px',
+          border: '1px solid rgba(34, 197, 94, 0.35)',
           overflow: 'hidden',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
           marginBottom: '40px'
         }}>
-          <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ borderBottom: '1px solid rgba(34, 197, 94, 0.35)', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff', margin: 0 }}>
               10 Bonding Curve Tiers (10,078 Total Agents)
             </h2>
@@ -157,7 +157,7 @@ export default function LadderPage() {
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px' }}>
               <thead>
-                <tr style={{ background: '#181b2e', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: '#94a3b8', fontSize: '11px', textTransform: 'uppercase' }}>
+                <tr style={{ background: 'rgba(3, 16, 7, 0.95)', borderBottom: '1px solid rgba(34, 197, 94, 0.35)', color: '#94a3b8', fontSize: '11px', textTransform: 'uppercase' }}>
                   <th style={{ padding: '12px 24px' }}>Tier</th>
                   <th style={{ padding: '12px 24px' }}>Agent Range</th>
                   <th style={{ padding: '12px 24px' }}>Mint Price</th>
@@ -173,7 +173,7 @@ export default function LadderPage() {
                     <tr
                       key={item.band}
                       style={{
-                        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                        borderBottom: '1px solid rgba(34, 197, 94, 0.2)',
                         background: isCurrent ? 'rgba(16, 185, 129, 0.08)' : 'transparent'
                       }}
                     >

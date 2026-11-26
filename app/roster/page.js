@@ -148,9 +148,9 @@ export default function RosterPage() {
 
         {/* Filter & Search Bar */}
         <div style={{
-          background: '#18191b',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '20px',
+          background: 'rgba(5, 24, 10, 0.88)',
+          border: '1px solid rgba(34, 197, 94, 0.35)',
+          borderRadius: '4px',
           padding: '12px 18px',
           marginBottom: '28px',
           display: 'flex',
@@ -158,12 +158,12 @@ export default function RosterPage() {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '14px',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)'
         }}>
           {/* Rarity Filter Pills */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', marginRight: '4px' }}>
-              Rarity:
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#4ade80', textTransform: 'uppercase', marginRight: '4px', fontWeight: 800 }}>
+              RARITY:
             </span>
             {['all', 'legendary', 'epic', 'rare', 'common'].map((tier) => {
               const isActive = rarityFilter === tier;
@@ -174,9 +174,9 @@ export default function RosterPage() {
                   onClick={() => { setRarityFilter(tier); setPage(1); }}
                   className={`rarible-filter-pill ${isActive ? 'active' : ''}`}
                   style={{
-                    padding: '6px 16px',
-                    fontSize: '12px',
-                    textTransform: 'capitalize'
+                    padding: '6px 14px',
+                    fontSize: '11px',
+                    textTransform: 'uppercase'
                   }}
                 >
                   {tier === 'all' ? 'All Tiers' : tier}
@@ -194,15 +194,15 @@ export default function RosterPage() {
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               style={{
                 width: '100%',
-                borderRadius: '9999px',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                background: '#111214',
+                borderRadius: '3px',
+                border: '1px solid rgba(34, 197, 94, 0.4)',
+                background: 'rgba(0, 0, 0, 0.65)',
                 padding: '7px 16px',
-                fontSize: '12.5px',
-                color: '#ffffff',
+                fontSize: '12px',
+                color: '#86efac',
                 outline: 'none',
-                fontFamily: 'var(--font-sans)',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                fontFamily: 'var(--font-jetbrains), monospace',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.5)'
               }}
             />
           </div>

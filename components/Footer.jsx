@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', background: '#07080d' }}>
+    <footer style={{ borderTop: '1px solid rgba(34, 197, 94, 0.25)', background: '#020904' }}>
       <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '64px 24px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '36px' }}>
           {/* Col 1 */}

@@ -47,10 +47,23 @@ body {
 .gamma-page-container,
 .rarible-page-container {
   min-height: 100vh;
-  background-color: #0c0d0e !important;
-  background: #0c0d0e !important;
-  color: #ffffff !important;
-  font-family: var(--font-sans);
+  background-color: #030f06 !important;
+  background: radial-gradient(ellipse at 50% 0%, #05200e 0%, #030f06 65%, #010703 100%) !important;
+  color: #f8fafc !important;
+  font-family: var(--font-jetbrains), monospace !important;
+  position: relative;
+}
+
+.gamma-page-container::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 255, 0, 0.03));
+  z-index: 5;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  opacity: 0.35;
 }
 
 /* Rarible / Gamma Navigation Bar */
@@ -115,28 +128,29 @@ body {
   color: #6b7280;
 }
 
-/* Primary High-Contrast White Pill CTA */
+/* Primary Tactical Green Pill CTA */
 .gamma-btn-black {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background: #22c55e !important;
   color: #000000 !important;
-  font-weight: 700;
-  font-size: 13.5px;
-  border-radius: 9999px;
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 3px !important;
   padding: 10px 24px;
-  border: none;
+  border: 1px solid #22c55e !important;
   cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.3);
+  transition: all 0.18s ease;
   white-space: nowrap;
   text-decoration: none;
+  font-family: var(--font-jetbrains), monospace !important;
 }
 
 .gamma-btn-black:hover {
-  background: #f1f5f9;
-  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
+  background: #4ade80 !important;
+  box-shadow: 0 0 24px rgba(34, 197, 94, 0.5);
   transform: translateY(-1px);
 }
 
@@ -145,23 +159,24 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #18191b;
-  color: #ffffff !important;
-  font-weight: 600;
-  font-size: 13.5px;
-  border-radius: 9999px;
+  background: rgba(34, 197, 94, 0.12) !important;
+  color: #86efac !important;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 3px !important;
   padding: 10px 22px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.4) !important;
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.18s ease;
   white-space: nowrap;
   text-decoration: none;
+  font-family: var(--font-jetbrains), monospace !important;
 }
 
 .gamma-btn-white:hover {
-  background: #222326;
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(34, 197, 94, 0.25) !important;
+  border-color: #22c55e !important;
   transform: translateY(-1px);
 }
 
@@ -194,42 +209,48 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 800;
+  color: #4ade80 !important;
   margin-bottom: 16px;
   padding: 4px 12px;
-  background: #18191b;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 9999px;
+  background: rgba(34, 197, 94, 0.12) !important;
+  border: 1px solid rgba(34, 197, 94, 0.45) !important;
+  border-radius: 2px !important;
+  font-family: var(--font-jetbrains), monospace !important;
+  letter-spacing: 0.04em;
 }
 
 .gamma-badge-icon {
-  width: 18px;
-  height: 18px;
-  background: rgba(153, 69, 255, 0.15);
-  color: #a855f7;
-  border-radius: 9999px;
+  width: 16px;
+  height: 16px;
+  background: rgba(34, 197, 94, 0.25) !important;
+  color: #22c55e !important;
+  border-radius: 2px !important;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .gamma-hero-title {
-  font-size: clamp(40px, 5.2vw, 72px);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
-  color: #ffffff;
-  margin: 0 0 18px 0;
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #ffffff !important;
+  text-shadow: 0 0 20px rgba(34, 197, 94, 0.35);
+  margin: 0 0 16px 0;
+  font-family: var(--font-jetbrains), monospace !important;
 }
 
 .gamma-hero-subtitle {
-  font-size: clamp(15px, 1.3vw, 17.5px);
-  color: #9ca3af;
+  font-size: clamp(14px, 1.2vw, 16px);
+  color: #86efac !important;
+  opacity: 0.9;
   line-height: 1.6;
-  max-width: 520px;
+  max-width: 640px;
   margin: 0 0 28px 0;
+  font-family: var(--font-jetbrains), monospace !important;
 }
 
 .gamma-hero-actions {
@@ -386,29 +407,30 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 3px !important;
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.18s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #18191b;
-  color: #9ca3af;
+  border: 1px solid rgba(34, 197, 94, 0.35) !important;
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: #86efac !important;
+  font-family: var(--font-jetbrains), monospace !important;
 }
 
 .rarible-filter-pill:hover {
-  color: #ffffff;
-  background: #222326;
-  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+  background: rgba(34, 197, 94, 0.25) !important;
+  border-color: #22c55e !important;
 }
 
 .rarible-filter-pill.active {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
-  font-weight: 700;
+  background: #22c55e !important;
+  color: #000000 !important;
+  border-color: #22c55e !important;
+  font-weight: 900 !important;
 }
 
 /* Rarible Bottom Horizontal Dock */
@@ -498,30 +520,32 @@ body {
 }
 
 .gamma-small-card {
-  background: #18191b;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(4, 20, 8, 0.88) !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(34, 197, 94, 0.28) !important;
   padding: 12px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(34, 197, 94, 0.04) !important;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  font-family: var(--font-jetbrains), monospace !important;
 }
 
 .gamma-small-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
-  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-3px);
+  box-shadow: 0 0 24px rgba(34, 197, 94, 0.35) !important;
+  border-color: #22c55e !important;
 }
 
 .gamma-small-avatar-box {
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 12px;
-  background: #111214;
+  border-radius: 3px !important;
+  background: rgba(0, 0, 0, 0.75) !important;
+  border: 1px solid rgba(34, 197, 94, 0.2) !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -549,7 +573,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   display: flex;
@@ -562,14 +586,15 @@ body {
   position: relative;
   width: 100%;
   max-width: 520px;
-  background: #18191b;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
+  background: #041408 !important;
+  border: 1px solid rgba(34, 197, 94, 0.5) !important;
+  border-radius: 4px !important;
   padding: 24px;
-  box-shadow: 0 35px 90px -15px rgba(0, 0, 0, 0.95);
+  box-shadow: 0 0 50px rgba(34, 197, 94, 0.25), 0 35px 90px -15px rgba(0, 0, 0, 0.95) !important;
   max-height: 90vh;
   overflow-y: auto;
-  color: #ffffff;
+  color: #f8fafc !important;
+  font-family: var(--font-jetbrains), monospace !important;
 }
 
 /* Homepage Swarm Grid */

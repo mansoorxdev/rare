@@ -33,25 +33,25 @@ export default function SpecsPage() {
 
         {/* 4-Box Summary Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '32px' }}>
-          <div style={{ background: '#121422', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+          <div style={{ background: 'rgba(4, 20, 8, 0.88)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
             <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>FRAMEWORK</span>
             <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>Anchor 0.30.1</div>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 600, marginTop: '4px', display: 'block' }}>Solana Rust Framework</span>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#4ade80', fontWeight: 600, marginTop: '4px', display: 'block' }}>Solana Rust Framework</span>
           </div>
 
-          <div style={{ background: '#121422', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+          <div style={{ background: 'rgba(4, 20, 8, 0.88)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
             <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>ON-CHAIN SPLIT</span>
             <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>90% PDA / 10% Protocol</div>
             <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#34d399', fontWeight: 600, marginTop: '4px', display: 'block' }}>Hardcoded Invariant</span>
           </div>
 
-          <div style={{ background: '#121422', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+          <div style={{ background: 'rgba(4, 20, 8, 0.88)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
             <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>PDA CUSTODY</span>
             <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>Token-Bound Anchor CPI</div>
-            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#c084fc', fontWeight: 600, marginTop: '4px', display: 'block' }}>Transfers on Secondary</span>
+            <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#4ade80', fontWeight: 600, marginTop: '4px', display: 'block' }}>Transfers on Secondary</span>
           </div>
 
-          <div style={{ background: '#121422', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '20px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
+          <div style={{ background: 'rgba(4, 20, 8, 0.88)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '20px', boxShadow: '0 4px 14px rgba(0,0,0,0.3)' }}>
             <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '10.5px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block' }}>TOTAL AGENTS</span>
             <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>10,078 Genesis Units</div>
             <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#34d399', fontWeight: 600, marginTop: '4px', display: 'block' }}>Immutable Cap</span>
@@ -60,14 +60,14 @@ export default function SpecsPage() {
 
         {/* Detailed Spec Container */}
         <div style={{
-          background: '#121422',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '24px',
+          background: 'rgba(4, 20, 8, 0.88)',
+          border: '1px solid rgba(34, 197, 94, 0.35)',
+          borderRadius: '4px',
           padding: '28px',
           marginBottom: '32px',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)'
         }}>
-          <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '16px', marginBottom: '24px' }}>
+          <div style={{ borderBottom: '1px solid rgba(34, 197, 94, 0.35)', paddingBottom: '16px', marginBottom: '24px' }}>
             <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', margin: 0 }}>
               Anchor Instruction &amp; Seed Definitions
             </h2>
@@ -75,26 +75,26 @@ export default function SpecsPage() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12.5px' }}>
-            <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '16px' }}>
+            <div style={{ borderBottom: '1px solid rgba(34, 197, 94, 0.2)', paddingBottom: '16px' }}>
               <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>PROGRAM TREASURY PUBKEY</span>
               <code style={{ fontSize: '13px', color: '#ffffff', fontWeight: 700, userSelect: 'all' }}>{treasury}</code>
             </div>
 
-            <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '16px' }}>
+            <div style={{ borderBottom: '1px solid rgba(34, 197, 94, 0.2)', paddingBottom: '16px' }}>
               <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>PDA VAULT SEED DERIVATION</span>
-              <pre style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', background: '#181b2e', padding: '14px', fontSize: '12px', color: '#ffffff', lineHeight: 1.6 }}>
+              <pre style={{ overflowX: 'auto', borderRadius: '3px', border: '1px solid rgba(34, 197, 94, 0.35)', background: 'rgba(3, 16, 7, 0.95)', padding: '14px', fontSize: '12px', color: '#ffffff', lineHeight: 1.6 }}>
                 <code>Pubkey::find_program_address(&amp;[b"agent_vault", mint.key().as_ref(), &amp;agent_id.to_le_bytes()], &amp;program_id)</code>
               </pre>
             </div>
 
-            <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '16px' }}>
+            <div style={{ borderBottom: '1px solid rgba(34, 197, 94, 0.2)', paddingBottom: '16px' }}>
               <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>CPI CAPITAL ROUTING FLOW</span>
               <p style={{ fontSize: '13px', color: '#cbd5e1', fontFamily: 'var(--font-sans)', lineHeight: 1.6, margin: 0 }}>
                 Upon calling <code style={{ fontFamily: 'var(--font-jetbrains), monospace', color: '#ffffff', fontWeight: 600 }}>mint_agent(ctx, agent_id)</code>, the Anchor program executes two atomic cross-program transfers in the same block:
               </p>
               <ul style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '6px', paddingLeft: '20px', fontSize: '13px', color: '#cbd5e1', fontFamily: 'var(--font-sans)' }}>
                 <li><strong style={{ color: '#34d399', fontFamily: 'var(--font-jetbrains), monospace' }}>90% (9,000 BPS):</strong> Transferred directly to the newly derived <code style={{ color: '#ffffff', fontWeight: 600 }}>agent_vault</code> PDA.</li>
-                <li><strong style={{ color: '#c084fc', fontFamily: 'var(--font-jetbrains), monospace' }}>10% (1,000 BPS):</strong> Transferred directly to the protocol operations treasury.</li>
+                <li><strong style={{ color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace' }}>10% (1,000 BPS):</strong> Transferred directly to the protocol operations treasury.</li>
               </ul>
             </div>
 
@@ -109,14 +109,14 @@ export default function SpecsPage() {
 
         {/* Real Smart Contract Code Snippet */}
         <div style={{
-          background: '#0c0d14',
-          borderRadius: '24px',
+          background: 'rgba(2, 10, 4, 0.95)',
+          borderRadius: '4px',
           border: '1px solid rgba(15, 23, 42, 0.2)',
           overflow: 'hidden',
           boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.35)',
           marginBottom: '40px'
         }}>
-          <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(255, 255, 255, 0.03)', padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ borderBottom: '1px solid rgba(34, 197, 94, 0.4)', background: 'rgba(255, 255, 255, 0.03)', padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12px', color: '#e2e8f0', fontWeight: 600 }}>rare_protocol / src / lib.rs</span>
             <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#34d399', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600 }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '9999px', background: '#34d399' }} />
@@ -126,10 +126,10 @@ export default function SpecsPage() {
 
           <pre style={{ overflowX: 'auto', padding: '20px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '12.5px', lineHeight: 1.8, color: '#f1f5f9', margin: 0 }}>
             <code>
-              <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>01</span><span style={{ color: '#c084fc' }}>pub fn</span> <span>mint_agent</span>(ctx: Context&lt;MintAgent&gt;, agent_id: u16) -&gt; Result&lt;()&gt; &#123;</span>
-              <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>02</span>    <span style={{ color: '#c084fc' }}>let</span> mint_price = get_band_price(agent_id);</span>
-              <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>03</span>    <span style={{ color: '#c084fc' }}>let</span> pda_deposit = mint_price * <span style={{ color: '#34d399' }}>90</span> / <span style={{ color: '#34d399' }}>100</span>;</span>
-              <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>04</span>    <span style={{ color: '#c084fc' }}>let</span> treasury_deposit = mint_price - pda_deposit;</span>
+              <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>01</span><span style={{ color: '#4ade80' }}>pub fn</span> <span>mint_agent</span>(ctx: Context&lt;MintAgent&gt;, agent_id: u16) -&gt; Result&lt;()&gt; &#123;</span>
+              <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>02</span>    <span style={{ color: '#4ade80' }}>let</span> mint_price = get_band_price(agent_id);</span>
+              <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>03</span>    <span style={{ color: '#4ade80' }}>let</span> pda_deposit = mint_price * <span style={{ color: '#34d399' }}>90</span> / <span style={{ color: '#34d399' }}>100</span>;</span>
+              <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>04</span>    <span style={{ color: '#4ade80' }}>let</span> treasury_deposit = mint_price - pda_deposit;</span>
               <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>05</span></span>
               <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>06</span>    <span style={{ color: '#64748b' }}>// 1. Atomic Anchor CPI transfer to Agent Token-Bound PDA Vault</span></span>
               <span style={{ display: 'block' }}><span style={{ color: '#64748b', userSelect: 'none', marginRight: '16px' }}>07</span>    anchor_lang::solana_program::program::invoke(</span>
