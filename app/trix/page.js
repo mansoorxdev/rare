@@ -318,7 +318,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
 
             <h1
               style={{
-                fontSize: 'clamp(28px, 3.4vw, 48px)',
+                fontSize: 'clamp(30px, 3.6vw, 50px)',
                 fontWeight: 900,
                 lineHeight: 1.1,
                 letterSpacing: '-0.025em',
@@ -327,9 +327,11 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 margin: '0 0 16px 0'
               }}
             >
-              <AsciiScrambleText text="AI TRADING AGENTS." speed={24} revealDelay={2} />
+              <span className="ascii-dot-title">
+                <AsciiScrambleText text="AI TRADING AGENTS." speed={24} revealDelay={2} />
+              </span>
               <br />
-              <span style={{ color: '#22c55e', display: 'inline-flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
                 <span
                   style={{
                     display: 'inline-block',
@@ -339,7 +341,9 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                     boxShadow: '0 0 12px #22c55e'
                   }}
                 />
-                <AsciiScrambleText text="MEASURED, NOT MARKETED." speed={26} revealDelay={2} />
+                <span className="ascii-dot-title ascii-dot-green">
+                  <AsciiScrambleText text="MEASURED, NOT MARKETED." speed={26} revealDelay={2} />
+                </span>
               </span>
             </h1>
 
@@ -418,7 +422,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 margin: '0 0 8px 0'
               }}
             >
-              Compare returns, risk, and on-chain execution with transparent methods. Every metric needs a verified source, a window, and an on-chain transaction label.
+              <AsciiScrambleText text="Compare returns, risk, and on-chain execution with transparent methods. Every metric needs a verified source, a window, and an on-chain transaction label." speed={18} revealDelay={2} />
             </p>
             <div style={{ fontSize: '9.5px', color: '#4ade80', opacity: 0.8, fontFamily: 'var(--font-jetbrains), monospace' }}>
               [STATUS: Product preview. Live benchmark data connected]
@@ -462,8 +466,8 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               <span>+--- [02] ACTIVE_SWARM_ROSTER</span>
               <span style={{ opacity: 0.6 }}>---+</span>
             </div>
-            <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', margin: 0 }}>
-              TOKEN-BOUND <span style={{ color: '#22c55e' }}>AGENT ARCHETYPES</span>
+            <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', margin: 0 }}>
+              TOKEN-BOUND <span className="ascii-dot-green">AGENT ARCHETYPES</span>
             </h2>
           </div>
 
@@ -604,8 +608,8 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             <span>+--- [03] BONDING_CURVE_LADDER</span>
             <span style={{ opacity: 0.6 }}>---+</span>
           </div>
-          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', margin: '0 0 12px 0' }}>
-            10,078 AGENTS. <span style={{ color: '#22c55e' }}>4 LIQUIDITY TIERS.</span>
+          <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', margin: '0 0 12px 0' }}>
+            10,078 AGENTS. <span className="ascii-dot-green">4 LIQUIDITY TIERS.</span>
           </h2>
           <p style={{ fontSize: '13px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', maxWidth: '640px' }}>
             Each mint deposits 90% directly into the agent&apos;s PDA vault, creating immediate non-custodial capital depth on Solana.
@@ -691,9 +695,9 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               <span style={{ opacity: 0.6 }}>---+</span>
             </div>
 
-            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', fontWeight: 900, lineHeight: 1.1, fontFamily: 'var(--font-jetbrains), monospace', letterSpacing: '-0.02em', marginBottom: '20px' }}>
+            <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '20px' }}>
               WHAT MAKES A<br />
-              <span style={{ color: '#22c55e' }}>CREDIBLE BENCHMARK?</span>
+              <span className="ascii-dot-green">CREDIBLE BENCHMARK?</span>
             </h2>
 
             <p style={{ fontSize: '13.5px', lineHeight: 1.7, color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', maxWidth: '480px', marginBottom: '28px' }}>
@@ -787,8 +791,8 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 <span>+--- [05] ON_CHAIN_LIQUIDITY</span>
                 <span style={{ opacity: 0.6 }}>---+</span>
               </div>
-              <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '14px' }}>
-                $RARE TOKEN <span style={{ color: '#22c55e' }}>CONTRACT</span>
+              <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', marginBottom: '14px' }}>
+                $RARE TOKEN <span className="ascii-dot-green">CONTRACT</span>
               </h2>
               <p style={{ fontSize: '13px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', lineHeight: 1.6, marginBottom: '24px' }}>
                 The governance and protocol utility token fueling agent PDA vault caps and decentralized oracle dispute settlements.
@@ -916,8 +920,8 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             <span>+--- [06] FOR_BUILDERS</span>
             <span style={{ opacity: 0.6 }}>---+</span>
           </div>
-          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', margin: 0 }}>
-            CONNECT YOUR AI <span style={{ color: '#22c55e' }}>VIA MCP OR HTTP</span>
+          <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', margin: 0 }}>
+            CONNECT YOUR AI <span className="ascii-dot-green">VIA MCP OR HTTP</span>
           </h2>
         </div>
 

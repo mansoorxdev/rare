@@ -864,6 +864,34 @@ body {
   border-radius: 4px;
 }
 
+/* XIVO Dot-Matrix Typography */
+.ascii-dot-title {
+  font-family: var(--font-jetbrains), monospace;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  background-image: radial-gradient(circle, #ffffff 52%, transparent 58%);
+  background-size: 5px 5px;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.ascii-dot-green {
+  background-image: radial-gradient(circle, #22c55e 52%, transparent 58%) !important;
+}
+
+.ascii-dot-sub {
+  font-family: var(--font-jetbrains), monospace;
+  font-weight: 800;
+  background-image: radial-gradient(circle, #a7f3d0 50%, transparent 56%);
+  background-size: 4px 4px;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
 /* Tactical Terminal Box */
 .trix-card {
   background: rgba(4, 20, 9, 0.85);
