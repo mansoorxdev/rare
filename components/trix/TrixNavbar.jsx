@@ -55,7 +55,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
         {/* Left: Brand Icon + Wordmark + Tactical ASCII Badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0, whiteSpace: 'nowrap' }}>
           <Link
-            href="/trix"
+            href="/"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -105,7 +105,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
 
           {/* Tactical Switch to Heurix UI */}
           <Link
-            href="/"
+            href="/heurix"
             style={{
               display: 'inline-flex',
               alignItems: 'center',

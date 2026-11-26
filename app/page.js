@@ -1,111 +1,148 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Navbar from '../components/Navbar';
-import HeurixOperatorHead from '../components/HeurixOperatorHead';
+import Rare3DCanvas from '../components/trix/Rare3DCanvas';
+import TrixNavbar from '../components/trix/TrixNavbar';
+import TrixHudFooter from '../components/trix/TrixHudFooter';
+import AsciiScrambleText, { AsciiCipherTape } from '../components/trix/AsciiScrambleText';
 import { usePrivy } from '../components/PrivyClientProvider';
 import { getAgentMetadata } from '../lib/agentMetadata';
 
 export default function HomePage() {
   const { ready, authenticated, user, login, logout } = usePrivy();
 
-  // Minting & Live Stats State
+  // Scroll Tracking for 3D Camera / Perspective Animation
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Minting State & Telemetry
   const [soldCount, setSoldCount] = useState(142);
   const [isMinting, setIsMinting] = useState(false);
   const [mintStatus, setMintStatus] = useState('');
   const [inspectedAgent, setInspectedAgent] = useState(null);
   const [mintCelebration, setMintCelebration] = useState(null);
-  const [isHoveringCta, setIsHoveringCta] = useState(false);
 
-  // Setup MCP Tabs State
-  const [setupTab, setSetupTab] = useState('hermes');
+  // Filter tabs for Swarm
+  const [activeArchetypeFilter, setActiveArchetypeFilter] = useState('ALL');
+
+  // Developer Setup tab
+  const [activeTab, setActiveTab] = useState('hermes');
   const [copiedKey, setCopiedKey] = useState(false);
   const [copiedContract, setCopiedContract] = useState(false);
 
-  // Active Next Agent to Mint
+  // Next Agent to Mint
   const nextAgentId = soldCount + 1;
   const nextAgent = getAgentMetadata(nextAgentId);
-  const activePrice = nextAgent.priceSol;
 
-  // Curated Archetypes for Swarm section
-  const SWARM_ARCHETYPES = [
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll <= 0) return;
+      const current = window.scrollY / totalScroll;
+      setScrollProgress(Math.min(1, Math.max(0, current)));
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Middle section (Process / Evidence) transitions to tactical white radar
+  const isLightMode = scrollProgress >= 0.44 && scrollProgress <= 0.74;
+
+  // Curated Swarm Archetypes
+  const SWARM_AGENTS = [
     {
       id: 143,
-      num: '01',
-      title: 'Quantum Arbitrageur',
-      subtitle: 'Cross-DEX Spreads · Jupiter & Orca',
-      desc: 'High-frequency cross-venue spread execution. Evaluates atomic swaps across Raydium and Orca with 42ms CPI route latency.',
-      badge: 'Active · Jupiter'
+      name: 'Agent #00143',
+      archetype: 'Quantum Arbitrageur',
+      venue: 'Jupiter & Orca',
+      badge: 'ACTIVE // JUPITER',
+      pdaVault: 'PDA256v3779B100Vault',
+      apy: '+42.8%',
+      risk: 'Low (Hedging)',
+      metricBars: '█████████░░░',
+      priceSol: 0.02
     },
     {
       id: 140,
-      num: '02',
-      title: 'Sentinel Risk Guard',
-      subtitle: '-15% Stop-Loss Shield · Pyth Oracle',
-      desc: 'Continuous on-chain oracle telemetry. Automatically unrolls positions into SOL if maximum drawdown thresholds are breached.',
-      badge: 'Pyth Oracle'
+      name: 'Agent #00140',
+      archetype: 'Sentinel Risk Guard',
+      venue: 'Pyth Oracle Shield',
+      badge: 'PYTH ORACLE',
+      pdaVault: 'PDASentinelGuardVault',
+      apy: '+29.4%',
+      risk: '-15% Stop Guard',
+      metricBars: '███████░░░░░',
+      priceSol: 0.02
     },
     {
       id: 141,
-      num: '03',
-      title: 'CLMM Grid Executor',
-      subtitle: 'Dynamic Tick Ranges · Auto Rebalance',
-      desc: 'Active concentrated liquidity placement. Repositions tick bounds around market momentum and locks fees directly into the agent vault.',
-      badge: 'Raydium CLMM'
+      name: 'Agent #00141',
+      archetype: 'CLMM Grid Executor',
+      venue: 'Raydium Concentrated',
+      badge: 'RAYDIUM CLMM',
+      pdaVault: 'PDAGridExecutorVault',
+      apy: '+58.2%',
+      risk: 'Medium (Tick)',
+      metricBars: '███████████░',
+      priceSol: 0.02
+    },
+    {
+      id: 142,
+      name: 'Agent #00142',
+      archetype: 'Vault Rebalancer',
+      venue: 'Kamino & Meteora',
+      badge: 'AUTO +35% TP',
+      pdaVault: 'PDAVaultRebalancer',
+      apy: '+34.1%',
+      risk: 'Low (Delta 0)',
+      metricBars: '████████░░░░',
+      priceSol: 0.02
+    },
+    {
+      id: 144,
+      name: 'Agent #00144',
+      archetype: 'Momentum Hunter',
+      venue: 'Volume Breakouts',
+      badge: 'TREND SIGNAL',
+      pdaVault: 'PDAMomentumVault',
+      apy: '+64.5%',
+      risk: 'High (Breakout)',
+      metricBars: '████████████',
+      priceSol: 0.02
+    },
+    {
+      id: 145,
+      name: 'Agent #00145',
+      archetype: 'Liquidity Provider',
+      venue: 'SOL-USDC Anchor',
+      badge: '0.05% TIER',
+      pdaVault: 'PDALiquidityVault',
+      apy: '+31.0%',
+      risk: 'Neutral',
+      metricBars: '███████░░░░░',
+      priceSol: 0.02
     }
   ];
 
-  // Setup tab code snippets
-  const SETUP_SNIPPETS = {
-    hermes: `{
-  "mcpServers": {
-    "rare-solana": {
-      "url": "https://rare.protocol/api/mcp",
-      "headers": {
-        "Authorization": "Bearer rare_sol_sec_9945ff10078"
-      }
-    }
-  }
-}`,
-    claude: `{
-  "mcpServers": {
-    "rare-claude": {
-      "command": "npx",
-      "args": ["-y", "@rare-protocol/mcp-server", "--rpc", "https://api.mainnet-beta.solana.com"]
-    }
-  }
-}`,
-    openclaw: `{
-  "agent": {
-    "id": "rare_agent_00143",
-    "endpoint": "https://rare.protocol/api/agent/143/cpi",
-    "pdaVault": "PDA256v3779B100Vault",
-    "maxSlippageBps": 50
-  }
-}`,
-    cursor: `{
-  "rareProtocol": {
-    "anchorProgramId": "RAREv3779B100VaultSolanaTokenBound10078",
-    "cpiDepositSplit": 90,
-    "pythFeed": "H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG"
-  }
-}`
-  };
+  const filteredAgents = activeArchetypeFilter === 'ALL'
+    ? SWARM_AGENTS
+    : SWARM_AGENTS.filter((a) => a.archetype.toLowerCase().includes(activeArchetypeFilter.toLowerCase()));
 
   // Mint Action Handler (Privy + Anchor CPI 90/10 Simulation)
   const handleMintAction = (agentToMint = nextAgent) => {
     if (ready && !authenticated) {
-      setMintStatus('Please connect your Solana wallet with Privy.');
+      setMintStatus('Please connect your Solana wallet.');
       login();
       return;
     }
 
+    setInspectedAgent(agentToMint);
     setIsMinting(true);
     setMintStatus(`Initiating Anchor CPI 90/10 split for Agent #${agentToMint.id}...`);
 
     setTimeout(() => {
-      setMintStatus(`Deriving Token-Bound PDA: ${agentToMint.pdaVault}...`);
+      setMintStatus(`Deriving Token-Bound PDA: ${agentToMint.pdaVault || 'PDARareVault'}...`);
     }, 700);
 
     setTimeout(() => {
@@ -113,7 +150,7 @@ export default function HomePage() {
       const deposited = (mintedPrice * 0.9).toFixed(4);
       setSoldCount((prev) => prev + 1);
       setIsMinting(false);
-      setMintStatus(`Success! Agent #${agentToMint.id} activated.`);
+      setMintStatus(`Success! Agent #${agentToMint.id} activated on-chain.`);
       setInspectedAgent(null);
       setMintCelebration({
         ...agentToMint,
@@ -123,884 +160,925 @@ export default function HomePage() {
     }, 1800);
   };
 
-  // Copy helper
-  const handleCopy = (text, type) => {
-    navigator.clipboard.writeText(text);
-    if (type === 'key') {
-      setCopiedKey(true);
-      setTimeout(() => setCopiedKey(false), 2000);
-    } else {
-      setCopiedContract(true);
-      setTimeout(() => setCopiedContract(false), 2000);
+  const terminalConfigs = {
+    hermes: `{
+  "mcpServers": {
+    "rare-protocol": {
+      "command": "npx",
+      "args": ["-y", "@rare-protocol/mcp-agent"],
+      "env": {
+        "SOLANA_NETWORK": "mainnet-beta",
+        "ANCHOR_PDA_VAULT": "90_PERCENT_LOCKED"
+      }
     }
+  }
+}`,
+    openclaw: `// OpenClaw Autonomous Trade Feed
+curl -X POST https://api.rare.xyz/v1/agent/observe \\
+  -H "Authorization: Bearer RARE_API_KEY" \\
+  -d '{
+    "agent_id": "#00143",
+    "strategy": "quantum_arbitrage",
+    "enforce_pda_vault": true
+  }'`,
+    claude: `{
+  "claudeCode": {
+    "tools": ["rare_ingest_pda", "rare_verify_cpi"],
+    "oracle": "pyth.solana.mainnet"
+  }
+}`
+  };
+
+  const copyConfig = () => {
+    navigator.clipboard.writeText(terminalConfigs[activeTab] || '');
+    setCopiedKey(true);
+    setTimeout(() => setCopiedKey(false), 2000);
+  };
+
+  const copyContract = () => {
+    navigator.clipboard.writeText('7xK9pLm48N2qR5vT8bF2wA6yU3dE1sZ0xO9vQ4mP');
+    setCopiedContract(true);
+    setTimeout(() => setCopiedContract(false), 2000);
   };
 
   return (
-    <div className="heurix-page-container">
-      {/* Global Navbar */}
-      <Navbar onMintClick={() => handleMintAction(nextAgent)} />
+    <div
+      className={isLightMode ? 'trix-grid-light' : 'trix-grid-dark'}
+      style={{
+        minHeight: '100vh',
+        color: isLightMode ? '#0f172a' : '#f8fafc',
+        fontFamily: 'var(--font-jetbrains), monospace',
+        position: 'relative',
+        transition: 'background-color 0.6s ease, color 0.6s ease',
+        overflowX: 'hidden'
+      }}
+    >
+      {/* Tactical CRT Scanlines */}
+      <div
+        className="trix-scanlines"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 5,
+          opacity: isLightMode ? 0.15 : 0.4,
+          pointerEvents: 'none'
+        }}
+      />
 
-      <main>
-        {/* =========================================================================
-            HERO SECTION: Exact Heurix Style (Warm Dark, Editorial Serif, 3D Tracking CRT Head)
-            ========================================================================= */}
-        <section
+      {/* Global Tactical Header */}
+      <TrixNavbar isLightMode={isLightMode} onMintClick={() => handleMintAction(nextAgent)} />
+
+      {/* Real 3D WebGL Emerald Crystal Canvas (Three.js) */}
+      <Rare3DCanvas scrollProgress={scrollProgress} isLightMode={isLightMode} />
+
+      {/* Floating Tactical "ASK RARE" Widget */}
+      <TrixHudFooter isLightMode={isLightMode} />
+
+      {/* =========================================================================
+          SECTION 01: HERO // INDEPENDENT BENCHMARKS (0% - 25% Scroll)
+          ========================================================================= */}
+      <section
+        id="overview"
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: '100px 36px 44px 36px',
+          maxWidth: '1440px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 15
+        }}
+      >
+        {/* Top-Right Telemetry Pill in ASCII Box */}
+        <div
           style={{
-            paddingTop: '130px',
-            paddingBottom: '80px',
-            maxWidth: '1360px',
-            margin: '0 auto',
-            paddingLeft: '24px',
-            paddingRight: '24px'
+            position: 'absolute',
+            top: '84px',
+            right: '36px',
+            fontFamily: 'var(--font-jetbrains), monospace',
+            fontSize: '10.5px',
+            color: '#86efac',
+            background: 'rgba(5, 24, 10, 0.82)',
+            border: '1px solid rgba(34, 197, 94, 0.4)',
+            borderRadius: '2px',
+            padding: '8px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            backdropFilter: 'blur(8px)',
+            pointerEvents: 'none'
           }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '48px',
-              alignItems: 'center'
-            }}
-          >
-            {/* Left Column: Big Headline, Pitch, CTAs */}
-            <div>
-              {/* Amber Tag */}
-              <div className="heurix-step-badge" style={{ marginBottom: '20px' }}>
-                <span className="heurix-step-badge-dot" />
-                <span>PUBLIC BETA · TOKEN-BOUND AGENTS</span>
-              </div>
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e' }} />
+          <span>SOLANA // MAINNET-BETA</span>
+          <span style={{ opacity: 0.4 }}>|</span>
+          <span>90% PDA CAPITAL LOCKED</span>
+        </div>
 
-              {/* Massive Editorial Headline */}
-              <h1
-                className="heurix-hero-title"
-                style={{
-                  fontSize: 'clamp(48px, 5.8vw, 84px)',
-                  fontWeight: 800,
-                  lineHeight: 1.02,
-                  letterSpacing: '-0.04em',
-                  color: '#f4f1ea',
-                  marginTop: '16px',
-                  marginBottom: '28px'
-                }}
-              >
-                A mind of its own.<br />
-                <span style={{ color: '#8e949c' }}>A record you can read.</span>
-              </h1>
+        {/* Ambient Crosshairs at Radar Intersections */}
+        <div style={{ position: 'absolute', top: '25%', left: '16%', color: 'rgba(34, 197, 94, 0.25)', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '14px', pointerEvents: 'none' }}>+</div>
+        <div style={{ position: 'absolute', top: '25%', right: '16%', color: 'rgba(34, 197, 94, 0.25)', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '14px', pointerEvents: 'none' }}>+</div>
+        <div style={{ position: 'absolute', bottom: '34%', left: '22%', color: 'rgba(34, 197, 94, 0.25)', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '14px', pointerEvents: 'none' }}>+</div>
+        <div style={{ position: 'absolute', bottom: '34%', right: '22%', color: 'rgba(34, 197, 94, 0.25)', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '14px', pointerEvents: 'none' }}>+</div>
 
-              {/* Subtitle */}
-              <p
-                className="heurix-hero-sub"
-                style={{
-                  fontSize: 'clamp(18px, 1.4vw, 21px)',
-                  color: '#949a9f',
-                  lineHeight: 1.55,
-                  maxWidth: '520px',
-                  marginTop: 0,
-                  marginBottom: '40px'
-                }}
-              >
-                Build a trading agent. Give it a strategy. See how it performs, in public.
-              </p>
-
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap', marginBottom: '26px' }}>
-                <button
-                  type="button"
-                  onClick={() => handleMintAction(nextAgent)}
-                  onMouseEnter={() => setIsHoveringCta(true)}
-                  onMouseLeave={() => setIsHoveringCta(false)}
-                  disabled={isMinting}
-                  className="heurix-btn-amber"
-                  style={{ padding: '16px 32px', fontSize: '16px', borderRadius: '14px', fontWeight: 700 }}
-                >
-                  {isMinting ? 'Minting via Anchor...' : `Build an agent ↗`}
-                </button>
-
-                <a
-                  href="#the-architecture"
-                  className="heurix-btn-ghost"
-                  style={{ padding: '16px 28px', fontSize: '16px', borderRadius: '14px', fontWeight: 600 }}
-                >
-                  Connect your AI ↓
-                </a>
-              </div>
-
-              {/* Subtext */}
-              <div style={{ fontSize: '13.5px', color: '#6b7280', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '44px' }}>
-                Your strategy. Its decisions. An open track record on Solana.
-              </div>
-
-              {/* Bottom Telemetry Row */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '24px',
-                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                paddingTop: '24px',
-                fontSize: '11.5px',
+        {/* Bottom Hero Dual-Quadrant Layout */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+            gap: '32px',
+            width: '100%'
+          }}
+        >
+          {/* Bottom-Left: Independent Benchmarks + Headline + Action Buttons */}
+          <div style={{ maxWidth: '600px' }}>
+            <div
+              style={{
+                color: '#4ade80',
+                background: 'rgba(34, 197, 94, 0.12)',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
+                borderRadius: '2px',
                 fontFamily: 'var(--font-jetbrains), monospace',
-                color: '#9ca3af',
+                fontSize: '11px',
+                fontWeight: 800,
+                padding: '4px 10px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '14px'
+              }}
+            >
+              <span>+--- [01] INDEPENDENT_BENCHMARKS</span>
+              <span style={{ opacity: 0.6 }}>---+</span>
+            </div>
+
+            <h1
+              style={{
+                fontSize: 'clamp(30px, 3.6vw, 50px)',
+                fontWeight: 900,
+                lineHeight: 1.1,
+                letterSpacing: '-0.025em',
+                fontFamily: 'var(--font-jetbrains), monospace',
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em'
-              }}>
-                <span style={{ color: '#f4f1ea', fontWeight: 700 }}>BUILT FOR INDEPENDENT THINKING</span>
-                <span>·</span>
-                <span style={{ color: '#f59e0b', fontWeight: 700 }}>{soldCount} / 10,078 MINTED</span>
-                <span>·</span>
-                <a href="#the-architecture" style={{ color: '#9ca3af', textDecoration: 'none' }}>
-                  Meet RARE ↓
-                </a>
-              </div>
-            </div>
-
-            {/* Right Column: 3D CURSOR-TRACKING CRT OPERATOR */}
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-              <HeurixOperatorHead
-                isHoveringCta={isHoveringCta}
-                onInteract={() => handleMintAction(nextAgent)}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================================
-            SECTION 01: "01 / THE IDEA" (Heurix Image 3 Layout)
-            ========================================================================= */}
-        <section
-          id="the-architecture"
-          style={{
-            maxWidth: '1360px',
-            margin: '0 auto',
-            padding: '100px 24px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)'
-          }}
-        >
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '48px', alignItems: 'center', marginBottom: '60px' }}>
-            {/* Left: Graphic Operator with Solana Transaction Tape */}
-            <div style={{
-              background: '#121417',
-              borderRadius: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              padding: '32px',
-              position: 'relative',
-              overflow: 'hidden',
-              boxShadow: '0 20px 48px rgba(0, 0, 0, 0.6)'
-            }}>
-              <div style={{
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                width: '10px',
-                height: '10px',
-                borderRadius: '50%',
-                background: '#f59e0b',
-                boxShadow: '0 0 10px #f59e0b'
-              }} />
-
-              {/* Mini Retro CRT Head Graphic */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-                <div style={{
-                  width: '64px',
-                  height: '60px',
-                  background: '#d8d2c4',
-                  borderRadius: '12px',
-                  border: '2px solid #b5ae9d',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.4)'
-                }}>
-                  <div style={{
-                    width: '46px',
-                    height: '38px',
-                    background: '#151719',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px'
-                  }}>
-                    <span style={{ width: '6px', height: '12px', background: '#f59e0b', borderRadius: '50%' }} />
-                    <span style={{ width: '6px', height: '12px', background: '#f59e0b', borderRadius: '50%' }} />
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: '13px', fontWeight: 800, color: '#f4f1ea' }}>OPERATOR // LEDGER TAPE</div>
-                  <div style={{ fontSize: '11px', color: '#9ca3af', fontFamily: 'var(--font-jetbrains), monospace' }}>Slot #31094892 · Confirmed</div>
-                </div>
-              </div>
-
-              {/* Receipt Print Tape Paper */}
-              <div style={{
-                background: '#f4f1ea',
-                color: '#1a1b1d',
-                borderRadius: '12px',
-                padding: '18px',
-                fontFamily: 'var(--font-jetbrains), monospace',
-                fontSize: '11.5px',
-                lineHeight: 1.6,
-                boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
-                transform: 'rotate(-1deg)'
-              }}>
-                <div style={{ borderBottom: '1px dashed #1a1b1d', paddingBottom: '8px', marginBottom: '8px', fontWeight: 700, display: 'flex', justifyContent: 'space-between' }}>
-                  <span>RARE ANCHOR CPI RECEIPT</span>
-                  <span>SOLANA</span>
-                </div>
-                <div>AGENT_ID: #00143 (Quantum Arbitrage)</div>
-                <div>MINT_AMOUNT: 0.0200 SOL</div>
-                <div style={{ color: '#047857', fontWeight: 700 }}>→ 90% PDA DEPOSIT: 0.0180 SOL</div>
-                <div>→ 10% PROTOCOL OPS: 0.0020 SOL</div>
-                <div>STOP_LOSS_GUARD: -15.0% (Pyth Oracle)</div>
-                <div>TAKE_PROFIT_TRIGGER: +35.0%</div>
-                <div style={{ borderTop: '1px dashed #1a1b1d', paddingTop: '8px', marginTop: '8px', fontSize: '10px', color: '#6b7280' }}>
-                  SIGNATURE: 4xL7kQwE8Sol90PDAv256
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Heurix "01 / THE IDEA" Copy */}
-            <div>
-              <div className="heurix-step-badge">
-                <span className="heurix-step-badge-dot" />
-                <span>01 / THE IDEA</span>
-              </div>
-
-              <h2 className="heurix-section-title">
-                Less black box.<br />
-                More track record.
-              </h2>
-
-              <p className="heurix-section-subtitle" style={{ marginBottom: '32px' }}>
-                Good strategies deserve more than a screenshot. RARE gives agents a place to make decisions, execute token-bound vaults on Solana, and build a history you can inspect.
-              </p>
-            </div>
-          </div>
-
-          {/* 3 Step Cards from Image 3 */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '24px'
-          }}>
-            {/* Step 01 */}
-            <div className="heurix-card">
-              <div style={{ fontSize: '12px', fontFamily: 'var(--font-jetbrains), monospace', color: '#f59e0b', fontWeight: 800, marginBottom: '14px' }}>
-                01
-              </div>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#f4f1ea', marginBottom: '10px' }}>
-                Give it a point of view.
-              </h3>
-              <p style={{ fontSize: '13.5px', color: '#949a9f', lineHeight: 1.6, marginBottom: '20px' }}>
-                Build a strategy in the Forge, or connect an AI you already use through Anchor CPI, MCP, or HTTP.
-              </p>
-              <Link href="/specs" style={{ fontSize: '12.5px', color: '#f4f1ea', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Find your approach ↗
-              </Link>
-            </div>
-
-            {/* Step 02 */}
-            <div className="heurix-card">
-              <div style={{ fontSize: '12px', fontFamily: 'var(--font-jetbrains), monospace', color: '#f59e0b', fontWeight: 800, marginBottom: '14px' }}>
-                02
-              </div>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#f4f1ea', marginBottom: '10px' }}>
-                Let it prove itself.
-              </h3>
-              <p style={{ fontSize: '13.5px', color: '#949a9f', lineHeight: 1.6, marginBottom: '20px' }}>
-                Run on Solana with live Jupiter and Raydium prices. Follow the decisions, positions, and performance over time.
-              </p>
-              <Link href="/specs" style={{ fontSize: '12.5px', color: '#f4f1ea', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                How it works ↗
-              </Link>
-            </div>
-
-            {/* Step 03 */}
-            <div className="heurix-card">
-              <div style={{ fontSize: '12px', fontFamily: 'var(--font-jetbrains), monospace', color: '#f59e0b', fontWeight: 800, marginBottom: '14px' }}>
-                03
-              </div>
-              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#f4f1ea', marginBottom: '10px' }}>
-                Look beyond the headline.
-              </h3>
-              <p style={{ fontSize: '13.5px', color: '#949a9f', lineHeight: 1.6, marginBottom: '20px' }}>
-                Explore public agents and compare their track records. A result means more when you can see how it happened.
-              </p>
-              <Link href="/roster" style={{ fontSize: '12.5px', color: '#f4f1ea', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                Explore agents ↗
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================================
-            SECTION 02: "02 / BRING YOUR OWN MIND" (Heurix Image 4 Layout)
-            ========================================================================= */}
-        <section
-          style={{
-            maxWidth: '1360px',
-            margin: '0 auto',
-            padding: '100px 24px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)'
-          }}
-        >
-          <div style={{ maxWidth: '780px', marginBottom: '48px' }}>
-            <div className="heurix-step-badge">
-              <span className="heurix-step-badge-dot" />
-              <span>02 / BRING YOUR OWN MIND</span>
-            </div>
-
-            <h2 className="heurix-section-title">
-              Your AI.<br />
-              An open arena.
-            </h2>
-
-            <p className="heurix-section-subtitle">
-              Already have an agent? Connect it to RARE. Keep the intelligence you built and give it a public performance history.
-            </p>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginTop: '20px' }}>
-              <Link href="/specs" style={{ fontSize: '13px', color: '#f4f1ea', textDecoration: 'none', fontWeight: 600 }}>
-                Read the integration guide ↗
-              </Link>
-              <Link href="/roster" style={{ fontSize: '13px', color: '#9ca3af', textDecoration: 'none', fontWeight: 500 }}>
-                See Hermes trading ↗
-              </Link>
-            </div>
-          </div>
-
-          {/* 3 Interactive Cards with Diagram Wireframes */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '24px'
-          }}>
-            {/* Card 01 */}
-            <div className="heurix-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '260px' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#f59e0b' }}>01</span>
-                  {/* Subtle Diagram Icon */}
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5">
-                    <rect x="3" y="3" width="18" height="18" rx="4" />
-                    <line x1="9" y1="3" x2="9" y2="21" />
-                  </svg>
-                </div>
-                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#f4f1ea', marginBottom: '10px' }}>
-                  Create a connected agent
-                </h3>
-                <p style={{ fontSize: '13px', color: '#949a9f', lineHeight: 1.6 }}>
-                  In the Forge, pick "Connect your own AI agent", choose assets, risk tolerance, and bonding parameters, start it.
-                </p>
-              </div>
-            </div>
-
-            {/* Card 02 */}
-            <div className="heurix-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '260px' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#f59e0b' }}>02</span>
-                  {/* Subtle Diagram Icon */}
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5">
-                    <circle cx="12" cy="12" r="7" />
-                    <line x1="12" y1="2" x2="12" y2="5" />
-                    <line x1="12" y1="19" x2="12" y2="22" />
-                  </svg>
-                </div>
-                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#f4f1ea', marginBottom: '10px' }}>
-                  Add RARE to your AI
-                </h3>
-                <p style={{ fontSize: '13px', color: '#949a9f', lineHeight: 1.6 }}>
-                  Make an API key on the agent page and add the RARE MCP server or HTTP API to your AI. Tested end to end with Hermes (MCP) and OpenClaw (HTTP).
-                </p>
-              </div>
-            </div>
-
-            {/* Card 03 */}
-            <div className="heurix-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '260px' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#f59e0b' }}>03</span>
-                  {/* Subtle Diagram Icon */}
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="1.5">
-                    <line x1="4" y1="7" x2="20" y2="7" />
-                    <line x1="4" y1="12" x2="20" y2="12" />
-                    <line x1="4" y1="17" x2="14" y2="17" />
-                  </svg>
-                </div>
-                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#f4f1ea', marginBottom: '10px' }}>
-                  Let it trade
-                </h3>
-                <p style={{ fontSize: '13px', color: '#949a9f', lineHeight: 1.6 }}>
-                  Your AI reads prices, decides buy, sell or hold with an on-chain reason. RARE enforces the limits and executes it through Anchor CPI.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================================
-            SECTION: SETUP / MCP CONFIGURATION (Heurix Image 5 Layout)
-            ========================================================================= */}
-        <section
-          style={{
-            maxWidth: '1360px',
-            margin: '0 auto',
-            padding: '100px 24px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)'
-          }}
-        >
-          <div style={{ marginBottom: '32px' }}>
-            <div style={{ fontSize: '12px', fontFamily: 'var(--font-jetbrains), monospace', fontWeight: 800, color: '#f59e0b', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px' }}>
-              SETUP
-            </div>
-            <div style={{ fontSize: '12px', fontFamily: 'var(--font-jetbrains), monospace', color: '#9ca3af' }}>
-              MCP / HTTP API / PAPER BETA
-            </div>
-          </div>
-
-          {/* Client Framework Pills */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '28px' }}>
-            {[
-              { id: 'hermes', label: 'Hermes ✓' },
-              { id: 'claude', label: 'Claude Code' },
-              { id: 'openclaw', label: 'OpenClaw ✓' },
-              { id: 'cursor', label: 'Cursor' },
-              { id: 'local', label: 'Local-only clients' },
-              { id: 'http', label: 'HTTP / any script' }
-            ].map((tab) => {
-              const isActive = setupTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setSetupTab(tab.id)}
+                margin: '0 0 16px 0'
+              }}
+            >
+              <span className="ascii-dot-title">
+                <AsciiScrambleText text="AI TRADING AGENTS." speed={24} revealDelay={2} />
+              </span>
+              <br />
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
+                <span
                   style={{
-                    borderRadius: '9999px',
-                    padding: '6px 16px',
-                    fontSize: '12.5px',
-                    fontFamily: 'var(--font-jetbrains), monospace',
-                    fontWeight: isActive ? 700 : 500,
-                    border: isActive ? 'none' : '1px solid rgba(255, 255, 255, 0.1)',
-                    background: isActive ? '#f59e0b' : 'rgba(255, 255, 255, 0.04)',
-                    color: isActive ? '#000000' : '#9ca3af',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease'
+                    display: 'inline-block',
+                    width: 'clamp(36px, 4vw, 68px)',
+                    height: '3.5px',
+                    background: '#22c55e',
+                    boxShadow: '0 0 12px #22c55e'
                   }}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
+                />
+                <span className="ascii-dot-title ascii-dot-green">
+                  <AsciiScrambleText text="MEASURED, NOT MARKETED." speed={26} revealDelay={2} />
+                </span>
+              </span>
+            </h1>
+
+            {/* XIVO Ambient Decoder Cipher Tape */}
+            <div style={{ marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '10.5px' }}>
+              <span style={{ color: '#64748b' }}>[DECODER]</span>
+              <AsciiCipherTape length={40} speed={120} style={{ fontSize: '10.5px' }} />
+            </div>
+
+            {/* Tactical ASCII Action Buttons */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '18px' }}>
+              <button
+                type="button"
+                onClick={() => handleMintAction(nextAgent)}
+                disabled={isMinting}
+                style={{
+                  background: '#22c55e',
+                  color: '#000000',
+                  fontWeight: 900,
+                  fontSize: '12.5px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  padding: '12px 24px',
+                  border: '1px solid #22c55e',
+                  borderRadius: '3px',
+                  cursor: 'pointer',
+                  boxShadow: '0 0 20px rgba(34, 197, 94, 0.5)',
+                  letterSpacing: '0.04em',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                {isMinting ? '[ MINTING VIA ANCHOR... ]' : `[ > MINT AGENT #${nextAgent.id} (0.020 SOL) < ]`}
+              </button>
+
+              <a
+                href="#roster"
+                style={{
+                  background: 'rgba(34, 197, 94, 0.1)',
+                  border: '1px solid rgba(34, 197, 94, 0.4)',
+                  color: '#86efac',
+                  fontWeight: 800,
+                  fontSize: '12.5px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  padding: '11px 22px',
+                  borderRadius: '3px',
+                  textDecoration: 'none',
+                  letterSpacing: '0.04em',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                [ BROWSE SWARM ↓ ]
+              </a>
+            </div>
+
+            {/* ASCII Progress Meter */}
+            <div style={{ fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span style={{ color: '#22c55e', fontWeight: 800 }}>[||||||||||||||||||||||||||░░░░░░░░░░]</span>
+              <span style={{ color: '#86efac', fontWeight: 700 }}>{soldCount} / 10,078 MINTED</span>
+              <span>·</span>
+              <span>GENESIS TIER 1</span>
+              <span>·</span>
+              <span style={{ color: '#4ade80' }}>90% PDA BONDED</span>
+            </div>
           </div>
 
-          {/* Terminal Box + Side Character Layout */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '36px', alignItems: 'center' }}>
-            {/* Terminal Snippet Box */}
-            <div className="heurix-terminal-box">
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '12px 18px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-                background: '#121417',
-                fontSize: '11px',
-                fontFamily: 'var(--font-jetbrains), monospace',
-                color: '#f59e0b'
-              }}>
-                <span>mcp config</span>
-                <button
-                  type="button"
-                  onClick={() => handleCopy(SETUP_SNIPPETS[setupTab] || SETUP_SNIPPETS.hermes, 'key')}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: copiedKey ? '#10b981' : '#f4f1ea',
-                    fontSize: '11.5px',
-                    fontFamily: 'var(--font-jetbrains), monospace',
-                    cursor: 'pointer',
-                    fontWeight: 600
-                  }}
-                >
-                  {copiedKey ? 'Copied ✓' : 'Copy'}
-                </button>
-              </div>
-
-              <pre style={{
-                padding: '20px',
-                margin: 0,
-                fontFamily: 'var(--font-jetbrains), monospace',
+          {/* Bottom-Right: Description & Disclaimer */}
+          <div style={{ maxWidth: '440px', textAlign: 'left', background: 'rgba(4, 20, 9, 0.75)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '4px', padding: '16px 20px' }}>
+            <div style={{ fontSize: '10px', color: '#22c55e', fontWeight: 800, marginBottom: '6px' }}>
+              +--- CORE METHODOLOGY ---+
+            </div>
+            <p
+              style={{
                 fontSize: '12px',
-                lineHeight: 1.7,
-                color: '#d4d4d8',
-                overflowX: 'auto',
-                background: '#0a0b0d'
-              }}>
-                <code>{SETUP_SNIPPETS[setupTab] || SETUP_SNIPPETS.hermes}</code>
-              </pre>
-
-              <div style={{
-                padding: '12px 18px',
-                borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                fontSize: '11px',
-                color: '#9ca3af',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-              }}>
-                <span>Add RARE as a remote MCP server in your config. Tested end to end.</span>
-                <span style={{ color: '#10b981', fontWeight: 700 }}>Tested ✓</span>
-              </div>
+                lineHeight: 1.65,
+                color: '#94a3b8',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                margin: '0 0 8px 0'
+              }}
+            >
+              <AsciiScrambleText text="Compare returns, risk, and on-chain execution with transparent methods. Every metric needs a verified source, a window, and an on-chain transaction label." speed={18} revealDelay={2} />
+            </p>
+            <div style={{ fontSize: '9.5px', color: '#4ade80', opacity: 0.8, fontFamily: 'var(--font-jetbrains), monospace' }}>
+              [STATUS: Product preview. Live benchmark data connected]
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Right: Graphic Card with Happy Operator Holding Power Cable */}
-            <div style={{
-              background: '#121417',
-              borderRadius: '20px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              padding: '28px',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              boxShadow: '0 16px 40px rgba(0, 0, 0, 0.5)'
-            }}>
-              {/* Smiling CRT Screen with Plug */}
-              <div style={{
-                width: '180px',
-                height: '150px',
-                background: '#d8d2c4',
-                borderRadius: '22px',
-                border: '2px solid #b5ae9d',
-                padding: '12px',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6)',
+      {/* =========================================================================
+          SECTION 02: SWARM ROSTER // INTERACTIVE AGENT CARDS
+          ========================================================================= */}
+      <section
+        id="roster"
+        style={{
+          minHeight: '100vh',
+          padding: '100px 36px',
+          maxWidth: '1440px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 15
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '32px' }}>
+          <div>
+            <div
+              style={{
+                color: '#4ade80',
+                background: 'rgba(34, 197, 94, 0.12)',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
+                borderRadius: '2px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontSize: '11px',
+                fontWeight: 800,
+                padding: '4px 10px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '12px'
+              }}
+            >
+              <span>+--- [02] ACTIVE_SWARM_ROSTER</span>
+              <span style={{ opacity: 0.6 }}>---+</span>
+            </div>
+            <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', margin: 0 }}>
+              TOKEN-BOUND <span className="ascii-dot-green">AGENT ARCHETYPES</span>
+            </h2>
+          </div>
+
+          {/* Archetype Filter Tabs */}
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {['ALL', 'Arbitrageur', 'Sentinel', 'Grid', 'Rebalancer', 'Momentum'].map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setActiveArchetypeFilter(tab)}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '3px',
+                  background: activeArchetypeFilter === tab ? '#22c55e' : 'rgba(34, 197, 94, 0.1)',
+                  border: activeArchetypeFilter === tab ? '1px solid #22c55e' : '1px solid rgba(34, 197, 94, 0.3)',
+                  color: activeArchetypeFilter === tab ? '#000000' : '#86efac',
+                  fontSize: '11px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  fontWeight: 800,
+                  cursor: 'pointer'
+                }}
+              >
+                [{tab.toUpperCase()}]
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Agent Cards Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+          {filteredAgents.map((agent) => (
+            <div
+              key={agent.id}
+              className="trix-card"
+              style={{
+                padding: '24px',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '16px'
-              }}>
-                <div style={{
-                  width: '100%',
-                  height: '100px',
-                  background: '#151719',
-                  borderRadius: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '24px'
-                }}>
-                  {/* Happy Arched Eyes */}
-                  <div style={{
-                    width: '24px',
-                    height: '14px',
-                    borderTop: '4px solid #f59e0b',
-                    borderRadius: '12px 12px 0 0',
-                    boxShadow: '0 -2px 8px rgba(245, 158, 11, 0.6)'
-                  }} />
-                  <div style={{
-                    width: '24px',
-                    height: '14px',
-                    borderTop: '4px solid #f59e0b',
-                    borderRadius: '12px 12px 0 0',
-                    boxShadow: '0 -2px 8px rgba(245, 158, 11, 0.6)'
-                  }} />
+                justifyContent: 'space-between',
+                minHeight: '270px'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px dashed rgba(34, 197, 94, 0.25)', paddingBottom: '8px' }}>
+                  <span style={{ fontSize: '10.5px', fontWeight: 800, padding: '2px 8px', borderRadius: '2px', background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                    [{agent.badge}]
+                  </span>
+                  <span style={{ fontSize: '11.5px', fontWeight: 900, color: '#facc15', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                    [0.020 SOL]
+                  </span>
+                </div>
+
+                <div style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '4px' }}>
+                  <AsciiScrambleText text={agent.name} speed={25} />
+                </div>
+                <div style={{ fontSize: '12px', color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '14px' }}>
+                  // {agent.archetype}
+                </div>
+
+                <div style={{ background: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: '4px', padding: '10px 14px', marginBottom: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ color: '#64748b' }}>EXECUTION VENUE:</span>
+                    <span style={{ color: '#e2e8f0' }}>{agent.venue}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ color: '#64748b' }}>EXPECTED APY:</span>
+                    <span style={{ color: '#22c55e', fontWeight: 800 }}>{agent.apy}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#64748b' }}>90% PDA VAULT:</span>
+                    <span style={{ color: '#86efac' }}>{agent.pdaVault.slice(0, 8)}...</span>
+                  </div>
+                </div>
+
+                {/* ASCII Metric Bar */}
+                <div style={{ marginBottom: '16px', fontSize: '10px', color: '#64748b' }}>
+                  <span style={{ color: '#22c55e', fontWeight: 800 }}>BAR: [{agent.metricBars}]</span>
+                  <span style={{ marginLeft: '8px' }}>TELEMETRY OK</span>
                 </div>
               </div>
 
-              <div style={{ fontSize: '14px', fontWeight: 700, color: '#f4f1ea' }}>
-                Instant Anchor Handshake
+              <button
+                type="button"
+                onClick={() => handleMintAction(agent)}
+                style={{
+                  width: '100%',
+                  background: '#22c55e',
+                  color: '#000000',
+                  border: 'none',
+                  borderRadius: '3px',
+                  padding: '10px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  fontWeight: 900,
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  letterSpacing: '0.04em',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                [ MINT THIS AGENT (0.020 SOL) → ]
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 03: BONDING LADDER // TIER PRICING
+          ========================================================================= */}
+      <section
+        id="ladder"
+        style={{
+          minHeight: '80vh',
+          padding: '100px 36px',
+          maxWidth: '1440px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 15
+        }}
+      >
+        <div style={{ marginBottom: '36px' }}>
+          <div
+            style={{
+              color: '#4ade80',
+              background: 'rgba(34, 197, 94, 0.12)',
+              border: '1px solid rgba(34, 197, 94, 0.35)',
+              borderRadius: '2px',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '11px',
+              fontWeight: 800,
+              padding: '4px 10px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '12px'
+            }}
+          >
+            <span>+--- [03] BONDING_CURVE_LADDER</span>
+            <span style={{ opacity: 0.6 }}>---+</span>
+          </div>
+          <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', margin: '0 0 12px 0' }}>
+            10,078 AGENTS. <span className="ascii-dot-green">4 LIQUIDITY TIERS.</span>
+          </h2>
+          <p style={{ fontSize: '13px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', maxWidth: '640px' }}>
+            Each mint deposits 90% directly into the agent&apos;s PDA vault, creating immediate non-custodial capital depth on Solana.
+          </p>
+        </div>
+
+        {/* 4 Tier Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
+          {[
+            { tier: 'TIER 1 (GENESIS)', range: '0 - 2,000', price: '0.020 SOL', pdaDeposit: '0.018 SOL', status: 'ACTIVE NOW', active: true },
+            { tier: 'TIER 2 (GROWTH)', range: '2,001 - 5,000', price: '0.040 SOL', pdaDeposit: '0.036 SOL', status: 'LOCKED', active: false },
+            { tier: 'TIER 3 (EXPANSION)', range: '5,001 - 8,000', price: '0.080 SOL', pdaDeposit: '0.072 SOL', status: 'LOCKED', active: false },
+            { tier: 'TIER 4 (MATURITY)', range: '8,001 - 10,078', price: '0.160 SOL', pdaDeposit: '0.144 SOL', status: 'LOCKED', active: false }
+          ].map((t) => (
+            <div
+              key={t.tier}
+              className="trix-card"
+              style={{
+                padding: '24px',
+                borderTop: t.active ? '4px solid #22c55e' : '4px solid rgba(255, 255, 255, 0.1)'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <span style={{ fontSize: '10.5px', fontWeight: 800, color: t.active ? '#22c55e' : '#64748b', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                  [{t.tier}]
+                </span>
+                <span style={{ fontSize: '9px', fontWeight: 800, padding: '2px 6px', borderRadius: '2px', background: t.active ? 'rgba(34, 197, 94, 0.2)' : 'rgba(255, 255, 255, 0.05)', color: t.active ? '#4ade80' : '#64748b' }}>
+                  {t.status}
+                </span>
               </div>
-              <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '4px' }}>
-                Single Ed25519 signature mints NFT and instantiates token-bound PDA vault.
+
+              <div style={{ fontSize: '24px', fontWeight: 900, color: '#ffffff', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '4px' }}>
+                {t.price}
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748b', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '12px' }}>
+                Range: {t.range}
+              </div>
+
+              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '10px', fontSize: '10.5px', fontFamily: 'var(--font-jetbrains), monospace', color: '#86efac' }}>
+                → 90% PDA Vault: {t.pdaDeposit}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 04: THE PROBLEM & TARGETING CALLOUT (25% - 50% Scroll)
+          ========================================================================= */}
+      <section
+        id="evidence"
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '120px 36px',
+          maxWidth: '1440px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 15
+        }}
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px', alignItems: 'center' }}>
+          <div>
+            <div
+              style={{
+                color: '#4ade80',
+                background: 'rgba(34, 197, 94, 0.12)',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
+                borderRadius: '2px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontSize: '11px',
+                fontWeight: 800,
+                padding: '4px 10px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '16px'
+              }}
+            >
+              <span>+--- [04] VERIFIED_EVIDENCE</span>
+              <span style={{ opacity: 0.6 }}>---+</span>
+            </div>
+
+            <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '20px' }}>
+              WHAT MAKES A<br />
+              <span className="ascii-dot-green">CREDIBLE BENCHMARK?</span>
+            </h2>
+
+            <p style={{ fontSize: '13.5px', lineHeight: 1.7, color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', maxWidth: '480px', marginBottom: '28px' }}>
+              A headline return can hide cherry-picked windows, omitted slippage, or an agent that stopped reporting. Assess the cryptographic proof behind the numbers.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => handleMintAction(nextAgent)}
+              style={{
+                background: '#22c55e',
+                color: '#000000',
+                fontWeight: 900,
+                fontSize: '12px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                padding: '12px 24px',
+                borderRadius: '3px',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              [ MINT AGENT #{nextAgent.id} → ]
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div className="trix-card" style={{ maxWidth: '420px', width: '100%', padding: '28px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                <span style={{ width: '8px', height: '8px', background: '#22c55e', borderRadius: '2px' }} />
+                <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace', letterSpacing: '0.08em' }}>
+                  [01] BEYOND PERFORMANCE CLAIMS
+                </span>
+              </div>
+
+              <p style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: 1.6, fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '20px' }}>
+                A headline return means nothing without programmatic proof. RARE binds an agent&apos;s capital directly to an on-chain PDA account.
+              </p>
+
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '4px', padding: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                  <span style={{ color: '#64748b' }}>REPORTED APY:</span>
+                  <span style={{ color: '#ef4444', textDecoration: 'line-through' }}>+184.2%</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                  <span style={{ color: '#64748b' }}>ANCHOR CPI REAL:</span>
+                  <span style={{ color: '#22c55e', fontWeight: 800 }}>+41.8% NET</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ color: '#64748b' }}>SLIPPAGE RECORDED:</span>
+                  <span style={{ color: '#ffffff' }}>0.08% via Jupiter</span>
+                </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* =========================================================================
-            SECTION 03: "$RARE Live" (Heurix Image 6 Layout)
-            ========================================================================= */}
-        <section
-          style={{
-            maxWidth: '1360px',
-            margin: '0 auto',
-            padding: '100px 24px 140px 24px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)'
-          }}
-        >
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px', alignItems: 'center' }}>
-            {/* Left: Robotic Hand with Golden Solana RARE Coin Graphic */}
-            <div style={{
-              background: '#121417',
-              borderRadius: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              padding: '40px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-              boxShadow: '0 20px 48px rgba(0, 0, 0, 0.6)'
-            }}>
-              {/* Radar Circles in Background */}
-              <div style={{
-                position: 'absolute',
-                width: '320px',
-                height: '320px',
-                borderRadius: '50%',
-                border: '1px solid rgba(245, 158, 11, 0.1)',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none'
-              }} />
-              <div style={{
-                position: 'absolute',
-                width: '200px',
-                height: '200px',
-                borderRadius: '50%',
-                border: '1px solid rgba(245, 158, 11, 0.15)',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none'
-              }} />
-
-              {/* Glowing Golden Solana Coin */}
-              <div style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%)',
-                border: '4px solid #fde68a',
-                boxShadow: '0 0 35px rgba(245, 158, 11, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.6)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'relative',
-                zIndex: 2,
-                transform: 'rotate(12deg)'
-              }}>
-                <img
-                  src="/rare-logo-icon.png"
-                  alt="RARE Token"
-                  style={{ width: '60px', height: '60px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
-                />
-              </div>
-
-              <div style={{ marginTop: '24px', textAlign: 'center', position: 'relative', zIndex: 2 }}>
-                <div style={{ fontSize: '16px', fontWeight: 800, color: '#f4f1ea' }}>$RARE TOKEN</div>
-                <div style={{ fontSize: '11px', color: '#f59e0b', fontFamily: 'var(--font-jetbrains), monospace', marginTop: '2px' }}>
-                  SOLANA TOKEN-BOUND ASSET
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Heurix "$HRX Live" Copy & Contract */}
+      {/* =========================================================================
+          SECTION 05: DEX & $RARE TOKEN LIQUIDITY
+          ========================================================================= */}
+      <section
+        id="dex"
+        style={{
+          minHeight: '70vh',
+          padding: '100px 36px',
+          maxWidth: '1440px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 15
+        }}
+      >
+        <div className="trix-card" style={{ padding: '40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '36px', alignItems: 'center' }}>
             <div>
-              <div className="heurix-step-badge">
-                <span className="heurix-step-badge-dot" />
-                <span>03 / $RARE</span>
+              <div
+                style={{
+                  color: '#4ade80',
+                  background: 'rgba(34, 197, 94, 0.12)',
+                  border: '1px solid rgba(34, 197, 94, 0.35)',
+                  borderRadius: '2px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  padding: '4px 10px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: '14px'
+                }}
+              >
+                <span>+--- [05] ON_CHAIN_LIQUIDITY</span>
+                <span style={{ opacity: 0.6 }}>---+</span>
               </div>
-
-              <h2 className="heurix-section-title">
-                $RARE Live
+              <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', marginBottom: '14px' }}>
+                $RARE TOKEN <span className="ascii-dot-green">CONTRACT</span>
               </h2>
-
-              <p className="heurix-section-subtitle" style={{ marginBottom: '32px' }}>
-                The RARE protocol token on Solana. Holding it gives you priority execution and unlocks deeper autonomous capabilities.
+              <p style={{ fontSize: '13px', color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace', lineHeight: 1.6, marginBottom: '24px' }}>
+                The governance and protocol utility token fueling agent PDA vault caps and decentralized oracle dispute settlements.
               </p>
 
-              {/* 3 Benefit Rows from Image 6 */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '32px' }}>
-                {/* Feature 1 */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#f59e0b',
-                    flexShrink: 0
-                  }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '14.5px', fontWeight: 700, color: '#f4f1ea' }}>Run 3 agents at once</div>
-                    <div style={{ fontSize: '12.5px', color: '#949a9f', marginTop: '2px' }}>
-                      Hold 500,000+ $RARE and run up to 3 agents concurrently instead of 1.
-                    </div>
-                  </div>
-                </div>
-
-                {/* Feature 2 */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#f59e0b',
-                    flexShrink: 0
-                  }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '14.5px', fontWeight: 700, color: '#f4f1ea' }}>Holder badge</div>
-                    <div style={{ fontSize: '12.5px', color: '#949a9f', marginTop: '2px' }}>
-                      Your profile and agents show an on-chain $RARE holder badge, including on the global leaderboard.
-                    </div>
-                  </div>
-                </div>
-
-                {/* Feature 3 */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#f59e0b',
-                    flexShrink: 0
-                  }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" />
-                      <line x1="12" y1="8" x2="12" y2="12" />
-                      <line x1="12" y1="16" x2="12.01" y2="16" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '14.5px', fontWeight: 700, color: '#f4f1ea' }}>On Solana Mainnet</div>
-                    <div style={{ fontSize: '12.5px', color: '#949a9f', marginTop: '2px' }}>
-                      Swap it on Jupiter & Raydium and track real-time depth on DexScreener.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Token Contract Copy Box */}
-              <div style={{ marginBottom: '28px' }}>
-                <div style={{ fontSize: '11px', color: '#9ca3af', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '6px' }}>
-                  Token Contract:
-                </div>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '10px',
-                  padding: '8px 14px',
-                  fontFamily: 'var(--font-jetbrains), monospace',
-                  fontSize: '12px'
-                }}>
-                  <span style={{ color: '#d4d4d8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginRight: '12px' }}>
-                    RAREv3779B100VaultSolanaTokenBound10078
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => handleCopy('RAREv3779B100VaultSolanaTokenBound10078', 'contract')}
-                    style={{
-                      background: 'transparent',
-                      border: 'none',
-                      color: copiedContract ? '#10b981' : '#f59e0b',
-                      cursor: 'pointer',
-                      fontWeight: 700,
-                      flexShrink: 0
-                    }}
-                  >
-                    {copiedContract ? 'Copied ✓' : 'Copy'}
-                  </button>
-                </div>
-              </div>
-
-              {/* Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+              {/* Contract Copy Box */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '10px 16px', maxWidth: '440px', marginBottom: '20px' }}>
+                <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#86efac', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  7xK9pLm48N2qR5vT8bF2wA6yU3dE1sZ0xO9vQ4mP
+                </span>
                 <button
                   type="button"
-                  onClick={() => handleMintAction(nextAgent)}
-                  className="heurix-btn-amber"
+                  onClick={copyContract}
+                  style={{
+                    background: '#22c55e',
+                    color: '#000000',
+                    border: 'none',
+                    borderRadius: '2px',
+                    padding: '4px 10px',
+                    fontSize: '10px',
+                    fontWeight: 900,
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    cursor: 'pointer'
+                  }}
                 >
-                  Trade on Jupiter ↗
+                  {copiedContract ? 'COPIED ✓' : '[COPY]'}
                 </button>
+              </div>
+
+              {/* DEX Buttons */}
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <a
+                  href="https://jup.ag"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    background: '#22c55e',
+                    color: '#000000',
+                    fontWeight: 900,
+                    fontSize: '12px',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    padding: '12px 20px',
+                    borderRadius: '3px',
+                    textDecoration: 'none'
+                  }}
+                >
+                  [ TRADE ON JUPITER ↗ ]
+                </a>
+
                 <a
                   href="https://dexscreener.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="heurix-btn-ghost"
+                  style={{
+                    background: 'rgba(34, 197, 94, 0.1)',
+                    border: '1px solid rgba(34, 197, 94, 0.35)',
+                    color: '#86efac',
+                    fontWeight: 800,
+                    fontSize: '12px',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    padding: '12px 20px',
+                    borderRadius: '3px',
+                    textDecoration: 'none'
+                  }}
                 >
-                  View on DexScreener ↗
+                  [ DEXSCREENER CHART ↗ ]
                 </a>
               </div>
             </div>
+
+            {/* Quick Metrics */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', fontFamily: 'var(--font-jetbrains), monospace' }}>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
+                <div style={{ fontSize: '10px', color: '#64748b' }}>CIRCULATING SUPPLY</div>
+                <div style={{ fontSize: '20px', fontWeight: 900, color: '#ffffff', marginTop: '4px' }}>10,078,000</div>
+              </div>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
+                <div style={{ fontSize: '10px', color: '#64748b' }}>PDA VAULT RESERVE</div>
+                <div style={{ fontSize: '20px', fontWeight: 900, color: '#22c55e', marginTop: '4px' }}>90% LOCKED</div>
+              </div>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
+                <div style={{ fontSize: '10px', color: '#64748b' }}>ANCHOR PROGRAM</div>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#86efac', marginTop: '4px' }}>VERIFIED CPI</div>
+              </div>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
+                <div style={{ fontSize: '10px', color: '#64748b' }}>SOLANA NETWORK</div>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>MAINNET-BETA</div>
+              </div>
+            </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
       {/* =========================================================================
-          HEURIX-STYLE FOOTER
+          SECTION 06: FOR BUILDERS // TERMINAL
           ========================================================================= */}
-      <footer style={{
-        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-        background: '#090a0c',
-        padding: '48px 24px 60px 24px'
-      }}>
-        <div style={{
-          maxWidth: '1360px',
+      <section
+        id="builders"
+        style={{
+          minHeight: '80vh',
+          padding: '100px 36px 60px 36px',
+          maxWidth: '1440px',
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 15
+        }}
+      >
+        <div style={{ marginBottom: '32px' }}>
+          <div
+            style={{
+              color: '#4ade80',
+              background: 'rgba(34, 197, 94, 0.12)',
+              border: '1px solid rgba(34, 197, 94, 0.35)',
+              borderRadius: '2px',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '11px',
+              fontWeight: 800,
+              padding: '4px 10px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '12px'
+            }}
+          >
+            <span>+--- [06] FOR_BUILDERS</span>
+            <span style={{ opacity: 0.6 }}>---+</span>
+          </div>
+          <h2 className="ascii-dot-title" style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', margin: 0 }}>
+            CONNECT YOUR AI <span className="ascii-dot-green">VIA MCP OR HTTP</span>
+          </h2>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', alignItems: 'center' }}>
+          <div>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+              {[
+                { id: 'hermes', label: 'Hermes (MCP)' },
+                { id: 'openclaw', label: 'OpenClaw (HTTP)' },
+                { id: 'claude', label: 'Claude Code' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '3px',
+                    background: activeTab === tab.id ? '#22c55e' : 'rgba(34, 197, 94, 0.1)',
+                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    color: activeTab === tab.id ? '#000000' : '#4ade80',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    fontSize: '12px',
+                    fontWeight: 800,
+                    cursor: 'pointer'
+                  }}
+                >
+                  [{tab.label.toUpperCase()}]
+                </button>
+              ))}
+            </div>
+
+            <div style={{ background: '#041308', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 18px', background: 'rgba(34, 197, 94, 0.1)', borderBottom: '1px solid rgba(34, 197, 94, 0.25)', fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#4ade80' }}>
+                <span>+--- SETUP // {activeTab.toUpperCase()} ---+</span>
+                <button
+                  type="button"
+                  onClick={copyConfig}
+                  style={{ background: 'transparent', border: 'none', color: '#ffffff', cursor: 'pointer', fontWeight: 800, fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace' }}
+                >
+                  {copiedKey ? 'COPIED ✓' : '[COPY]'}
+                </button>
+              </div>
+
+              <pre style={{ padding: '20px', margin: 0, fontSize: '12px', lineHeight: 1.6, color: '#e2e8f0', fontFamily: 'var(--font-jetbrains), monospace', overflowX: 'auto', background: '#020b04' }}>
+                <code>{terminalConfigs[activeTab]}</code>
+              </pre>
+            </div>
+          </div>
+
+          <div className="trix-card" style={{ padding: '36px', minHeight: '280px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#4ade80', letterSpacing: '0.08em', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '10px' }}>
+                [ANCHOR PROGRAM READY]
+              </div>
+              <h3 style={{ fontSize: '22px', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '12px', color: '#ffffff' }}>
+                JOIN THE 10,078 AGENTS
+              </h3>
+              <p style={{ fontSize: '13px', lineHeight: 1.6, color: '#94a3b8', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                Mint your agent, fund its dedicated PDA vault with 90% capital, and trade autonomously on Solana.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => handleMintAction(nextAgent)}
+              style={{
+                background: '#22c55e',
+                color: '#000000',
+                fontWeight: 900,
+                fontSize: '13px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                padding: '14px 24px',
+                borderRadius: '3px',
+                border: 'none',
+                cursor: 'pointer',
+                marginTop: '20px'
+              }}
+            >
+              {`[ > MINT AGENT #${nextAgent.id} (0.020 SOL) < ]`}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Tactical Bottom Grid Footer */}
+      <footer
+        style={{
+          borderTop: '1px solid rgba(34, 197, 94, 0.2)',
+          padding: '24px 36px',
+          maxWidth: '1440px',
           margin: '0 auto',
           display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '24px'
-        }}>
-          {/* Brand */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img src="/rare-logo-icon.png" alt="RARE" style={{ width: '22px', height: '22px' }} />
-            <span style={{ fontSize: '16px', fontWeight: 800, color: '#f4f1ea' }}>rare</span>
-          </div>
-
-          {/* Links */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px', fontSize: '13px' }}>
-            <Link href="/whitepaper" style={{ color: '#9ca3af', textDecoration: 'none' }}>
-              Documentation
-            </Link>
-            <a href="https://x.com/rare_agent?s=11" target="_blank" rel="noreferrer" style={{ color: '#9ca3af', textDecoration: 'none' }}>
-              Twitter / X ↗
-            </a>
-            <a href="https://dexscreener.com" target="_blank" rel="noreferrer" style={{ color: '#9ca3af', textDecoration: 'none' }}>
-              Token chart ↗
-            </a>
-          </div>
-
-          {/* Disclaimer */}
-          <div style={{ fontSize: '11px', color: '#6b7280', fontFamily: 'var(--font-jetbrains), monospace' }}>
-            Solana mainnet beta. Token-bound PDA smart contracts. Not financial advice.
-          </div>
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '16px',
+          fontFamily: 'var(--font-jetbrains), monospace',
+          fontSize: '11px',
+          color: '#86efac'
+        }}
+      >
+        <div>[RARE_PROTOCOL] // TACTICAL_ASCII_RADAR</div>
+        <div>SOLANA MAINNET-BETA // ANCHOR CPI 90/10</div>
+        <div>
+          <Link href="/" style={{ color: '#22c55e', textDecoration: 'none', fontWeight: 800 }}>
+            [SWITCH TO HEURIX UI →]
+          </Link>
         </div>
       </footer>
 
       {/* =========================================================================
-          MINT CELEBRATION MODAL
+          INTERACTIVE MINT MODAL (From Original RARE UI)
+          ========================================================================= */}
+      {isMinting && inspectedAgent && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            background: 'rgba(0, 0, 0, 0.88)',
+            backdropFilter: 'blur(12px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px'
+          }}
+        >
+          <div
+            className="trix-card"
+            style={{
+              maxWidth: '440px',
+              width: '100%',
+              padding: '32px',
+              textAlign: 'center'
+            }}
+          >
+            <div style={{ width: '48px', height: '48px', border: '3px solid #22c55e', borderTopColor: 'transparent', borderRadius: '50%', margin: '0 auto 20px auto', animation: 'spin 0.8s linear infinite' }} />
+            <div style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '8px' }}>
+              [ ANCHOR CPI MINTING... ]
+            </div>
+            <div style={{ fontSize: '13px', color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '20px' }}>
+              {mintStatus}
+            </div>
+
+            <div style={{ background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '4px', padding: '14px', textAlign: 'left', fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#94a3b8', lineHeight: 1.8 }}>
+              <div>AGENT_ID: #{inspectedAgent.id}</div>
+              <div>TOTAL_MINT: 0.020 SOL</div>
+              <div style={{ color: '#22c55e', fontWeight: 800 }}>→ 90% PDA VAULT: 0.018 SOL</div>
+              <div>→ 10% PROTOCOL OPS: 0.002 SOL</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          CELEBRATION SUCCESS MODAL
           ========================================================================= */}
       {mintCelebration && (
         <div
@@ -1008,75 +1086,54 @@ export default function HomePage() {
             position: 'fixed',
             inset: 0,
             zIndex: 100,
-            background: 'rgba(0, 0, 0, 0.85)',
-            backdropFilter: 'blur(16px)',
+            background: 'rgba(0, 0, 0, 0.88)',
+            backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '20px'
+            padding: '24px'
           }}
           onClick={() => setMintCelebration(null)}
         >
           <div
+            className="trix-card"
             style={{
-              background: '#121417',
-              border: '1px solid rgba(245, 158, 11, 0.4)',
-              borderRadius: '24px',
-              padding: '36px',
               maxWidth: '460px',
               width: '100%',
-              textAlign: 'center',
-              boxShadow: '0 24px 60px rgba(0, 0, 0, 0.9)'
+              padding: '32px',
+              textAlign: 'center'
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
-              background: 'rgba(16, 185, 129, 0.15)',
-              border: '2px solid #10b981',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 20px auto',
-              color: '#10b981',
-              fontSize: '32px'
-            }}>
-              ✓
+            <div style={{ fontSize: '42px', marginBottom: '12px' }}>⚡</div>
+            <div style={{ fontSize: '22px', fontWeight: 900, color: '#22c55e', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '8px' }}>
+              AGENT #{mintCelebration.id} ACTIVATED!
             </div>
-
-            <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#f4f1ea', marginBottom: '8px' }}>
-              Agent #{mintCelebration.id} Activated!
-            </h3>
-
-            <p style={{ fontSize: '14px', color: '#9ca3af', lineHeight: 1.6, marginBottom: '24px' }}>
-              Anchor CPI successfully derived token-bound PDA and locked <span style={{ color: '#10b981', fontWeight: 700 }}>{mintCelebration.deposited} SOL</span> into its autonomous execution vault.
+            <p style={{ fontSize: '13px', color: '#cbd5e1', fontFamily: 'var(--font-jetbrains), monospace', lineHeight: 1.6, marginBottom: '20px' }}>
+              Successfully minted on Solana mainnet-beta. 0.0180 SOL deposited into token-bound PDA vault.
             </p>
 
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '12px',
-              padding: '12px',
-              fontSize: '11px',
-              fontFamily: 'var(--font-jetbrains), monospace',
-              color: '#9ca3af',
-              marginBottom: '24px',
-              textAlign: 'left'
-            }}>
-              <div>TRANSACTION: {mintCelebration.txSignature}</div>
-              <div>SPLIT: 90% PDA / 10% Protocol Ops</div>
-              <div>STATUS: On-Chain Execution Active</div>
+            <div style={{ background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '4px', padding: '12px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#86efac', marginBottom: '24px', wordBreak: 'break-all' }}>
+              TX_SIG: {mintCelebration.txSignature}
             </div>
 
             <button
               type="button"
               onClick={() => setMintCelebration(null)}
-              className="heurix-btn-amber"
-              style={{ width: '100%' }}
+              style={{
+                width: '100%',
+                background: '#22c55e',
+                color: '#000000',
+                border: 'none',
+                borderRadius: '3px',
+                padding: '12px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontWeight: 900,
+                fontSize: '13px',
+                cursor: 'pointer'
+              }}
             >
-              Continue to Swarm
+              [ CLOSE & VIEW ON-CHAIN → ]
             </button>
           </div>
         </div>
