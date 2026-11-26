@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Rare3DEmblem from '../../components/trix/Rare3DEmblem';
 import TrixNavbar from '../../components/trix/TrixNavbar';
 import TrixHudFooter from '../../components/trix/TrixHudFooter';
-import './trix.css';
 
 export default function TrixPage() {
   const [scrollProgress, setScrollProgress] = useState(0);
