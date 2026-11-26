@@ -45,31 +45,33 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
           maxWidth: '1440px',
           width: '100%',
           margin: '0 auto',
-          padding: '0 28px',
+          padding: '0 20px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '20px'
+          gap: '12px'
         }}
       >
         {/* Left: Brand Icon + Wordmark + Tactical ASCII Badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0, whiteSpace: 'nowrap' }}>
           <Link
             href="/trix"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
+              gap: '8px',
               textDecoration: 'none',
-              color: isLightMode ? '#0f172a' : '#f8fafc'
+              color: isLightMode ? '#0f172a' : '#f8fafc',
+              whiteSpace: 'nowrap',
+              flexShrink: 0
             }}
           >
             <img
               src="/rare-logo-icon.png"
               alt="RARE Protocol"
               style={{
-                width: '26px',
-                height: '26px',
+                width: '24px',
+                height: '24px',
                 objectFit: 'contain',
                 filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.85))'
               }}
@@ -78,7 +80,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               style={{
                 fontFamily: 'var(--font-jetbrains), monospace',
                 fontWeight: 900,
-                fontSize: '19px',
+                fontSize: '18px',
                 letterSpacing: '0.08em',
                 color: isLightMode ? '#0f172a' : '#ffffff'
               }}
@@ -88,12 +90,13 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
             <span
               style={{
                 fontFamily: 'var(--font-jetbrains), monospace',
-                fontSize: '9.5px',
+                fontSize: '9px',
                 color: '#22c55e',
                 border: '1px solid rgba(34, 197, 94, 0.35)',
-                padding: '1px 6px',
+                padding: '1px 5px',
                 borderRadius: '2px',
-                background: 'rgba(34, 197, 94, 0.1)'
+                background: 'rgba(34, 197, 94, 0.1)',
+                whiteSpace: 'nowrap'
               }}
             >
               [v2.4_ASCII]
@@ -107,7 +110,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              padding: '3px 9px',
+              padding: '3px 8px',
               borderRadius: '2px',
               background: isLightMode ? 'rgba(0, 0, 0, 0.05)' : 'rgba(34, 197, 94, 0.08)',
               border: isLightMode ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(34, 197, 94, 0.3)',
@@ -115,7 +118,9 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               fontFamily: 'var(--font-jetbrains), monospace',
               color: isLightMode ? '#047857' : '#4ade80',
               textDecoration: 'none',
-              letterSpacing: '0.06em'
+              letterSpacing: '0.04em',
+              whiteSpace: 'nowrap',
+              flexShrink: 0
             }}
             title="Switch to Heurix UI"
           >
@@ -125,15 +130,15 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
 
         {/* Center: ASCII Delimited Navigation */}
         <nav
-          className="hidden xl:flex"
+          className="hidden xl:flex items-center"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
+            gap: '10px',
             fontFamily: 'var(--font-jetbrains), monospace',
-            fontSize: '11px',
-            letterSpacing: '0.06em',
-            fontWeight: 700
+            fontSize: '10.5px',
+            letterSpacing: '0.05em',
+            fontWeight: 700,
+            whiteSpace: 'nowrap',
+            flexShrink: 1
           }}
         >
           {navLinks.map((item, idx) => (
@@ -145,8 +150,9 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
+                  gap: '3px',
                   opacity: 0.88,
+                  whiteSpace: 'nowrap',
                   transition: 'opacity 0.15s ease'
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
@@ -163,7 +169,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
         </nav>
 
         {/* Right: ASCII Mint & Wallet CTAs */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0, whiteSpace: 'nowrap' }}>
           {onMintClick && (
             <button
               type="button"
@@ -171,17 +177,20 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
+                justifyContent: 'center',
+                gap: '4px',
                 background: 'rgba(34, 197, 94, 0.12)',
                 border: '1px solid rgba(34, 197, 94, 0.45)',
                 borderRadius: '3px',
                 color: isLightMode ? '#047857' : '#4ade80',
-                padding: '7px 13px',
+                padding: '6px 11px',
                 fontSize: '11px',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 fontWeight: 800,
-                letterSpacing: '0.04em',
+                letterSpacing: '0.03em',
                 cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
                 transition: 'all 0.15s ease'
               }}
               onMouseEnter={(e) => {
@@ -193,7 +202,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
                 e.currentTarget.style.borderColor = 'rgba(34, 197, 94, 0.45)';
               }}
             >
-              <span>{"[ > MINT AGENT (0.020 SOL) < ]"}</span>
+              <span>{"[ > MINT 0.020 SOL < ]"}</span>
             </button>
           )}
 
@@ -209,18 +218,21 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '6px',
               background: authenticated ? '#06200e' : '#22c55e',
               color: authenticated ? '#4ade80' : '#000000',
               fontWeight: 900,
-              fontSize: '11.5px',
+              fontSize: '11px',
               fontFamily: 'var(--font-jetbrains), monospace',
-              letterSpacing: '0.06em',
-              padding: '8px 16px',
-              border: authenticated ? '1px solid #22c55e' : '1px solid #22c55e',
+              letterSpacing: '0.04em',
+              padding: '6px 13px',
+              border: '1px solid #22c55e',
               borderRadius: '3px',
               cursor: 'pointer',
-              boxShadow: '0 0 14px rgba(34, 197, 94, 0.4)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              boxShadow: '0 0 14px rgba(34, 197, 94, 0.35)',
               transition: 'all 0.15s ease'
             }}
           >
