@@ -73,7 +73,7 @@ function createPure3DCrystalGeometry() {
 
 export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }) {
   const mountRef = useRef(null);
-  const [mode, setMode] = useState('ascii'); // Default: 'ascii' as requested by client!
+  const [mode, setMode] = useState('solid'); // Default: 'solid' 3D crystal as requested by user
   const modeRef = useRef(mode);
 
   const scrollRef = useRef(scrollProgress);

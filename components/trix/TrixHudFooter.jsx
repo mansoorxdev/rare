@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import AsciiScrambleText, { AsciiCipherTape } from './AsciiScrambleText';
 
 export default function TrixHudFooter({ isLightMode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,7 +9,7 @@ export default function TrixHudFooter({ isLightMode }) {
   const [messages, setMessages] = useState([
     {
       sender: 'RARE_AI',
-      text: 'RARE Tactical Radar online. Ingesting live trade streams across 10,078 Solana autonomous agents. Ask about 90% PDA vaults, Anchor CPI execution, or Pyth benchmarks.'
+      text: 'RARE ASCII RADAR v2.4 initialized. Ingesting live trade streams across 10,078 Solana autonomous agents. Ask about 90% PDA vaults, Anchor CPI execution, or Pyth benchmarks.'
     }
   ]);
 
@@ -33,7 +34,7 @@ export default function TrixHudFooter({ isLightMode }) {
 
   return (
     <>
-      {/* Floating Tactical Pill */}
+      {/* Floating Tactical ASCII Pill */}
       <div
         style={{
           position: 'fixed',
@@ -48,42 +49,40 @@ export default function TrixHudFooter({ isLightMode }) {
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '10px',
-            background: '#041508',
-            border: '1.5px solid #22c55e',
-            borderRadius: '10px',
-            padding: '10px 18px',
+            gap: '8px',
+            background: '#041007',
+            border: '1px solid #22c55e',
+            borderRadius: '2px',
+            padding: '8px 14px',
             color: '#ffffff',
             cursor: 'pointer',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(34, 197, 94, 0.35)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.8), 0 0 12px rgba(34, 197, 94, 0.25)',
             fontFamily: 'var(--font-jetbrains), monospace',
-            fontSize: '11.5px',
+            fontSize: '11px',
             fontWeight: 800,
-            letterSpacing: '0.1em',
-            transition: 'all 0.2s ease'
+            letterSpacing: '0.08em',
+            transition: 'all 0.15s ease'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 12px 28px rgba(0, 0, 0, 0.7), 0 0 24px rgba(34, 197, 94, 0.6)';
+            e.currentTarget.style.borderColor = '#4ade80';
+            e.currentTarget.style.boxShadow = '0 6px 24px rgba(0, 0, 0, 0.9), 0 0 18px rgba(34, 197, 94, 0.5)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(34, 197, 94, 0.35)';
+            e.currentTarget.style.borderColor = '#22c55e';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.8), 0 0 12px rgba(34, 197, 94, 0.25)';
           }}
         >
-          <img
-            src="/rare-logo-icon.png"
-            alt="RARE"
-            style={{ width: '16px', height: '16px', objectFit: 'contain' }}
-          />
+          <span style={{ color: '#22c55e' }}>[&gt;]</span>
           <span>ASK RARE</span>
           <span
             style={{
-              width: '7px',
-              height: '7px',
+              width: '6px',
+              height: '6px',
               borderRadius: '50%',
               background: '#22c55e',
-              boxShadow: '0 0 8px #22c55e'
+              boxShadow: '0 0 6px #22c55e'
             }}
           />
         </button>
@@ -94,78 +93,94 @@ export default function TrixHudFooter({ isLightMode }) {
         <div
           style={{
             position: 'fixed',
-            bottom: '80px',
+            bottom: '76px',
             right: '24px',
-            width: '380px',
+            width: '390px',
             maxHeight: '480px',
-            height: '420px',
-            background: '#041308',
-            border: '1px solid #22c55e',
-            borderRadius: '14px',
             zIndex: 65,
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(34, 197, 94, 0.3)',
+            background: 'rgba(4, 12, 7, 0.96)',
+            border: '1px solid #22c55e',
+            borderRadius: '2px',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(34, 197, 94, 0.25)',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden',
             fontFamily: 'var(--font-jetbrains), monospace'
           }}
         >
-          {/* Header */}
+          {/* Terminal Window Header */}
           <div
             style={{
-              padding: '12px 16px',
-              background: 'rgba(34, 197, 94, 0.1)',
-              borderBottom: '1px solid rgba(34, 197, 94, 0.25)',
+              padding: '10px 14px',
+              background: '#020704',
+              borderBottom: '1px solid rgba(34, 197, 94, 0.3)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
+              fontSize: '11px',
+              color: '#86efac'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#4ade80', letterSpacing: '0.08em' }}>
-                RARE INTEL TERMINAL // V1.4
-              </span>
+              <span style={{ color: '#22c55e' }}>+---</span>
+              <span style={{ fontWeight: 800 }}>RARE_ASCII_COPILOT</span>
+              <span style={{ color: '#22c55e' }}>---+</span>
             </div>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '14px' }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#64748b',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                fontSize: '12px'
+              }}
             >
-              ✕
+              [X]
             </button>
+          </div>
+
+          <div style={{ padding: '4px 14px', background: '#010502', borderBottom: '1px solid rgba(34, 197, 94, 0.15)', fontSize: '9px' }}>
+            <AsciiCipherTape length={36} speed={150} style={{ fontSize: '9px' }} />
           </div>
 
           {/* Messages Feed */}
           <div
             style={{
-              flex: 1,
-              padding: '16px',
+              padding: '14px',
               overflowY: 'auto',
+              flex: 1,
+              maxHeight: '300px',
               display: 'flex',
               flexDirection: 'column',
               gap: '12px',
-              fontSize: '11.5px',
-              lineHeight: 1.6
+              fontSize: '11px',
+              lineHeight: 1.55
             }}
           >
             {messages.map((m, idx) => (
               <div
                 key={idx}
                 style={{
-                  alignSelf: m.sender === 'OPERATOR' ? 'flex-end' : 'flex-start',
-                  maxWidth: '85%',
-                  background: m.sender === 'OPERATOR' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-                  border: m.sender === 'OPERATOR' ? '1px solid rgba(34, 197, 94, 0.4)' : '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '8px',
                   padding: '8px 12px',
-                  color: m.sender === 'OPERATOR' ? '#86efac' : '#e2e8f0'
+                  borderRadius: '2px',
+                  background: m.sender === 'RARE_AI' ? 'rgba(34, 197, 94, 0.08)' : 'rgba(255, 255, 255, 0.05)',
+                  borderLeft: m.sender === 'RARE_AI' ? '2px solid #22c55e' : '2px solid #94a3b8'
                 }}
               >
-                <div style={{ fontSize: '9px', opacity: 0.6, marginBottom: '2px', color: '#4ade80' }}>
-                  {m.sender}
+                <div
+                  style={{
+                    fontSize: '9.5px',
+                    fontWeight: 800,
+                    color: m.sender === 'RARE_AI' ? '#22c55e' : '#94a3b8',
+                    marginBottom: '4px'
+                  }}
+                >
+                  [{m.sender}]
                 </div>
-                <div>{m.text}</div>
+                <div style={{ color: '#e2e8f0' }}>{m.text}</div>
               </div>
             ))}
           </div>
@@ -174,27 +189,26 @@ export default function TrixHudFooter({ isLightMode }) {
           <form
             onSubmit={handleSend}
             style={{
-              padding: '12px',
-              borderTop: '1px solid rgba(34, 197, 94, 0.2)',
               display: 'flex',
-              gap: '8px',
-              background: '#020b04'
+              padding: '10px',
+              background: '#020704',
+              borderTop: '1px solid rgba(34, 197, 94, 0.25)',
+              gap: '8px'
             }}
           >
+            <span style={{ color: '#22c55e', alignSelf: 'center', fontSize: '12px' }}>&gt;</span>
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask RARE engine..."
+              placeholder="Ask RARE ASCII radar..."
               style={{
                 flex: 1,
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(34, 197, 94, 0.3)',
-                borderRadius: '6px',
-                padding: '8px 12px',
+                background: 'transparent',
+                border: 'none',
                 color: '#ffffff',
-                fontSize: '11px',
-                fontFamily: 'var(--font-jetbrains), monospace',
+                fontFamily: 'inherit',
+                fontSize: '11.5px',
                 outline: 'none'
               }}
             />
@@ -204,10 +218,11 @@ export default function TrixHudFooter({ isLightMode }) {
                 background: '#22c55e',
                 color: '#000000',
                 border: 'none',
-                borderRadius: '6px',
-                padding: '0 12px',
-                fontWeight: 800,
-                fontSize: '11px',
+                borderRadius: '2px',
+                padding: '4px 10px',
+                fontSize: '10px',
+                fontWeight: 900,
+                fontFamily: 'inherit',
                 cursor: 'pointer'
               }}
             >
