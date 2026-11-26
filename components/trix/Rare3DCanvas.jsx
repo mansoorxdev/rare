@@ -62,6 +62,18 @@ const CRYSTAL_VERTICES = new Float32Array([
 export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }) {
   const mountRef = useRef(null);
 
+  // Keep live references to props so the Three.js loop never tears down or re-creates!
+  const scrollRef = useRef(scrollProgress);
+  const lightModeRef = useRef(isLightMode);
+
+  useEffect(() => {
+    scrollRef.current = scrollProgress;
+  }, [scrollProgress]);
+
+  useEffect(() => {
+    lightModeRef.current = isLightMode;
+  }, [isLightMode]);
+
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
@@ -210,62 +222,45 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       animId = requestAnimationFrame(animate);
       const time = clock.getElapsedTime();
 
-      // Lerp mouse
-      mouseX += (targetMouseX - mouseX) * 0.06;
-      mouseY += (targetMouseY - mouseY) * 0.06;
+      // Smooth mouse lerping
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
 
-      // Gentle idle floating on Y axis (kept small so top and bottom never leave view!)
-      const idleY = Math.sin(time * 1.4) * 0.08;
+      // Gentle floating bob
+      const idleY = Math.sin(time * 1.5) * 0.06;
 
-      // Spin inner core & radar dust particles
-      coreMesh.rotation.y = time * 0.7;
-      particleSystem.rotation.y = time * 0.05;
-      particleSystem.rotation.x = Math.sin(time * 0.5) * 0.04;
+      // Continuous ambient rotation
+      coreMesh.rotation.y = time * 0.8;
+      particleSystem.rotation.y = time * 0.04;
+      particleSystem.rotation.x = Math.sin(time * 0.5) * 0.03;
 
-      // Dynamic Scroll Transitions
-      const p = scrollProgress;
+      // Read current scroll progress from ref (continuous and jitter-free!)
+      const p = scrollRef.current;
 
-      // Base rotations with mouse tilt (gentle vertical tilt so tips are never cropped)
-      let targetRotX = 0.12 + p * 0.85 - mouseY * 0.25;
-      let targetRotY = time * 0.35 + mouseX * 0.45 + p * 1.5;
-      let targetRotZ = p * 0.25;
+      // BUTTERY SMOOTH ROTATION ON Y AND Z AXIS (As requested by user):
+      // - Continuous smooth spin on Y-axis (scroll turns it smoothly, like a 3D turntable)
+      // - Gentle aerodynamic banking roll on Z-axis
+      // - Slight perspective pitch on X-axis without ever cutting off tips
+      const targetRotY = time * 0.35 + mouseX * 0.45 + p * Math.PI * 2.5;
+      const targetRotZ = Math.sin(p * Math.PI) * 0.32 - mouseX * 0.15;
+      const targetRotX = 0.14 + Math.sin(p * Math.PI) * 0.25 - mouseY * 0.2;
 
-      // Position calibrated so both top and bottom tips remain 100% visible on all viewports
-      let targetPosX = 0;
-      let targetPosY = 0.08 + idleY;
-      let targetPosZ = 0;
+      // Smooth trajectory translation across scroll stages
+      const targetPosX = -Math.sin(p * Math.PI) * 1.6;
+      const targetPosY = 0.08 + idleY;
+      const targetPosZ = -Math.sin(p * Math.PI) * 0.5;
 
-      if (p <= 0.25) {
-        // Hero: perfectly centered
-        targetPosX = 0;
-        targetPosY = 0.08 + idleY;
-      } else if (p <= 0.5) {
-        // Stage 1: Horizon tilt onto 3D grid
-        const stageP = (p - 0.25) / 0.25;
-        targetPosX = -stageP * 1.8;
-        targetPosY = 0.08 - stageP * 0.2 + idleY;
-        targetRotX = 0.12 + stageP * 0.7;
-      } else if (p <= 0.75) {
-        // Stage 2: Tactical white radar mode
-        const stageP = (p - 0.5) / 0.25;
-        targetPosX = -1.8 + stageP * 1.8;
-        targetPosY = -0.12 + stageP * 0.2 + idleY;
-      } else {
-        // Stage 3: Evidence alignment
-        targetPosX = 0;
-        targetPosY = 0.06 + idleY;
-      }
+      // 60FPS Exponential Smoothing (Lerp) - Eliminates all shivering / stuttering!
+      crystalGroup.rotation.x = THREE.MathUtils.lerp(crystalGroup.rotation.x, targetRotX, 0.06);
+      crystalGroup.rotation.y = THREE.MathUtils.lerp(crystalGroup.rotation.y, targetRotY, 0.06);
+      crystalGroup.rotation.z = THREE.MathUtils.lerp(crystalGroup.rotation.z, targetRotZ, 0.06);
 
-      crystalGroup.rotation.x = THREE.MathUtils.lerp(crystalGroup.rotation.x, targetRotX, 0.08);
-      crystalGroup.rotation.y = THREE.MathUtils.lerp(crystalGroup.rotation.y, targetRotY, 0.08);
-      crystalGroup.rotation.z = THREE.MathUtils.lerp(crystalGroup.rotation.z, targetRotZ, 0.08);
-
-      crystalGroup.position.x = THREE.MathUtils.lerp(crystalGroup.position.x, targetPosX, 0.08);
-      crystalGroup.position.y = THREE.MathUtils.lerp(crystalGroup.position.y, targetPosY, 0.08);
-      crystalGroup.position.z = THREE.MathUtils.lerp(crystalGroup.position.z, targetPosZ, 0.08);
+      crystalGroup.position.x = THREE.MathUtils.lerp(crystalGroup.position.x, targetPosX, 0.06);
+      crystalGroup.position.y = THREE.MathUtils.lerp(crystalGroup.position.y, targetPosY, 0.06);
+      crystalGroup.position.z = THREE.MathUtils.lerp(crystalGroup.position.z, targetPosZ, 0.06);
 
       // Light mode material adaptation
-      if (isLightMode) {
+      if (lightModeRef.current) {
         crystalMat.color.setHex(0x059669);
         crystalMat.emissive.setHex(0x047857);
         edgesMat.color.setHex(0x047857);
@@ -300,7 +295,7 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       envMap.dispose();
       renderer.dispose();
     };
-  }, [scrollProgress, isLightMode]);
+  }, []); // Run ONLY once on mount! No context recreating on scroll!
 
   return (
     <div
