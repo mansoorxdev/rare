@@ -139,22 +139,22 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
     crystalGroup.add(edgesMesh);
 
-    // Inner Luminous Core Gem (Nested inside the crystal, glows and radiates light)
+    // Inner Luminous Core Gem - Rich Golden Green / Solar Amber Lime Core
     const innerGeo = crystalGeo.clone();
     innerGeo.scale(0.56, 0.56, 0.56);
     const innerMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x34d399),
-      emissive: new THREE.Color(0x10b981),
-      emissiveIntensity: 1.3,
-      roughness: 0.15,
-      metalness: 0.1,
+      color: new THREE.Color(0xbef264), // Vibrant golden lime
+      emissive: new THREE.Color(0x84cc16), // Warm golden green emissive radiance
+      emissiveIntensity: 0.95, // Kept balanced so it stays golden-green and does not wash out to white
+      roughness: 0.18,
+      metalness: 0.35, // Rich golden crystal sheen
       flatShading: true
     });
     const innerCrystalMesh = new THREE.Mesh(innerGeo, innerMat);
     crystalGroup.add(innerCrystalMesh);
 
-    // Internal Pulsing Light at the crystal core
-    const coreLight = new THREE.PointLight(0x6ee7b7, 3.0, 9);
+    // Internal Pulsing Light at the crystal core (Warm Golden-Green Glow)
+    const coreLight = new THREE.PointLight(0xeab308, 2.2, 8); // Golden amber-green core light
     coreLight.position.set(0, 0, 0);
     crystalGroup.add(coreLight);
 
@@ -162,8 +162,8 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const ambientLight = new THREE.AmbientLight(0x064e3b, 1.8);
     scene.add(ambientLight);
 
-    // Key Light (Top-Left Lime)
-    const keyLight = new THREE.DirectionalLight(0xdcfce7, 3.5);
+    // Key Light (Top-Left Golden Lime)
+    const keyLight = new THREE.DirectionalLight(0xfef08a, 3.0);
     keyLight.position.set(-6, 7, 5);
     scene.add(keyLight);
 
@@ -226,8 +226,8 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       particleSystem.rotation.y = time * 0.03;
       particleSystem.rotation.x = Math.sin(time * 0.4) * 0.02;
 
-      // Internal light subtle pulse
-      coreLight.intensity = 2.8 + Math.sin(time * 3.0) * 0.5;
+      // Internal golden-green light subtle pulse
+      coreLight.intensity = 2.0 + Math.sin(time * 3.0) * 0.4;
 
       // Current scroll progress
       const p = scrollRef.current;
