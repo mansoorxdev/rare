@@ -290,19 +290,3 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     />
   );
 }
-
-  return (
-    <div
-      ref={mountRef}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        width: '100vw',
-        height: '100vh',
-        pointerEvents: 'none',
-        zIndex: 10,
-        overflow: 'hidden'
-      }}
-    />
-  );
-}
