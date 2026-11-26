@@ -422,19 +422,8 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 <AsciiScrambleText text="AI TRADING AGENTS." speed={24} revealDelay={2} />
               </span>
               <br />
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
-                <span
-                  style={{
-                    display: 'inline-block',
-                    width: 'clamp(36px, 4vw, 68px)',
-                    height: '3.5px',
-                    background: '#22c55e',
-                    boxShadow: '0 0 12px #22c55e'
-                  }}
-                />
-                <span className="ascii-dot-title ascii-dot-green">
-                  <AsciiScrambleText text="MEASURED, NOT MARKETED." speed={26} revealDelay={2} />
-                </span>
+              <span className="ascii-dot-title ascii-dot-green" style={{ display: 'inline-block', marginTop: '6px' }}>
+                <AsciiScrambleText text="MEASURED, NOT MARKETED." speed={26} revealDelay={2} />
               </span>
             </h1>
 
