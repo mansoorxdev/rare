@@ -10,102 +10,125 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const mount = mountRef.current;
     if (!mount) return;
 
-    // 1. Scene, Camera, Renderer
+    // 1. Scene, Camera, Full-Viewport Renderer
     const scene = new THREE.Scene();
-    const width = mount.clientWidth || 500;
-    const height = mount.clientHeight || 500;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 7.5);
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 8.2);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.35;
     mount.appendChild(renderer.domElement);
 
-    // 2. Faceted 3D Emerald Crystal Geometry
-    // We create a dual-pyramid / faceted crystal using Octahedron / custom vertices
+    // 2. Multi-Faceted Gemstone Geometry (True Brilliant Cut Emerald)
     const crystalGroup = new THREE.Group();
     scene.add(crystalGroup);
 
-    // Main Crystal Body
-    const crystalGeo = new THREE.OctahedronGeometry(2.2, 0);
-    // Scale vertically to make it an elongated emerald gemstone
-    crystalGeo.scale(0.85, 1.45, 0.75);
-
-    // Faceted Emerald Glass Material
+    // Common Emerald Material
     const crystalMat = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x10b981),
       emissive: new THREE.Color(0x064e3b),
-      emissiveIntensity: 0.35,
-      roughness: 0.12,
-      metalness: 0.1,
-      transmission: 0.65,
+      emissiveIntensity: 0.4,
+      roughness: 0.1,
+      metalness: 0.15,
+      transmission: 0.7,
       ior: 1.58, // Emerald index of refraction
-      thickness: 1.8,
+      thickness: 2.2,
       specularIntensity: 1.0,
-      specularColor: new THREE.Color(0x86efac),
+      specularColor: new THREE.Color(0xa7f3d0),
       flatShading: true,
       transparent: true,
-      opacity: 0.95
+      opacity: 0.96
     });
 
-    const crystalMesh = new THREE.Mesh(crystalGeo, crystalMat);
-    crystalGroup.add(crystalMesh);
-
-    // Razor-sharp Cyber Wireframe Edge Glow
-    const edgesGeo = new THREE.EdgesGeometry(crystalGeo);
+    // Wireframe edge glow material
     const edgesMat = new THREE.LineBasicMaterial({
       color: new THREE.Color(0x4ade80),
       linewidth: 2,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.9
     });
-    const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
-    crystalGroup.add(edgesMesh);
 
-    // Glowing Inner Core Point
-    const coreGeo = new THREE.OctahedronGeometry(0.8, 0);
-    coreGeo.scale(0.8, 1.3, 0.7);
+    // PART A: Top Crown (Octagonal Beveled Table)
+    // Cylinder: topRadius 0.75, bottomRadius 1.35, height 0.9, 8 sides
+    const crownGeo = new THREE.CylinderGeometry(0.75, 1.35, 0.9, 8, 1);
+    const crownMesh = new THREE.Mesh(crownGeo, crystalMat);
+    crownMesh.position.y = 0.45;
+    crystalGroup.add(crownMesh);
+
+    const crownEdgesGeo = new THREE.EdgesGeometry(crownGeo);
+    const crownEdgesMesh = new THREE.LineSegments(crownEdgesGeo, edgesMat);
+    crownEdgesMesh.position.y = 0.45;
+    crystalGroup.add(crownEdgesMesh);
+
+    // PART B: Bottom Pavilion (Pointed culet cone)
+    // Cone: radius 1.35, height 1.7, 8 sides
+    const pavilionGeo = new THREE.ConeGeometry(1.35, 1.7, 8, 1);
+    pavilionGeo.rotateX(Math.PI); // Invert so it points downwards
+    const pavilionMesh = new THREE.Mesh(pavilionGeo, crystalMat);
+    pavilionMesh.position.y = -0.85;
+    crystalGroup.add(pavilionMesh);
+
+    const pavilionEdgesGeo = new THREE.EdgesGeometry(pavilionGeo);
+    const pavilionEdgesMesh = new THREE.LineSegments(pavilionEdgesGeo, edgesMat);
+    pavilionEdgesMesh.position.y = -0.85;
+    crystalGroup.add(pavilionEdgesMesh);
+
+    // PART C: Glowing Internal Prismatic Core
+    const coreGeo = new THREE.OctahedronGeometry(0.65, 0);
+    coreGeo.scale(0.8, 1.3, 0.8);
     const coreMat = new THREE.MeshBasicMaterial({
       color: new THREE.Color(0x86efac),
       wireframe: true,
       transparent: true,
-      opacity: 0.4
+      opacity: 0.5
     });
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    coreMesh.position.y = -0.1;
     crystalGroup.add(coreMesh);
 
-    // Holographic Orbiting Ring
-    const ringGeo = new THREE.TorusGeometry(2.8, 0.02, 16, 64);
+    // PART D: Holographic Ambient Orbiting Ring
+    const ringGeo = new THREE.TorusGeometry(2.4, 0.02, 16, 72);
     const ringMat = new THREE.MeshBasicMaterial({
       color: new THREE.Color(0x22c55e),
       transparent: true,
       opacity: 0.45
     });
     const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-    ringMesh.rotation.x = Math.PI * 0.4;
+    ringMesh.rotation.x = Math.PI * 0.38;
+    ringMesh.position.y = -0.1;
     crystalGroup.add(ringMesh);
 
-    // 3. Dynamic Lighting
-    const ambientLight = new THREE.AmbientLight(0x052e16, 1.2);
+    // 3. Cinematic 3D Lighting Setup
+    const ambientLight = new THREE.AmbientLight(0x064e3b, 1.4);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0xa3e635, 2.5); // Warm lime key light
-    dirLight1.position.set(-5, 6, 4);
-    scene.add(dirLight1);
+    // Key Light (Top-Left Lime-Yellow)
+    const keyLight = new THREE.DirectionalLight(0xbbf7d0, 2.8);
+    keyLight.position.set(-6, 7, 5);
+    scene.add(keyLight);
 
-    const dirLight2 = new THREE.DirectionalLight(0x10b981, 1.8); // Fill light
-    dirLight2.position.set(5, -4, 3);
-    scene.add(dirLight2);
+    // Fill Light (Bottom-Right Emerald)
+    const fillLight = new THREE.DirectionalLight(0x10b981, 2.0);
+    fillLight.position.set(6, -5, 4);
+    scene.add(fillLight);
 
-    const innerPointLight = new THREE.PointLight(0x22c55e, 3.0, 10);
-    innerPointLight.position.set(0, 0, 0);
-    scene.add(innerPointLight);
+    // Rim Back Light (for silhouette separation)
+    const rimLight = new THREE.DirectionalLight(0x22c55e, 1.5);
+    rimLight.position.set(0, -6, -4);
+    scene.add(rimLight);
 
-    // 4. Mouse Tracking & Animation
+    // Internal Point Light (Pulsating core)
+    const pointLight = new THREE.PointLight(0x4ade80, 2.5, 8);
+    pointLight.position.set(0, -0.1, 0);
+    scene.add(pointLight);
+
+    // 4. Smooth Mouse Parallax & Continuous 3D Loop
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
@@ -122,64 +145,62 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      const delta = clock.getDelta();
       const time = clock.getElapsedTime();
 
-      // Smooth mouse lerp
+      // Lerp mouse
       mouseX += (targetMouseX - mouseX) * 0.06;
       mouseY += (targetMouseY - mouseY) * 0.06;
 
-      // Base idle breathing rotation
-      const idleFloat = Math.sin(time * 1.5) * 0.12;
+      // Gentle idle floating on Y axis (kept small so top and bottom never leave view!)
+      const idleY = Math.sin(time * 1.4) * 0.08;
 
-      // Rotate inner core & ring
-      coreMesh.rotation.y = time * 0.8;
-      ringMesh.rotation.z = time * 0.3;
+      // Spin inner core & ring
+      coreMesh.rotation.y = time * 0.7;
+      ringMesh.rotation.z = time * 0.25;
 
       // Dynamic Scroll Transitions
-      // At scrollProgress = 0: Upright floating
-      // At scrollProgress = 0.35: Tilts flat on floor horizon
-      // At scrollProgress = 0.65: Rises in tactical white mode
-      // At scrollProgress = 0.9: Aligns cleanly
       const p = scrollProgress;
 
-      let targetRotX = 0.2 + p * 1.4 - mouseY * 0.4;
-      let targetRotY = time * 0.4 + mouseX * 0.6 + p * 1.8;
-      let targetRotZ = p * 0.6;
+      // Base rotations with mouse tilt
+      let targetRotX = 0.22 + p * 1.3 - mouseY * 0.35;
+      let targetRotY = time * 0.35 + mouseX * 0.5 + p * 1.6;
+      let targetRotZ = p * 0.45;
+
+      // Position calibrated so both top and bottom remain 100% visible
       let targetPosX = 0;
-      let targetPosY = idleFloat;
+      let targetPosY = 0.15 + idleY;
       let targetPosZ = 0;
 
       if (p <= 0.25) {
-        // Hero upright
+        // Hero: perfectly centered
         targetPosX = 0;
-        targetPosY = idleFloat;
+        targetPosY = 0.15 + idleY;
       } else if (p <= 0.5) {
-        // Tilt onto grid
+        // Stage 1: Horizon tilt onto 3D grid
         const stageP = (p - 0.25) / 0.25;
-        targetPosX = -stageP * 2.2;
-        targetPosY = -stageP * 0.6 + idleFloat;
-        targetRotX = 0.2 + stageP * 1.2;
+        targetPosX = -stageP * 2.0;
+        targetPosY = 0.15 - stageP * 0.3 + idleY;
+        targetRotX = 0.22 + stageP * 1.1;
       } else if (p <= 0.75) {
-        // Tactical white mode
+        // Stage 2: Tactical white radar mode
         const stageP = (p - 0.5) / 0.25;
-        targetPosX = -2.2 + stageP * 2.2;
-        targetPosY = -0.6 + stageP * 0.8 + idleFloat;
+        targetPosX = -2.0 + stageP * 2.0;
+        targetPosY = -0.15 + stageP * 0.3 + idleY;
       } else {
-        // Aligned at bottom
+        // Stage 3: Evidence alignment
         targetPosX = 0;
-        targetPosY = 0.2 + idleFloat;
+        targetPosY = 0.1 + idleY;
       }
 
-      crystalGroup.rotation.x = THREE.MathUtils.lerp(crystalGroup.rotation.x, targetRotX, 0.1);
-      crystalGroup.rotation.y = THREE.MathUtils.lerp(crystalGroup.rotation.y, targetRotY, 0.1);
-      crystalGroup.rotation.z = THREE.MathUtils.lerp(crystalGroup.rotation.z, targetRotZ, 0.1);
+      crystalGroup.rotation.x = THREE.MathUtils.lerp(crystalGroup.rotation.x, targetRotX, 0.08);
+      crystalGroup.rotation.y = THREE.MathUtils.lerp(crystalGroup.rotation.y, targetRotY, 0.08);
+      crystalGroup.rotation.z = THREE.MathUtils.lerp(crystalGroup.rotation.z, targetRotZ, 0.08);
 
-      crystalGroup.position.x = THREE.MathUtils.lerp(crystalGroup.position.x, targetPosX, 0.1);
-      crystalGroup.position.y = THREE.MathUtils.lerp(crystalGroup.position.y, targetPosY, 0.1);
-      crystalGroup.position.z = THREE.MathUtils.lerp(crystalGroup.position.z, targetPosZ, 0.1);
+      crystalGroup.position.x = THREE.MathUtils.lerp(crystalGroup.position.x, targetPosX, 0.08);
+      crystalGroup.position.y = THREE.MathUtils.lerp(crystalGroup.position.y, targetPosY, 0.08);
+      crystalGroup.position.z = THREE.MathUtils.lerp(crystalGroup.position.z, targetPosZ, 0.08);
 
-      // Light mode material tweak
+      // Light mode material adaptation
       if (isLightMode) {
         crystalMat.color.setHex(0x059669);
         crystalMat.emissive.setHex(0x047857);
@@ -196,9 +217,8 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     animate();
 
     const handleResize = () => {
-      if (!mount) return;
-      const w = mount.clientWidth || 500;
-      const h = mount.clientHeight || 500;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
@@ -218,28 +238,16 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
 
   return (
     <div
+      ref={mountRef}
       style={{
         position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '560px',
-        height: '560px',
+        inset: 0,
+        width: '100vw',
+        height: '100vh',
         pointerEvents: 'none',
         zIndex: 10,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        overflow: 'hidden'
       }}
-    >
-      <div
-        ref={mountRef}
-        style={{
-          width: '100%',
-          height: '100%',
-          position: 'relative'
-        }}
-      />
-    </div>
+    />
   );
 }
