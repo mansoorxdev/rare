@@ -363,6 +363,27 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 >
                   {copiedCa ? '[ COPIED! ]' : '[ COPY CA ]'}
                 </button>
+                <a
+                  href={`https://pump.fun/coin/${CONTRACT_ADDRESS}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    background: '#22c55e',
+                    border: '1px solid #22c55e',
+                    color: '#000000',
+                    padding: '3px 10px',
+                    borderRadius: '2px',
+                    fontWeight: 900,
+                    fontSize: '10px',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    fontFamily: 'var(--font-jetbrains), monospace',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  [ PUMP.FUN ↗ ]
+                </a>
               </div>
             )}
 
@@ -1241,7 +1262,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
 
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               <a
-                href="https://jup.ag/swap/SOL-RARE"
+                href={`https://pump.fun/coin/${CONTRACT_ADDRESS}`}
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -1260,7 +1281,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                   justifyContent: 'center'
                 }}
               >
-                [ BUY $RARE ON JUPITER ↗ ]
+                [ BUY $RARE ON PUMP.FUN ↗ ]
               </a>
               <button
                 type="button"

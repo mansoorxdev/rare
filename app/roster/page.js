@@ -515,13 +515,13 @@ export default function RosterPage() {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <a
-                href="https://jup.ag/swap/SOL-RARE"
+                href="https://pump.fun"
                 target="_blank"
                 rel="noreferrer"
                 className="gamma-btn-black"
                 style={{ flex: 1, minWidth: '180px', padding: '12px 16px', textDecoration: 'none' }}
               >
-                Buy $RARE on Jupiter ↗
+                Buy $RARE on Pump.fun ↗
               </a>
               <button
                 type="button"

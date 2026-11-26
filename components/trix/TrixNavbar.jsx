@@ -142,24 +142,47 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
         >
           {navLinks.map((item, idx) => (
             <React.Fragment key={item.label}>
-              <Link
-                href={item.href}
-                style={{
-                  color: isLightMode ? '#475569' : '#86efac',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  opacity: 0.88,
-                  whiteSpace: 'nowrap',
-                  flexShrink: 0,
-                  transition: 'opacity 0.15s ease'
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.88')}
-              >
-                <span className="hidden xl:inline">{item.label}</span>
-                <span className="inline xl:hidden">{item.short}</span>
-              </Link>
+              {item.href.startsWith('http') ? (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    color: isLightMode ? '#475569' : '#86efac',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    opacity: 0.88,
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                    transition: 'opacity 0.15s ease'
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.88')}
+                >
+                  <span className="hidden xl:inline">{item.label}</span>
+                  <span className="inline xl:hidden">{item.short}</span>
+                </a>
+              ) : (
+                <Link
+                  href={item.href}
+                  style={{
+                    color: isLightMode ? '#475569' : '#86efac',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    opacity: 0.88,
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                    transition: 'opacity 0.15s ease'
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.88')}
+                >
+                  <span className="hidden xl:inline">{item.label}</span>
+                  <span className="inline xl:hidden">{item.short}</span>
+                </Link>
+              )}
               {idx < navLinks.length - 1 && (
                 <span style={{ color: isLightMode ? '#cbd5e1' : 'rgba(34, 197, 94, 0.35)', margin: '0 2px' }}>·</span>
               )}
