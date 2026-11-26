@@ -139,22 +139,22 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
     crystalGroup.add(edgesMesh);
 
-    // Inner Luminous Core Gem - Rich Golden Green / Solar Amber Lime Core
+    // Inner Luminous Core Gem - True Greenish Golden (Peridot / Chartreuse-Gold)
     const innerGeo = crystalGeo.clone();
     innerGeo.scale(0.56, 0.56, 0.56);
     const innerMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0xbef264), // Vibrant golden lime
-      emissive: new THREE.Color(0x84cc16), // Warm golden green emissive radiance
-      emissiveIntensity: 0.95, // Kept balanced so it stays golden-green and does not wash out to white
-      roughness: 0.18,
-      metalness: 0.35, // Rich golden crystal sheen
+      color: new THREE.Color(0xa3e635), // Vibrant greenish golden (chartreuse gold)
+      emissive: new THREE.Color(0x65a30d), // Deep greenish-golden luminescence
+      emissiveIntensity: 0.85, // Perfectly balanced to preserve the rich greenish-gold hue
+      roughness: 0.15,
+      metalness: 0.45, // Metallic golden luster on green base
       flatShading: true
     });
     const innerCrystalMesh = new THREE.Mesh(innerGeo, innerMat);
     crystalGroup.add(innerCrystalMesh);
 
-    // Internal Pulsing Light at the crystal core (Warm Golden-Green Glow)
-    const coreLight = new THREE.PointLight(0xeab308, 2.2, 8); // Golden amber-green core light
+    // Internal Pulsing Light at the crystal core (Greenish-Golden Light)
+    const coreLight = new THREE.PointLight(0xa3e635, 2.0, 8); // Crisp greenish-golden emission
     coreLight.position.set(0, 0, 0);
     crystalGroup.add(coreLight);
 
@@ -162,8 +162,8 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const ambientLight = new THREE.AmbientLight(0x064e3b, 1.8);
     scene.add(ambientLight);
 
-    // Key Light (Top-Left Golden Lime)
-    const keyLight = new THREE.DirectionalLight(0xfef08a, 3.0);
+    // Key Light (Top-Left Greenish-Golden Tint)
+    const keyLight = new THREE.DirectionalLight(0xd9f99d, 3.2);
     keyLight.position.set(-6, 7, 5);
     scene.add(keyLight);
 
