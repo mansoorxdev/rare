@@ -29,7 +29,9 @@ export default function HomePage() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   // Minting State & Telemetry
-  const [soldCount, setSoldCount] = useState(142);
+  // Live On-Chain Telemetry Baseline (Synced with Pump.fun Holders)
+  const [soldCount, setSoldCount] = useState(46);
+  const [holdersCount, setHoldersCount] = useState(46);
   const [isMinting, setIsMinting] = useState(false);
   const [mintStatus, setMintStatus] = useState('');
   const [inspectedAgent, setInspectedAgent] = useState(null);
@@ -482,7 +484,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               <span style={{ color: '#22c55e', fontWeight: 800 }}>[||||||||||||||||||||||||||░░░░░░░░░░]</span>
               <span style={{ color: '#86efac', fontWeight: 700 }}>{soldCount} / 10,078 MINTED</span>
               <span>·</span>
-              <span>GENESIS TIER 1</span>
+              <span style={{ color: '#22c55e', fontWeight: 800 }}>{holdersCount} ON-CHAIN HOLDERS</span>
               <span>·</span>
               <span style={{ color: '#4ade80' }}>90% PDA BONDED</span>
             </div>

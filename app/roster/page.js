@@ -134,7 +134,7 @@ export default function RosterPage() {
                 <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
               </svg>
             </span>
-            <span>SOLANA TOKEN-BOUND ROSTER · 10,078 UNITS</span>
+            <span>SOLANA TOKEN-BOUND ROSTER · 46 / 10,078 UNITS MINTED · 46 HOLDERS ACTIVE</span>
           </div>
 
           <h1 className="gamma-hero-title" style={{ fontSize: 'clamp(32px, 4vw, 52px)', marginBottom: '12px' }}>
@@ -280,7 +280,9 @@ export default function RosterPage() {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '8px', paddingTop: '6px', fontSize: '9px', color: '#6b7280', fontFamily: 'var(--font-jetbrains), monospace' }}>
-                  <span style={{ color: '#10b981', fontWeight: 600 }}>90% PDA</span>
+                  <span style={{ color: agent.id <= 46 ? '#22c55e' : '#10b981', fontWeight: 700 }}>
+                    {agent.id <= 46 ? '● MINTED (ACTIVE)' : '90% PDA'}
+                  </span>
                   <span style={{ color: '#ffffff', fontWeight: 600 }}>Inspect →</span>
                 </div>
               </div>
