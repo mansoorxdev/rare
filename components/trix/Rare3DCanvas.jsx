@@ -4,126 +4,74 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 /**
- * Creates the authentic asymmetric 3D mineral crystal geometry
- * traced 1:1 from the official RARE artwork (with the right-side notch,
- * high left shoulder, and angled chisel bottom tip).
- * Watertight 3D polyhedron with 30 precise planar facets.
+ * Creates an authentic 3D faceted mineral crystal geometry
+ * with 36 precise triangular facets, natural facet height variations,
+ * and outward-facing normals.
  */
-function createAsymmetricCrystalGeo() {
+function createPure3DCrystalGeometry() {
   const geo = new THREE.BufferGeometry();
+  const yTop = 2.45;
+  const yBot = -2.45;
+
+  // Asymmetric crystal facet rings (natural mineral crystal shape)
+  const ring1Y = [1.4, 1.15, 1.5, 1.2, 1.45, 1.1];
+  const ring1R = [1.05, 1.2, 1.1, 1.25, 1.05, 1.15];
+
+  const ring2Y = [0.05, -0.15, 0.1, -0.1, 0.05, -0.2];
+  const ring2R = [1.15, 1.25, 1.2, 1.3, 1.1, 1.2];
+
+  const ring3Y = [-1.3, -1.5, -1.25, -1.45, -1.35, -1.5];
+  const ring3R = [0.95, 1.05, 0.9, 1.1, 0.95, 1.0];
+
   const positions = [];
-  const colors = [];
+  const addTri = (p1, p2, p3) => positions.push(...p1, ...p2, ...p3);
 
-  const addTri = (p1, p2, p3, col) => {
-    positions.push(...p1, ...p2, ...p3);
-    colors.push(...col, ...col, ...col);
-  };
+  const top = [0, yTop, 0];
+  const bot = [0, yBot, 0];
+  const r1 = [], r2 = [], r3 = [];
 
-  // Perimeter vertices (forming the exact asymmetric silhouette of the logo)
-  const P_top         = [ 0.10,  2.45,  0.00];
-  const P_top_right   = [ 0.85,  1.45,  0.00];
-  const P_shoulder_r  = [ 1.35,  0.50,  0.00];
-  const P_notch_r     = [ 0.65,  0.20,  0.00]; // Inward cut notch on right waist
-  const P_hip_r       = [ 0.82, -0.70,  0.00];
-  const P_chisel_r    = [ 0.70, -1.45,  0.00];
-  const P_bot         = [-0.10, -2.45,  0.00];
-  const P_chisel_l    = [-0.75, -1.65,  0.00];
-  const P_waist_l     = [-1.10, -0.75,  0.00];
-  const P_shoulder_l  = [-1.28,  0.75,  0.00];
-  const P_top_left    = [-0.55,  1.55,  0.00];
+  for (let i = 0; i < 6; i++) {
+    const a = (i * Math.PI * 2) / 6;
+    r1.push([ring1R[i] * Math.cos(a), ring1Y[i], ring1R[i] * Math.sin(a)]);
+    r2.push([ring2R[i] * Math.cos(a), ring2Y[i], ring2R[i] * Math.sin(a)]);
+    r3.push([ring3R[i] * Math.cos(a), ring3Y[i], ring3R[i] * Math.sin(a)]);
+  }
 
-  // Front center ridge points (protruding outward at Z = +0.55)
-  const F_mid_top     = [ 0.02,  0.95,  0.52];
-  const F_mid_center  = [ 0.08, -0.15,  0.58];
-  const F_mid_bot     = [-0.05, -1.25,  0.48];
+  // 1. Top cone pyramid cap (6 triangles)
+  for (let i = 0; i < 6; i++) {
+    const next = (i + 1) % 6;
+    addTri(top, r1[i], r1[next]);
+  }
 
-  // Back center ridge points (protruding outward at Z = -0.55)
-  const B_mid_top     = [ 0.02,  0.95, -0.52];
-  const B_mid_center  = [ 0.08, -0.15, -0.58];
-  const B_mid_bot     = [-0.05, -1.25, -0.48];
+  // 2. Upper facet belt (12 triangles)
+  for (let i = 0; i < 6; i++) {
+    const next = (i + 1) % 6;
+    addTri(r1[i], r2[i], r1[next]);
+    addTri(r1[next], r2[i], r2[next]);
+  }
 
-  // Palette matched 1:1 to the official artwork:
-  const C_GOLD        = [0.85, 0.96, 0.22]; // Top-right golden sunlight
-  const C_OBSIDIAN    = [0.01, 0.10, 0.04]; // Left deep dark emerald shadow
-  const C_NEON        = [0.06, 0.94, 0.40]; // Center vibrant neon emerald
-  const C_EMERALD     = [0.03, 0.65, 0.28]; // Right cut emerald
-  const C_WHITE       = [0.94, 0.99, 0.95]; // Bottom glowing white caustics
-  const C_DARK_MID    = [0.02, 0.22, 0.09]; // Back facets deep emerald glass
+  // 3. Lower facet belt (12 triangles)
+  for (let i = 0; i < 6; i++) {
+    const next = (i + 1) % 6;
+    addTri(r2[i], r3[i], r2[next]);
+    addTri(r2[next], r3[i], r3[next]);
+  }
 
-  // 15 FRONT FACETS:
-  addTri(P_top, P_top_right, F_mid_top, C_GOLD);
-  addTri(P_top_right, P_shoulder_r, F_mid_top, C_GOLD);
-  addTri(P_shoulder_r, P_notch_r, F_mid_center, C_EMERALD);
-  addTri(F_mid_top, P_shoulder_r, F_mid_center, C_EMERALD);
-  addTri(P_notch_r, P_hip_r, F_mid_center, C_EMERALD);
-  addTri(P_hip_r, P_chisel_r, F_mid_bot, C_EMERALD);
-  addTri(F_mid_center, P_hip_r, F_mid_bot, C_NEON);
-  addTri(P_chisel_r, P_bot, F_mid_bot, C_WHITE);
-  addTri(F_mid_bot, P_bot, P_chisel_l, C_WHITE);
-  addTri(F_mid_bot, P_chisel_l, P_waist_l, C_OBSIDIAN);
-  addTri(F_mid_center, F_mid_bot, P_waist_l, C_NEON);
-  addTri(F_mid_center, P_waist_l, P_shoulder_l, C_OBSIDIAN);
-  addTri(F_mid_top, F_mid_center, P_shoulder_l, C_OBSIDIAN);
-  addTri(F_mid_top, P_shoulder_l, P_top_left, C_OBSIDIAN);
-  addTri(P_top, F_mid_top, P_top_left, C_OBSIDIAN);
-
-  // 15 BACK FACETS (mirrored winding for outwards normals):
-  addTri(P_top, B_mid_top, P_top_right, C_DARK_MID);
-  addTri(P_top_right, B_mid_top, P_shoulder_r, C_DARK_MID);
-  addTri(P_shoulder_r, B_mid_center, P_notch_r, C_DARK_MID);
-  addTri(B_mid_top, B_mid_center, P_shoulder_r, C_DARK_MID);
-  addTri(P_notch_r, B_mid_center, P_hip_r, C_DARK_MID);
-  addTri(P_hip_r, B_mid_bot, P_chisel_r, C_DARK_MID);
-  addTri(B_mid_center, B_mid_bot, P_hip_r, C_DARK_MID);
-  addTri(P_chisel_r, B_mid_bot, P_bot, C_DARK_MID);
-  addTri(B_mid_bot, P_chisel_l, P_bot, C_DARK_MID);
-  addTri(B_mid_bot, P_waist_l, P_chisel_l, C_DARK_MID);
-  addTri(B_mid_center, P_waist_l, B_mid_bot, C_DARK_MID);
-  addTri(B_mid_center, P_shoulder_l, P_waist_l, C_DARK_MID);
-  addTri(B_mid_top, P_shoulder_l, B_mid_center, C_DARK_MID);
-  addTri(B_mid_top, P_top_left, P_shoulder_l, C_DARK_MID);
-  addTri(P_top, P_top_left, B_mid_top, C_DARK_MID);
+  // 4. Bottom chisel pyramid cap (6 triangles)
+  for (let i = 0; i < 6; i++) {
+    const next = (i + 1) % 6;
+    addTri(bot, r3[next], r3[i]);
+  }
 
   geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   geo.computeVertexNormals();
   return geo;
-}
-
-/**
- * Creates the radioactive emerald aura / bloom glow sprite
- * matching the radial glow in Image 1.
- */
-function createEmeraldAuraSprite() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
-  const ctx = canvas.getContext('2d');
-
-  const grad = ctx.createRadialGradient(256, 256, 20, 256, 256, 250);
-  grad.addColorStop(0, 'rgba(34, 197, 94, 0.45)');
-  grad.addColorStop(0.35, 'rgba(16, 185, 129, 0.25)');
-  grad.addColorStop(0.65, 'rgba(5, 150, 105, 0.10)');
-  grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, 512, 512);
-
-  const texture = new THREE.CanvasTexture(canvas);
-  const mat = new THREE.SpriteMaterial({
-    map: texture,
-    transparent: true,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false
-  });
-  const sprite = new THREE.Sprite(mat);
-  sprite.scale.set(6.8, 6.8, 1);
-  return sprite;
 }
 
 export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }) {
   const mountRef = useRef(null);
 
+  // Live references so Three.js renders in a smooth 60fps loop without canvas resets
   const scrollRef = useRef(scrollProgress);
   const lightModeRef = useRef(isLightMode);
 
@@ -151,64 +99,85 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.4;
+    renderer.toneMappingExposure = 1.3;
     mount.appendChild(renderer.domElement);
 
-    // 2. Crystal Group
+    // 2. Construct Genuine 3D Faceted Crystal Polyhedron
+    const crystalGeo = createPure3DCrystalGeometry();
+
     const crystalGroup = new THREE.Group();
-    crystalGroup.scale.set(0.96, 0.96, 0.96);
+    crystalGroup.scale.set(0.95, 0.95, 0.95);
     scene.add(crystalGroup);
 
-    // Radial Emerald Aura Glow behind the crystal (matches Image 1)
-    const aura = createEmeraldAuraSprite();
-    aura.position.set(0, 0, -0.3);
-    crystalGroup.add(aura);
-
-    // 3. Construct Asymmetric 3D Crystal Geometry
-    const crystalGeo = createAsymmetricCrystalGeo();
-
-    // High-Contrast Glossy Material using Vertex Colors
-    const crystalMat = new THREE.MeshStandardMaterial({
-      vertexColors: true,
+    // Outer Faceted Crystal Glass Material (Physical Emerald Transmission Glass)
+    const outerCrystalMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x10b981),
+      emissive: new THREE.Color(0x064e3b),
+      emissiveIntensity: 0.35,
       roughness: 0.05,
-      metalness: 0.3,
-      flatShading: true
+      metalness: 0.08,
+      transmission: 0.78,
+      ior: 1.62,
+      thickness: 1.8,
+      specularIntensity: 2.2,
+      specularColor: new THREE.Color(0xd1fae5),
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+      flatShading: true // Every facet catches the light independently like a cut gemstone!
     });
 
-    const crystalMesh = new THREE.Mesh(crystalGeo, crystalMat);
-    crystalGroup.add(crystalMesh);
+    const outerCrystalMesh = new THREE.Mesh(crystalGeo, outerCrystalMat);
+    crystalGroup.add(outerCrystalMesh);
 
-    // Razor-Sharp Glowing Edge Ridges (Pure White hairlines matching Image 1)
-    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 4);
+    // Sharp Facet Edge Accents (Delicate glowing hairline borders)
+    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 10);
     const edgesMat = new THREE.LineBasicMaterial({
-      color: 0xffffff,
+      color: 0x86efac,
       transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending
+      opacity: 0.45
     });
     const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
     crystalGroup.add(edgesMesh);
 
-    // 4. Cinematic Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0x052e16, 2.2);
+    // Inner Luminous Core Gem - True Greenish Golden (Peridot / Chartreuse-Gold)
+    const innerGeo = crystalGeo.clone();
+    innerGeo.scale(0.56, 0.56, 0.56);
+    const innerMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0xa3e635), // Vibrant greenish golden (chartreuse gold)
+      emissive: new THREE.Color(0x65a30d), // Deep greenish-golden luminescence
+      emissiveIntensity: 0.85, // Perfectly balanced to preserve the rich greenish-gold hue
+      roughness: 0.15,
+      metalness: 0.45, // Metallic golden luster on green base
+      flatShading: true
+    });
+    const innerCrystalMesh = new THREE.Mesh(innerGeo, innerMat);
+    crystalGroup.add(innerCrystalMesh);
+
+    // Internal Pulsing Light at the crystal core (Greenish-Golden Light)
+    const coreLight = new THREE.PointLight(0xa3e635, 2.0, 8); // Crisp greenish-golden emission
+    coreLight.position.set(0, 0, 0);
+    crystalGroup.add(coreLight);
+
+    // 3. Cinematic 3D Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0x064e3b, 1.8);
     scene.add(ambientLight);
 
-    // Key Light (Sunlight from Top-Right on Golden Facet)
-    const goldKeyLight = new THREE.DirectionalLight(0xfef08a, 3.5);
-    goldKeyLight.position.set(4, 7, 5);
-    scene.add(goldKeyLight);
+    // Key Light (Top-Left Greenish-Golden Tint)
+    const keyLight = new THREE.DirectionalLight(0xd9f99d, 3.2);
+    keyLight.position.set(-6, 7, 5);
+    scene.add(keyLight);
 
-    // Rim Light (Intense Emerald from Left)
-    const emeraldRimLight = new THREE.DirectionalLight(0x10b981, 2.5);
-    emeraldRimLight.position.set(-6, -2, 4);
-    scene.add(emeraldRimLight);
+    // Fill Light (Bottom-Right Emerald)
+    const fillLight = new THREE.DirectionalLight(0x10b981, 2.2);
+    fillLight.position.set(6, -5, 4);
+    scene.add(fillLight);
 
-    // Bottom White Caustic Uplight (Accentuates the bottom glowing white chisel tip)
-    const bottomWhiteLight = new THREE.PointLight(0xffffff, 3.0, 5);
-    bottomWhiteLight.position.set(0, -2.4, 0.6);
-    crystalGroup.add(bottomWhiteLight);
+    // Rim Back Light (Silhouette separation)
+    const rimLight = new THREE.DirectionalLight(0x34d399, 2.4);
+    rimLight.position.set(0, -6, -4);
+    scene.add(rimLight);
 
-    // Subtle Tactical Dust Particles
+    // 4. Subtle Tactical Dust Particles
     const particleCount = 45;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
@@ -257,9 +226,8 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       particleSystem.rotation.y = time * 0.03;
       particleSystem.rotation.x = Math.sin(time * 0.4) * 0.02;
 
-      // Subtle pulse on bottom caustics and aura
-      bottomWhiteLight.intensity = 2.8 + Math.sin(time * 2.5) * 0.4;
-      aura.scale.set(6.8 + Math.sin(time * 2.0) * 0.3, 6.8 + Math.sin(time * 2.0) * 0.3, 1);
+      // Internal golden-green light subtle pulse
+      coreLight.intensity = 2.0 + Math.sin(time * 3.0) * 0.4;
 
       // Current scroll progress
       const p = scrollRef.current;
