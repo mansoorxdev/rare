@@ -15,8 +15,8 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 8.2);
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 9.4);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -25,90 +25,143 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     renderer.toneMappingExposure = 1.35;
     mount.appendChild(renderer.domElement);
 
-    // 2. Multi-Faceted Gemstone Geometry (True Brilliant Cut Emerald)
+    // 2. Exact 3D Raw Crystal Shard Geometry (Matching RARE Logo Profile)
     const crystalGroup = new THREE.Group();
+    // Calibrated scale so both top peak and bottom tip always have 25%+ vertical margin
+    crystalGroup.scale.set(0.82, 0.82, 0.82);
     scene.add(crystalGroup);
 
-    // Common Emerald Material
+    // Build the 2D polygon path traced from the RARE raw crystal logo
+    const crystalShape = new THREE.Shape();
+    const rawPoints = [
+      [1.11, -0.0],
+      [1.054, -0.166],
+      [1.016, -0.329],
+      [0.98, -0.5],
+      [0.977, -0.71],
+      [0.97, -0.97],
+      [0.903, -1.243],
+      [0.753, -1.478],
+      [0.541, -1.664],
+      [0.289, -1.835],
+      [0.0, -1.924],       // Bottom sharp crystal culet/tip
+      [-0.299, -1.882],
+      [-0.559, -1.72],
+      [-0.758, -1.486],
+      [-0.899, -1.236],
+      [-0.977, -0.975],
+      [-1.024, -0.743],
+      [-1.062, -0.541],
+      [-1.087, -0.352],
+      [-1.121, -0.176],
+      [-1.151, -0.0],
+      [-1.171, 0.186],
+      [-1.182, 0.385],
+      [-1.157, 0.59],
+      [-1.092, 0.792],
+      [-0.99, 0.99],
+      [-0.852, 1.171],
+      [-0.691, 1.356],
+      [-0.511, 1.572],
+      [-0.284, 1.795],
+      [-0.002, 1.915],     // Top sharp crystal peak
+      [0.294, 1.859],
+      [0.536, 1.651],
+      [0.715, 1.407],
+      [0.865, 1.192],
+      [0.993, 0.995],
+      [1.097, 0.797],
+      [1.171, 0.598],
+      [1.187, 0.386],
+      [1.161, 0.184]
+    ];
+
+    crystalShape.moveTo(rawPoints[0][0], rawPoints[0][1]);
+    for (let i = 1; i < rawPoints.length; i++) {
+      crystalShape.lineTo(rawPoints[i][0], rawPoints[i][1]);
+    }
+    crystalShape.closePath();
+
+    // 3D Extrusion with sharp facet chamfers (giving real crystalline faces)
+    const extrudeSettings = {
+      depth: 0.55,
+      bevelEnabled: true,
+      bevelSegments: 1, // 1 segment = crisp, flat crystalline facets
+      bevelSize: 0.32,
+      bevelThickness: 0.42
+    };
+
+    const crystalGeo = new THREE.ExtrudeGeometry(crystalShape, extrudeSettings);
+    // Center the geometry origin exactly
+    crystalGeo.center();
+
+    // Faceted Emerald Physical Glass Material with high transmission and internal glow
     const crystalMat = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color(0x10b981),
       emissive: new THREE.Color(0x064e3b),
-      emissiveIntensity: 0.4,
-      roughness: 0.1,
-      metalness: 0.15,
-      transmission: 0.7,
+      emissiveIntensity: 0.45,
+      roughness: 0.08,
+      metalness: 0.08,
+      transmission: 0.68,
       ior: 1.58, // Emerald index of refraction
-      thickness: 2.2,
+      thickness: 2.4,
       specularIntensity: 1.0,
       specularColor: new THREE.Color(0xa7f3d0),
-      flatShading: true,
+      flatShading: true, // Crucial for facet reflections
       transparent: true,
       opacity: 0.96
     });
 
-    // Wireframe edge glow material
+    const crystalMesh = new THREE.Mesh(crystalGeo, crystalMat);
+    crystalGroup.add(crystalMesh);
+
+    // Glowing Neon Cybernetic Edge Lines on facet intersections
+    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 14);
     const edgesMat = new THREE.LineBasicMaterial({
       color: new THREE.Color(0x4ade80),
       linewidth: 2,
       transparent: true,
-      opacity: 0.9
+      opacity: 0.85
     });
+    const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
+    crystalGroup.add(edgesMesh);
 
-    // PART A: Top Crown (Octagonal Beveled Table)
-    // Cylinder: topRadius 0.75, bottomRadius 1.35, height 0.9, 8 sides
-    const crownGeo = new THREE.CylinderGeometry(0.75, 1.35, 0.9, 8, 1);
-    const crownMesh = new THREE.Mesh(crownGeo, crystalMat);
-    crownMesh.position.y = 0.45;
-    crystalGroup.add(crownMesh);
-
-    const crownEdgesGeo = new THREE.EdgesGeometry(crownGeo);
-    const crownEdgesMesh = new THREE.LineSegments(crownEdgesGeo, edgesMat);
-    crownEdgesMesh.position.y = 0.45;
-    crystalGroup.add(crownEdgesMesh);
-
-    // PART B: Bottom Pavilion (Pointed culet cone)
-    // Cone: radius 1.35, height 1.7, 8 sides
-    const pavilionGeo = new THREE.ConeGeometry(1.35, 1.7, 8, 1);
-    pavilionGeo.rotateX(Math.PI); // Invert so it points downwards
-    const pavilionMesh = new THREE.Mesh(pavilionGeo, crystalMat);
-    pavilionMesh.position.y = -0.85;
-    crystalGroup.add(pavilionMesh);
-
-    const pavilionEdgesGeo = new THREE.EdgesGeometry(pavilionGeo);
-    const pavilionEdgesMesh = new THREE.LineSegments(pavilionEdgesGeo, edgesMat);
-    pavilionEdgesMesh.position.y = -0.85;
-    crystalGroup.add(pavilionEdgesMesh);
-
-    // PART C: Glowing Internal Prismatic Core
-    const coreGeo = new THREE.OctahedronGeometry(0.65, 0);
-    coreGeo.scale(0.8, 1.3, 0.8);
+    // Internal Luminescent Crystal Core (Refracted inner light)
+    const coreGeo = new THREE.OctahedronGeometry(0.75, 0);
+    coreGeo.scale(0.65, 1.45, 0.38);
     const coreMat = new THREE.MeshBasicMaterial({
       color: new THREE.Color(0x86efac),
       wireframe: true,
       transparent: true,
-      opacity: 0.5
+      opacity: 0.35
     });
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    coreMesh.position.y = -0.1;
     crystalGroup.add(coreMesh);
 
-    // PART D: Holographic Ambient Orbiting Ring
-    const ringGeo = new THREE.TorusGeometry(2.4, 0.02, 16, 72);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(0x22c55e),
+    // Tactical Radar Ambient Dust Particles floating in 3D
+    const particleCount = 80;
+    const particlePositions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      particlePositions[i * 3] = (Math.random() - 0.5) * 12;
+      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 8;
+      particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 8;
+    }
+    const particleGeo = new THREE.BufferGeometry();
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const particleMat = new THREE.PointsMaterial({
+      color: new THREE.Color(0x4ade80),
+      size: 0.06,
       transparent: true,
-      opacity: 0.45
+      opacity: 0.6
     });
-    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-    ringMesh.rotation.x = Math.PI * 0.38;
-    ringMesh.position.y = -0.1;
-    crystalGroup.add(ringMesh);
+    const particleSystem = new THREE.Points(particleGeo, particleMat);
+    scene.add(particleSystem);
 
     // 3. Cinematic 3D Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0x064e3b, 1.4);
+    const ambientLight = new THREE.AmbientLight(0x064e3b, 1.5);
     scene.add(ambientLight);
 
-    // Key Light (Top-Left Lime-Yellow)
+    // Key Light (Top-Left Warm Lime)
     const keyLight = new THREE.DirectionalLight(0xbbf7d0, 2.8);
     keyLight.position.set(-6, 7, 5);
     scene.add(keyLight);
@@ -125,10 +178,10 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
 
     // Internal Point Light (Pulsating core)
     const pointLight = new THREE.PointLight(0x4ade80, 2.5, 8);
-    pointLight.position.set(0, -0.1, 0);
+    pointLight.position.set(0, 0, 0);
     scene.add(pointLight);
 
-    // 4. Smooth Mouse Parallax & Continuous 3D Loop
+    // 4. Mouse Tracking & Continuous 3D Loop
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
@@ -154,42 +207,43 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       // Gentle idle floating on Y axis (kept small so top and bottom never leave view!)
       const idleY = Math.sin(time * 1.4) * 0.08;
 
-      // Spin inner core & ring
+      // Spin inner core & radar dust particles
       coreMesh.rotation.y = time * 0.7;
-      ringMesh.rotation.z = time * 0.25;
+      particleSystem.rotation.y = time * 0.05;
+      particleSystem.rotation.x = Math.sin(time * 0.5) * 0.04;
 
       // Dynamic Scroll Transitions
       const p = scrollProgress;
 
-      // Base rotations with mouse tilt
-      let targetRotX = 0.22 + p * 1.3 - mouseY * 0.35;
-      let targetRotY = time * 0.35 + mouseX * 0.5 + p * 1.6;
-      let targetRotZ = p * 0.45;
+      // Base rotations with mouse tilt (gentle vertical tilt so tips are never cropped)
+      let targetRotX = 0.12 + p * 0.85 - mouseY * 0.25;
+      let targetRotY = time * 0.35 + mouseX * 0.45 + p * 1.5;
+      let targetRotZ = p * 0.25;
 
-      // Position calibrated so both top and bottom remain 100% visible
+      // Position calibrated so both top and bottom tips remain 100% visible on all viewports
       let targetPosX = 0;
-      let targetPosY = 0.15 + idleY;
+      let targetPosY = 0.08 + idleY;
       let targetPosZ = 0;
 
       if (p <= 0.25) {
         // Hero: perfectly centered
         targetPosX = 0;
-        targetPosY = 0.15 + idleY;
+        targetPosY = 0.08 + idleY;
       } else if (p <= 0.5) {
         // Stage 1: Horizon tilt onto 3D grid
         const stageP = (p - 0.25) / 0.25;
-        targetPosX = -stageP * 2.0;
-        targetPosY = 0.15 - stageP * 0.3 + idleY;
-        targetRotX = 0.22 + stageP * 1.1;
+        targetPosX = -stageP * 1.8;
+        targetPosY = 0.08 - stageP * 0.2 + idleY;
+        targetRotX = 0.12 + stageP * 0.7;
       } else if (p <= 0.75) {
         // Stage 2: Tactical white radar mode
         const stageP = (p - 0.5) / 0.25;
-        targetPosX = -2.0 + stageP * 2.0;
-        targetPosY = -0.15 + stageP * 0.3 + idleY;
+        targetPosX = -1.8 + stageP * 1.8;
+        targetPosY = -0.12 + stageP * 0.2 + idleY;
       } else {
         // Stage 3: Evidence alignment
         targetPosX = 0;
-        targetPosY = 0.1 + idleY;
+        targetPosY = 0.06 + idleY;
       }
 
       crystalGroup.rotation.x = THREE.MathUtils.lerp(crystalGroup.rotation.x, targetRotX, 0.08);
