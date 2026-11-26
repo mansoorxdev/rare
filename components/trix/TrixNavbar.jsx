@@ -14,12 +14,12 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
   const walletAddress = activeWallet?.address;
 
   const navLinks = [
-    { num: '01', short: 'OVERVIEW', label: 'OVERVIEW', href: '#overview' },
-    { num: '02', short: 'ROSTER', label: 'SWARM_ROSTER', href: '#roster' },
-    { num: '03', short: 'LADDER', label: 'BONDING_LADDER', href: '#ladder' },
-    { num: '04', short: 'EVIDENCE', label: 'EVIDENCE', href: '#evidence' },
-    { num: '05', short: 'DEX', label: 'DEX_$RARE', href: '#dex' },
-    { num: '06', short: 'BUILDERS', label: 'FOR_BUILDERS', href: '#builders' }
+    { short: 'OVERVIEW', label: 'OVERVIEW', href: '#overview' },
+    { short: 'ROSTER', label: 'SWARM_ROSTER', href: '#roster' },
+    { short: 'LADDER', label: 'BONDING_LADDER', href: '#ladder' },
+    { short: 'EVIDENCE', label: 'EVIDENCE', href: '#evidence' },
+    { short: 'DEX', label: 'DEX_$RARE', href: '#dex' },
+    { short: 'BUILDERS', label: 'FOR_BUILDERS', href: '#builders' }
   ];
 
   return (
@@ -150,7 +150,6 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '2px',
                   opacity: 0.88,
                   whiteSpace: 'nowrap',
                   flexShrink: 0,
@@ -159,12 +158,11 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.88')}
               >
-                <span style={{ color: '#22c55e', opacity: 0.7, fontSize: '9px' }}>{item.num}.</span>
                 <span className="hidden xl:inline">{item.label}</span>
                 <span className="inline xl:hidden">{item.short}</span>
               </a>
               {idx < navLinks.length - 1 && (
-                <span style={{ color: isLightMode ? '#cbd5e1' : 'rgba(34, 197, 94, 0.35)', margin: '0 1px' }}>·</span>
+                <span style={{ color: isLightMode ? '#cbd5e1' : 'rgba(34, 197, 94, 0.35)', margin: '0 2px' }}>·</span>
               )}
             </React.Fragment>
           ))}
