@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Rare3DCanvas from '../../components/trix/Rare3DCanvas';
 import TrixNavbar from '../../components/trix/TrixNavbar';
 import TrixHudFooter from '../../components/trix/TrixHudFooter';
+import AsciiScrambleText, { AsciiCipherTape } from '../../components/trix/AsciiScrambleText';
 import { usePrivy } from '../../components/PrivyClientProvider';
 import { getAgentMetadata } from '../../lib/agentMetadata';
 
@@ -55,10 +56,11 @@ export default function TrixPage() {
       name: 'Agent #00143',
       archetype: 'Quantum Arbitrageur',
       venue: 'Jupiter & Orca',
-      badge: 'Active · Jupiter',
+      badge: 'ACTIVE // JUPITER',
       pdaVault: 'PDA256v3779B100Vault',
       apy: '+42.8%',
       risk: 'Low (Hedging)',
+      metricBars: '█████████░░░',
       priceSol: 0.02
     },
     {
@@ -66,10 +68,11 @@ export default function TrixPage() {
       name: 'Agent #00140',
       archetype: 'Sentinel Risk Guard',
       venue: 'Pyth Oracle Shield',
-      badge: 'Pyth Oracle',
+      badge: 'PYTH ORACLE',
       pdaVault: 'PDASentinelGuardVault',
       apy: '+29.4%',
       risk: '-15% Stop Guard',
+      metricBars: '███████░░░░░',
       priceSol: 0.02
     },
     {
@@ -77,21 +80,23 @@ export default function TrixPage() {
       name: 'Agent #00141',
       archetype: 'CLMM Grid Executor',
       venue: 'Raydium Concentrated',
-      badge: 'Raydium CLMM',
+      badge: 'RAYDIUM CLMM',
       pdaVault: 'PDAGridExecutorVault',
       apy: '+58.2%',
       risk: 'Medium (Tick)',
+      metricBars: '███████████░',
       priceSol: 0.02
     },
     {
       id: 142,
       name: 'Agent #00142',
       archetype: 'Vault Rebalancer',
-      venue: 'Kamero & Meteora',
-      badge: 'Auto +35% TP',
+      venue: 'Kamino & Meteora',
+      badge: 'AUTO +35% TP',
       pdaVault: 'PDAVaultRebalancer',
       apy: '+34.1%',
-      risk: 'Low (Delta)',
+      risk: 'Low (Delta 0)',
+      metricBars: '████████░░░░',
       priceSol: 0.02
     },
     {
@@ -99,10 +104,11 @@ export default function TrixPage() {
       name: 'Agent #00144',
       archetype: 'Momentum Hunter',
       venue: 'Volume Breakouts',
-      badge: 'Trend Signal',
+      badge: 'TREND SIGNAL',
       pdaVault: 'PDAMomentumVault',
       apy: '+64.5%',
       risk: 'High (Breakout)',
+      metricBars: '████████████',
       priceSol: 0.02
     },
     {
@@ -110,10 +116,11 @@ export default function TrixPage() {
       name: 'Agent #00145',
       archetype: 'Liquidity Provider',
       venue: 'SOL-USDC Anchor',
-      badge: '0.05% Fee Tier',
+      badge: '0.05% TIER',
       pdaVault: 'PDALiquidityVault',
       apy: '+31.0%',
       risk: 'Neutral',
+      metricBars: '███████░░░░░',
       priceSol: 0.02
     }
   ];
@@ -200,7 +207,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
       style={{
         minHeight: '100vh',
         color: isLightMode ? '#0f172a' : '#f8fafc',
-        fontFamily: 'var(--font-sans)',
+        fontFamily: 'var(--font-jetbrains), monospace',
         position: 'relative',
         transition: 'background-color 0.6s ease, color 0.6s ease',
         overflowX: 'hidden'
@@ -244,7 +251,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
           zIndex: 15
         }}
       >
-        {/* Top-Right Telemetry Pill */}
+        {/* Top-Right Telemetry Pill in ASCII Box */}
         <div
           style={{
             position: 'absolute',
@@ -253,18 +260,18 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             fontFamily: 'var(--font-jetbrains), monospace',
             fontSize: '10.5px',
             color: '#86efac',
-            background: 'rgba(5, 24, 10, 0.7)',
-            border: '1px solid rgba(34, 197, 94, 0.25)',
-            borderRadius: '6px',
+            background: 'rgba(5, 24, 10, 0.82)',
+            border: '1px solid rgba(34, 197, 94, 0.4)',
+            borderRadius: '2px',
             padding: '8px 16px',
             display: 'flex',
             alignItems: 'center',
-            gap: '14px',
+            gap: '12px',
             backdropFilter: 'blur(8px)',
             pointerEvents: 'none'
           }}
         >
-          <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e' }} />
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e' }} />
           <span>SOLANA // MAINNET-BETA</span>
           <span style={{ opacity: 0.4 }}>|</span>
           <span>90% PDA CAPITAL LOCKED</span>
@@ -288,18 +295,25 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
           }}
         >
           {/* Bottom-Left: Independent Benchmarks + Headline + Action Buttons */}
-          <div style={{ maxWidth: '580px' }}>
+          <div style={{ maxWidth: '600px' }}>
             <div
-              className="trix-hud-badge"
               style={{
                 color: '#4ade80',
                 background: 'rgba(34, 197, 94, 0.12)',
-                borderColor: 'rgba(34, 197, 94, 0.35)',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
+                borderRadius: '2px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontSize: '11px',
+                fontWeight: 800,
+                padding: '4px 10px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
                 marginBottom: '14px'
               }}
             >
-              <span>INDEPENDENT BENCHMARKS</span>
-              <span style={{ opacity: 0.6 }}>||</span>
+              <span>+--- [01] INDEPENDENT_BENCHMARKS</span>
+              <span style={{ opacity: 0.6 }}>---+</span>
             </div>
 
             <h1
@@ -310,10 +324,11 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 letterSpacing: '-0.025em',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 textTransform: 'uppercase',
-                margin: '0 0 20px 0'
+                margin: '0 0 16px 0'
               }}
             >
-              AI TRADING AGENTS.<br />
+              <AsciiScrambleText text="AI TRADING AGENTS." speed={24} revealDelay={2} />
+              <br />
               <span style={{ color: '#22c55e', display: 'inline-flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
                 <span
                   style={{
@@ -324,11 +339,17 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                     boxShadow: '0 0 12px #22c55e'
                   }}
                 />
-                MEASURED, NOT MARKETED.
+                <AsciiScrambleText text="MEASURED, NOT MARKETED." speed={26} revealDelay={2} />
               </span>
             </h1>
 
-            {/* Tactical Action Buttons from Original UI */}
+            {/* XIVO Ambient Decoder Cipher Tape */}
+            <div style={{ marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '10.5px' }}>
+              <span style={{ color: '#64748b' }}>[DECODER]</span>
+              <AsciiCipherTape length={40} speed={120} style={{ fontSize: '10.5px' }} />
+            </div>
+
+            {/* Tactical ASCII Action Buttons */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '18px' }}>
               <button
                 type="button"
@@ -338,61 +359,69 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                   background: '#22c55e',
                   color: '#000000',
                   fontWeight: 900,
-                  fontSize: '13px',
+                  fontSize: '12.5px',
                   fontFamily: 'var(--font-jetbrains), monospace',
-                  padding: '13px 26px',
-                  border: 'none',
-                  borderRadius: '8px',
+                  padding: '12px 24px',
+                  border: '1px solid #22c55e',
+                  borderRadius: '3px',
                   cursor: 'pointer',
                   boxShadow: '0 0 20px rgba(34, 197, 94, 0.5)',
+                  letterSpacing: '0.04em',
                   transition: 'all 0.15s ease'
                 }}
               >
-                {isMinting ? 'MINTING VIA ANCHOR...' : `MINT AGENT #${nextAgent.id} (0.020 SOL) ↗`}
+                {isMinting ? '[ MINTING VIA ANCHOR... ]' : `[ > MINT AGENT #${nextAgent.id} (0.020 SOL) < ]`}
               </button>
 
               <a
                 href="#roster"
                 style={{
                   background: 'rgba(34, 197, 94, 0.1)',
-                  border: '1px solid rgba(34, 197, 94, 0.35)',
+                  border: '1px solid rgba(34, 197, 94, 0.4)',
                   color: '#86efac',
-                  fontWeight: 700,
-                  fontSize: '13px',
+                  fontWeight: 800,
+                  fontSize: '12.5px',
                   fontFamily: 'var(--font-jetbrains), monospace',
-                  padding: '12px 22px',
-                  borderRadius: '8px',
+                  padding: '11px 22px',
+                  borderRadius: '3px',
                   textDecoration: 'none',
+                  letterSpacing: '0.04em',
                   transition: 'all 0.15s ease'
                 }}
               >
-                BROWSE SWARM ↓
+                [ BROWSE SWARM ↓ ]
               </a>
             </div>
 
-            {/* Mint Progress Line */}
-            <div style={{ fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#64748b' }}>
-              <span style={{ color: '#22c55e', fontWeight: 700 }}>{soldCount} / 10,078 MINTED</span>
-              <span> · GENESIS TIER 1 · </span>
-              <span style={{ color: '#86efac' }}>90% PDA BONDED</span>
+            {/* ASCII Progress Meter */}
+            <div style={{ fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#64748b', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <span style={{ color: '#22c55e', fontWeight: 800 }}>[||||||||||||||||||||||||||░░░░░░░░░░]</span>
+              <span style={{ color: '#86efac', fontWeight: 700 }}>{soldCount} / 10,078 MINTED</span>
+              <span>·</span>
+              <span>GENESIS TIER 1</span>
+              <span>·</span>
+              <span style={{ color: '#4ade80' }}>90% PDA BONDED</span>
             </div>
           </div>
 
           {/* Bottom-Right: Description & Disclaimer */}
-          <div style={{ maxWidth: '440px', textAlign: 'left' }}>
+          <div style={{ maxWidth: '440px', textAlign: 'left', background: 'rgba(4, 20, 9, 0.75)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '4px', padding: '16px 20px' }}>
+            <div style={{ fontSize: '10px', color: '#22c55e', fontWeight: 800, marginBottom: '6px' }}>
+              +--- CORE METHODOLOGY ---+
+            </div>
             <p
               style={{
-                fontSize: '12.5px',
+                fontSize: '12px',
                 lineHeight: 1.65,
                 color: '#94a3b8',
                 fontFamily: 'var(--font-jetbrains), monospace',
-                marginBottom: '8px'
+                margin: '0 0 8px 0'
               }}
             >
               Compare returns, risk, and on-chain execution with transparent methods. Every metric needs a verified source, a window, and an on-chain transaction label.
             </p>
-            <div style={{ fontSize: '10px', color: '#64748b', fontFamily: 'var(--font-jetbrains), monospace' }}>
-              Product preview. Live benchmark data is connected.
+            <div style={{ fontSize: '9.5px', color: '#4ade80', opacity: 0.8, fontFamily: 'var(--font-jetbrains), monospace' }}>
+              [STATUS: Product preview. Live benchmark data connected]
             </div>
           </div>
         </div>
@@ -414,9 +443,24 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '32px' }}>
           <div>
-            <div className="trix-hud-badge" style={{ color: '#4ade80', marginBottom: '12px' }}>
-              <span>ACTIVE SWARM ROSTER</span>
-              <span style={{ opacity: 0.6 }}>||</span>
+            <div
+              style={{
+                color: '#4ade80',
+                background: 'rgba(34, 197, 94, 0.12)',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
+                borderRadius: '2px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontSize: '11px',
+                fontWeight: 800,
+                padding: '4px 10px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '12px'
+              }}
+            >
+              <span>+--- [02] ACTIVE_SWARM_ROSTER</span>
+              <span style={{ opacity: 0.6 }}>---+</span>
             </div>
             <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', margin: 0 }}>
               TOKEN-BOUND <span style={{ color: '#22c55e' }}>AGENT ARCHETYPES</span>
@@ -432,17 +476,17 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 onClick={() => setActiveArchetypeFilter(tab)}
                 style={{
                   padding: '6px 14px',
-                  borderRadius: '6px',
+                  borderRadius: '3px',
                   background: activeArchetypeFilter === tab ? '#22c55e' : 'rgba(34, 197, 94, 0.1)',
-                  border: '1px solid rgba(34, 197, 94, 0.3)',
+                  border: activeArchetypeFilter === tab ? '1px solid #22c55e' : '1px solid rgba(34, 197, 94, 0.3)',
                   color: activeArchetypeFilter === tab ? '#000000' : '#86efac',
                   fontSize: '11px',
                   fontFamily: 'var(--font-jetbrains), monospace',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   cursor: 'pointer'
                 }}
               >
-                {tab}
+                [{tab.toUpperCase()}]
               </button>
             ))}
           </div>
@@ -459,27 +503,27 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                minHeight: '260px'
+                minHeight: '270px'
               }}
             >
               <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                  <span style={{ fontSize: '11px', fontWeight: 800, padding: '3px 8px', borderRadius: '4px', background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace' }}>
-                    {agent.badge}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px dashed rgba(34, 197, 94, 0.25)', paddingBottom: '8px' }}>
+                  <span style={{ fontSize: '10.5px', fontWeight: 800, padding: '2px 8px', borderRadius: '2px', background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                    [{agent.badge}]
                   </span>
-                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#f59e0b', fontFamily: 'var(--font-jetbrains), monospace' }}>
-                    0.020 SOL
+                  <span style={{ fontSize: '11.5px', fontWeight: 900, color: '#facc15', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                    [0.020 SOL]
                   </span>
                 </div>
 
                 <div style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '4px' }}>
-                  {agent.name}
+                  <AsciiScrambleText text={agent.name} speed={25} />
                 </div>
                 <div style={{ fontSize: '12px', color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '14px' }}>
-                  {agent.archetype}
+                  // {agent.archetype}
                 </div>
 
-                <div style={{ background: 'rgba(0, 0, 0, 0.4)', borderRadius: '6px', padding: '10px 14px', marginBottom: '18px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px' }}>
+                <div style={{ background: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: '4px', padding: '10px 14px', marginBottom: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <span style={{ color: '#64748b' }}>EXECUTION VENUE:</span>
                     <span style={{ color: '#e2e8f0' }}>{agent.venue}</span>
@@ -493,6 +537,12 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                     <span style={{ color: '#86efac' }}>{agent.pdaVault.slice(0, 8)}...</span>
                   </div>
                 </div>
+
+                {/* ASCII Metric Bar */}
+                <div style={{ marginBottom: '16px', fontSize: '10px', color: '#64748b' }}>
+                  <span style={{ color: '#22c55e', fontWeight: 800 }}>BAR: [{agent.metricBars}]</span>
+                  <span style={{ marginLeft: '8px' }}>TELEMETRY OK</span>
+                </div>
               </div>
 
               <button
@@ -503,16 +553,17 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                   background: '#22c55e',
                   color: '#000000',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: '3px',
                   padding: '10px',
                   fontFamily: 'var(--font-jetbrains), monospace',
-                  fontWeight: 800,
+                  fontWeight: 900,
                   fontSize: '12px',
                   cursor: 'pointer',
+                  letterSpacing: '0.04em',
                   transition: 'all 0.15s ease'
                 }}
               >
-                MINT THIS AGENT (0.020 SOL) →
+                [ MINT THIS AGENT (0.020 SOL) → ]
               </button>
             </div>
           ))}
@@ -534,9 +585,24 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
         }}
       >
         <div style={{ marginBottom: '36px' }}>
-          <div className="trix-hud-badge" style={{ color: '#4ade80', marginBottom: '12px' }}>
-            <span>BONDING CURVE LADDER</span>
-            <span style={{ opacity: 0.6 }}>||</span>
+          <div
+            style={{
+              color: '#4ade80',
+              background: 'rgba(34, 197, 94, 0.12)',
+              border: '1px solid rgba(34, 197, 94, 0.35)',
+              borderRadius: '2px',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '11px',
+              fontWeight: 800,
+              padding: '4px 10px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '12px'
+            }}
+          >
+            <span>+--- [03] BONDING_CURVE_LADDER</span>
+            <span style={{ opacity: 0.6 }}>---+</span>
           </div>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', margin: '0 0 12px 0' }}>
             10,078 AGENTS. <span style={{ color: '#22c55e' }}>4 LIQUIDITY TIERS.</span>
@@ -564,9 +630,9 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                 <span style={{ fontSize: '10.5px', fontWeight: 800, color: t.active ? '#22c55e' : '#64748b', fontFamily: 'var(--font-jetbrains), monospace' }}>
-                  {t.tier}
+                  [{t.tier}]
                 </span>
-                <span style={{ fontSize: '9px', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', background: t.active ? 'rgba(34, 197, 94, 0.2)' : 'rgba(255, 255, 255, 0.05)', color: t.active ? '#4ade80' : '#64748b' }}>
+                <span style={{ fontSize: '9px', fontWeight: 800, padding: '2px 6px', borderRadius: '2px', background: t.active ? 'rgba(34, 197, 94, 0.2)' : 'rgba(255, 255, 255, 0.05)', color: t.active ? '#4ade80' : '#64748b' }}>
                   {t.status}
                 </span>
               </div>
@@ -605,9 +671,24 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
       >
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '64px', alignItems: 'center' }}>
           <div>
-            <div className="trix-hud-badge" style={{ color: '#4ade80', marginBottom: '16px' }}>
-              <span>THE PROBLEM</span>
-              <span style={{ opacity: 0.6 }}>||</span>
+            <div
+              style={{
+                color: '#4ade80',
+                background: 'rgba(34, 197, 94, 0.12)',
+                border: '1px solid rgba(34, 197, 94, 0.35)',
+                borderRadius: '2px',
+                fontFamily: 'var(--font-jetbrains), monospace',
+                fontSize: '11px',
+                fontWeight: 800,
+                padding: '4px 10px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '16px'
+              }}
+            >
+              <span>+--- [04] VERIFIED_EVIDENCE</span>
+              <span style={{ opacity: 0.6 }}>---+</span>
             </div>
 
             <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 48px)', fontWeight: 900, lineHeight: 1.1, fontFamily: 'var(--font-jetbrains), monospace', letterSpacing: '-0.02em', marginBottom: '20px' }}>
@@ -625,16 +706,16 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               style={{
                 background: '#22c55e',
                 color: '#000000',
-                fontWeight: 800,
+                fontWeight: 900,
                 fontSize: '12px',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 padding: '12px 24px',
-                borderRadius: '6px',
+                borderRadius: '3px',
                 border: 'none',
                 cursor: 'pointer'
               }}
             >
-              MINT AGENT #{nextAgent.id} →
+              [ MINT AGENT #{nextAgent.id} → ]
             </button>
           </div>
 
@@ -642,8 +723,8 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             <div className="trix-card" style={{ maxWidth: '420px', width: '100%', padding: '28px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
                 <span style={{ width: '8px', height: '8px', background: '#22c55e', borderRadius: '2px' }} />
-                <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace', letterSpacing: '0.1em' }}>
-                  01 BEYOND PERFORMANCE CLAIMS
+                <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace', letterSpacing: '0.08em' }}>
+                  [01] BEYOND PERFORMANCE CLAIMS
                 </span>
               </div>
 
@@ -651,7 +732,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 A headline return means nothing without programmatic proof. RARE binds an agent&apos;s capital directly to an on-chain PDA account.
               </p>
 
-              <div style={{ background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(34, 197, 94, 0.2)', borderRadius: '8px', padding: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px' }}>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '4px', padding: '14px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                   <span style={{ color: '#64748b' }}>REPORTED APY:</span>
                   <span style={{ color: '#ef4444', textDecoration: 'line-through' }}>+184.2%</span>
@@ -684,12 +765,27 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
           zIndex: 15
         }}
       >
-        <div className="trix-card" style={{ padding: '40px', background: 'radial-gradient(ellipse at 50% 20%, rgba(34, 197, 94, 0.15) 0%, rgba(4, 18, 8, 0.95) 70%)' }}>
+        <div className="trix-card" style={{ padding: '40px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '36px', alignItems: 'center' }}>
             <div>
-              <div className="trix-hud-badge" style={{ color: '#4ade80', marginBottom: '14px' }}>
-                <span>ON-CHAIN LIQUIDITY // $RARE</span>
-                <span style={{ opacity: 0.6 }}>||</span>
+              <div
+                style={{
+                  color: '#4ade80',
+                  background: 'rgba(34, 197, 94, 0.12)',
+                  border: '1px solid rgba(34, 197, 94, 0.35)',
+                  borderRadius: '2px',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  padding: '4px 10px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: '14px'
+                }}
+              >
+                <span>+--- [05] ON_CHAIN_LIQUIDITY</span>
+                <span style={{ opacity: 0.6 }}>---+</span>
               </div>
               <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '14px' }}>
                 $RARE TOKEN <span style={{ color: '#22c55e' }}>CONTRACT</span>
@@ -699,7 +795,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               </p>
 
               {/* Contract Copy Box */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '8px', padding: '10px 16px', maxWidth: '440px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', padding: '10px 16px', maxWidth: '440px', marginBottom: '20px' }}>
                 <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#86efac', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   7xK9pLm48N2qR5vT8bF2wA6yU3dE1sZ0xO9vQ4mP
                 </span>
@@ -710,15 +806,15 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                     background: '#22c55e',
                     color: '#000000',
                     border: 'none',
-                    borderRadius: '4px',
+                    borderRadius: '2px',
                     padding: '4px 10px',
                     fontSize: '10px',
-                    fontWeight: 800,
+                    fontWeight: 900,
                     fontFamily: 'var(--font-jetbrains), monospace',
                     cursor: 'pointer'
                   }}
                 >
-                  {copiedContract ? 'COPIED!' : 'COPY'}
+                  {copiedContract ? 'COPIED ✓' : '[COPY]'}
                 </button>
               </div>
 
@@ -731,15 +827,15 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                   style={{
                     background: '#22c55e',
                     color: '#000000',
-                    fontWeight: 800,
+                    fontWeight: 900,
                     fontSize: '12px',
                     fontFamily: 'var(--font-jetbrains), monospace',
                     padding: '12px 20px',
-                    borderRadius: '6px',
+                    borderRadius: '3px',
                     textDecoration: 'none'
                   }}
                 >
-                  TRADE ON JUPITER ↗
+                  [ TRADE ON JUPITER ↗ ]
                 </a>
 
                 <a
@@ -748,36 +844,36 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                   rel="noreferrer"
                   style={{
                     background: 'rgba(34, 197, 94, 0.1)',
-                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    border: '1px solid rgba(34, 197, 94, 0.35)',
                     color: '#86efac',
-                    fontWeight: 700,
+                    fontWeight: 800,
                     fontSize: '12px',
                     fontFamily: 'var(--font-jetbrains), monospace',
                     padding: '12px 20px',
-                    borderRadius: '6px',
+                    borderRadius: '3px',
                     textDecoration: 'none'
                   }}
                 >
-                  DEXSCREENER CHART ↗
+                  [ DEXSCREENER CHART ↗ ]
                 </a>
               </div>
             </div>
 
             {/* Quick Metrics */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', fontFamily: 'var(--font-jetbrains), monospace' }}>
-              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '8px', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
                 <div style={{ fontSize: '10px', color: '#64748b' }}>CIRCULATING SUPPLY</div>
                 <div style={{ fontSize: '20px', fontWeight: 900, color: '#ffffff', marginTop: '4px' }}>10,078,000</div>
               </div>
-              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '8px', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
                 <div style={{ fontSize: '10px', color: '#64748b' }}>PDA VAULT RESERVE</div>
                 <div style={{ fontSize: '20px', fontWeight: 900, color: '#22c55e', marginTop: '4px' }}>90% LOCKED</div>
               </div>
-              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '8px', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
                 <div style={{ fontSize: '10px', color: '#64748b' }}>ANCHOR PROGRAM</div>
                 <div style={{ fontSize: '14px', fontWeight: 800, color: '#86efac', marginTop: '4px' }}>VERIFIED CPI</div>
               </div>
-              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '8px', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+              <div style={{ background: 'rgba(0, 0, 0, 0.5)', padding: '18px', borderRadius: '4px', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
                 <div style={{ fontSize: '10px', color: '#64748b' }}>SOLANA NETWORK</div>
                 <div style={{ fontSize: '14px', fontWeight: 800, color: '#ffffff', marginTop: '4px' }}>MAINNET-BETA</div>
               </div>
@@ -801,9 +897,24 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
         }}
       >
         <div style={{ marginBottom: '32px' }}>
-          <div className="trix-hud-badge" style={{ color: '#4ade80', marginBottom: '12px' }}>
-            <span>FOR BUILDERS</span>
-            <span style={{ opacity: 0.6 }}>||</span>
+          <div
+            style={{
+              color: '#4ade80',
+              background: 'rgba(34, 197, 94, 0.12)',
+              border: '1px solid rgba(34, 197, 94, 0.35)',
+              borderRadius: '2px',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '11px',
+              fontWeight: 800,
+              padding: '4px 10px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '12px'
+            }}
+          >
+            <span>+--- [06] FOR_BUILDERS</span>
+            <span style={{ opacity: 0.6 }}>---+</span>
           </div>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', margin: 0 }}>
             CONNECT YOUR AI <span style={{ color: '#22c55e' }}>VIA MCP OR HTTP</span>
@@ -824,30 +935,30 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                   onClick={() => setActiveTab(tab.id)}
                   style={{
                     padding: '8px 16px',
-                    borderRadius: '6px',
+                    borderRadius: '3px',
                     background: activeTab === tab.id ? '#22c55e' : 'rgba(34, 197, 94, 0.1)',
                     border: '1px solid rgba(34, 197, 94, 0.3)',
                     color: activeTab === tab.id ? '#000000' : '#4ade80',
                     fontFamily: 'var(--font-jetbrains), monospace',
                     fontSize: '12px',
-                    fontWeight: 700,
+                    fontWeight: 800,
                     cursor: 'pointer'
                   }}
                 >
-                  {tab.label}
+                  [{tab.label.toUpperCase()}]
                 </button>
               ))}
             </div>
 
-            <div style={{ background: '#041308', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '12px', overflow: 'hidden' }}>
+            <div style={{ background: '#041308', border: '1px solid rgba(34, 197, 94, 0.35)', borderRadius: '4px', overflow: 'hidden' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 18px', background: 'rgba(34, 197, 94, 0.1)', borderBottom: '1px solid rgba(34, 197, 94, 0.25)', fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#4ade80' }}>
-                <span>SETUP // {activeTab.toUpperCase()}</span>
+                <span>+--- SETUP // {activeTab.toUpperCase()} ---+</span>
                 <button
                   type="button"
                   onClick={copyConfig}
-                  style={{ background: 'transparent', border: 'none', color: '#ffffff', cursor: 'pointer', fontWeight: 700, fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace' }}
+                  style={{ background: 'transparent', border: 'none', color: '#ffffff', cursor: 'pointer', fontWeight: 800, fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace' }}
                 >
-                  {copiedKey ? 'COPIED ✓' : 'COPY'}
+                  {copiedKey ? 'COPIED ✓' : '[COPY]'}
                 </button>
               </div>
 
@@ -859,8 +970,8 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
 
           <div className="trix-card" style={{ padding: '36px', minHeight: '280px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#4ade80', letterSpacing: '0.1em', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '10px' }}>
-                ANCHOR PROGRAM READY
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#4ade80', letterSpacing: '0.08em', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '10px' }}>
+                [ANCHOR PROGRAM READY]
               </div>
               <h3 style={{ fontSize: '22px', fontWeight: 900, fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '12px', color: '#ffffff' }}>
                 JOIN THE 10,078 AGENTS
@@ -880,13 +991,13 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 fontSize: '13px',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 padding: '14px 24px',
-                borderRadius: '8px',
+                borderRadius: '3px',
                 border: 'none',
                 cursor: 'pointer',
                 marginTop: '20px'
               }}
             >
-              MINT AGENT #{nextAgent.id} (0.020 SOL) →
+              {`[ > MINT AGENT #${nextAgent.id} (0.020 SOL) < ]`}
             </button>
           </div>
         </div>
@@ -895,7 +1006,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
       {/* Tactical Bottom Grid Footer */}
       <footer
         style={{
-          borderTop: '1px solid rgba(34, 197, 94, 0.15)',
+          borderTop: '1px solid rgba(34, 197, 94, 0.2)',
           padding: '24px 36px',
           maxWidth: '1440px',
           margin: '0 auto',
@@ -909,11 +1020,11 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
           color: '#86efac'
         }}
       >
-        <div>RARE PROTOCOL // TACTICAL RADAR EDITION</div>
+        <div>[RARE_PROTOCOL] // TACTICAL_ASCII_RADAR</div>
         <div>SOLANA MAINNET-BETA // ANCHOR CPI 90/10</div>
         <div>
-          <Link href="/" style={{ color: '#22c55e', textDecoration: 'none', fontWeight: 700 }}>
-            SWITCH TO HEURIX UI →
+          <Link href="/" style={{ color: '#22c55e', textDecoration: 'none', fontWeight: 800 }}>
+            [SWITCH TO HEURIX UI →]
           </Link>
         </div>
       </footer>
@@ -927,7 +1038,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             position: 'fixed',
             inset: 0,
             zIndex: 100,
-            background: 'rgba(0, 0, 0, 0.85)',
+            background: 'rgba(0, 0, 0, 0.88)',
             backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
@@ -946,13 +1057,13 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
           >
             <div style={{ width: '48px', height: '48px', border: '3px solid #22c55e', borderTopColor: 'transparent', borderRadius: '50%', margin: '0 auto 20px auto', animation: 'spin 0.8s linear infinite' }} />
             <div style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '8px' }}>
-              ANCHOR CPI MINTING...
+              [ ANCHOR CPI MINTING... ]
             </div>
             <div style={{ fontSize: '13px', color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '20px' }}>
               {mintStatus}
             </div>
 
-            <div style={{ background: 'rgba(0, 0, 0, 0.5)', borderRadius: '8px', padding: '14px', textAlign: 'left', fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#94a3b8', lineHeight: 1.8 }}>
+            <div style={{ background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.25)', borderRadius: '4px', padding: '14px', textAlign: 'left', fontSize: '11px', fontFamily: 'var(--font-jetbrains), monospace', color: '#94a3b8', lineHeight: 1.8 }}>
               <div>AGENT_ID: #{inspectedAgent.id}</div>
               <div>TOTAL_MINT: 0.020 SOL</div>
               <div style={{ color: '#22c55e', fontWeight: 800 }}>→ 90% PDA VAULT: 0.018 SOL</div>
@@ -971,7 +1082,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             position: 'fixed',
             inset: 0,
             zIndex: 100,
-            background: 'rgba(0, 0, 0, 0.85)',
+            background: 'rgba(0, 0, 0, 0.88)',
             backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
@@ -998,7 +1109,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               Successfully minted on Solana mainnet-beta. 0.0180 SOL deposited into token-bound PDA vault.
             </p>
 
-            <div style={{ background: 'rgba(0, 0, 0, 0.5)', borderRadius: '8px', padding: '12px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#86efac', marginBottom: '24px', wordBreak: 'break-all' }}>
+            <div style={{ background: 'rgba(0, 0, 0, 0.6)', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '4px', padding: '12px', fontFamily: 'var(--font-jetbrains), monospace', fontSize: '11px', color: '#86efac', marginBottom: '24px', wordBreak: 'break-all' }}>
               TX_SIG: {mintCelebration.txSignature}
             </div>
 
@@ -1010,7 +1121,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 background: '#22c55e',
                 color: '#000000',
                 border: 'none',
-                borderRadius: '6px',
+                borderRadius: '3px',
                 padding: '12px',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 fontWeight: 900,
@@ -1018,7 +1129,7 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
                 cursor: 'pointer'
               }}
             >
-              CLOSE & VIEW ON-CHAIN →
+              [ CLOSE & VIEW ON-CHAIN → ]
             </button>
           </div>
         </div>
