@@ -68,6 +68,64 @@ function createPure3DCrystalGeometry() {
   return geo;
 }
 
+/**
+ * Builds a high-contrast Studio Reflection Environment matching Image 2:
+ * - Golden sunlight glare in the upper-right hemisphere
+ * - Deep dark obsidian void for dramatic contrast
+ * - Intense neon emerald side rim reflections
+ * - Caustic white bottom glint
+ */
+function createStudioEnvironment(renderer) {
+  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  pmremGenerator.compileEquirectangularShader();
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  // Deep obsidian dark background for high-contrast gem reflections
+  ctx.fillStyle = '#020b08';
+  ctx.fillRect(0, 0, 1024, 512);
+
+  // Top-Right Golden Sunlight Flare (Creates the rich golden-yellow facet in Image 2)
+  const goldGrad = ctx.createRadialGradient(750, 100, 15, 750, 100, 260);
+  goldGrad.addColorStop(0, '#fef08a');
+  goldGrad.addColorStop(0.25, '#facc15');
+  goldGrad.addColorStop(0.55, '#84cc16');
+  goldGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = goldGrad;
+  ctx.beginPath();
+  ctx.arc(750, 100, 260, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Intense Neon Emerald Rim Strip
+  const emeraldGrad = ctx.createLinearGradient(0, 160, 1024, 320);
+  emeraldGrad.addColorStop(0, '#022c22');
+  emeraldGrad.addColorStop(0.3, '#10b981');
+  emeraldGrad.addColorStop(0.7, '#22c55e');
+  emeraldGrad.addColorStop(1, '#022c22');
+  ctx.fillStyle = emeraldGrad;
+  ctx.fillRect(0, 180, 1024, 140);
+
+  // Bottom Caustic White Glint (Creates the glowing white bottom tip in Image 2)
+  const whiteGrad = ctx.createRadialGradient(320, 440, 5, 320, 440, 220);
+  whiteGrad.addColorStop(0, '#ffffff');
+  whiteGrad.addColorStop(0.35, '#a7f3d0');
+  whiteGrad.addColorStop(0.75, '#059669');
+  whiteGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = whiteGrad;
+  ctx.beginPath();
+  ctx.arc(320, 440, 220, 0, Math.PI * 2);
+  ctx.fill();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+  const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+  pmremGenerator.dispose();
+  return envMap;
+}
+
 export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }) {
   const mountRef = useRef(null);
 
@@ -99,8 +157,12 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 1.45;
     mount.appendChild(renderer.domElement);
+
+    // Apply High-Contrast Studio Environment Map matching Image 2
+    const envMap = createStudioEnvironment(renderer);
+    scene.environment = envMap;
 
     // 2. Construct Genuine 3D Faceted Crystal Polyhedron
     const crystalGeo = createPure3DCrystalGeometry();
@@ -109,73 +171,81 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
     crystalGroup.scale.set(0.95, 0.95, 0.95);
     scene.add(crystalGroup);
 
-    // Outer Faceted Crystal Glass Material (Physical Emerald Transmission Glass)
+    // High-End Emerald Gemstone Material matching Image 2:
+    // - Deep forest obsidian emerald base with high contrast
+    // - Crisp mirror-polished transmission reflections
+    // - Volumetric emerald depth attenuation
     const outerCrystalMat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x10b981),
-      emissive: new THREE.Color(0x064e3b),
-      emissiveIntensity: 0.35,
-      roughness: 0.05,
-      metalness: 0.08,
-      transmission: 0.78,
-      ior: 1.62,
-      thickness: 1.8,
-      specularIntensity: 2.2,
-      specularColor: new THREE.Color(0xd1fae5),
+      color: new THREE.Color(0x047857), // Rich emerald green
+      emissive: new THREE.Color(0x022c22), // Deep internal emerald depth
+      emissiveIntensity: 0.5,
+      roughness: 0.015, // Mirror gloss cut crystal
+      metalness: 0.12,
+      transmission: 0.65, // Volumetric gem refraction
+      ior: 1.82, // High emerald / sapphire refractive brilliance
+      thickness: 2.6,
+      attenuationColor: new THREE.Color(0x022c22), // Darkens internally like real cut mineral
+      attenuationDistance: 1.4,
+      specularIntensity: 2.8,
+      specularColor: new THREE.Color(0xffffff), // Pure white specular gleam
       clearcoat: 1.0,
-      clearcoatRoughness: 0.05,
-      flatShading: true // Every facet catches the light independently like a cut gemstone!
+      clearcoatRoughness: 0.02,
+      flatShading: true // Every facet is a razor-sharp cut flat plane
     });
 
     const outerCrystalMesh = new THREE.Mesh(crystalGeo, outerCrystalMat);
     crystalGroup.add(outerCrystalMesh);
 
-    // Sharp Facet Edge Accents (Delicate glowing hairline borders)
-    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 10);
+    // Sharp Facet Edge Accents (Glowing white-emerald hairline ridges matching Image 2)
+    const edgesGeo = new THREE.EdgesGeometry(crystalGeo, 8);
     const edgesMat = new THREE.LineBasicMaterial({
-      color: 0x86efac,
+      color: 0xffffff,
       transparent: true,
-      opacity: 0.45
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending
     });
     const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
     crystalGroup.add(edgesMesh);
 
-    // Inner Luminous Core Gem - True Greenish Golden (Peridot / Chartreuse-Gold)
+    // Subtle Internal Luminous Core (Provides internal depth without looking like an egg)
     const innerGeo = crystalGeo.clone();
-    innerGeo.scale(0.56, 0.56, 0.56);
-    const innerMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0xa3e635), // Vibrant greenish golden (chartreuse gold)
-      emissive: new THREE.Color(0x65a30d), // Deep greenish-golden luminescence
-      emissiveIntensity: 0.85, // Perfectly balanced to preserve the rich greenish-gold hue
-      roughness: 0.15,
-      metalness: 0.45, // Metallic golden luster on green base
+    innerGeo.scale(0.44, 0.44, 0.44);
+    const innerMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x10b981),
+      emissive: new THREE.Color(0x059669),
+      emissiveIntensity: 1.1,
+      roughness: 0.08,
+      metalness: 0.2,
+      transmission: 0.45,
+      ior: 1.6,
       flatShading: true
     });
     const innerCrystalMesh = new THREE.Mesh(innerGeo, innerMat);
     crystalGroup.add(innerCrystalMesh);
 
-    // Internal Pulsing Light at the crystal core (Greenish-Golden Light)
-    const coreLight = new THREE.PointLight(0xa3e635, 2.0, 8); // Crisp greenish-golden emission
-    coreLight.position.set(0, 0, 0);
-    crystalGroup.add(coreLight);
-
-    // 3. Cinematic 3D Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0x064e3b, 1.8);
+    // 3. Cinematic 3D Studio Lighting matched to Image 2:
+    const ambientLight = new THREE.AmbientLight(0x021d14, 1.4);
     scene.add(ambientLight);
 
-    // Key Light (Top-Left Greenish-Golden Tint)
-    const keyLight = new THREE.DirectionalLight(0xd9f99d, 3.2);
-    keyLight.position.set(-6, 7, 5);
-    scene.add(keyLight);
+    // Golden Sunlight Key Light (Creates the upper golden facet reflection)
+    const goldKeyLight = new THREE.DirectionalLight(0xfef08a, 4.2);
+    goldKeyLight.position.set(4, 7, 5);
+    scene.add(goldKeyLight);
 
-    // Fill Light (Bottom-Right Emerald)
-    const fillLight = new THREE.DirectionalLight(0x10b981, 2.2);
-    fillLight.position.set(6, -5, 4);
-    scene.add(fillLight);
+    // Intense Emerald Rim Light (Creates the vivid left/back green illumination)
+    const emeraldRimLight = new THREE.DirectionalLight(0x10b981, 3.5);
+    emeraldRimLight.position.set(-6, -2, 4);
+    scene.add(emeraldRimLight);
 
-    // Rim Back Light (Silhouette separation)
-    const rimLight = new THREE.DirectionalLight(0x34d399, 2.4);
-    rimLight.position.set(0, -6, -4);
-    scene.add(rimLight);
+    // Bottom White Caustic Uplight (Creates the bright glowing white bottom tip in Image 2)
+    const bottomWhiteLight = new THREE.PointLight(0xffffff, 3.5, 6);
+    bottomWhiteLight.position.set(0, -2.4, 0.8);
+    crystalGroup.add(bottomWhiteLight);
+
+    // Internal Emerald Point Light
+    const coreLight = new THREE.PointLight(0x34d399, 2.0, 7);
+    coreLight.position.set(0, 0, 0);
+    crystalGroup.add(coreLight);
 
     // 4. Subtle Tactical Dust Particles
     const particleCount = 45;
@@ -226,8 +296,9 @@ export default function Rare3DCanvas({ scrollProgress = 0, isLightMode = false }
       particleSystem.rotation.y = time * 0.03;
       particleSystem.rotation.x = Math.sin(time * 0.4) * 0.02;
 
-      // Internal golden-green light subtle pulse
-      coreLight.intensity = 2.0 + Math.sin(time * 3.0) * 0.4;
+      // Internal light subtle pulse
+      bottomWhiteLight.intensity = 3.2 + Math.sin(time * 2.5) * 0.4;
+      coreLight.intensity = 1.8 + Math.sin(time * 3.0) * 0.3;
 
       // Current scroll progress
       const p = scrollRef.current;
