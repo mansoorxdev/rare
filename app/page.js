@@ -61,7 +61,8 @@ export default function HomePage() {
       apy: '+42.8%',
       risk: 'Low (Hedging)',
       metricBars: '█████████░░░',
-      priceSol: 0.02
+      priceSol: 0.02,
+      image: '/assets/agent/rare_amber.jpg'
     },
     {
       id: 140,
@@ -73,7 +74,8 @@ export default function HomePage() {
       apy: '+29.4%',
       risk: '-15% Stop Guard',
       metricBars: '███████░░░░░',
-      priceSol: 0.02
+      priceSol: 0.02,
+      image: '/assets/agent/rare_void.jpg'
     },
     {
       id: 141,
@@ -85,7 +87,8 @@ export default function HomePage() {
       apy: '+58.2%',
       risk: 'Medium (Tick)',
       metricBars: '███████████░',
-      priceSol: 0.02
+      priceSol: 0.02,
+      image: '/assets/agent/rare_crimson.jpg'
     },
     {
       id: 142,
@@ -97,7 +100,8 @@ export default function HomePage() {
       apy: '+34.1%',
       risk: 'Low (Delta 0)',
       metricBars: '████████░░░░',
-      priceSol: 0.02
+      priceSol: 0.02,
+      image: '/assets/agent/rare_arctic.jpg'
     },
     {
       id: 144,
@@ -109,7 +113,8 @@ export default function HomePage() {
       apy: '+64.5%',
       risk: 'High (Breakout)',
       metricBars: '████████████',
-      priceSol: 0.02
+      priceSol: 0.02,
+      image: '/assets/agent/rare_arch_emerald.jpg'
     },
     {
       id: 145,
@@ -121,7 +126,8 @@ export default function HomePage() {
       apy: '+31.0%',
       risk: 'Neutral',
       metricBars: '███████░░░░░',
-      priceSol: 0.02
+      priceSol: 0.02,
+      image: '/assets/agent/rare_front.jpg'
     }
   ];
 
@@ -511,6 +517,84 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               }}
             >
               <div>
+                {/* NFT Operative Photo Frame */}
+                {agent.image && (
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: '240px',
+                      borderRadius: '4px',
+                      overflow: 'hidden',
+                      marginBottom: '16px',
+                      border: '1px solid rgba(34, 197, 94, 0.35)',
+                      background: '#041409'
+                    }}
+                  >
+                    <img
+                      src={agent.image}
+                      alt={agent.name}
+                      loading="lazy"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        transition: 'transform 0.3s ease'
+                      }}
+                    />
+
+                    {/* Tactical CRT Scanlines Overlay on Image */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%)',
+                        backgroundSize: '100% 4px',
+                        pointerEvents: 'none'
+                      }}
+                    />
+
+                    {/* Top-Left ID Badge */}
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '8px',
+                        left: '8px',
+                        fontFamily: 'var(--font-jetbrains), monospace',
+                        fontSize: '9.5px',
+                        fontWeight: 800,
+                        background: 'rgba(0, 0, 0, 0.85)',
+                        color: '#22c55e',
+                        padding: '2px 7px',
+                        borderRadius: '2px',
+                        border: '1px solid rgba(34, 197, 94, 0.45)'
+                      }}
+                    >
+                      {`#${String(agent.id).padStart(5, '0')}`}
+                    </span>
+
+                    {/* Bottom-Right Price Badge */}
+                    <span
+                      style={{
+                        position: 'absolute',
+                        bottom: '8px',
+                        right: '8px',
+                        fontFamily: 'var(--font-jetbrains), monospace',
+                        fontSize: '9.5px',
+                        fontWeight: 900,
+                        background: 'rgba(0, 0, 0, 0.85)',
+                        color: '#facc15',
+                        padding: '2px 7px',
+                        borderRadius: '2px',
+                        border: '1px solid rgba(250, 204, 21, 0.45)'
+                      }}
+                    >
+                      [0.020 SOL]
+                    </span>
+                  </div>
+                )}
+
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px dashed rgba(34, 197, 94, 0.25)', paddingBottom: '8px' }}>
                   <span style={{ fontSize: '10.5px', fontWeight: 800, padding: '2px 8px', borderRadius: '2px', background: 'rgba(34, 197, 94, 0.15)', color: '#4ade80', fontFamily: 'var(--font-jetbrains), monospace' }}>
                     [{agent.badge}]
@@ -1059,7 +1143,13 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
               textAlign: 'center'
             }}
           >
-            <div style={{ width: '48px', height: '48px', border: '3px solid #22c55e', borderTopColor: 'transparent', borderRadius: '50%', margin: '0 auto 20px auto', animation: 'spin 0.8s linear infinite' }} />
+            {inspectedAgent.image ? (
+              <div style={{ width: '96px', height: '96px', borderRadius: '6px', overflow: 'hidden', margin: '0 auto 16px auto', border: '2px solid #22c55e', boxShadow: '0 0 16px rgba(34, 197, 94, 0.4)' }}>
+                <img src={inspectedAgent.image} alt={inspectedAgent.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            ) : (
+              <div style={{ width: '48px', height: '48px', border: '3px solid #22c55e', borderTopColor: 'transparent', borderRadius: '50%', margin: '0 auto 20px auto', animation: 'spin 0.8s linear infinite' }} />
+            )}
             <div style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '8px' }}>
               [ ANCHOR CPI MINTING... ]
             </div>
@@ -1105,7 +1195,13 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ fontSize: '42px', marginBottom: '12px' }}>⚡</div>
+            {mintCelebration.image ? (
+              <div style={{ width: '110px', height: '110px', borderRadius: '8px', overflow: 'hidden', margin: '0 auto 16px auto', border: '2px solid #22c55e', boxShadow: '0 0 20px rgba(34, 197, 94, 0.5)' }}>
+                <img src={mintCelebration.image} alt={mintCelebration.name || 'Minted Agent'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            ) : (
+              <div style={{ fontSize: '42px', marginBottom: '12px' }}>⚡</div>
+            )}
             <div style={{ fontSize: '22px', fontWeight: 900, color: '#22c55e', fontFamily: 'var(--font-jetbrains), monospace', marginBottom: '8px' }}>
               AGENT #{mintCelebration.id} ACTIVATED!
             </div>
