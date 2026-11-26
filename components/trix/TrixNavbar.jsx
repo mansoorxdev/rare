@@ -14,12 +14,11 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
   const walletAddress = activeWallet?.address;
 
   const navLinks = [
-    { short: 'OVERVIEW', label: 'OVERVIEW', href: '#overview' },
-    { short: 'ROSTER', label: 'SWARM_ROSTER', href: '#roster' },
-    { short: 'LADDER', label: 'BONDING_LADDER', href: '#ladder' },
-    { short: 'EVIDENCE', label: 'EVIDENCE', href: '#evidence' },
-    { short: 'DEX', label: 'DEX_$RARE', href: '#dex' },
-    { short: 'BUILDERS', label: 'FOR_BUILDERS', href: '#builders' }
+    { short: 'AGENTS', label: 'EXPLORE AGENTS', href: '/roster' },
+    { short: 'LADDER', label: 'BONDING LADDER', href: '/ladder' },
+    { short: 'SPECS', label: 'ANCHOR SPECS', href: '/specs' },
+    { short: 'DOCS', label: 'DOCS', href: '/whitepaper' },
+    { short: 'BUY $RARE', label: 'BUY $RARE', href: '/#dex' }
   ];
 
   return (
@@ -143,7 +142,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
         >
           {navLinks.map((item, idx) => (
             <React.Fragment key={item.label}>
-              <a
+              <Link
                 href={item.href}
                 style={{
                   color: isLightMode ? '#475569' : '#86efac',
@@ -160,7 +159,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               >
                 <span className="hidden xl:inline">{item.label}</span>
                 <span className="inline xl:hidden">{item.short}</span>
-              </a>
+              </Link>
               {idx < navLinks.length - 1 && (
                 <span style={{ color: isLightMode ? '#cbd5e1' : 'rgba(34, 197, 94, 0.35)', margin: '0 2px' }}>·</span>
               )}

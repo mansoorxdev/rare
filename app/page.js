@@ -572,6 +572,40 @@ curl -X POST https://api.rare.xyz/v1/agent/observe \\
             </div>
           ))}
         </div>
+
+        {/* Call-to-action to Full 10,078 Swarm Roster */}
+        <div style={{ marginTop: '36px', textAlign: 'center' }}>
+          <Link
+            href="/roster"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '13px 26px',
+              background: 'rgba(34, 197, 94, 0.12)',
+              border: '1px solid rgba(34, 197, 94, 0.5)',
+              borderRadius: '4px',
+              color: '#4ade80',
+              fontFamily: 'var(--font-jetbrains), monospace',
+              fontSize: '12.5px',
+              fontWeight: 800,
+              textDecoration: 'none',
+              letterSpacing: '0.04em',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 0 20px rgba(34, 197, 94, 0.12)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#22c55e';
+              e.currentTarget.style.color = '#000000';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(34, 197, 94, 0.12)';
+              e.currentTarget.style.color = '#4ade80';
+            }}
+          >
+            <span>[ EXPLORE ALL 10,078 ROBOT AGENTS ON SWARM ROSTER → ]</span>
+          </Link>
+        </div>
       </section>
 
       {/* =========================================================================
