@@ -14,12 +14,12 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
   const walletAddress = activeWallet?.address;
 
   const navLinks = [
-    { num: '01', label: 'OVERVIEW', href: '#overview' },
-    { num: '02', label: 'SWARM_ROSTER', href: '#roster' },
-    { num: '03', label: 'BONDING_LADDER', href: '#ladder' },
-    { num: '04', label: 'EVIDENCE', href: '#evidence' },
-    { num: '05', label: 'DEX_$RARE', href: '#dex' },
-    { num: '06', label: 'FOR_BUILDERS', href: '#builders' }
+    { num: '01', short: 'OVERVIEW', label: 'OVERVIEW', href: '#overview' },
+    { num: '02', short: 'ROSTER', label: 'SWARM_ROSTER', href: '#roster' },
+    { num: '03', short: 'LADDER', label: 'BONDING_LADDER', href: '#ladder' },
+    { num: '04', short: 'EVIDENCE', label: 'EVIDENCE', href: '#evidence' },
+    { num: '05', short: 'DEX', label: 'DEX_$RARE', href: '#dex' },
+    { num: '06', short: 'BUILDERS', label: 'FOR_BUILDERS', href: '#builders' }
   ];
 
   return (
@@ -45,21 +45,21 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
           maxWidth: '1440px',
           width: '100%',
           margin: '0 auto',
-          padding: '0 20px',
+          padding: '0 16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '12px'
+          gap: '8px'
         }}
       >
         {/* Left: Brand Icon + Wordmark + Tactical ASCII Badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0, whiteSpace: 'nowrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0, whiteSpace: 'nowrap' }}>
           <Link
             href="/trix"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
+              gap: '6px',
               textDecoration: 'none',
               color: isLightMode ? '#0f172a' : '#f8fafc',
               whiteSpace: 'nowrap',
@@ -80,7 +80,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               style={{
                 fontFamily: 'var(--font-jetbrains), monospace',
                 fontWeight: 900,
-                fontSize: '18px',
+                fontSize: '17px',
                 letterSpacing: '0.08em',
                 color: isLightMode ? '#0f172a' : '#ffffff'
               }}
@@ -110,7 +110,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              padding: '3px 8px',
+              padding: '3px 7px',
               borderRadius: '2px',
               background: isLightMode ? 'rgba(0, 0, 0, 0.05)' : 'rgba(34, 197, 94, 0.08)',
               border: isLightMode ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid rgba(34, 197, 94, 0.3)',
@@ -124,21 +124,21 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
             }}
             title="Switch to Heurix UI"
           >
-            <span>[← HEURIX UI]</span>
+            <span>{"[←\u00A0HEURIX\u00A0UI]"}</span>
           </Link>
         </div>
 
-        {/* Center: ASCII Delimited Navigation */}
+        {/* Center: ASCII Delimited Navigation (Responsive labels for compact screens) */}
         <nav
-          className="hidden xl:flex items-center"
+          className="hidden lg:flex items-center"
           style={{
-            gap: '10px',
+            gap: '8px',
             fontFamily: 'var(--font-jetbrains), monospace',
-            fontSize: '10.5px',
-            letterSpacing: '0.05em',
+            fontSize: '10px',
+            letterSpacing: '0.04em',
             fontWeight: 700,
             whiteSpace: 'nowrap',
-            flexShrink: 1
+            flexShrink: 0
           }}
         >
           {navLinks.map((item, idx) => (
@@ -150,25 +150,27 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '3px',
+                  gap: '2px',
                   opacity: 0.88,
                   whiteSpace: 'nowrap',
+                  flexShrink: 0,
                   transition: 'opacity 0.15s ease'
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.88')}
               >
                 <span style={{ color: '#22c55e', opacity: 0.7, fontSize: '9px' }}>{item.num}.</span>
-                <span>{item.label}</span>
+                <span className="hidden xl:inline">{item.label}</span>
+                <span className="inline xl:hidden">{item.short}</span>
               </a>
               {idx < navLinks.length - 1 && (
-                <span style={{ color: isLightMode ? '#cbd5e1' : 'rgba(34, 197, 94, 0.35)' }}>·</span>
+                <span style={{ color: isLightMode ? '#cbd5e1' : 'rgba(34, 197, 94, 0.35)', margin: '0 1px' }}>·</span>
               )}
             </React.Fragment>
           ))}
         </nav>
 
-        {/* Right: ASCII Mint & Wallet CTAs */}
+        {/* Right: ASCII Mint & Wallet CTAs (Strict non-breaking single line) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0, whiteSpace: 'nowrap' }}>
           {onMintClick && (
             <button
@@ -183,7 +185,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
                 border: '1px solid rgba(34, 197, 94, 0.45)',
                 borderRadius: '3px',
                 color: isLightMode ? '#047857' : '#4ade80',
-                padding: '6px 11px',
+                padding: '6px 10px',
                 fontSize: '11px',
                 fontFamily: 'var(--font-jetbrains), monospace',
                 fontWeight: 800,
@@ -202,7 +204,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
                 e.currentTarget.style.borderColor = 'rgba(34, 197, 94, 0.45)';
               }}
             >
-              <span>{"[ > MINT 0.020 SOL < ]"}</span>
+              <span>{"[\u00A0>\u00A0MINT\u00A00.020\u00A0SOL\u00A0<\u00A0]"}</span>
             </button>
           )}
 
@@ -226,7 +228,7 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
               fontSize: '11px',
               fontFamily: 'var(--font-jetbrains), monospace',
               letterSpacing: '0.04em',
-              padding: '6px 13px',
+              padding: '6px 12px',
               border: '1px solid #22c55e',
               borderRadius: '3px',
               cursor: 'pointer',
@@ -239,12 +241,12 @@ export default function TrixNavbar({ isLightMode, onMintClick }) {
             {authenticated && walletAddress ? (
               <>
                 <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
-                <span>{`[ 0x${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)} ]`}</span>
+                <span>{`[\u00A00x${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}\u00A0]`}</span>
               </>
             ) : authenticated ? (
-              <span>{"[ 0xCONNECTED ]"}</span>
+              <span>{"[\u00A00xCONNECTED\u00A0]"}</span>
             ) : (
-              <span>{"[ 0xCONNECT_WALLET ]"}</span>
+              <span>{"[\u00A00xCONNECT_WALLET\u00A0]"}</span>
             )}
           </button>
         </div>

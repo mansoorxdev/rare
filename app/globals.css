@@ -919,3 +919,11 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), 0 0 20px rgba(16, 185, 129, 0.15);
 }
+
+/* Trix Navbar Strict Single-Line Enforcement */
+header,
+header nav,
+header button,
+header a {
+  white-space: nowrap !important;
+}
